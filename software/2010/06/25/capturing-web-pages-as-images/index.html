@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Capturing web pages as images</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a>
+            </div>
+
+                <h2>Capturing web pages as images</h2>
+<p class="meta">25 Jun 2010</p>
+
+<div class="post">
+<p>I have been looking for a way to capture web pages as images from the command line and/or programmatically. </p>
+
+<p>There doesn&#39;t seem to be the &quot;easy&quot; way so this merits a note to self.</p>
+
+<h3>The command-line-utility-you-can-wrap-in-a-system()-call way</h3>
+
+<p>There are a few command line utilities, but they are not fully cross-platform: </p>
+
+<p><a href="http://cutycapt.sourceforge.net/">CutyCapt</a> works on Windows and Linux. It uses the WebKit engine.</p>
+
+<p><a href="http://iecapt.sourceforge.net/">IECapt</a> from the same guy offering CutyCapt uses IE and obviously only runs on Windows.</p>
+
+<p><a href="http://www.paulhammond.org/webkit2png/">webkit2png</a> will fill your OS X needs</p>
+
+<h3>The write-some-code-in-Ruby way</h3>
+
+<p>Get <a href="http://seleniumhq.org/projects/remote-control/">selenium-rc</a>,install the proxy and use the page snapshot functionality. If only you didn&#39;t have to use the damn selenium proxy this would have been perfect.</p>
+
+<p>There is <a href="http://rubyforge.org/projects/selenium/">Selenium</a> gem which bundles selenium-rc and adds a CLI wrapper to start and stop the proxy server but it hasn&#39;t been updated since July 2008 which makes the bundled selenium-rc version suspect.</p>
+
+<p>The start/stop functionality is also implemented as blocking calls which a bit of a bother.</p>
+
+<p>The wrapper for the server is essentially a system() call to java so it is relatively simple to grab the latest selenium-rc code and just use the code to programmatically start/stop the proxy server - still, not the easy out-of-the-box solution I would like.</p>
+
+<p>Anyone else have any suggestions?</p>
+
+</div>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

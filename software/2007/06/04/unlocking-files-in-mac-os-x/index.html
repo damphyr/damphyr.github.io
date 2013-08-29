@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>(Un)locking files in Mac OS X</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a>
+            </div>
+
+                <h2>(Un)locking files in Mac OS X</h2>
+<p class="meta">04 Jun 2007</p>
+
+<div class="post">
+<p>I stumbled on a feature of Mac OS that probably dates from the days of OS 9 and that has caused me a few problems: file locking.
+File locking is nothing more than a flag (uchg) set on the file. </p>
+
+<p>Flags are like the MSDOS/Windows attributes. According to man, the following flags are possible:</p>
+
+<ul>
+<li>arch    set the archived flag (super-user only)</li>
+<li>opaque  set the opaque flag (owner or super-user only)</li>
+<li>nodump  set the nodump flag (owner or super-user only)</li>
+<li>sappnd  set the system append-only flag (super-user only)</li>
+<li>schg    set the system immutable flag (super-user only)</li>
+<li>sunlnk  set the system undeletable flag (super-user only)</li>
+<li>uappnd  set the user append-only flag (owner or super-user only)</li>
+<li>uchg    set the user immutable flag (owner or super-user only)</li>
+<li>uunlnk  set the user undeletable flag (owner or super-user only)</li>
+</ul>
+
+<p>File locking prevents you from doing anything with the file - can&#39;t move it, rename it, change it&#39;s permissions. Nothing whatsoever.</p>
+
+<p>Now that wouldn&#39;t be a big deal if Mac OS X would give you a decent error message but whenever you try to do anything you get a 
+&quot;operation not permitted&quot; error, which for someone used to Unix leads to thinking that the permissions are not correctly set.
+Well, to be honest, drag and dropping the file to the trash can will produce the correct message (which is how I found out about file locking), but the terminal won&#39;t give you a clue.</p>
+
+<p>Now, why am I bothered about this?</p>
+
+<p>Well, as I described in <a href="virtualization.html">Using virtualization in software development projects</a> I rely heavily on the use of VMs at work. The Parallels Vm allows me to share my project directories so that I can synchronize my repositories from Windows and from Mac OS X.
+The problem was that whenever subversion accessed the repository from a Windows VM, Mac OS X would lock the file as the operation happens over a network connection. Trying to update, commit etc. from Mac OS X afterwards leads to subversion failing with the misleading &quot;operation not permitted&quot; error.
+A real pain in the backside.</p>
+
+<p>The solution is ofcourse to unlock the file. You do it by calling up the Info tab (cmd-I) of the file and uncheking the &#39;Locked&#39; checkbox.
+A completely impractical and time wasting method when you have a couple hundred files.
+Back to the terminal then. It would be absurd if there was no way to do it on the command line and over many files - even attrib.exe had a recursive option. As always though, the command line does things faster:</p>
+
+<p>To see any flags set</p>
+
+<div class="highlight"><pre><code class="bash">ls -lo 
+</code></pre></div>
+
+<p>To recursively unlock files</p>
+
+<div class="highlight"><pre><code class="bash">chflags -R nouchg <span class="o">[</span>files<span class="o">]</span>
+</code></pre></div>
+
+</div>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

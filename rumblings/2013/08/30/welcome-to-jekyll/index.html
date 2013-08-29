@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Back on the saddle</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a>
+            </div>
+
+                <h2>Back on the saddle</h2>
+<p class="meta">30 Aug 2013</p>
+
+<div class="post">
+<p>Man it&#39;s been a long time!</p>
+
+<p>It&#39;s been over a year since I published anything on this blog. And it&#39;s been a busy year, an upside-down year, a year of upheaval.</p>
+
+<p>First of all Joyent decided to termintate it&#39;s VPS hosting in favour of their cloud offerings, thus switching off all textdrive remnants.
+They couldn&#39;t have chosen a worse time for it. With preparations for EuRuKo 2013 in full swing there was simply not enough time to take care of moving.</p>
+
+<p>So I left it until the servers were turned off. And thus ampelofilosofies disappeared from the net.</p>
+
+<p>Time to remedy that. After a well earned holiday I get to sit down and redo the blog. Way back in 2005 the third incarnation of this blog (it&#39;s like Doctor Who, it keeps coming back in different forms since 1996) was a static site generated from  HTML and Textile sources and a bunch of home brewed ruby scripts. Back then I was convinced it was the best way to manage my content: text based, version controlled and easy to transform.</p>
+
+<p>The <a href="/software/2009-10-05-putting-it-back-together">4th incarnation</a> was a Radiant based site. At the time it was easy to setup, there was a wealth of plugins that allowed things like image galleries, comments and attachements so it seemed like a good idea. And I switched from textile to markdown.</p>
+
+<p>Fast forward 4 years and that &quot;good&quot; idea proved to be a big impediment in getting the site back up in the limited free time available. The venerable Radiant installation that was running on the hosted server was outdated, upgrading to the current version proved a huge chore, none of the plugins runs anymore and my content is locked in an sqlite3 database making extraction rather cumbersome.</p>
+
+<p>This is not about bashing Radiant. It&#39;s more about me not having the time to keep up with the updates in a viable way while having adopted Radiant quite early in it&#39;s development cycle. The latest version have the upgrade process really well under control, but I&#39;m left with an ancient codebase barely running on ruby 1.8.7.</p>
+
+<p>I still prefer the generate-from-text-source approach. Luckily, since I have absolutely no inclination in resurrecting my ruby scripts (omg! I look at the ruby code I wrote in 2005 and I scoff at the naive stranger who thought it was good), Jekyll follows exactly the same philosophy - only it does things right.</p>
+
+<p>It has been an enormous pleasure rescuing all the content from the clutches of sqlite3 and Jekyll has proven a joy to work with.</p>
+
+<p>The most important thing in the migration from Radiant to Jekyll has been maintaining the permalinks. Analytics show that there are some poor souls visiting and linking to a few of my articles (<a href="/2010/05/20/rumblings/things-you-should-know-while-dating-a-computer-programmer">Things you should know while dating a computer programmer</a> being the most popular for some reason) so it would be bad form to change the links. Bad enough that they have been offline for so long.</p>
+
+<p>Thankfully Jekyll makes it very easy to change the default permalink scheme. So in the coming days I will complete the migration of the content, rework the appearance of the site, activate RSS and comments. After that there&#39;s a few articles that need publishing. Like I said, it has been a long, busy and above all interesting year.</p>
+
+</div>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

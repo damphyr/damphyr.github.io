@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Automation Angels: Hoe</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a>
+            </div>
+
+                <h2>Automation Angels: Hoe</h2>
+<p class="meta">21 May 2007</p>
+
+<div class="post">
+<p>Launching <a href="http://github.com/damphyr/patir">patir</a> has been a very enjoyable experience from a project management perspective.
+Apart from the fact that <a href="http://rubyforge.org">Rubyforge</a> has a cracking team of admins (Tom Copeland must be given a medal!) that responds with lightning speed and always friendly, there are all those little tools provided by the Ruby community that make working with Rubyforge a breeze.
+<a href="http://seattlerb.rubyforge.org/hoe/">Hoe</a> is one of those tools. It makes packaging, releasing and announcing your releases really easy. 
+You can get a crash intro into using Hoe from <a href="http://www.nimblecode.com/files/hoetalk.pdf">Jacob Harris&#39; presentation</a></p>
+
+<p>There are a few things though that one should have in mind and that are not covered (or are not that clear) in the Hoe documentation or Jacob&#39;s talk:
+Hoe is added as a dependency to the gem you create.
+The reason behind this is that once you install the gem you can run the unit tests with 
+<div class="highlight"><pre><code class="bash">gem check -t your_gem
+</code></pre></div>
+. 
+You can remove this dependency with:</p>
+
+<div class="highlight"><pre><code class="ruby">  <span class="n">hoe</span><span class="o">.</span><span class="n">spec</span><span class="o">.</span><span class="n">dependencies</span><span class="o">.</span><span class="n">delete_if</span> <span class="p">{</span> <span class="o">|</span><span class="n">dep</span><span class="o">|</span> <span class="n">dep</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;hoe&quot;</span> <span class="p">}</span>
+</code></pre></div>
+
+<p>(courtesy of <a href="http://chneukirchen.org/">Christian Neukirchen</a>).</p>
+
+<p><a href="http://github.com/damphyr/rutema">rutema&#39;s</a> Hoe spec also shows how to add extra dependencies and other Gem specification elements (the <em>extra</em>deps_ and <em>spec</em>extras_ lines):</p>
+
+<div class="highlight"><pre><code class="ruby"> <span class="no">Hoe</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;rutema&#39;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="ss">Rutema</span><span class="p">:</span><span class="ss">:VERSION_MAJOR</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="ss">Rutema</span><span class="p">:</span><span class="ss">:VERSION_MINOR</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="nb">p</span><span class="o">|</span>
+   <span class="nb">p</span><span class="o">.</span><span class="n">rubyforge_name</span> <span class="o">=</span> <span class="s1">&#39;patir&#39;</span>
+   <span class="nb">p</span><span class="o">.</span><span class="n">summary</span> <span class="o">=</span> <span class="s1">&#39;rutema is a test execution and management framework for...&#39;</span>
+   <span class="nb">p</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="nb">p</span><span class="o">.</span><span class="n">paragraphs_of</span><span class="p">(</span><span class="s1">&#39;README.txt&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+   <span class="nb">p</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="nb">p</span><span class="o">.</span><span class="n">paragraphs_of</span><span class="p">(</span><span class="s1">&#39;README.txt&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sr">/\n/</span><span class="p">)</span><span class="o">[</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="mi">1</span><span class="o">]</span>
+   <span class="nb">p</span><span class="o">.</span><span class="n">changes</span> <span class="o">=</span> <span class="nb">p</span><span class="o">.</span><span class="n">paragraphs_of</span><span class="p">(</span><span class="s1">&#39;History.txt&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+   <span class="nb">p</span><span class="o">.</span><span class="n">extra_deps</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="o">[</span><span class="s1">&#39;patir&#39;</span><span class="p">,</span><span class="s2">&quot; &amp;gt; =0.3&quot;</span><span class="o">]</span>
+   <span class="nb">p</span><span class="o">.</span><span class="n">extra_deps</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="o">[</span><span class="s1">&#39;highline&#39;</span><span class="o">]</span> 
+   <span class="nb">p</span><span class="o">.</span><span class="n">extra_deps</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="o">[</span><span class="s1">&#39;mailfactory&#39;</span><span class="o">]</span>
+   <span class="nb">p</span><span class="o">.</span><span class="n">spec_extras</span><span class="o">=</span><span class="p">{</span><span class="ss">:executables</span><span class="o">=&gt;[</span><span class="s2">&quot;rutemax&quot;</span><span class="o">]</span><span class="p">,</span>
+   <span class="ss">:default_executable</span><span class="o">=&gt;</span><span class="s2">&quot;rutemax&quot;</span><span class="p">}</span>
+ <span class="k">end</span>
+</code></pre></div>
+
+<p>Hoe does make your life easier. 
+Just check how fast rutema&#39;s 0.2 bugfix release was released after the initial 0.1 release (for the lazy among you: find bug, fix bug, update documentation, release - all in one hour and fortyfive minutes)</p>
+
+</div>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>
