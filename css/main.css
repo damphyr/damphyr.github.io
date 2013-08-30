@@ -19,10 +19,16 @@ body {
   text-align: center;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1 {
+  font-size: 115%;
+}
+h1.title {
+  font-size: 140%;
+} 
+
+h2, h3, h4, h5, h6 {
   font-size: 100%; }
 
-h1 { margin-bottom: 1em; }
 p { margin: 1em 0; }
 
 a         { color: #00a; }
@@ -62,6 +68,9 @@ ul.posts span {
   margin: 3em auto 2em;
   line-height: 1.5em;
 }
+.header {
+  margin-bottom: 1em;
+}
 
 .site .header a {
   font-weight: bold;
@@ -70,15 +79,14 @@ ul.posts span {
 
 .site .header h1.title {
   display: inline-block;
-  margin-bottom: 2em;
 }
 
 .site .header h1.title a {
-  color: #a00;
+  color: #EF8923;
 }
 
 .site .header h1.title a:hover {
-  color: #000;
+  color: #EF3000;
 }
 
 .site .header a.extra {
@@ -90,6 +98,14 @@ ul.posts span {
   color: #000;
 }
 
+.site .header span.extra {
+  color: #aaa;
+  font-weight: bold;
+  text-decoration: none;
+  margin-left: 3em;
+  font-size: 93%;
+  text-align: right;
+}
 .site .meta {
   color: #aaa;
 }
