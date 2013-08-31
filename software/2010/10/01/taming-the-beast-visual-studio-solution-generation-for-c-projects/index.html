@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>Taming the beast: Visual Studio solution generation for C projects!</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>Taming the beast: Visual Studio solution generation for C projects!</h1>
+<p class="meta">01 Oct 2010</p>
+
+<div class="post">
+<p>My current project - an embedded affair with C code and a whole universe of tools in C, Java, C#, Ruby and in-house DSLs - needs VS support<sup>1</sup>. So I rolled up my sleeves and proceeded to find a way to generate a Visual Studio solution containing all our production C code, our unit tests, any mock components and the target simulator.</p>
+
+<p>Originally the fastest way seemed to use <a href="http://www.cmake.org/">CMake</a> but that meant maintaining another build tool next to the current rake build system. We considered generating the requisite files from rake and then running CMake which would let us maintain one set of build configurations/scripts etc. but such a solution is too much of <a href="http://en.wikipedia.org/wiki/Rube_Goldberg">Rube Goldberg</a> and introduces all kinds of failure points.</p>
+
+<p>That left me with generating VS project and solution files programmatically using Ruby.
+I started by creating a single C library project and a single executable project and added the files from our source control, made sure I could compile and link and then took the resulting .vcproj and .sln files and created ERB templates.</p>
+
+<p>Half a day later the code to fill in the templates was complete and I could generate a bunch of project files and a solution. The only problem? It didn&#39;t work!</p>
+
+<h3>The tale of the aberrant separator</h3>
+
+<p>Compilation in the library projects worked, but the linker could no locate the .obj files. 
+See if you can spot the error. The following works:</p>
+
+<div class="highlight"><pre><code class="xml"><span class="nt">&lt;Filter</span> <span class="na">Name=</span><span class="s">&quot;Source Files&quot;</span> <span class="na">Filter=</span><span class="s">&quot;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx&quot;</span> 
+                    <span class="na">UniqueIdentifier=</span><span class="s">&quot;{4FC737F1-C7A5-4376-A066-2A32D752A2FF}&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;File</span> <span class="na">RelativePath=</span><span class="s">&quot;..\gen\common\interfaces\IFoo\IFoo.c&quot;</span><span class="nt">&gt;&lt;/File&gt;</span>
+  <span class="nt">&lt;File</span> <span class="na">RelativePath=</span><span class="s">&quot;..\gen\common\interfaces\IBar\IBar.c&quot;</span><span class="nt">&gt;&lt;/File&gt;</span>
+<span class="nt">&lt;/Filter&gt;</span>
+</code></pre></div>
+
+<p>This does not:</p>
+
+<div class="highlight"><pre><code class="xml"><span class="nt">&lt;Filter</span> <span class="na">Name=</span><span class="s">&quot;Source Files&quot;</span> <span class="na">Filter=</span><span class="s">&quot;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx&quot;</span> 
+                    <span class="na">UniqueIdentifier=</span><span class="s">&quot;{4FC737F1-C7A5-4376-A066-2A32D752A2FF}&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;File</span> <span class="na">RelativePath=</span><span class="s">&quot;../gen/common/interfaces/IFoo/IFoo.c&quot;</span><span class="nt">&gt;&lt;/File&gt;</span>
+  <span class="nt">&lt;File</span> <span class="na">RelativePath=</span><span class="s">&quot;../gen/common/interfaces/IBar/IBar.c&quot;</span><span class="nt">&gt;&lt;/File&gt;</span>
+<span class="nt">&lt;/Filter&gt;</span>
+</code></pre></div>
+
+<p>After a lot of fiddling with the generation code, even more Google searches and reading, progress equaled exactly 0.</p>
+
+<p>Turns out, VS parses the relative paths of the files in the project and attempts to extract the basename (the last element of the full pathname). When the paths are defined with &#39;/&#39; as a separator, VS can find the files, open them in the editor and compile them, but it cannot determine the correct basename so it passes the complete relative pathname (with an .obj extension) as a parameter to the linker. Kaboom!</p>
+
+<p>This type of inconsistent software behaviour consumes something like 70% of my time.</p>
+
+<p>What solved the riddle was a game of spot-the-difference between a manually created project file and the generated equivalent.</p>
+
+<p>That took care of the individual projects and allowed project dependencies but there was one more annoying effect:
+F6 (or ctrl-B) did not work.</p>
+
+<h3>The tale of the upward leaning letters</h3>
+
+<p>The .sln file is a prime example of a fascination with GUIDs that has gone a bit too far.
+The section that defines which projects to include when building a solution looks like this:</p>
+
+<div class="highlight"><pre><code class="xml">GlobalSection(ProjectConfigurationPlatforms) = postSolution
+  {fdd7a441-7a54-4ead-b8d9-4f23c2ad89b7}.Debug|Win32.ActiveCfg = Debug|Win32
+  {fdd7a441-7a54-4ead-b8d9-4f23c2ad89b7}.Debug|Win32.Build.0 = Debug|Win32
+EndGlobalSection
+</code></pre></div>
+
+<p>The second line is what is added when the check-box is ticked in the build configuration dialog. Only the above snippet will not work.The one that works is:</p>
+
+<div class="highlight"><pre><code class="xml">  GlobalSection(ProjectConfigurationPlatforms) = postSolution
+  {fdd7a441-7a54-4ead-b8d9-4f23c2ad89b7}.Debug|Win32.ActiveCfg = Debug|Win32
+  {FDD7A441-7A54-4EAD-B8D9-4F23C2AD89B7}.Debug|Win32.Build.0 = Debug|Win32
+EndGlobalSection
+</code></pre></div>
+
+<p>Yep, it doens&#39;t matter if the GUIDs match perfectly and the project files are loaded normally. The only way the build configuration is loaded correctly is if the letters in the GUIDs are upper case. Nowhere else in the .sln file is that necessary.</p>
+
+<p>To make matters worse Visual Studio will silently remove all Build.0 entries it cannot match to projects and rewrite the .sln on exit.</p>
+
+<h3>The tale of explicit object destinations</h3>
+
+<p>One more possible stumbling block when generating Visual C/C++ projects is the definition of the object file name.
+The compiler settings translate to:</p>
+
+<div class="highlight"><pre><code class="xml"><span class="nt">&lt;Tool</span> <span class="na">Name=</span><span class="s">&quot;VCCLCompilerTool&quot;</span> <span class="na">Optimization=</span><span class="s">&quot;0&quot;</span> <span class="na">MinimalRebuild=</span><span class="s">&quot;true&quot;</span> 
+            <span class="na">BasicRuntimeChecks=</span><span class="s">&quot;3&quot;</span> <span class="na">RuntimeLibrary=</span><span class="s">&quot;3&quot;</span>  <span class="na">ObjectFile=</span><span class="s">&quot;$(IntDir)/OBJS/&quot;</span><span class="nt">/&gt;</span>
+</code></pre></div>
+
+<p>That trailing &#39;/&#39; in the value of ObjectFile is important. If you leave it out the compiler uses the same .obj name for every .c file and you end up with the binary for a single C file as your library.</p>
+
+<p>Those were the three biggest time wasters while trying to figure out how to create Visual Studio solutions programmatically. For those of you considering this exercise on your own keep the command line reference for the <a href="http://msdn.microsoft.com/en-us/library/19z1t1wy%28v=VS.90%29.aspx">compiler</a>, the <a href="http://msdn.microsoft.com/en-us/library/y0zzbyt4%28v=VS.90%29.aspx">linker</a> and <a href="http://msdn.microsoft.com/en-us/library/7ykb2k5f%28v=VS.90%29.aspx">librarian</a> handy and skim once the <a href="http://msdn.microsoft.com/en-us/library/2208a1f2%28v=VS.90%29.aspx">XML Schema</a> for VC project files.</p>
+
+<p>And probably the most important tip is to figure out how the various options translate from Visual Studio dialogs into command line arguments for the compiler and the linker. 
+<hr/>
+<sup>1</sup> 
+Visual Studio is considered among the IDE best of breed and the one and only choice really when dealing with .NET managed code or Windows APIs. It&#39;s also a beast, in parts slow (adding references or starting unit tests anyone?), in parts unwieldy, memory hungry and with really crappy source control integration (even with TFS).</p>
+
+<p>Granted, each VS version improves on these painful issues and the move to managed code for the suite will prove a boon. Also since I haven&#39;t yet put 2010 into production use I can&#39;t really pass judgment on how far the improvements have come.</p>
+
+<p>I am not a friend of IDEs (my commenting on Eclipse runs along the same lines - I&#39;ve just <del>suffered</del> worked longer with VS) and I will go a long way to avoid adding one to my workflow. Mostly due to the difficulties one meets when trying to marry continuous integration and TDD with IDE workflows and the absolute nightmare of handling a multi-languange, multi-platform project. </p>
+
+<p>Some things cannot be avoided though and when working in a team as the tools/test/automation geek you can&#39;t really come out and say &quot;Visual Studio is out of the question because I don&#39;t like it&quot;. If they are good professionals they&#39;ll just throw the killer argument in the fray: &quot;but how are we going to debug the code?&quot;, otherwise you will have a religious flame-war in your hands.</p>
+
+</div>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

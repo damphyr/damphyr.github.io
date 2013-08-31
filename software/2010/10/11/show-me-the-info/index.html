@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>Show me the info!</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>Show me the info!</h1>
+<p class="meta">11 Oct 2010</p>
+
+<div class="post">
+<p>One of the crucial advantages of continuous integration is the quick turnaround times when builds or tests fail.
+To facilitate this, a good CI system needs to get the relevant information into the heads of the developers as fast as possible.
+To this effect email and RSS have been the traditional mediums. </p>
+
+<p>Email is good for providing data to localize the failure, such as the part of the build log that contains the error messages but very quickly gets filtered into a sub-folder and lies unchecked for too long. 
+It is also easy to generate a flood of email notifications that closely resemble spam and often are treated as such. 
+In many of my projects email notification only worked as long as someone monitored the notifications and alerted the rest of the team. A secondary result of such a process is that the build ends up owned by the monitor and not the whole team. 
+Team members not immediately affected, usability engineers and project managers spring immediately to mind, are usually left out of the loop.</p>
+
+<p>RSS notification is faster than email only if the reader is configured accordingly. It suffers from the same overload and negligence issues as email and sometimes requires additional software (on Windows in particular) while it is not as widely used or accepted.</p>
+
+<p>Both methods require effort on the part of the developer. Effort to react on the notification and parse the information.</p>
+
+<p>For effortless, near immediate conveyance of information, an information radiator provides us with a better solution.
+As defined by <a href="http://alistair.cockburn.us/Information+radiator">Alistair Cockburn</a>:
+&quot;An information radiator displays information in a place where passersby can see it. With information radiators, the passersby don&#39;t need to ask questions; the information simply hits them as they pass.
+Two characteristics are key to a good information radiator. The first is that the information changes over time. This makes it worth a person&#39;s while to look at the display... The other characteristic is that it takes very little energy to view the display.&quot; </p>
+
+<p>Placed appropriately, somewhere within line of sight of as many team members as possible a radiator maximizes the effectiveness of information transmission and above all does not discriminate between roles - everyone is privy and consequently responsible for the information on display.</p>
+
+<p>A side-effect of the radiator&#39;s primary raison d&#39;etre of conveying information is that it generates interest in the project. Any passerby is &quot;irradiated&quot; and it is very common for team members to be questioned directly on the information presented. The radiator becomes a &quot;conversation piece&quot;.</p>
+
+<p>There is <a href="http://www.infoq.com/news/2009/02/Low-Tech-Information-Radiators">discussion</a> on the merits of low-tech vs. high-tech radiators (e.g. whiteboard vs. wide-screen) but as a self-respecting geek and gadget aficionado I lean towards the high-tech solutions.</p>
+
+<p>Currently my team employs a wide-screen LCD TV hooked up to a decommissioned laptop running a browser full screen. The radiator software is a <a href="http://gist.github.com/628059">miniscule sinatra</a> application whose main code is:
+<script src="https://gist.github.com/628059.js?file=radiator.rb"> </script></p>
+
+<p>In this design the plug-ins are a combination of a ruby class responsible for assembling and a javascript function for displaying information (although out of convenience all javascript is bundled in one file). </p>
+
+<p>Purely out of a desire to experiment with javascript and HTML5 features the display is drawn on a &lt;canvas&gt; element. In the same manner instead of a canvas element the js functions can manipulate a div element and produce HTML.</p>
+
+<p>Surprisingly this results in a very simple and flexible way of quickly presenting information: the ruby class collects the information and constructs a call to the javascript function (the value returned by the call to drawing_function) manipulating the data until they are ready for consumption and only a <a href="http://gist.github.com/628059#file_drawing_methods.js">few lines</a> of javascript are necessary to draw the information on canvas.
+All javascript functions use setTimeout to reload the same page and the Sinatra app cycles through the available &quot;screens&quot;.</p>
+
+<p>The relatively limited 2D drawing functions are more than enough for simple status display. Some examples:</p>
+
+<p>Display the status of the project builds (grey means running!)</p>
+
+<p><img src="/images/build_info.png" alt="build info display"></p>
+
+<p>Display the number of tasks for the current iteration</p>
+
+<p><img src="/images/issue_info.png" alt="issue info display"></p>
+
+<p>This radiator has an additional advantage: It can be used by a distributed development team. All you need is a browser and the address of the radiator&#39;s server.</p>
+
+</div>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>
