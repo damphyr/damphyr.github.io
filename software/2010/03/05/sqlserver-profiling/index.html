@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>SQLServer profiling</title>
+        <meta name="viewport" content="width=device-width">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>SQLServer profiling</h1>
+<p class="meta">05 Mar 2010</p>
+
+<div class="post">
+<p>I&#39;ve been trying to track down a deadlock problem that has been plaguing our system for quite a while now.
+To this end we&#39;ve run a trace on the production server (on the events to track and how to analyze them read &quot;this&quot;:http://www.simple-talk.com/sql/learn-sql-server/how-to-track-down-deadlocks-using-sql-server-2005-profiler/ ). Unfortunately, I ended up with 386 trace files.
+Loading them in SQLProfiler is a sure path to RSI. Thankfully google is your friend and can find everything in MS&#39;s knowledge base :).
+This &quot;article&quot;:http://support.microsoft.com/kb/270599 describes how to programmatically load trace files into trace tables. It&#39;s for SQLServer 2000, but the relevant SQL still works on SQLServer 2008.</p>
+
+<p>In short, I created a new database (Traces) and run the following query:
+<pre>
+USE Traces
+GO
+SELECT * INTO trace<em>table FROM ::fn</em>trace<em>gettable(&#39;c:\trace</em>file.trc&#39;,default)
+</pre>
+This will create the file trace_table and load <em>all</em> the trace files (that&#39;s what the default in the function call does).
+It took quite a while, but at the end it was a lot better than hitting enter 386 times in SQLProfiler (and that every time I tried to filter events)</p>
+
+</div>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>
