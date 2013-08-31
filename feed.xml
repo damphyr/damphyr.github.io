@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ampelofilosofies</title>
+    <description>Random comments on random subjects in random language</description>
+    <link>http://www.ampelofilosofies.gr</link>
+    <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
+    
+      <item>
+        <title>Back on the saddle</title>
+        <description>&lt;p&gt;Man it&amp;#39;s been a long time!&lt;/p&gt;
+
+&lt;p&gt;It&amp;#39;s been over a year since I published anything on this blog. And it&amp;#39;s been a busy year, an upside-down year, a year of upheaval.&lt;/p&gt;
+
+&lt;p&gt;First of all Joyent decided to terminate it&amp;#39;s VPS hosting in favour of their cloud offerings, thus switching off all textdrive remnants.
+They couldn&amp;#39;t have chosen a worse time for it. With preparations for EuRuKo 2013 in full swing there was simply not enough time to take care of moving.&lt;/p&gt;
+
+&lt;p&gt;So I left it until the servers were turned off. And thus ampelofilosofies disappeared from the net.&lt;/p&gt;
+
+&lt;p&gt;Time to remedy that. After a well earned holiday I get to sit down and redo the blog. Way back in 2005 the third incarnation of this blog (it&amp;#39;s like Doctor Who, it keeps coming back in different forms since 1996) was a static site generated from  HTML and Textile sources and a bunch of home brewed ruby scripts. Back then I was convinced it was the best way to manage my content: text based, version controlled and easy to transform.&lt;/p&gt;
+
+&lt;p&gt;The &lt;a href=&quot;/software/2009-10-05-putting-it-back-together&quot;&gt;4th incarnation&lt;/a&gt; was a Radiant based site. At the time it was easy to setup, there was a wealth of plugins that allowed things like image galleries, comments and attachements so it seemed like a good idea. And I switched from textile to markdown.&lt;/p&gt;
+
+&lt;p&gt;Fast forward 4 years (which seems to be the &amp;quot;reincarnation&amp;quot; time for some reason) and that &amp;quot;good&amp;quot; idea proved to be a big impediment in getting the site back up in the limited free time available. The venerable Radiant installation that was running on the hosted server was outdated, upgrading to the current version proved a huge chore, none of the plugins runs anymore and my content is locked in an sqlite3 database making extraction rather cumbersome.&lt;/p&gt;
+
+&lt;p&gt;This is not about bashing Radiant. It&amp;#39;s more about me not having the time to keep up with the updates in a viable way while having adopted Radiant quite early in it&amp;#39;s development cycle. The latest version has the upgrade process under wraps, but I&amp;#39;m left with an ancient codebase barely running on ruby 1.8.7.&lt;/p&gt;
+
+&lt;p&gt;I still prefer the generate-from-text-source approach. Luckily, since I have absolutely no inclination in resurrecting my ruby scripts (omg! I look at the ruby code I wrote in 2005 and I scoff at the naive stranger who thought it was good), Jekyll follows exactly the same philosophy - only it does things right.&lt;/p&gt;
+
+&lt;p&gt;It has been an enormous pleasure rescuing all the content from the clutches of sqlite3 and Jekyll has proven a joy to work with.&lt;/p&gt;
+
+&lt;p&gt;The most important thing in the migration from Radiant to Jekyll has been maintaining the permalinks. Analytics show that there are some poor souls visiting and linking to a few of my articles (&lt;a href=&quot;/2010/05/20/rumblings/things-you-should-know-while-dating-a-computer-programmer&quot;&gt;Things you should know while dating a computer programmer&lt;/a&gt; being the most popular for some reason) so it would be bad form to change the links. Bad enough that they have been offline for so long.&lt;/p&gt;
+
+&lt;p&gt;Thankfully Jekyll makes it very easy to change the default permalink scheme. So in the coming days I will complete the migration of the content, rework the appearance of the site, activate RSS and comments. After that there&amp;#39;s a few articles that need publishing. Like I said, it has been a long, busy and above all interesting year.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 30 Aug 2013 01:08:43 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/rumblings/2013/08/30/back-on-the-saddle</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/rumblings/2013/08/30/back-on-the-saddle</guid>
+      </item>
+    
+      <item>
+        <title>Η Ευρώπη και η σοβαρή σάχλα</title>
+        <description>&lt;p&gt;Είδαμε και τη Eurovision φέτος.&lt;/p&gt;
+
+&lt;p&gt;Είναι μια από εκείνες τις βασανιστικές εμπειρίες όπου βομβαρδίζεσαι διαδοχικά από οδυνηρά ερεθίσματα που προσβάλουν την αισθητική και τη νοημοσύνη σου στο βαθμό που η μοναδική διέξοδος είναι ο σαρκασμός και το καγχαστό γέλιο μέχρι δακρύων.&lt;/p&gt;
+
+&lt;p&gt;Φυσικά μόνο με παρέα έτσι; Γιατί το να παρακολουθεί κανείς αυτό το έκτρωμα μόνος είναι τραγωδία. Από την άλλη κάποια πράγματα μου έκαναν εντύπωση:&lt;/p&gt;
+
+&lt;p&gt;Η διοργάνωση φέτος έγινε στο Μπακού, την πρωτεύουσα του Αζερμπαϊτζάν, μια χώρα με ένα ποινικό μητρώο για πράξεις κατά των ανθρωπίνων δικαιωμάτων και της ελευθερίας της έκφρασης που πάει πίσω μέχρι και τα χρόνια της τσαρικής Ρωσίας. Η γερμανική αναμετάδοση δε σταμάτησε να το σχολιάζει κατά τη διάρκεια της εκπομπής.&lt;/p&gt;
+
+&lt;p&gt;Οι Νορβηγοί βυθισμένοι μέχρι τα μπούνια σε μια δίκη αντιπαράθεση του άκρατου μίσους με την αξιοπρέπεια και το σεβασμό στον άνθρωπο, &lt;a href=&quot;http://www.youtube.com/watch?v=QdHnenxPPnc&quot;&gt;στέλνουν&lt;/a&gt; έναν ιρανικής καταγωγής, ανοιχτά ομοφυλόφιλο νεαρό στην σύνορα των μουλάδων. Ο οποίος παρεπιπτόντως μπορεί και &lt;a href=&quot;http://www.youtube.com/watch?feature=player_detailpage&amp;amp;v=kIGeUVAuOmM#t=659s&quot;&gt;στέκεται σοβαρότατος και συγκροτημένος&lt;/a&gt; (βάλτε υπότιτλους). Τι κάνουμε η υπόλοιπη Ευρώπη; Τον αφήνουμε τελευταίο.&lt;/p&gt;
+
+&lt;p&gt;Αλλά δεν έχει σημασία γιατί τα χέρια νίυονται με την &amp;quot;μεγαλύτερη συγκομιδή πόντων&amp;quot; της μαροκινής καταγωγής Σουηδέζας. Έτσι δεν είναι; Θα μπορούσα - λέμε τώρα - να κάθομαι να κρατάω σημειώσεις με το ποιά χώρα έδωσε ποιούς πόντους που και να βγάλω μια βαθυστόχαστη και τελείως άκυρη ανάλυση για την ωριμότητα των ανά την Ευρώπη τηλεθεατών, αλλά εδώ μιλάμε για τη Eurovision, υπάρχουν και κάποια όρια.&lt;/p&gt;
+
+&lt;p&gt;Η Ψωροκώσταινα έστειλε τη &amp;quot;δικιά μας&amp;quot; Κυπραία (πάση θυσία να εξασφαλιστεί το 12άρι, δεν είναι καιροί για πειραματισμούς) να τραγουδήσει:&lt;/p&gt;
+
+&lt;p&gt;&amp;quot;You make me dance like a maniac, you make me want your aphrodisiac&amp;quot; κοινώς, &amp;quot;Ανοίξαμε και σας περιμένουμε, ελάτε να μας γ@#&amp;amp;$!τε&amp;quot;&lt;/p&gt;
+
+&lt;p&gt;Εγώ πάντως θα κρατήσω την εξαιρετική Ευρώπη της εποχής του διαδικτύου που στέλνει σε μια ισλαμική χώρα &lt;a href=&quot;http://www.youtube.com/watch?v=WKNRGc71hjc&quot;&gt;6 ορθόδοξες γιαγιούλες&lt;/a&gt; να μαζέψουν χρήματα για τον Ιερό Ναό του χωριού  τραγουδώντας &amp;quot;Party for Everybody&amp;quot;. Και τα καταφέρνουν! &lt;/p&gt;
+
+&lt;p&gt;Δεν ξέρω τι να σκεφτώ όταν κοιτάω τη Eurovision και βλέπω μια γιορτή της Ευρώπης που θέλουμε να έχουμε επενδυμένη με τόσο χάλια μουσική. &lt;/p&gt;
+
+&lt;p&gt;Τραγικομωδία!&lt;/p&gt;
+</description>
+        <pubDate>Sun, 27 May 2012 16:16:43 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/rumblings/2012/05/27/europe-serious-sillines</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/rumblings/2012/05/27/europe-serious-sillines</guid>
+      </item>
+    
+      <item>
+        <title>Ruby performance improvements on Windows</title>
+        <description>&lt;p&gt;Thanks to &lt;a href=&quot;http://twitter.com/#!/luislavena&quot;&gt;@luislavena&lt;/a&gt; I got wind of the &lt;a href=&quot;https://groups.google.com/forum/?fromgroups#!topic/thecodeshop/WVA4N2lJoM4&quot;&gt;1.9.3 TCS experimental build&lt;/a&gt;. The promise of faster File operations under Windows was too good to pass up.&lt;/p&gt;
+
+&lt;p&gt;My by now legendary ( ;) ) build system (see &lt;a href=&quot;/2011/08/09/script-performance/&quot;&gt;here&lt;/a&gt;, &lt;a href=&quot;/software/2011/06/08/rake-performance-check-the-mirror/&quot;&gt;here&lt;/a&gt;, &lt;a href=&quot;/software/2011/05/20/rake-performance-sh-im-working/&quot;&gt;here&lt;/a&gt; and &lt;a href=&quot;/software/2011/05/10/ruby-performance-what-a-difference-the-compiler-makes/&quot;&gt;here&lt;/a&gt; in reverse chronological order) is ideal as a realistic benchmark: It&amp;#39;s a production system that relies heavily on File operations, reading, writing files and manipulating paths by the thousands. On Windows!&lt;/p&gt;
+
+&lt;p&gt;And it has a rather large performance-measuring test suite.&lt;/p&gt;
+
+&lt;h3&gt;The environment&lt;/h3&gt;
+
+&lt;p&gt;Everything runs within a Win7 32bit virtual machine with 2 logical cores and 3Gb of RAM hosted on Win7 64Bit on a quad core Dell Latitude with 8Gb RAM and a 7200 rpm spinning disk. I&amp;#39;ve gone to great lengths to ensure that all tests run under the same conditions (no other processes but VMWare Player, laptop plugged in, sources on the same revision etc.).&lt;/p&gt;
+
+&lt;h3&gt;The tests&lt;/h3&gt;
+
+&lt;p&gt;As stated, the system currently runs on 1.9.2p290. I cloned the VM twice and installed &lt;a href=&quot;http://rubyinstaller.org/downloads/&quot;&gt;1.9.3p194&lt;/a&gt; on one and the &lt;a href=&quot;https://github.com/thecodeshop/ruby/wiki/Downloads&quot;&gt;tcs-ruby193&lt;em&gt;require&lt;/em&gt;fenix&lt;em&gt;gc&lt;/em&gt;hash_20120413-2&lt;/a&gt; binary on the other. I then run my gem install scripts so that I had freshly compiled gems for each installation.&lt;/p&gt;
+
+&lt;h3&gt;Results&lt;/h3&gt;
+
+&lt;p&gt;The Y axis is seconds (yes, that&amp;#39;s an almost half hour build right there - I&amp;#39;d hung my head in shame if it wasn&amp;#39;t really monumental)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/193_performance.png&quot;/&gt;&lt;/p&gt;
+
+&lt;p&gt;The performance improvement that 1.9.3 offers is excellent. Across the board the average improvement from 1.9.2 is 18.7%.
+This percentage is skewed by the long running builds that are unfortunately affected by the network (due to floating license servers) which might also explain the spike in task 13. For the short tasks that do only file manipulation, file I/O and data conversions the average improvement is over 40% (but with those tasks being short a good chunk is the improvement in require times).&lt;/p&gt;
+
+&lt;p&gt;Tasks 4, 10, 13 and 14 are big, full builds that probably trigger the garbage collector but I can&amp;#39;t say for sure without instrumenting the code. 13 and 14 are also dependent on the networked license server and thus there&amp;#39;s an additional factor of unreliability there (builds were ran nights to minimize the danger of the license server croaking, but then there&amp;#39;s a host of servers doing nightly builds as well)&lt;/p&gt;
+
+&lt;p&gt;The TCS ruby improves a further 9% on average over the 1.9.3 RubyInstaller but it fares worse on the big slow tasks that are most painful to my team.&lt;/p&gt;
+
+&lt;p&gt;My &amp;quot;require&amp;quot; benchmark is rake -T (task #1) and for that the absolute numbers are 10.11s for 1.9.2, 5.37s for 1.9.3 and 4.87s for TCS. Active Record continues to be the worst offender here but the new require logic makes things bearable.&lt;/p&gt;
+
+&lt;p&gt;Tasks 6 and 8 are IDE project creation tasks which means file generation using erubis templates with the content being FileList[] instances of manipulated pathnames. The TCS build blows everything out of the water here, being 20% faster than stock 1.9.3 which is in turn 20% faster then 1.9.2. That to me says one thing: &amp;quot;Please,please, &lt;strong&gt;please&lt;/strong&gt; merge the fenix patch into Ruby!&amp;quot;&lt;/p&gt;
+
+&lt;h3&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;If you &amp;#39;re still on 1.9.2 then you should switch to 1.9.3&lt;/strong&gt;. Performance is improved across the board.&lt;/p&gt;
+
+&lt;p&gt;I won&amp;#39;t yet jump on the TCS bandwagon because of the performance lag in the long tasks but I think that the fenix patch should be merged into Ruby main, the numbers are simply so much better.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 24 Apr 2012 16:16:43 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2012/04/24/ruby-performance-improvements-on-windows</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2012/04/24/ruby-performance-improvements-on-windows</guid>
+      </item>
+    
+      <item>
+        <title>Dealing with cruft</title>
+        <description>&lt;p&gt;Working to enhance a software team&amp;#39;s productivity is a never ending task with a very vague goal. &lt;/p&gt;
+
+&lt;p&gt;It looks very bad on any burndown chart, task-based productivity report or velocity factor if you look at it on an individual basis. &lt;/p&gt;
+
+&lt;p&gt;Jon Udell &lt;a href=&quot;http://blog.jonudell.net/2012/01/09/another-way-to-think-about-geeks-and-repetitive-tasks/&quot;&gt;posted an article&lt;/a&gt; with a sane viewpoint on the geek vs. others automation meme and I found the closing comment describes very nicely (part of) the role of a &amp;quot;productivity engineer&amp;quot;&lt;sup&gt;1&lt;/sup&gt;:&lt;/p&gt;
+
+&lt;p&gt;&amp;quot;&lt;em&gt;In this view of the world, tasks that involve data manipulation (as so many modern chores do) are undertaken by teams. There is an infinite supply of manual chores. Everybody tackles them. Ideally there is one member of the team I call the toolsmith. Working shoulder to shoulder with the team, the toolsmith spots an opportunity to automate some piece of the work, writes some code, deploys it, observes how it gets used (or doesn’t get used), assesses its impact (or lack of impact), and then iterates on the code. Meanwhile the toolsmith keeps working alongside the team, chipping away at the never-ending and always-evolving list of manual chores, looking for more opportunities to automate, and exploiting them in an incremental and collaborative way.&lt;/em&gt;&amp;quot;&lt;/p&gt;
+
+&lt;p&gt;There comes a point where the collection of automation utilities becomes cumbersome. Since currently I am deep in build systems and rake I see the same effect in the number of tasks that become available as we add automation steps and combinations of steps targeted at different workflows within our project (i.e. flashing the target when developing, debugging or testing).&lt;/p&gt;
+
+&lt;p&gt;In some cases you start thinking about &lt;del&gt;object&lt;/del&gt;task hierarchies.
+In other cases things are superseded by newer functionality or the developers adopt a different/quicker/more productive workflow along the iterative process that is a software project.&lt;/p&gt;
+
+&lt;p&gt;In my own mind the system code just grows old. It can grow old with me - which just means I can read the code without retching and it will continue to work as wished - or grow old without me, in which case it becomes a grumpy, needy old man with a grudge and a cane to hit me with whenever I want to change something.&lt;/p&gt;
+
+&lt;p&gt;So how do you grow old in health and good spirits? You need exercise, regular checkups and some preventive medicine.&lt;/p&gt;
+
+&lt;h3&gt;As an example...&lt;/h3&gt;
+
+&lt;p&gt;Imagine a large build system built with rake. Something to the tune of ~8K lines of Ruby, with a lot of tasks controlling every aspect of software development from compiling and linking to document generation, documentation, release mechanics, metrics collection and automated testing.&lt;/p&gt;
+
+&lt;p&gt;Although not the traditional software example, such a system exhibits a compressed timeline of the code lifecycle especially where the build up of cruft and the speed with which parts of the code become obsolete are concerned so it serves really well for this article. And no it&amp;#39;s not just because that&amp;#39;s all I have been doing lately and I have nothing more interesting to talk about&lt;sup&gt;2&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Exercise&lt;/h3&gt;
+
+&lt;p&gt;Code that does not run grows old really fast. The easiest way to keep up is to have tests. Without them large chunks of code fall into obscurity, things start breaking in tasks of &amp;quot;secondary importance&amp;quot; (i.e. documentation generation vs. system build). &lt;/p&gt;
+
+&lt;p&gt;100% test coverage is an ultimately useless effort but you do need enough so that most of your code gets exercised and you have to test all of the entry points to the system.&lt;/p&gt;
+
+&lt;h3&gt;Regular checkups&lt;/h3&gt;
+
+&lt;p&gt;So you have collected all this code but do you actually need it? &lt;/p&gt;
+
+&lt;p&gt;Collect usage metrics - which tasks are called, how often etc. There is a misconception that this needs to be done automatically and it sure is an efficient way but going around and interviewing your users/developers also works. It depends on your system.&lt;/p&gt;
+
+&lt;p&gt;Sometimes interviewing actually works better as you discover or point out new ways of doing things. Actual human communication goes a long way towards assuring that your software actually does what your users want it to do, which I guess is the whole point behind agile methodologies.&lt;/p&gt;
+
+&lt;p&gt;Visualization techniques are also very useful in uncovering forgotten corners, complex dependencies or optimization opportunities. Having a graph of tasks and dependencies works much better than staring at several pages of code. Then you can go around, paper in hand, and literally point and ask &amp;quot;do you actually use this?&amp;quot;&lt;sup&gt;3&lt;/sup&gt;&lt;/p&gt;
+
+&lt;h3&gt;Preventive medicine&lt;/h3&gt;
+
+&lt;p&gt;Sometimes your checkups will uncover things that have been left to rot. The only way to deal with them is to take a scalpel to them.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Do not be afraid to throw away code!&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Armed with the information your checkups provide, together with the tests, you should be confident enough to trim down the fat and keep that old code lean and healthy.&lt;/p&gt;
+
+&lt;h3&gt;Nothing new under the sun&lt;/h3&gt;
+
+&lt;p&gt;When expressing a metaphor on caring about and for your code I realize belatedly that I&amp;#39;m not saying anything about software development that has not been included in iterative, test driven - agile if you want - development practices. &lt;/p&gt;
+
+&lt;p&gt;But I&amp;#39;m talking about automation and development infrastructure, tools and scripts! The quick and dirty hacks you throw together so that you can then get on with the real work. &lt;/p&gt;
+
+&lt;p&gt;You&amp;#39;re going to have a &lt;em&gt;very&lt;/em&gt; grumpy old man if you don&amp;#39;t treat your development environment as it should be treated: just like another &lt;a href=&quot;/software/2011/02/04/managing-your-development-environment/&quot;&gt;software project&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt;I really hate the term. I wish I could find something that sounds cooler and conveys the role of a software engineer that enables his/her team to work faster, with greater efficiency and less hassle, bringing enjoyment into the workplace. Productivity engineer just conjures the image of a suited consultant gaming the numbers. Toolsmith is too narrow a term as you tend to work on process as much as tools.&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;2&lt;/sup&gt;And I take offence at even the suggestion that such a system is not interesting/cutting edge/insert-cool-term-here.&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;3&lt;/sup&gt;In Ruby the graph gem is a very useful resource and for rake systems that use less crazy dynamic task creation than mine it comes with a script to plot a graph of tasks off the shelf.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 18 Apr 2012 16:16:43 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2012/04/18/dealing-with-cruft</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2012/04/18/dealing-with-cruft</guid>
+      </item>
+    
+      <item>
+        <title>Poor man's test parallelism</title>
+        <description>&lt;h3&gt;Problematic luxury&lt;/h3&gt;
+
+&lt;p&gt;Recently in our current project we ran up against a luxury problem: The number of our tests has grown so much that it became unfeasible to let them run on a per-commit basis.&lt;/p&gt;
+
+&lt;p&gt;There are also so called &amp;#39;long running&amp;#39; tests that test processes with a standard duration of several minutes&lt;sup&gt;1&lt;/sup&gt;. We actually want to run all tests on all builds but we were faced with a few hurdles.&lt;/p&gt;
+
+&lt;p&gt;The build used for the tests is &lt;strong&gt;big&lt;/strong&gt; - meaning it contains the whole system and thus has the slowest build times. Running the tests in the same build job only exasperates the problem blowing the self-imposed 10 minute limit sky high.&lt;/p&gt;
+
+&lt;p&gt;Currently the &amp;quot;monster&amp;quot; build (all platforms, all components) clocks in at ~30 minutes under high load or ~12 minutes if it gets the build server to itself&lt;sup&gt;2&lt;/sup&gt;. The build required for tests comes second at ~8 minutes.&lt;/p&gt;
+
+&lt;h3&gt;Throw hardware at the problem&lt;/h3&gt;
+
+&lt;p&gt;The conventional approach fits our problem well: Split the tests in separate test suites and throw hardware at the problem. Since we are using VMs for our development environment it is actually very easy to instantiate a VM for every test suite and let the testing commence in parallel (for other reasons we cannot run test suites in parallel in the same VM).&lt;/p&gt;
+
+&lt;p&gt;Where it gets a bit complicated is coordinating the builds and the tests. We use &lt;a href=&quot;http://jenkins-ci.org/&quot;&gt;Jenkins&lt;/a&gt; for build management and 
+it is feasible to create a master-slave configuration feeding the build package to the test jobs but it still strikes me as unnecessarily complicated&lt;sup&gt;3&lt;/sup&gt;. &lt;/p&gt;
+
+&lt;p&gt;It also means that the data on the dependencies between the different build jobs is distributed in the Jenkins instances. I have a particular aversion to this type of configuration: ideally any job management system should be able to function without built-in knowledge of it&amp;#39;s place in the system. It just needs to know where to go for the information and we get to manage it centrally&lt;sup&gt;4&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;h3&gt;What do you actually want?&lt;/h3&gt;
+
+&lt;p&gt;In order to kick off the tests all we need is a URL pointing to the build package and a bit of metadata, in this case the revision the build corresponds to.&lt;/p&gt;
+
+&lt;p&gt;Once the tests are executed we need to know the status of the tests for the revision and a URL pointing to the detailed logs.&lt;/p&gt;
+
+&lt;p&gt;Given that we want to test all change sets and that test suites have greatly varying execution times we want to know as soon as possible which revision breaks a test suite...per test suite.&lt;/p&gt;
+
+&lt;h3&gt;Please join the queue in an orderly fashion&lt;/h3&gt;
+
+&lt;p&gt;So we want to distribute one build to N testers without knowing when they are going to be available to process it. Sounds like a background job thingy doesn&amp;#39;t it?&lt;/p&gt;
+
+&lt;p&gt;Setup a queue for each tester, publish the build information (URL &amp;amp; revision) and let the tester grab the build and do it&amp;#39;s thing. Fire and forget!&lt;/p&gt;
+
+&lt;p&gt;This type of job processing is bread and butter for web applications and there&amp;#39;s a lot of libraries/systems that do this: &lt;a href=&quot;https://github.com/defunkt/resque&quot;&gt;resque&lt;/a&gt;, &lt;a href=&quot;http://agilewebdevelopment.com/plugins/bj&quot;&gt;BackgroundJob&lt;/a&gt;, &lt;a href=&quot;https://github.com/tobi/delayed_job&quot;&gt;DelayedJob&lt;/a&gt; etc.&lt;/p&gt;
+
+&lt;p&gt;Still too complicated. You need Redis, or Rails, or some SQL database or you&amp;#39;re tied to a POSIX OS&lt;sup&gt;5&lt;/sup&gt;. You get all kinds of goodies like priority scheduling, persistence and monitoring (Resque is my particular favorite with the nifty web GUI) but honestly this is the best case of YAGNI I have yet encountered.&lt;/p&gt;
+
+&lt;h3&gt;Not created here&lt;/h3&gt;
+
+&lt;p&gt;Why can&amp;#39;t I find something simple, with minimal dependencies that will run everywhere? Probably because it takes less time to built it than to look for it! &lt;/p&gt;
+
+&lt;p&gt;Take &lt;a href=&quot;http://www.sinatrarb.com/&quot;&gt;Sinatra&lt;/a&gt; and Ruby&amp;#39;s built-in Queue class, sprinkle some JSON and you get &lt;a href=&quot;https://github.com/damphyr/rplex&quot;&gt;rplex&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;How it works&lt;/h3&gt;
+
+&lt;p&gt;The rplex service waits. In Jenkins at the end of the build we simple post the data to rplex.&lt;/p&gt;
+
+&lt;p&gt;On the tester side an endless loop (implemented in Rplex::Processor) runs the tests whenever a build appears.&lt;/p&gt;
+
+&lt;p&gt;How do we get the test results? Same concept: At the end of the test run we post the data back to rplex, this time targeting a single rplex client. That process just updates our information radiator.&lt;/p&gt;
+
+&lt;h3&gt;Simple complexity&lt;/h3&gt;
+
+&lt;p&gt;We have a whole bunch of rplex clients now but nowhere near the maintenance overhead of Jenkins jobs. The process looks like this:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Start a VM&lt;/li&gt;
+&lt;li&gt;Start the rake task with the Rplex::Processor&lt;/li&gt;
+&lt;li&gt;Do something else&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Fiddling with the data format allows us to do everything we need without touching rplex. If we get a huge backlog for slow test suites we simply restart rplex and empty the queues&lt;sup&gt;6&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;p&gt;Come to think of it, I could replace Jenkins completely using rplex as the core...hmmmm!&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; We&amp;#39;re talking integration and system tests here. Where unit tests are concerned we exert draconian control to ensure fast build times.&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;2&lt;/sup&gt; Network based license schemes for compilers suck big time!&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;3&lt;/sup&gt; Some initial problems with setting up master-slave in Jenkins with our firewall and network zone configuration did not help.&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;4&lt;/sup&gt; Which means we get to version control a single source of configuration and handle redundancy by cloning instances.&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;5&lt;/sup&gt; Oh Windows! Thou art the bane of my developer life!&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;6&lt;/sup&gt; While in theory you would not want to leave any build untested when development is in full swing and you get 5 or 10 patches in the space of 5 minutes - just because somebody was careless - you only care about the last one.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 03 Jan 2012 15:16:43 +0100</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2012/01/03/poor-mans-test-parallelism</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2012/01/03/poor-mans-test-parallelism</guid>
+      </item>
+    
+      <item>
+        <title>Επιλεκτικότητα</title>
+        <description>&lt;p&gt;Μερικές φορές (...τις νύχτες περνάς σε κλειστά club της συμφοράς - συγχωρήστε με, αλλά είναι καταναγκαστικό το συμπλήρωμα του στίχου).
+Αλλά παρεκλίνω πριν καν αρχίσω. Θα είναι όμως δύσκολο να βγει νόημα από το παρακάτω παραλλήρημα.&lt;/p&gt;
+
+&lt;p&gt;Η &amp;quot;κρίση&amp;quot; - και γιατί την βάζεις θα μου πεις σε εισαγωγικά; Θα τη βάλω σε εισαγωγικά γιατί όταν μιλάει κανείς για &amp;quot;κρίση&amp;quot; περιορίζεται στην οικονομική της πλευρά, ένα κομμάτι που ολοένα και περισσότερο μου μοιάζει φτιαχτό, ψευδές, ένας αντιπερισπασμός απέναντι στην γενική πραγματικότητα.&lt;/p&gt;
+
+&lt;p&gt;Η πραγματική κρίση, αυτή της έλλειψης ιδεών, του ατομικισμού, της κοινωνικής αποσύνθεσης, της παντελούς έλλειψης παιδείας, η κρίση της κοινής λογικής δεν μας προέκυψε ξαφνικά. Βλέπουμε το αναπόφευκτο αποτέλεσμα μιας μακροχρόνιας πορείας απαξίωσης και ωχαδερφισμού. Και όταν για τη γενιά μου και τους νεότερους (δλδ το 70% του πληθυσμού) αυτή η κατάσταση ήταν φυσιολογική δεν μπορώ να μιλάω για κρίση. Εξού και τα εισαγωγικά.&lt;/p&gt;
+
+&lt;p&gt;Οι σπασμωδικές ενέργειες του κατεστημένου αναβιώνουν και ενισχύουν τις συμπεριφορές του παρελθόντος και με τη σειρά τους ενισχύουν τη βιαιότητα των αντιδράσεων σε έναν ατέρμονο φαύλο κύκλο.
+Ναι, αναφέρομαι στις συλλήψεις νεαρών από την αστυνομία, τον ξυλοδαρμό τους &lt;em&gt;μετά&lt;/em&gt; τη σύλληψη και την κατασκευή - γιατί δεν μπορεί να χαρακτηριστεί αλλιώς - κακουργηματικού κατηγορητηρίου.&lt;/p&gt;
+
+&lt;p&gt;Είναι αυτό το μεικτό συναίσθημα οργής και έκπληξης μπροστά στην ανείπωτη αμάθεια και βλακεία. Αυτό που με κάνει να φωνάζω &amp;quot;μα καλά ρε όρνια, πότε σε ολόκληρη την ιστορία της ανθρωπότητας έχει επιφέρει η καταστολή τίποτα περισσότερο από βραχυπρόθεσμα αποτελέσματα; Πόσο Μ****ΚΕΣ πρέπει να είστε ώστε να μη βλέπετε ότι το μοναδικό αποτέλεσμα είναι η υπονόμευση του μέλλοντος όταν χώνετε 15χρονα στη φυλακή με το έτσι θέλω. Το δικό σου το ζαγάρι δλδ. είναι προστατευμένο;&amp;quot;&lt;/p&gt;
+
+&lt;p&gt;Αλλά εξακολουθώ να παρεκλίνω. Παρακολουθώ τις εξελίξεις, μεταβιβάζω ειδήσεις, σχηματίζω γνώμη, όλα μέσα από ένα κύκλο ανθρώπων και μέσων προσεκτικά επιλεγμένων.
+Μια πολύ λεπτη ισορροπία ανάμεσα στην σωστή ενημέρωση, την προστασία (ψυχολογική και ψυχική), την απομόνωση και την εθελοτυφλία. &lt;/p&gt;
+
+&lt;p&gt;Είναι πολύ εύκολο να κρυφτείς στο κύκλο των γνωστών και φίλων, των ιδεολογικών συνοδοιπόρων. Κάπως έτσι κόντεψε να μου ξεφύγει το γεγονός ότι υπάρχουν άνθρωποι που δυσανασχετούν για το #freemenacius και την έκφραση κοινής λογικής που συνοδεύει την αδρανειακή αντίδραση ενός πανικόβλητου κατεστημένου.&lt;/p&gt;
+
+&lt;p&gt;Ειλικρινά, δεν θέλω να ασχοληθώ. Προτιμώ, σαφώς προτιμώ, τη θετική αποδοχή ομοϊδεατών. Προτιμώ να κουνάω το κεφάλι καταφατικά, να μη συναντώ αντίλογο. Είναι πιο εύκολο. Ακόμα πιο εύκολο είναι να τα κόψω τελείως τα νέα, να απαλλαγώ επιτέλους από αυτή τη μαυρίλα, την κατάθλιψη και την απαισιοδοξία. Η κοινή λογική όμως λέει ότι αυτό είναι στρουθοκαμηλισμός.&lt;/p&gt;
+
+&lt;p&gt;Και στο τέλος η παράνοια και ο αντίλογος θα εισβάλλουν και στον μικρό κύκλο προστασίας που τόσο προσεκτικά έχω κτίσει. Check mate.&lt;/p&gt;
+
+&lt;p&gt;Εσύ που πιστεύεις ότι καλά τους κάνανε, εσύ που ζεις με το megamou και θα μου παπαγαλίσεις την τελευταία έκδοση του τηλεοπτικού λάβδανου, βγες άνθρωπε μου από το καβούκι σου. Κοίτα γύρω σου, μπορεί εσένα να μη σε αγγίζει ακόμα, αλλά ρε φίλε, θα σε φτάσει κι εσένα, όποιος κι αν είσαι.&lt;/p&gt;
+
+&lt;p&gt;Το ξέρω ότι φοβάσαι. Είναι φυσιολογικό όταν υπάρχει τέτοια ανισότητα. Φοβάσαι όσο είσαι από πάνω, φοβάσαι να μιλήσεις μήπως και χάσεις τα προνόμια. Φοβάσαι μήπως βρεθείς από κάτω.&lt;/p&gt;
+
+&lt;p&gt;Ω, το ντύνεις με &lt;a href=&quot;http://news.radiobubble.gr/2011/12/blog-post_08.html?spref=tw&quot;&gt;&amp;quot;συμβαίνουν αυτά&amp;quot;&lt;/a&gt;, με &amp;quot;δε πειράζει μωρέ&amp;quot;, με &amp;quot;αλβανούς&amp;quot; , με &amp;quot;ρώσους&amp;quot;,  με &amp;quot;αναρχικούς&amp;quot; μα δεν παύει να είναι φόβος. &lt;/p&gt;
+
+&lt;p&gt;Το ξέρω, γιατί είμαι κι εγώ σαν κι εσένα. Αλλά το ίδιο είναι και ο @menacius και τα παιδιά που ξενυχτάνε στη ΓΑΔΑ. Όλοι μας το ίδιο είμαστε και αν δε σηκώσεις το κεφάλι αύριο θα είσαι εσύ στη θέση τους...&lt;/p&gt;
+</description>
+        <pubDate>Fri, 09 Dec 2011 15:16:43 +0100</pubDate>
+        <link>http://www.ampelofilosofies.gr/rumblings/2011/12/09/epilektikotita</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/rumblings/2011/12/09/epilektikotita</guid>
+      </item>
+    
+      <item>
+        <title>Blogs vs Wikis</title>
+        <description>&lt;h3&gt;A little bit of background&lt;/h3&gt;
+
+&lt;p&gt;I&amp;#39;ve worked with a lot of teams over the years both on-site with customers and in-house with independent teams and one of the constants was the need for a persistent knowledge archive.&lt;/p&gt;
+
+&lt;p&gt;&amp;quot;persistent knowledge archive&amp;quot; is just a pompous term for a repository where the team can easily maintain draft documentation, document decisions that affect development and also maintain documentation that is not actually part of the product, like how to use the testing rig, how to setup the development environment etc.&lt;/p&gt;
+
+&lt;h3&gt;Single point of reference&lt;/h3&gt;
+
+&lt;p&gt;One of the first things I ever introduced &lt;sup&gt;1&lt;/sup&gt; in our team workflow was the use of a wiki for exactly that purpose. &lt;/p&gt;
+
+&lt;p&gt;The previous alternatives of mass emails and (&lt;em&gt;gasp&lt;/em&gt;) Word documents were just too transient or cumbersome. &lt;/p&gt;
+
+&lt;p&gt;There are several reasons for that, but the most important in my mind is that a wiki (and a blog) provides a single point of reference that is easy to edit and keep current and has a very easy learning curve. &lt;/p&gt;
+
+&lt;p&gt;When you get new team members you just point them to the URL and give a little speech about the project conventions and you&amp;#39;re done.&lt;/p&gt;
+
+&lt;h3&gt;Scope&lt;/h3&gt;
+
+&lt;p&gt;I&amp;#39;m going to narrow a bit the scope for this article in order to get my point across.&lt;/p&gt;
+
+&lt;p&gt;We&amp;#39;re talking about wikis vs. blogs as tools for team communication, information dissemination that demands the least amount of maintenance and ensures that the information persists and is accessible at any point in the future.&lt;/p&gt;
+
+&lt;p&gt;While I have for a long time advocated the use of wikis for my teams, recently I have substituted the wiki for a blog and this is an attempt to explain and discuss the pros and cons of this decision.&lt;/p&gt;
+
+&lt;p&gt;But first a couple of definitions&lt;/p&gt;
+
+&lt;h3&gt;Wiki&lt;/h3&gt;
+
+&lt;p&gt;Google &lt;a href=&quot;http://www.google.com/search?q=wiki+definition&quot;&gt;&amp;quot;wiki definition&amp;quot;&lt;/a&gt; and you get
+&lt;pre&gt;
+wi·ki /ˈwikē/
+Noun: A Web site developed collaboratively by a community of users, allowing any user to add and edit content.
+&lt;/pre&gt;
+I our scope the community is the team developing the software&lt;/p&gt;
+
+&lt;h3&gt;Blog&lt;/h3&gt;
+
+&lt;p&gt;Google &lt;a href=&quot;http://www.google.com/search?q=blog+definition&quot;&gt;&amp;quot;blog definition&amp;quot;&lt;/a&gt; and you&amp;#39;ll get 
+&lt;pre&gt;
+blog /blôg/
+Noun: A Web site on which an individual or group of users record opinions, information, etc. on a regular basis. 
+&lt;/pre&gt;
+Again in our scope the group of users is the team and everyone on the team can add and edit posts.&lt;/p&gt;
+
+&lt;h3&gt;Wiki vs. Blog&lt;/h3&gt;
+
+&lt;p&gt;Technically there is no substantial difference between a wiki and a blog in the scope we have just defined. Both are essentially content management systems that allow their users to create and edit content.&lt;/p&gt;
+
+&lt;p&gt;For both types there is software that provides versioning facilities, search, commenting, file uploads and notifications for new content. So, no difference there.&lt;/p&gt;
+
+&lt;p&gt;The experiment of substituting the wiki with a blog showed that there are small but significant differences on the usage uptake between the two tools.&lt;/p&gt;
+
+&lt;p&gt;My recent experience showed that a blog was more easily accepted and started seeing use by the team a lot faster than a wiki. There seemed to be more incentive in adding to the blog than in adding to the wiki.&lt;/p&gt;
+
+&lt;p&gt;Now the evidence is empirical and also there are significant differences between projects for there to be a definite verdict but the indications are nonetheless strong.&lt;/p&gt;
+
+&lt;p&gt;One reason for it might be that the blog format is by now very familiar to the overwhelming majority of software developers. Many of my colleagues maintain their own blogs and have no difficulties with the concept. &lt;/p&gt;
+
+&lt;p&gt;I find this hard to believe though. Most blog engines use text markup that originated with wikis (Markdown, Textile etc.) and as I already said there is hardly any difference in how content is created or updated.&lt;/p&gt;
+
+&lt;p&gt;I attribute the difference to the concept of content ownership: In a wiki a single page has no clear owner. It&amp;#39;s a collaborative effort by definition and that ever present edit button seems to scare some people off&lt;sup&gt;2&lt;/sup&gt;. Editing something someone else wrote feels I guess invasive.&lt;/p&gt;
+
+&lt;p&gt;In the blog the pattern of usage has a clear ownership attribute: the post is owned by whoever created it, any discussion about the content happens in the comments section and there is the implicit understanding that any changes needed to keep the content current will be undertaken by the content owner.&lt;/p&gt;
+
+&lt;p&gt;Now this is a purely psychological difference, since on both platforms everyone on the team can view and edit everything, but the empirical evidence suggests it is significant. &lt;/p&gt;
+
+&lt;p&gt;There is one usage for which wikis are undisputedly the better solution and that is for collaboratively developing the official project documentation but there the &amp;quot;ownership&amp;quot; of the content is explicitly shared which to my mind strengthens the argument.&lt;/p&gt;
+
+&lt;p&gt;In the case of official documentation we can also view it as a single unit of structured work where the interlinking facilities of a wiki are a huge advantage &lt;strong&gt;and&lt;/strong&gt; impose a kind of unification layer while in a blog each post is a single unit and does not necessarily have to fit with everything else, which makes it ideal for informal information dissemination.&lt;/p&gt;
+
+&lt;h3&gt;Recap&lt;/h3&gt;
+
+&lt;p&gt;I find that blogs make a better communication medium for medium to long term persistence of project relevant knowledge (design decisions, howtos, status reports) while wikis are much better for developing official documentation. Transient information (&amp;quot;yoohoo, new version for our favorite library&amp;quot;) is still best handled through IM and emails.&lt;/p&gt;
+
+&lt;p&gt;Feel free to flame me as an ignorant idiot.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; &amp;quot;introduce&amp;quot; is another pompous term that means I ran around extolling the virtues of a tool until my significantly more intelligent colleagues get tired of hearing the noise and start using it just to shut me up.&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;2&lt;/sup&gt; I initially was myself baffled by this since collective code ownership is something we strive for in our projects until I noticed that no matter how many developers can understand and change the code the developer who originally was tasked with creating a feature was always referred to as &amp;quot;the guy who wrote it&amp;quot;.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 12 Sep 2011 16:16:43 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2011/09/12/blogs-vs-wikis</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2011/09/12/blogs-vs-wikis</guid>
+      </item>
+    
+      <item>
+        <title>Tried and tested but boring</title>
+        <description>&lt;p&gt;I&amp;#39;ve spent a large part of my professional career helping build software for systems that had to adhere to one standard of safety or other. From remote controlled locomotives to &lt;a href=&quot;http://www.accu-chek-mobile.de/&quot;&gt;blood sugar measuring handhelds&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I&amp;#39;ve even read the &lt;a href=&quot;http://en.wikipedia.org/wiki/DO-178B&quot;&gt;DO-178B&lt;/a&gt;. As a hacker I find these standards stifling and extremely inconvenient. They lag behind modern programming techniques by what amounts to geological ages in computing and set very strict rules on the form and function of your code. They also bind you to paper-heavy processes that are uniquely unqualified in handling any kind of change.&lt;/p&gt;
+
+&lt;p&gt;The infamous MISRA C rules have been hounding me for years and I have been present in countless debates about which rule to turn off and which to keep. The pressure to work around these rules is immense and if I am brutally honest there is no software out there that complies 100% with the highest safety standards. I consider the aforementioned DO-178B - in Europe known as ED-12B - as the strictest but I haven&amp;#39;t seen the standards required for nuclear reactors.&lt;/p&gt;
+
+&lt;p&gt;I used to rant against all the standards. Hot on top of the wave of dynamic languages, short development cycles and agile practices I wanted to have all the shiny new toys and find cool ways to do stuff. Cool, dynamic, clever.&lt;/p&gt;
+
+&lt;p&gt;It turns out, safety relevant/critical software while doing really cool stuff is a pretty boring experience. You are limited to a small set of languages and a strict standard for each language. The development processes are steeped in documents and in the name of risk assessment (not the development risks most software techies worry about, but actual physical risk to property, environment and life) emulate waterfalls. Instead of one big one you may get a string of smaller waterfalls, but the pattern is there.&lt;/p&gt;
+
+&lt;p&gt;And there are reasons for it. Very good reasons actually, reasons to do with accountability, verifiability, the aforementioned risk assessment and mitigation. Still, like I said, pretty boring. I have great respect for safety inspectors, I could never, ever do their job.&lt;/p&gt;
+
+&lt;p&gt;And one thing I remain adamant about is that being certified for a safety standard does not make your software safe.&lt;/p&gt;
+
+&lt;p&gt;But wait, I&amp;#39;m talking about &lt;strong&gt;production&lt;/strong&gt; code.You know, the stuff that is flashed onto the silicon, that beeps and blinks, reads sensors and switches relays and stuff. To write that you need a text editor. Then you get your compiler, assembler and linker, string them together and create your application.
+Put all of these together into a glorified text editor called an IDE and you have the state of a development environment in the embedded world: A whole bunch of word documents and an IDE. While I like to believe that this is by no means as dominant as it was 10 years ago, it is not gone either.&lt;/p&gt;
+
+&lt;p&gt;If you leave it at that then you spent most of your time doing reviews and filling Word documents with specifications (requirements/test/delivery/functional/safety/risk - take your pick). Documents that are very likely write-only. Didn&amp;#39;t I say it was boring?&lt;/p&gt;
+
+&lt;p&gt;I hate typing inane prose into a document nobody will ever read. I hate binary blobs I cannot diff to figure out what has changed. I hate syncing my repository and downloading megabytes of bits that only take up space. And above all I hate duplicating effort. I really*2 hate it.&lt;/p&gt;
+
+&lt;p&gt;On the other hand when that 60-ton locomotive first rolled down the tracks guided by a few bytes transmitted over the air I was glad for the mountain of protocol specifications and test plans and test protocols and checklists that &amp;quot;proved&amp;quot; everything was proper. 
+I was confident. After all I had every requirement covered, I had simulated everything in the protocol specification and thrown in some extra tests for good measure.&lt;/p&gt;
+
+&lt;p&gt;That the train drivers escorting me in the locomotive threatened to tie me on the front of the engine while we conducted braking tests made me sweat a little bit. They laughed. The system crashed 6 times in the first hour that first day. The one thing that worked was the transition to the safe state which for the locomotive meant &amp;quot;lock the brakes and stay put&amp;quot;. So, I was right to sweat but I would have survived being tied to the front of the engine.&lt;/p&gt;
+
+&lt;p&gt;By the end of that day I was ranting and raving at the absolute waste of effort required to maintain all that paperwork. So much time when I could have thought of cruel and unusual punishments for my code. So much time I could have spent devising and running tests.&lt;/p&gt;
+
+&lt;p&gt;It turns out the paperwork is necessary. I urge you to go and read safety standards. They actually state very reasonable, very important and very serious things we need to consider while building the software that moves our world. It helps when you realize that these standards are the result of the work of many very smart people combined with some very hard lessons. Some of those lessons even cost lives.&lt;/p&gt;
+
+&lt;p&gt;So these are tried and tested methods and tools, distilled experience we would be fools to ignore.&lt;/p&gt;
+
+&lt;p&gt;And I went back and took a long hard look at that glorified text editor ecosystem. What can we do to reduce the boring, repetitive, duplicate work?
+Model driven development, unit testing, continuous integration, executable requirements, simulators, automated regression testing, code coverage, static code analysis, performance and stress testing, document generation. All of it is supposed to give us more time to do the &lt;em&gt;actual&lt;/em&gt; work.&lt;/p&gt;
+
+&lt;p&gt;Generating documentation was actually the first goal: How out of all the living, changing, actively developed code parts could we get the static, dead, unchanging documentation. So I looked into it, and a door opened into a whole world, a world without restrictions&lt;sup&gt;1&lt;/sup&gt;. &lt;/p&gt;
+
+&lt;p&gt;I mentioned in &lt;a href=&quot;/software/2011/02/04/managing-your-development-environment/&quot;&gt;&amp;quot;Managing your development environment?&amp;quot;&lt;/a&gt; that the modern software development environment is as intricate and intelligent as the production software it produces. &lt;/p&gt;
+
+&lt;p&gt;In an embedded software system that follows safety guidelines the &amp;quot;backstage&amp;quot; is where the interesting stuff is. &lt;/p&gt;
+
+&lt;p&gt;You want your build to run faster? You have to apply the same monitoring/profiling concepts and methods you read about web applications.&lt;/p&gt;
+
+&lt;p&gt;You want your infrastructure to integrate easily? You should use small web applications (think rack based) with clear and simple APIs. That way you can add off-the-shelf authentication/user management, caching, monitoring and notifications and when the next project comes you get to reuse whatever fits. RESTful APIs are a boon for this.&lt;/p&gt;
+
+&lt;p&gt;Best of all, you get to work with current technologies which is the whole point.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; The oxymoron of using error-prone software to prove that software is error-free has not escaped the people that write safety standards. You do have to validate your infrastructure code but the restrictions are not as bad and usually you have to do the same things you would do for a &amp;quot;regular&amp;quot; high availability service.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 11 Aug 2011 16:16:43 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2011/08/11/tried-and-tested-but-boring</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2011/08/11/tried-and-tested-but-boring</guid>
+      </item>
+    
+      <item>
+        <title>Script performance</title>
+        <description>&lt;p&gt;Code performance has two aspects: the actual performance measured hard seconds and the perceived performance AKA the responsiveness of the application.&lt;/p&gt;
+
+&lt;p&gt;When scripting, which for the purposes of this post I define as writing code that is executed once in the command line and then exits, a crucial metric is the startup time: the time it takes to load your script and start processing.&lt;/p&gt;
+
+&lt;p&gt;In the continuing battle to improve the performance and responsiveness of our rake build system (see &lt;a href=&quot;/software/2011/06/08/rake-performance-check-the-mirror/&quot;&gt;here&lt;/a&gt;, &lt;a href=&quot;/software/2011/05/20/rake-performance-sh-im-working/&quot;&gt;here&lt;/a&gt; and &lt;a href=&quot;/software/2011/05/10/ruby-performance-what-a-difference-the-compiler-makes/&quot;&gt;here&lt;/a&gt; in reverse chronological order) the startup delay has now become the number one issue. &lt;/p&gt;
+
+&lt;p&gt;We have a name for it: &amp;quot;The Ruby tribute minute&amp;quot;. It&amp;#39;s not actually a minute, but in the last month it has climbed back up to 11 seconds which is a very noticeable delay, especially when you&amp;#39;re doing &amp;#39;rake -T&amp;#39;. &lt;/p&gt;
+
+&lt;p&gt;After a bit of experimentation trying (unsuccesfully) to get ruby-prof and profiler.rb running on Windows 7, I forked the code and started decorating it with Benchmark.measure calls.&lt;/p&gt;
+
+&lt;p&gt;The results proved very interesting. The overwhelming majority of the startup time was spent requiring couchrest, couchrest&lt;em&gt;model and active&lt;/em&gt;record. We use &lt;a href=&quot;https://github.com/couchrest/couchrest&quot;&gt;couchrest&lt;/a&gt; to collect metrics (tasks called, time spent building, lines of code per build, firmware image sizes etc.) in a CouchDB instance which is then used to feed our information radiator.&lt;/p&gt;
+
+&lt;p&gt;Requiring couchrest costs ~2 seconds, couchrestmodel costs ~4.5 seconds, activerecord ~3.5 seconds (couchrestmodel requires activerecord but so do other gems we use).&lt;/p&gt;
+
+&lt;p&gt;Isolating the problem does not actually help since these numbers fall significantly. For example the following test&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/1133784.js?file=benchmark_couchrest.rb&quot;&gt; &lt;/script&gt;
+
+&lt;p&gt;gives significantly reduced times:&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/1133784.js?file=output%20Windows%207&quot;&gt; &lt;/script&gt;
+
+&lt;p&gt;btw. the stock Snow Leopard Ruby was &lt;strong&gt;a lot&lt;/strong&gt; faster with rubygems 1.5.0:&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/1133784.js?file=output%20OS%20X,%20rubygems%201.5.0&quot;&gt; &lt;/script&gt;
+
+&lt;p&gt;but suffers with rubygems 1.8.7&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/1133784.js?file=output%20OS%20X,%20rubygems%201.8.7&quot;&gt; &lt;/script&gt;
+
+&lt;p&gt;I will take a wild guess and assume side effects from the additional gems loaded increase loading times but I can only theorize.&lt;/p&gt;
+
+&lt;p&gt;The current workaround consists of removing the require statements from the top of the files and adding them in the tasks where the gems are actually used. This shaves about 6.5 seconds from our startup times and improves rake responsiveness significantly but has the drawback of peppering require statements all over the place. I&amp;#39;m extremely interested in figuring out a better way to do this and also why the current rubygems version performs so bad.&lt;/p&gt;
+
+&lt;p&gt;Now to go back and refactor &lt;a href=&quot;https://github.com/damphyr/rutema&quot;&gt;rutema&lt;/a&gt; so that active_record is not loaded unless needed...&lt;/p&gt;
+</description>
+        <pubDate>Tue, 09 Aug 2011 16:16:43 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2011/08/09/script-performance</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2011/08/09/script-performance</guid>
+      </item>
+    
+      <item>
+        <title>One more Ruby user group</title>
+        <description>&lt;p&gt;It&amp;#39;s an idea that has been bouncing in my head for months now.&lt;/p&gt;
+
+&lt;p&gt;I had reached unprecedented playground fatigue levels (where the sufferer is overcome by feelings of despair at the mention of a playground) and due to the nature of my work had little or no contact with any local hackers/rubyists/geeks.&lt;/p&gt;
+
+&lt;p&gt;I love local user groups, I actually started down the path to coding in one such group, in this here &lt;a href=&quot;http://maps.google.com/maps?q=Thessalonika,+Greece&amp;amp;hl=en&amp;amp;sll=37.0625,-95.677068&amp;amp;sspn=47.080837,77.783203&amp;amp;t=h&amp;amp;z=11&quot;&gt;city&lt;/a&gt;. We didn&amp;#39;t call it a user group, we didn&amp;#39;t have internet (it was Fidonet, BBSs and 2400 baud modems back then) and we drank mostly retsina but the spirit was the same.&lt;/p&gt;
+
+&lt;p&gt;It is astonishing how long one can procrastinate and even more astonishing how easy and fast one can organize a user group with fellow geeks.&lt;/p&gt;
+
+&lt;p&gt;I started by tweeting a question. The answer led to &lt;a href=&quot;http://rubyst.es&quot;&gt;rubyst.es&lt;/a&gt; a greek ruby community site, which unfortunately seems to lack any activity (still waiting on the approval of my registration guys). After a bit of ominous silence and a feeling of dread - currently very familiar in Greece - I reframed my tweeted question and this time I got pointed to ruby-hellug. &lt;/p&gt;
+
+&lt;p&gt;It&amp;#39;s a mailing list so I fired an &lt;a href=&quot;http://groups.google.com/group/ruby-hellug/browse_thread/thread/78dff26014a5ce66/8dc8e5144418f9eb#8dc8e5144418f9eb&quot;&gt;email&lt;/a&gt; and forgot about it. Or at least tried to. It took exactly 25 minutes for the first email to reach me. Apparently there &lt;strike&gt;is&lt;/strike&gt;was no Ruby group in Thessaloniki, GR.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://twitter.com/#!/JEG2&quot;&gt;James Gray&lt;/a&gt; (James Edward Gray III as I know him ;) ) offered the final push the next day in response to an email for help. Essentially &amp;quot;just do it and get the newbies in, you won&amp;#39;t regret it&amp;quot;.&lt;/p&gt;
+
+&lt;p&gt;It was June 22nd. The thessaloniki.rb founders meeting (meaning we went out for beers) took place on July 7th.&lt;/p&gt;
+
+&lt;p&gt;thessaloniki.rb #1 (meaning we talked about Ruby and then went out for beers) took place on July 12th. &lt;/p&gt;
+
+&lt;p&gt;Reception was very positive. The list has 15 members already, which - taking into account that it is the middle of the summer and traditionally things are super slow here - I consider a huge success.&lt;/p&gt;
+
+&lt;p&gt;We even have swag: Our group counts as it&amp;#39;s member the first and (currently) only GitHub employee in Greece ( &lt;a href=&quot;https://twitter.com/#!/amiridis&quot;&gt;Petros Amiridis&lt;/a&gt; in a league of his own) and GitHub rocks when it comes to community support. &lt;/p&gt;
+
+&lt;p&gt;Also &lt;a href=&quot;https://twitter.com/#!/avdi&quot;&gt;Avdi Grim&lt;/a&gt; of &lt;a href=&quot;http://exceptionalruby.com&quot;&gt;Exceptional Ruby&lt;/a&gt; fame was extra helpful when I asked him to essentially ripoff his book and make a presentation - not only did he give permission, he offered a generous discount to the group as well. A thousand thanks to you Avdi! &lt;/p&gt;
+
+&lt;p&gt;Thanks are due to City College and &lt;a href=&quot;http://www.city.academic.gr/csd/eleftherakis/&quot;&gt;George Eleftherakis&lt;/a&gt; for kindly allowing us to use their space.&lt;/p&gt;
+
+&lt;p&gt;We have a group, we have a GitHub &lt;a href=&quot;https://github.com/thessaloniki-rb/thessaloniki.rb/wiki&quot;&gt;repository&lt;/a&gt;, a twitter hashtag (#thessrb - works on so many levels: thess for thessaloniki, thess==&amp;#39;you want&amp;#39; in greek, so thessrb==&amp;#39;you want ruby&amp;#39; etc.), ideas and apparently voracious appetite for learning.&lt;/p&gt;
+
+&lt;p&gt;At a time of great hardship and uncertainty meeting a group of intelligent people with energy and drive to learn, help each other and move forward is priceless.&lt;/p&gt;
+
+&lt;p&gt;See you all in September!&lt;/p&gt;
+</description>
+        <pubDate>Fri, 15 Jul 2011 16:16:43 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2011/07/15/one-more-ruby-user-group</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2011/07/15/one-more-ruby-user-group</guid>
+      </item>
+    
+  </channel>
+</rss>
