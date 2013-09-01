@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>mySQL on Snow Leopard</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>mySQL on Snow Leopard</h1>
+<p class="meta">13 Nov 2009</p>
+
+<div class="post">
+<p>It was inevitable that <a href="http://github.com/damphyr/rutema">rutema</a> would one day have to use a different database than sqlite3. </p>
+
+<p>To do that I needed a testbed therefore I chose mySQL.</p>
+
+<p>This is a &quot;forget-me-not&quot; for the way to a local mySQL installation on Snow Leopard.</p>
+
+<p>Instead of going with the prepackaged .dmg I chose to install mySQL using MacPorts. This was pretty straightforward and went without a hitch.</p>
+
+<p>The mysql executables end up in /opt/local/bin, and they are all suffixed with a &#39;5&#39;. The actual binaries are all under /opt/local/lib/mysql5/ (no suffix there).</p>
+
+<p>After compilation succeeds you need to do the following:
+ * Create the system tables</p>
+
+<div class="highlight"><pre><code class="bash">sudo /opt/local/bin/mysql_install_db5 --user<span class="o">=</span>_mysql
+</code></pre></div>
+
+<ul>
+<li>Start the server </li>
+</ul>
+
+<div class="highlight"><pre><code class="bash">sudo /opt/local/bin/mysqld_safe5 --user<span class="o">=</span>_mysql &amp;
+</code></pre></div>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">The _mysql user is already present on Mac OS X 10.6
+</code></pre></div>
+<ul>
+<li>Change the root user password</li>
+</ul>
+
+<div class="highlight"><pre><code class="bash">/opt/local/bin/mysqladmin5 -u root password <span class="s1">&#39;pass&#39;</span>
+</code></pre></div>
+
+<p>In order to setup privileges, you enter the mysql command shell as root(
+<div class="highlight"><pre><code class="bash">/opt/local/bin/mysql5 -u root -p
+</code></pre></div>
+) and setup your database and users. The rutema setup looks something like</p>
+
+<div class="highlight"><pre><code class="bash">create database rutema;
+</code></pre></div>
+
+<div class="highlight"><pre><code class="bash">create user rutema;
+</code></pre></div>
+
+<div class="highlight"><pre><code class="bash">grant all on rutema.* to rutema;
+</code></pre></div>
+
+<div class="highlight"><pre><code class="bash"><span class="nb">set </span>password <span class="k">for </span><span class="nv">rutema</span> <span class="o">=</span> password<span class="o">(</span><span class="s1">&#39;pass&#39;</span><span class="o">)</span>;
+</code></pre></div>
+
+<p>The current activerecord gem does not include the pure ruby mysql code anymore and requires the C based mysql gem. This is a bit tricky to install as it needs to compile as 64-bit to work with the Apple standard Ruby installation.</p>
+
+<div class="highlight"><pre><code class="bash">sudo env <span class="nv">ARCHFLAGS</span><span class="o">=</span><span class="s2">&quot;-arch x86_64&quot;</span> gem install --no-rdoc --no-ri mysql -- --with-mysql-dir<span class="o">=</span>/opt/local/lib/mysql5 --with-mysql-config<span class="o">=</span>/opt/local/lib/mysql5/bin/mysql_config
+</code></pre></div>
+
+<p>should do the trick though.</p>
+
+</div>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

@@ -182,6 +182,53 @@ In other cases things are superseded by newer functionality or the developers ad
       </item>
     
       <item>
+        <title>rake dynamic prerequisites</title>
+        <description>&lt;p&gt;There&amp;#39;s a behaviour in rake I keep stumbling on. It&amp;#39;s the inability to dynamically add prerequisite tasks on a task from one of it&amp;#39;s prerequisites.&lt;/p&gt;
+
+&lt;p&gt;I&amp;#39;ve used this gist a couple of times now: &lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/847273.js?file=rakefile&quot;&gt; &lt;/script&gt;
+
+&lt;p&gt;I&amp;#39;m pretty sure the first time I actually stumbled on this was &lt;a href=&quot;http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/159167&quot;&gt;sometime in 2005&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Why?&lt;/h3&gt;
+
+&lt;p&gt;The output from the rakefile above is 
+&lt;script src=&quot;https://gist.github.com/847273.js?file=output&quot;&gt; &lt;/script&gt;
+when, if the dependency tree was built dynamically, &amp;#39;c&amp;#39; should pop up before &amp;#39;a&amp;#39;:
+&lt;script src=&quot;https://gist.github.com/847273.js?file=outut%20as%20it%20should%20be&quot;&gt; &lt;/script&gt;
+Why would you need this you will ask?&lt;/p&gt;
+
+&lt;p&gt;Well, it helps to do things like &lt;code&gt;task :build =&amp;gt; :determine_sources&lt;/code&gt; instead of &lt;code&gt;task :build =&amp;gt; determine_sources()&lt;/code&gt; and avoid the performance hit of scanning for dependencies before you actually call the task.&lt;/p&gt;
+
+&lt;p&gt;This improves rake responsiveness which has a positive effect on team moral (no kidding, this is important!)&lt;/p&gt;
+
+&lt;p&gt;The workaround is to calculate all dependencies for all tasks when the rakefile loads and it does not scale.&lt;/p&gt;
+
+&lt;p&gt;Case in point: Currently our rakefile builds a C system with a changing number of small applications. Manually adding tasks for every new application costs too much so it is done automatically. Because no dynamic prerequisites are allowed, the method that creates the tasks also needs to scan the source and determine the complete dependency tree for every app task.&lt;/p&gt;
+
+&lt;p&gt;This adds unnecessary delays in rake&amp;#39;s startup. As we usually only call one build task we only need to calculate the dependencies for that one task (this is actually done but with a whole bunch of code that essentially controls task creation based on the task called and it is fragile and prevents us from calling multiple tasks in the same command line - basically it&amp;#39;s a hack)&lt;/p&gt;
+
+&lt;h3&gt;Put your money...&lt;/h3&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://github.com/damphyr/rake/commit/609ca3b434a7ff6689ca476a9ee5d7d22437042a&quot;&gt;patch&lt;/a&gt; is actually trivial, a two line change in lib/rake/task.rb in the invoke_prerequisites method&lt;sup&gt;1&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Where&amp;#39;s the catch?&lt;/h3&gt;
+
+&lt;p&gt;Well, this actually only works if a prereq is changing the prerequisite list it is a member of. Anything else is dependent on the sequence the tasks appear in the prerequisites list and has unexpected results.&lt;/p&gt;
+
+&lt;p&gt;There&amp;#39;s also the slight delay introduced by iterating over the prerequisites again, but this barely registers compared with the actual task invocation times.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; And yet it took me almost 7 years to fix. Talk about procrastination...&lt;/p&gt;
+</description>
+        <pubDate>Fri, 13 Jan 2012 15:16:43 +0100</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2012/01/13/rake-dynamic-prerequisites</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2012/01/13/rake-dynamic-prerequisites</guid>
+      </item>
+    
+      <item>
         <title>Poor man's test parallelism</title>
         <description>&lt;h3&gt;Problematic luxury&lt;/h3&gt;
 
@@ -491,45 +538,6 @@ Model driven development, unit testing, continuous integration, executable requi
         <pubDate>Tue, 09 Aug 2011 16:16:43 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2011/08/09/script-performance</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2011/08/09/script-performance</guid>
-      </item>
-    
-      <item>
-        <title>One more Ruby user group</title>
-        <description>&lt;p&gt;It&amp;#39;s an idea that has been bouncing in my head for months now.&lt;/p&gt;
-
-&lt;p&gt;I had reached unprecedented playground fatigue levels (where the sufferer is overcome by feelings of despair at the mention of a playground) and due to the nature of my work had little or no contact with any local hackers/rubyists/geeks.&lt;/p&gt;
-
-&lt;p&gt;I love local user groups, I actually started down the path to coding in one such group, in this here &lt;a href=&quot;http://maps.google.com/maps?q=Thessalonika,+Greece&amp;amp;hl=en&amp;amp;sll=37.0625,-95.677068&amp;amp;sspn=47.080837,77.783203&amp;amp;t=h&amp;amp;z=11&quot;&gt;city&lt;/a&gt;. We didn&amp;#39;t call it a user group, we didn&amp;#39;t have internet (it was Fidonet, BBSs and 2400 baud modems back then) and we drank mostly retsina but the spirit was the same.&lt;/p&gt;
-
-&lt;p&gt;It is astonishing how long one can procrastinate and even more astonishing how easy and fast one can organize a user group with fellow geeks.&lt;/p&gt;
-
-&lt;p&gt;I started by tweeting a question. The answer led to &lt;a href=&quot;http://rubyst.es&quot;&gt;rubyst.es&lt;/a&gt; a greek ruby community site, which unfortunately seems to lack any activity (still waiting on the approval of my registration guys). After a bit of ominous silence and a feeling of dread - currently very familiar in Greece - I reframed my tweeted question and this time I got pointed to ruby-hellug. &lt;/p&gt;
-
-&lt;p&gt;It&amp;#39;s a mailing list so I fired an &lt;a href=&quot;http://groups.google.com/group/ruby-hellug/browse_thread/thread/78dff26014a5ce66/8dc8e5144418f9eb#8dc8e5144418f9eb&quot;&gt;email&lt;/a&gt; and forgot about it. Or at least tried to. It took exactly 25 minutes for the first email to reach me. Apparently there &lt;strike&gt;is&lt;/strike&gt;was no Ruby group in Thessaloniki, GR.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://twitter.com/#!/JEG2&quot;&gt;James Gray&lt;/a&gt; (James Edward Gray III as I know him ;) ) offered the final push the next day in response to an email for help. Essentially &amp;quot;just do it and get the newbies in, you won&amp;#39;t regret it&amp;quot;.&lt;/p&gt;
-
-&lt;p&gt;It was June 22nd. The thessaloniki.rb founders meeting (meaning we went out for beers) took place on July 7th.&lt;/p&gt;
-
-&lt;p&gt;thessaloniki.rb #1 (meaning we talked about Ruby and then went out for beers) took place on July 12th. &lt;/p&gt;
-
-&lt;p&gt;Reception was very positive. The list has 15 members already, which - taking into account that it is the middle of the summer and traditionally things are super slow here - I consider a huge success.&lt;/p&gt;
-
-&lt;p&gt;We even have swag: Our group counts as it&amp;#39;s member the first and (currently) only GitHub employee in Greece ( &lt;a href=&quot;https://twitter.com/#!/amiridis&quot;&gt;Petros Amiridis&lt;/a&gt; in a league of his own) and GitHub rocks when it comes to community support. &lt;/p&gt;
-
-&lt;p&gt;Also &lt;a href=&quot;https://twitter.com/#!/avdi&quot;&gt;Avdi Grim&lt;/a&gt; of &lt;a href=&quot;http://exceptionalruby.com&quot;&gt;Exceptional Ruby&lt;/a&gt; fame was extra helpful when I asked him to essentially ripoff his book and make a presentation - not only did he give permission, he offered a generous discount to the group as well. A thousand thanks to you Avdi! &lt;/p&gt;
-
-&lt;p&gt;Thanks are due to City College and &lt;a href=&quot;http://www.city.academic.gr/csd/eleftherakis/&quot;&gt;George Eleftherakis&lt;/a&gt; for kindly allowing us to use their space.&lt;/p&gt;
-
-&lt;p&gt;We have a group, we have a GitHub &lt;a href=&quot;https://github.com/thessaloniki-rb/thessaloniki.rb/wiki&quot;&gt;repository&lt;/a&gt;, a twitter hashtag (#thessrb - works on so many levels: thess for thessaloniki, thess==&amp;#39;you want&amp;#39; in greek, so thessrb==&amp;#39;you want ruby&amp;#39; etc.), ideas and apparently voracious appetite for learning.&lt;/p&gt;
-
-&lt;p&gt;At a time of great hardship and uncertainty meeting a group of intelligent people with energy and drive to learn, help each other and move forward is priceless.&lt;/p&gt;
-
-&lt;p&gt;See you all in September!&lt;/p&gt;
-</description>
-        <pubDate>Fri, 15 Jul 2011 16:16:43 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2011/07/15/one-more-ruby-user-group</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2011/07/15/one-more-ruby-user-group</guid>
       </item>
     
   </channel>
