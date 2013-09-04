@@ -7,6 +7,33 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Recruiter fail</title>
+        <description>&lt;p&gt;The following was sent to the info euruko account &lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text&quot;&gt;Hi EuRuKo,
+
+I am &amp;lt;em&amp;gt;redacted&amp;lt;/em&amp;gt; human resource manager at &amp;lt;em&amp;gt;redacted&amp;lt;/em&amp;gt;, a well-funded startup 
+based in the US. I went through your Github profile and thought that you would be a good 
+fit for the position that I&amp;#39;m trying to fill. This is a long term position. The main 
+benefit of the job is its flexibility which allows you to work at your most convenient 
+time and location, and we can also send you a prepaid retainer! - details below.  
+Let me know whether you&amp;#39;re interested in discussing this opportunity.
+
+ - &amp;lt;em&amp;gt;redacted&amp;lt;/em&amp;gt;
+
+OFFSITE ROR Developers (front/back-end)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Word to the wise: if you want to recruit developers you better put a little more effort into it. Targeting an info account for a conference is a major fail!&lt;/p&gt;
+
+&lt;p&gt;Initially I did not redact any of the information, but I then googled the company and it turns out it&amp;#39;s a legitimate, obviously small, web development consultancy in the US. It seemed a pity to land the HR manager who sent that email in hot waters. You know who you are, do better next time.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 04 Sep 2013 16:16:43 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/rumblings/2013/09/04/recruiter-fail</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/rumblings/2013/09/04/recruiter-fail</guid>
+      </item>
+    
+      <item>
         <title>Back on the saddle</title>
         <description>&lt;p&gt;Man it&amp;#39;s been a long time!&lt;/p&gt;
 
@@ -495,49 +522,6 @@ Model driven development, unit testing, continuous integration, executable requi
         <pubDate>Thu, 11 Aug 2011 16:16:43 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2011/08/11/tried-and-tested-but-boring</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2011/08/11/tried-and-tested-but-boring</guid>
-      </item>
-    
-      <item>
-        <title>Script performance</title>
-        <description>&lt;p&gt;Code performance has two aspects: the actual performance measured hard seconds and the perceived performance AKA the responsiveness of the application.&lt;/p&gt;
-
-&lt;p&gt;When scripting, which for the purposes of this post I define as writing code that is executed once in the command line and then exits, a crucial metric is the startup time: the time it takes to load your script and start processing.&lt;/p&gt;
-
-&lt;p&gt;In the continuing battle to improve the performance and responsiveness of our rake build system (see &lt;a href=&quot;/software/2011/06/08/rake-performance-check-the-mirror/&quot;&gt;here&lt;/a&gt;, &lt;a href=&quot;/software/2011/05/20/rake-performance-sh-im-working/&quot;&gt;here&lt;/a&gt; and &lt;a href=&quot;/software/2011/05/10/ruby-performance-what-a-difference-the-compiler-makes/&quot;&gt;here&lt;/a&gt; in reverse chronological order) the startup delay has now become the number one issue. &lt;/p&gt;
-
-&lt;p&gt;We have a name for it: &amp;quot;The Ruby tribute minute&amp;quot;. It&amp;#39;s not actually a minute, but in the last month it has climbed back up to 11 seconds which is a very noticeable delay, especially when you&amp;#39;re doing &amp;#39;rake -T&amp;#39;. &lt;/p&gt;
-
-&lt;p&gt;After a bit of experimentation trying (unsuccesfully) to get ruby-prof and profiler.rb running on Windows 7, I forked the code and started decorating it with Benchmark.measure calls.&lt;/p&gt;
-
-&lt;p&gt;The results proved very interesting. The overwhelming majority of the startup time was spent requiring couchrest, couchrest&lt;em&gt;model and active&lt;/em&gt;record. We use &lt;a href=&quot;https://github.com/couchrest/couchrest&quot;&gt;couchrest&lt;/a&gt; to collect metrics (tasks called, time spent building, lines of code per build, firmware image sizes etc.) in a CouchDB instance which is then used to feed our information radiator.&lt;/p&gt;
-
-&lt;p&gt;Requiring couchrest costs ~2 seconds, couchrestmodel costs ~4.5 seconds, activerecord ~3.5 seconds (couchrestmodel requires activerecord but so do other gems we use).&lt;/p&gt;
-
-&lt;p&gt;Isolating the problem does not actually help since these numbers fall significantly. For example the following test&lt;/p&gt;
-
-&lt;script src=&quot;https://gist.github.com/1133784.js?file=benchmark_couchrest.rb&quot;&gt; &lt;/script&gt;
-
-&lt;p&gt;gives significantly reduced times:&lt;/p&gt;
-
-&lt;script src=&quot;https://gist.github.com/1133784.js?file=output%20Windows%207&quot;&gt; &lt;/script&gt;
-
-&lt;p&gt;btw. the stock Snow Leopard Ruby was &lt;strong&gt;a lot&lt;/strong&gt; faster with rubygems 1.5.0:&lt;/p&gt;
-
-&lt;script src=&quot;https://gist.github.com/1133784.js?file=output%20OS%20X,%20rubygems%201.5.0&quot;&gt; &lt;/script&gt;
-
-&lt;p&gt;but suffers with rubygems 1.8.7&lt;/p&gt;
-
-&lt;script src=&quot;https://gist.github.com/1133784.js?file=output%20OS%20X,%20rubygems%201.8.7&quot;&gt; &lt;/script&gt;
-
-&lt;p&gt;I will take a wild guess and assume side effects from the additional gems loaded increase loading times but I can only theorize.&lt;/p&gt;
-
-&lt;p&gt;The current workaround consists of removing the require statements from the top of the files and adding them in the tasks where the gems are actually used. This shaves about 6.5 seconds from our startup times and improves rake responsiveness significantly but has the drawback of peppering require statements all over the place. I&amp;#39;m extremely interested in figuring out a better way to do this and also why the current rubygems version performs so bad.&lt;/p&gt;
-
-&lt;p&gt;Now to go back and refactor &lt;a href=&quot;https://github.com/damphyr/rutema&quot;&gt;rutema&lt;/a&gt; so that active_record is not loaded unless needed...&lt;/p&gt;
-</description>
-        <pubDate>Tue, 09 Aug 2011 16:16:43 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2011/08/09/script-performance</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2011/08/09/script-performance</guid>
       </item>
     
   </channel>
