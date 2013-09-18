@@ -7,6 +7,98 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Baruco 2013</title>
+        <description>&lt;p&gt;&lt;img src=&quot;/images/icanseethesea.jpg&quot; alt=&quot;I can see the sea&quot;&gt; Baruco is my excuse for the yearly pilgrimage to Barcelona.&lt;/p&gt;
+
+&lt;p&gt;It&amp;#39;s always a great pleasure coming back and the conference program is excellent, ram-packed with really really good talks. &lt;/p&gt;
+
+&lt;p&gt;Truthfully, it&amp;#39;s just sheer pleasure to be able to sit back and watch a few talks without having to get up and run to prepare the next speaker ;).&lt;/p&gt;
+
+&lt;p&gt;The organisation is very good and having gone through the ordeal with the EuRuKo team I&amp;#39;ll just  ignore any small faux-pas and smile. Kudos to the team for a job (very) well done. And guys...nobody expects the Wi-Fi to work.&lt;/p&gt;
+
+&lt;p&gt;Matz, Sandi Metz, Katrina Owen, Avdi Grimm, Chris Kelly, Matt Wynne...ok, I won&amp;#39;t list the whole line up. The talks were great, the discussions in the breaks and the party even better and getting to meet up with old friends and acquaintances is...priceless.&lt;/p&gt;
+
+&lt;p&gt;One thing I would have done differently (well, we did do differently at EuRuKo) would be to stretch the intervals a bit more, to give people more time to talk between talks. But it&amp;#39;s a delicate balance and the chosen format puts more talks on offer which is also great.&lt;/p&gt;
+
+&lt;p&gt;I  managed to squeeze a lightning talk (I even have &lt;a href=&quot;/images/DevopsInTheRealWorld.pdf&quot;&gt;slides&lt;/a&gt; for it) on the two principles a team needs to follow when setting up it&amp;#39;s project development environment.&lt;/p&gt;
+
+&lt;p&gt;There&amp;#39;s two talks I would add to the show-to-every-one-because-it-explains-things-better-than-you-ever-will category. These are Sandi Metz&amp;#39;s &amp;quot;Rules&amp;quot; and Corey Haine&amp;#39;s &amp;quot;Design Patterns And The Proper Cultivation Thereof&amp;quot;. &lt;/p&gt;
+
+&lt;p&gt;For sheer win-win in entertainment and knowledge I&amp;#39;ll push Katrina Owen&amp;#39;s &amp;quot;There be Dragons&amp;quot; and to start a spirited discussion I&amp;#39;ll just show you Reg Braithwaite&amp;#39;s &amp;quot;What Developing With Ruby Can Teach Us About Developing Ruby&amp;quot;.&lt;/p&gt;
+
+&lt;p&gt;If an outsider ever drops in for a visit at a Ruby conference he might get the impression that Rubyists keep patting themselves on the back and congratulating themselves on what a great, friendly and welcoming community they have. And he might leave with a slight &amp;quot;puff, them Rubyists think too much off themselves&amp;quot;.
+That would be a mistake. The community is this language&amp;#39;s strongest feature. The people are approachable, open minded, hard working and knowledgable.
+They will go out of their way to welcome new members and are generous with their time and knowledge.&lt;/p&gt;
+
+&lt;p&gt;Every Ruby conference I have been to has been a pleasure and an inspiration mainly because of the people attending and Baruco was no exception. It was rather a very nice confirmation of the rule :).&lt;/p&gt;
+</description>
+        <pubDate>Wed, 18 Sep 2013 14:00:00 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2013/09/18/baruco2013</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2013/09/18/baruco2013</guid>
+      </item>
+    
+      <item>
+        <title>(Gender)Diversity...oh my!</title>
+        <description>&lt;p&gt;Diversity is a huge subject and doesn&amp;#39;t just cover gender or racial colour differentiations. European events tend to be extremely diverse on a different level than the current diversity discussion. We are fond of saying that you can drive a hundred miles in Europe and you will cross 6 countries. &lt;/p&gt;
+
+&lt;p&gt;We don&amp;#39;t actually have an accurate count of the languages spoken at EuRuKo or the countries of origin for the delegates (but in my 5yr old son&amp;#39;s school the count stands at 28). &lt;/p&gt;
+
+&lt;p&gt;We know that there were participants from every inhabited continent on this planet (-1 if you count Antarctica in that set) and from a questionnaire that only about a quarter of the delegates filled-in we have a listing of 24 different countries. Having invited people from countries that are missing from that list (Japan, Brasil and France come to mind) we can guarantee that it&amp;#39;s not complete.&lt;/p&gt;
+
+&lt;p&gt;This post is explicitly concentrated on the issue of gender diversity and the goals the EuRuKo committee had set about it. It&amp;#39;s also my own personal view on the subject with the benefit of a couple of months of distance to the conference.&lt;/p&gt;
+
+&lt;p&gt;EuRuKo ended up with an all male lineup. So typically we actually failed on one of the goals set from the beginning.&lt;/p&gt;
+
+&lt;p&gt;Personally, I&amp;#39;m stumped about what more we could have done. Let&amp;#39;s go through the list once more:&lt;/p&gt;
+
+&lt;p&gt;We went out and invited female speakers. They declined, each for their own very good reasons (sorry guys, but except for Matz, you were all &amp;quot;second choice material&amp;quot; ;) ). In hindsight I am really happy they couldn&amp;#39;t come and end up as a lonesome diversity token.&lt;/p&gt;
+
+&lt;p&gt;We set a &lt;a href=&quot;http://euruko2013.org/codeofconduct/&quot;&gt;code of conduct&lt;/a&gt;, designed to keep racuous, young, white males in check (aaaand I&amp;#39;m done stereotyping).&lt;/p&gt;
+
+&lt;p&gt;Then we came up with a CfP process with a blind selection phase aiming to encourage submissions by everyone. And we went completely nuts trying to promote it. Devchix, RailsGirls, every ruby group list we could find, you name it, it got an email (or more) from us. I&amp;#39;m surprised that we didn&amp;#39;t get blacklisted as major geek spammers.&lt;/p&gt;
+
+&lt;p&gt;There were 91 talk proposals and all kinds of metrics that tell you that the whole process stimulated interest and created discussions and participation from the community. And when we pulled back the curtains just one - a single one! - was submitted by a woman!&lt;/p&gt;
+
+&lt;p&gt;Dammit ladies, you didn&amp;#39;t even give us a chance! Submit a couple of talks, let the community show it&amp;#39;s bias...or not. &lt;/p&gt;
+
+&lt;p&gt;In the aftermath of the CfP there were a lot of discussions about the reasons for the lack of female participation.&lt;/p&gt;
+
+&lt;p&gt;In one of those &lt;a href=&quot;https://twitter.com/ashedryden&quot;&gt;@ashedryden&lt;/a&gt; summarized for me the following points:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;have they accepted women speakers before?&lt;/li&gt;
+&lt;li&gt;are they interested in having women speakers?&lt;/li&gt;
+&lt;li&gt;how involved are they (conference itself and its organizers) with groups that support women in technology?&lt;/li&gt;
+&lt;li&gt;do I know people that are attending, speaking, or organizing?&lt;/li&gt;
+&lt;li&gt;can I afford to go if the conference doesn&amp;#39;t cover anything for speakers?&lt;/li&gt;
+&lt;li&gt;will it be a safe place for me to present?&lt;/li&gt;
+&lt;li&gt;will the venue and location be a safe place for me to travel alone?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The answer to every one of those points (except for 2 were it&amp;#39;s a crystal clear yes) is complicated by the nature of EuRuKo and how it is organized. Let&amp;#39;s say that the organizers were an unknown quantity and Greece&amp;#39;s miniscule Ruby community is busy drumming up support for the community in general within a framework of complete abandonement from any official source.&lt;/p&gt;
+
+&lt;p&gt;Cost was also a factor. Not for the conference per se, which probably is the cheapest conference of that caliber that you will ever attend, but because Athens is on the ass end of flight connections and a tourist destination at the end of June, which makes getting there...expensive.&lt;/p&gt;
+
+&lt;p&gt;There was an effort to enable at least the speakers to save money. Some things (like the &lt;a href=&quot;http://www.google.com/jobs/students/proscho/scholarships/emea/travelgrants/&quot;&gt;Google female scientists EMEA grant&lt;/a&gt;) did not pan out, others (like offering sponsor deals for companies that payed their employee travelling expenses) worked really well.&lt;/p&gt;
+
+&lt;p&gt;The one thing we failed to address explicitly, because of our own bias, was safety. We live, work and move around in Athens and by any measure or metric Athens is way safer than any big US city and safer than many big European cities. And I mean that in the walk-alone-on-the-street-in-the-middle-of-the-night sense. But safer does not mean safe.&lt;/p&gt;
+
+&lt;p&gt;We had a doctor on standby and there was security personel in the venue, but these are general measures meant for everyone.&lt;/p&gt;
+
+&lt;p&gt;Greece in general and Athens in particular has made the news in very sensational ways the last few years. Our venue selection was explicitly influenced by the wish to avoid having our delegates move in the &amp;quot;demonstration&amp;quot; zone of Athens and thus risk - there is no reason to hide it - having to treat tear-gas victims. That would have put a huge damper on the whole conference!  &lt;/p&gt;
+
+&lt;p&gt;Still any reasonably well informed and intelligent person (which overlaps quite a bit with our target audience) has been inundated in the past couple of years by dark and ugly news from the &amp;quot;birthplace of Democracy&amp;quot; and to work against that bias was difficult from the beginning. Maybe targeting it specifically would have put female participants more at ease, maybe it would have scared more people away.  Either way it was the one thing we did not address in public.&lt;/p&gt;
+
+&lt;p&gt;At the end we had less than 10% female participation at the event, a point Kiev should improve on in 2014. &lt;/p&gt;
+
+&lt;p&gt;Still, there&amp;#39;s about 400 more people with fresh EuRuKo Athens experience in the community and I bet they will all tell you that you should have been there and that you shouldn&amp;#39;t miss the next one.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 15 Sep 2013 17:00:00 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/rumblings/2013/09/15/diversity-oh-my</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/rumblings/2013/09/15/diversity-oh-my</guid>
+      </item>
+    
+      <item>
         <title>Recruiter fail</title>
         <description>&lt;p&gt;The following was sent to the info euruko account &lt;/p&gt;
 
@@ -375,153 +467,6 @@ it is feasible to create a master-slave configuration feeding the build package 
         <pubDate>Fri, 09 Dec 2011 15:16:43 +0100</pubDate>
         <link>http://www.ampelofilosofies.gr/rumblings/2011/12/09/epilektikotita</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/rumblings/2011/12/09/epilektikotita</guid>
-      </item>
-    
-      <item>
-        <title>Blogs vs Wikis</title>
-        <description>&lt;h3&gt;A little bit of background&lt;/h3&gt;
-
-&lt;p&gt;I&amp;#39;ve worked with a lot of teams over the years both on-site with customers and in-house with independent teams and one of the constants was the need for a persistent knowledge archive.&lt;/p&gt;
-
-&lt;p&gt;&amp;quot;persistent knowledge archive&amp;quot; is just a pompous term for a repository where the team can easily maintain draft documentation, document decisions that affect development and also maintain documentation that is not actually part of the product, like how to use the testing rig, how to setup the development environment etc.&lt;/p&gt;
-
-&lt;h3&gt;Single point of reference&lt;/h3&gt;
-
-&lt;p&gt;One of the first things I ever introduced &lt;sup&gt;1&lt;/sup&gt; in our team workflow was the use of a wiki for exactly that purpose. &lt;/p&gt;
-
-&lt;p&gt;The previous alternatives of mass emails and (&lt;em&gt;gasp&lt;/em&gt;) Word documents were just too transient or cumbersome. &lt;/p&gt;
-
-&lt;p&gt;There are several reasons for that, but the most important in my mind is that a wiki (and a blog) provides a single point of reference that is easy to edit and keep current and has a very easy learning curve. &lt;/p&gt;
-
-&lt;p&gt;When you get new team members you just point them to the URL and give a little speech about the project conventions and you&amp;#39;re done.&lt;/p&gt;
-
-&lt;h3&gt;Scope&lt;/h3&gt;
-
-&lt;p&gt;I&amp;#39;m going to narrow a bit the scope for this article in order to get my point across.&lt;/p&gt;
-
-&lt;p&gt;We&amp;#39;re talking about wikis vs. blogs as tools for team communication, information dissemination that demands the least amount of maintenance and ensures that the information persists and is accessible at any point in the future.&lt;/p&gt;
-
-&lt;p&gt;While I have for a long time advocated the use of wikis for my teams, recently I have substituted the wiki for a blog and this is an attempt to explain and discuss the pros and cons of this decision.&lt;/p&gt;
-
-&lt;p&gt;But first a couple of definitions&lt;/p&gt;
-
-&lt;h3&gt;Wiki&lt;/h3&gt;
-
-&lt;p&gt;Google &lt;a href=&quot;http://www.google.com/search?q=wiki+definition&quot;&gt;&amp;quot;wiki definition&amp;quot;&lt;/a&gt; and you get
-&lt;pre&gt;
-wi·ki /ˈwikē/
-Noun: A Web site developed collaboratively by a community of users, allowing any user to add and edit content.
-&lt;/pre&gt;
-I our scope the community is the team developing the software&lt;/p&gt;
-
-&lt;h3&gt;Blog&lt;/h3&gt;
-
-&lt;p&gt;Google &lt;a href=&quot;http://www.google.com/search?q=blog+definition&quot;&gt;&amp;quot;blog definition&amp;quot;&lt;/a&gt; and you&amp;#39;ll get 
-&lt;pre&gt;
-blog /blôg/
-Noun: A Web site on which an individual or group of users record opinions, information, etc. on a regular basis. 
-&lt;/pre&gt;
-Again in our scope the group of users is the team and everyone on the team can add and edit posts.&lt;/p&gt;
-
-&lt;h3&gt;Wiki vs. Blog&lt;/h3&gt;
-
-&lt;p&gt;Technically there is no substantial difference between a wiki and a blog in the scope we have just defined. Both are essentially content management systems that allow their users to create and edit content.&lt;/p&gt;
-
-&lt;p&gt;For both types there is software that provides versioning facilities, search, commenting, file uploads and notifications for new content. So, no difference there.&lt;/p&gt;
-
-&lt;p&gt;The experiment of substituting the wiki with a blog showed that there are small but significant differences on the usage uptake between the two tools.&lt;/p&gt;
-
-&lt;p&gt;My recent experience showed that a blog was more easily accepted and started seeing use by the team a lot faster than a wiki. There seemed to be more incentive in adding to the blog than in adding to the wiki.&lt;/p&gt;
-
-&lt;p&gt;Now the evidence is empirical and also there are significant differences between projects for there to be a definite verdict but the indications are nonetheless strong.&lt;/p&gt;
-
-&lt;p&gt;One reason for it might be that the blog format is by now very familiar to the overwhelming majority of software developers. Many of my colleagues maintain their own blogs and have no difficulties with the concept. &lt;/p&gt;
-
-&lt;p&gt;I find this hard to believe though. Most blog engines use text markup that originated with wikis (Markdown, Textile etc.) and as I already said there is hardly any difference in how content is created or updated.&lt;/p&gt;
-
-&lt;p&gt;I attribute the difference to the concept of content ownership: In a wiki a single page has no clear owner. It&amp;#39;s a collaborative effort by definition and that ever present edit button seems to scare some people off&lt;sup&gt;2&lt;/sup&gt;. Editing something someone else wrote feels I guess invasive.&lt;/p&gt;
-
-&lt;p&gt;In the blog the pattern of usage has a clear ownership attribute: the post is owned by whoever created it, any discussion about the content happens in the comments section and there is the implicit understanding that any changes needed to keep the content current will be undertaken by the content owner.&lt;/p&gt;
-
-&lt;p&gt;Now this is a purely psychological difference, since on both platforms everyone on the team can view and edit everything, but the empirical evidence suggests it is significant. &lt;/p&gt;
-
-&lt;p&gt;There is one usage for which wikis are undisputedly the better solution and that is for collaboratively developing the official project documentation but there the &amp;quot;ownership&amp;quot; of the content is explicitly shared which to my mind strengthens the argument.&lt;/p&gt;
-
-&lt;p&gt;In the case of official documentation we can also view it as a single unit of structured work where the interlinking facilities of a wiki are a huge advantage &lt;strong&gt;and&lt;/strong&gt; impose a kind of unification layer while in a blog each post is a single unit and does not necessarily have to fit with everything else, which makes it ideal for informal information dissemination.&lt;/p&gt;
-
-&lt;h3&gt;Recap&lt;/h3&gt;
-
-&lt;p&gt;I find that blogs make a better communication medium for medium to long term persistence of project relevant knowledge (design decisions, howtos, status reports) while wikis are much better for developing official documentation. Transient information (&amp;quot;yoohoo, new version for our favorite library&amp;quot;) is still best handled through IM and emails.&lt;/p&gt;
-
-&lt;p&gt;Feel free to flame me as an ignorant idiot.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; &amp;quot;introduce&amp;quot; is another pompous term that means I ran around extolling the virtues of a tool until my significantly more intelligent colleagues get tired of hearing the noise and start using it just to shut me up.&lt;/p&gt;
-
-&lt;p&gt;&lt;sup&gt;2&lt;/sup&gt; I initially was myself baffled by this since collective code ownership is something we strive for in our projects until I noticed that no matter how many developers can understand and change the code the developer who originally was tasked with creating a feature was always referred to as &amp;quot;the guy who wrote it&amp;quot;.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 12 Sep 2011 16:16:43 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2011/09/12/blogs-vs-wikis</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2011/09/12/blogs-vs-wikis</guid>
-      </item>
-    
-      <item>
-        <title>Tried and tested but boring</title>
-        <description>&lt;p&gt;I&amp;#39;ve spent a large part of my professional career helping build software for systems that had to adhere to one standard of safety or other. From remote controlled locomotives to &lt;a href=&quot;http://www.accu-chek-mobile.de/&quot;&gt;blood sugar measuring handhelds&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;I&amp;#39;ve even read the &lt;a href=&quot;http://en.wikipedia.org/wiki/DO-178B&quot;&gt;DO-178B&lt;/a&gt;. As a hacker I find these standards stifling and extremely inconvenient. They lag behind modern programming techniques by what amounts to geological ages in computing and set very strict rules on the form and function of your code. They also bind you to paper-heavy processes that are uniquely unqualified in handling any kind of change.&lt;/p&gt;
-
-&lt;p&gt;The infamous MISRA C rules have been hounding me for years and I have been present in countless debates about which rule to turn off and which to keep. The pressure to work around these rules is immense and if I am brutally honest there is no software out there that complies 100% with the highest safety standards. I consider the aforementioned DO-178B - in Europe known as ED-12B - as the strictest but I haven&amp;#39;t seen the standards required for nuclear reactors.&lt;/p&gt;
-
-&lt;p&gt;I used to rant against all the standards. Hot on top of the wave of dynamic languages, short development cycles and agile practices I wanted to have all the shiny new toys and find cool ways to do stuff. Cool, dynamic, clever.&lt;/p&gt;
-
-&lt;p&gt;It turns out, safety relevant/critical software while doing really cool stuff is a pretty boring experience. You are limited to a small set of languages and a strict standard for each language. The development processes are steeped in documents and in the name of risk assessment (not the development risks most software techies worry about, but actual physical risk to property, environment and life) emulate waterfalls. Instead of one big one you may get a string of smaller waterfalls, but the pattern is there.&lt;/p&gt;
-
-&lt;p&gt;And there are reasons for it. Very good reasons actually, reasons to do with accountability, verifiability, the aforementioned risk assessment and mitigation. Still, like I said, pretty boring. I have great respect for safety inspectors, I could never, ever do their job.&lt;/p&gt;
-
-&lt;p&gt;And one thing I remain adamant about is that being certified for a safety standard does not make your software safe.&lt;/p&gt;
-
-&lt;p&gt;But wait, I&amp;#39;m talking about &lt;strong&gt;production&lt;/strong&gt; code.You know, the stuff that is flashed onto the silicon, that beeps and blinks, reads sensors and switches relays and stuff. To write that you need a text editor. Then you get your compiler, assembler and linker, string them together and create your application.
-Put all of these together into a glorified text editor called an IDE and you have the state of a development environment in the embedded world: A whole bunch of word documents and an IDE. While I like to believe that this is by no means as dominant as it was 10 years ago, it is not gone either.&lt;/p&gt;
-
-&lt;p&gt;If you leave it at that then you spent most of your time doing reviews and filling Word documents with specifications (requirements/test/delivery/functional/safety/risk - take your pick). Documents that are very likely write-only. Didn&amp;#39;t I say it was boring?&lt;/p&gt;
-
-&lt;p&gt;I hate typing inane prose into a document nobody will ever read. I hate binary blobs I cannot diff to figure out what has changed. I hate syncing my repository and downloading megabytes of bits that only take up space. And above all I hate duplicating effort. I really*2 hate it.&lt;/p&gt;
-
-&lt;p&gt;On the other hand when that 60-ton locomotive first rolled down the tracks guided by a few bytes transmitted over the air I was glad for the mountain of protocol specifications and test plans and test protocols and checklists that &amp;quot;proved&amp;quot; everything was proper. 
-I was confident. After all I had every requirement covered, I had simulated everything in the protocol specification and thrown in some extra tests for good measure.&lt;/p&gt;
-
-&lt;p&gt;That the train drivers escorting me in the locomotive threatened to tie me on the front of the engine while we conducted braking tests made me sweat a little bit. They laughed. The system crashed 6 times in the first hour that first day. The one thing that worked was the transition to the safe state which for the locomotive meant &amp;quot;lock the brakes and stay put&amp;quot;. So, I was right to sweat but I would have survived being tied to the front of the engine.&lt;/p&gt;
-
-&lt;p&gt;By the end of that day I was ranting and raving at the absolute waste of effort required to maintain all that paperwork. So much time when I could have thought of cruel and unusual punishments for my code. So much time I could have spent devising and running tests.&lt;/p&gt;
-
-&lt;p&gt;It turns out the paperwork is necessary. I urge you to go and read safety standards. They actually state very reasonable, very important and very serious things we need to consider while building the software that moves our world. It helps when you realize that these standards are the result of the work of many very smart people combined with some very hard lessons. Some of those lessons even cost lives.&lt;/p&gt;
-
-&lt;p&gt;So these are tried and tested methods and tools, distilled experience we would be fools to ignore.&lt;/p&gt;
-
-&lt;p&gt;And I went back and took a long hard look at that glorified text editor ecosystem. What can we do to reduce the boring, repetitive, duplicate work?
-Model driven development, unit testing, continuous integration, executable requirements, simulators, automated regression testing, code coverage, static code analysis, performance and stress testing, document generation. All of it is supposed to give us more time to do the &lt;em&gt;actual&lt;/em&gt; work.&lt;/p&gt;
-
-&lt;p&gt;Generating documentation was actually the first goal: How out of all the living, changing, actively developed code parts could we get the static, dead, unchanging documentation. So I looked into it, and a door opened into a whole world, a world without restrictions&lt;sup&gt;1&lt;/sup&gt;. &lt;/p&gt;
-
-&lt;p&gt;I mentioned in &lt;a href=&quot;/software/2011/02/04/managing-your-development-environment/&quot;&gt;&amp;quot;Managing your development environment?&amp;quot;&lt;/a&gt; that the modern software development environment is as intricate and intelligent as the production software it produces. &lt;/p&gt;
-
-&lt;p&gt;In an embedded software system that follows safety guidelines the &amp;quot;backstage&amp;quot; is where the interesting stuff is. &lt;/p&gt;
-
-&lt;p&gt;You want your build to run faster? You have to apply the same monitoring/profiling concepts and methods you read about web applications.&lt;/p&gt;
-
-&lt;p&gt;You want your infrastructure to integrate easily? You should use small web applications (think rack based) with clear and simple APIs. That way you can add off-the-shelf authentication/user management, caching, monitoring and notifications and when the next project comes you get to reuse whatever fits. RESTful APIs are a boon for this.&lt;/p&gt;
-
-&lt;p&gt;Best of all, you get to work with current technologies which is the whole point.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; The oxymoron of using error-prone software to prove that software is error-free has not escaped the people that write safety standards. You do have to validate your infrastructure code but the restrictions are not as bad and usually you have to do the same things you would do for a &amp;quot;regular&amp;quot; high availability service.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 11 Aug 2011 16:16:43 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2011/08/11/tried-and-tested-but-boring</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2011/08/11/tried-and-tested-but-boring</guid>
       </item>
     
   </channel>

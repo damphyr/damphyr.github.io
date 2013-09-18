@@ -134,8 +134,12 @@ ul.posts span {
 }
 
 .site .footer .rss img {
-  border: 0;
+  border: 2;
+  float:left;
 }
+
+p img { margin-right: 1em;
+  float:left;}
 
 /*****************************************************************************/
 /*
