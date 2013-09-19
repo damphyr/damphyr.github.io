@@ -7,6 +7,43 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>ForgetMeNot: SublimeText, jekyll and rake</title>
+        <description>&lt;p&gt;&lt;em&gt;One more in the series of let-me-jot-this-down-cause-I-forget-easily articles&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;In the blog&amp;#39;s hiatus time I managed to switch from Textmate to SublimeText.&lt;/p&gt;
+
+&lt;p&gt;The reason for switching has to do with SublimeText&amp;#39;s availability on all platforms I work with (namely I can get it to work on Windows). I&amp;#39;ve come to really like this editor with it&amp;#39;s simple JSON configuration and the lightning fast search facilities it offers. And I find increasingly annoying the need to switch outside the editor to perform tasks on the console.&lt;/p&gt;
+
+&lt;p&gt;Luckily SublimeText has a nice and simple (again JSON based) batch execution system (called a Build System). Instead of duplicating knowledge I myself have found somewhere else, go check &lt;a href=&quot;http://addyosmani.com/blog/custom-sublime-text-build-systems-for-popular-tools-and-languages/&quot;&gt;this article by Addy Osmani&lt;/a&gt; which explains things very well.&lt;/p&gt;
+
+&lt;p&gt;Now, switching the blog to jekyll also means I spent a lot more time within SublimeText when I write blogs. In typically lazy fashion I switched to the terminal for &lt;em&gt;jekyll build&lt;/em&gt;.  This got old very fast, so I was looking for a way to get a build system to work.&lt;/p&gt;
+
+&lt;p&gt;The first thing was to call jekyll build directly, which went south pretty fast since I use rvm. The default OS X Ruby installation has actually never been used on my current machine.&lt;/p&gt;
+
+&lt;p&gt;Using Addy&amp;#39;s article I figured out how to set the environment to set the rvm path. Now, instead of using &lt;em&gt;rvm-auto-ruby&lt;/em&gt; I just set the rvm default to the ruby version I use for my personal projects. All other installations don&amp;#39;t have the jekyll gem anyway.&lt;/p&gt;
+
+&lt;p&gt;And instead of creating a build system for jekyll I just created a rakefile that calls &lt;em&gt;jekyll build&lt;/em&gt; and used the following as a build system&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;env&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:{&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;quot;PATH&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;${HOME}/.rvm/bin:${PATH}&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;quot;LC_CTYPE&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;UTF-8&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;cmd&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;rake&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;quot;file_regex&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;^(...*?):([0-9]*):?([0-9]*)&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;That &lt;em&gt;&amp;quot;LC_CTYPE&amp;quot;:&amp;quot;UTF-8&amp;quot;&lt;/em&gt; is crucial, especially with the various greek, german and spanish UTF-8 characters loose on this blog. Jekyll chokes very fast (article number 3 to be exact) if it&amp;#39;s not set.&lt;/p&gt;
+
+&lt;p&gt;The beauty of it is that the standard Ruby regex for errors still works and stacktraces are clickable and open the correct file within the editor. Sweet!&lt;/p&gt;
+</description>
+        <pubDate>Thu, 19 Sep 2013 14:00:00 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2013/09/19/forgetmenot-sublime-jekyll-rake</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2013/09/19/forgetmenot-sublime-jekyll-rake</guid>
+      </item>
+    
+      <item>
         <title>Baruco 2013</title>
         <description>&lt;p&gt;&lt;img src=&quot;/images/icanseethesea.jpg&quot; alt=&quot;I can see the sea&quot;&gt; Baruco is my excuse for the yearly pilgrimage to Barcelona.&lt;/p&gt;
 
@@ -433,42 +470,6 @@ it is feasible to create a master-slave configuration feeding the build package 
         <pubDate>Tue, 03 Jan 2012 15:16:43 +0100</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2012/01/03/poor-mans-test-parallelism</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2012/01/03/poor-mans-test-parallelism</guid>
-      </item>
-    
-      <item>
-        <title>Επιλεκτικότητα</title>
-        <description>&lt;p&gt;Μερικές φορές (...τις νύχτες περνάς σε κλειστά club της συμφοράς - συγχωρήστε με, αλλά είναι καταναγκαστικό το συμπλήρωμα του στίχου).
-Αλλά παρεκλίνω πριν καν αρχίσω. Θα είναι όμως δύσκολο να βγει νόημα από το παρακάτω παραλλήρημα.&lt;/p&gt;
-
-&lt;p&gt;Η &amp;quot;κρίση&amp;quot; - και γιατί την βάζεις θα μου πεις σε εισαγωγικά; Θα τη βάλω σε εισαγωγικά γιατί όταν μιλάει κανείς για &amp;quot;κρίση&amp;quot; περιορίζεται στην οικονομική της πλευρά, ένα κομμάτι που ολοένα και περισσότερο μου μοιάζει φτιαχτό, ψευδές, ένας αντιπερισπασμός απέναντι στην γενική πραγματικότητα.&lt;/p&gt;
-
-&lt;p&gt;Η πραγματική κρίση, αυτή της έλλειψης ιδεών, του ατομικισμού, της κοινωνικής αποσύνθεσης, της παντελούς έλλειψης παιδείας, η κρίση της κοινής λογικής δεν μας προέκυψε ξαφνικά. Βλέπουμε το αναπόφευκτο αποτέλεσμα μιας μακροχρόνιας πορείας απαξίωσης και ωχαδερφισμού. Και όταν για τη γενιά μου και τους νεότερους (δλδ το 70% του πληθυσμού) αυτή η κατάσταση ήταν φυσιολογική δεν μπορώ να μιλάω για κρίση. Εξού και τα εισαγωγικά.&lt;/p&gt;
-
-&lt;p&gt;Οι σπασμωδικές ενέργειες του κατεστημένου αναβιώνουν και ενισχύουν τις συμπεριφορές του παρελθόντος και με τη σειρά τους ενισχύουν τη βιαιότητα των αντιδράσεων σε έναν ατέρμονο φαύλο κύκλο.
-Ναι, αναφέρομαι στις συλλήψεις νεαρών από την αστυνομία, τον ξυλοδαρμό τους &lt;em&gt;μετά&lt;/em&gt; τη σύλληψη και την κατασκευή - γιατί δεν μπορεί να χαρακτηριστεί αλλιώς - κακουργηματικού κατηγορητηρίου.&lt;/p&gt;
-
-&lt;p&gt;Είναι αυτό το μεικτό συναίσθημα οργής και έκπληξης μπροστά στην ανείπωτη αμάθεια και βλακεία. Αυτό που με κάνει να φωνάζω &amp;quot;μα καλά ρε όρνια, πότε σε ολόκληρη την ιστορία της ανθρωπότητας έχει επιφέρει η καταστολή τίποτα περισσότερο από βραχυπρόθεσμα αποτελέσματα; Πόσο Μ****ΚΕΣ πρέπει να είστε ώστε να μη βλέπετε ότι το μοναδικό αποτέλεσμα είναι η υπονόμευση του μέλλοντος όταν χώνετε 15χρονα στη φυλακή με το έτσι θέλω. Το δικό σου το ζαγάρι δλδ. είναι προστατευμένο;&amp;quot;&lt;/p&gt;
-
-&lt;p&gt;Αλλά εξακολουθώ να παρεκλίνω. Παρακολουθώ τις εξελίξεις, μεταβιβάζω ειδήσεις, σχηματίζω γνώμη, όλα μέσα από ένα κύκλο ανθρώπων και μέσων προσεκτικά επιλεγμένων.
-Μια πολύ λεπτη ισορροπία ανάμεσα στην σωστή ενημέρωση, την προστασία (ψυχολογική και ψυχική), την απομόνωση και την εθελοτυφλία. &lt;/p&gt;
-
-&lt;p&gt;Είναι πολύ εύκολο να κρυφτείς στο κύκλο των γνωστών και φίλων, των ιδεολογικών συνοδοιπόρων. Κάπως έτσι κόντεψε να μου ξεφύγει το γεγονός ότι υπάρχουν άνθρωποι που δυσανασχετούν για το #freemenacius και την έκφραση κοινής λογικής που συνοδεύει την αδρανειακή αντίδραση ενός πανικόβλητου κατεστημένου.&lt;/p&gt;
-
-&lt;p&gt;Ειλικρινά, δεν θέλω να ασχοληθώ. Προτιμώ, σαφώς προτιμώ, τη θετική αποδοχή ομοϊδεατών. Προτιμώ να κουνάω το κεφάλι καταφατικά, να μη συναντώ αντίλογο. Είναι πιο εύκολο. Ακόμα πιο εύκολο είναι να τα κόψω τελείως τα νέα, να απαλλαγώ επιτέλους από αυτή τη μαυρίλα, την κατάθλιψη και την απαισιοδοξία. Η κοινή λογική όμως λέει ότι αυτό είναι στρουθοκαμηλισμός.&lt;/p&gt;
-
-&lt;p&gt;Και στο τέλος η παράνοια και ο αντίλογος θα εισβάλλουν και στον μικρό κύκλο προστασίας που τόσο προσεκτικά έχω κτίσει. Check mate.&lt;/p&gt;
-
-&lt;p&gt;Εσύ που πιστεύεις ότι καλά τους κάνανε, εσύ που ζεις με το megamou και θα μου παπαγαλίσεις την τελευταία έκδοση του τηλεοπτικού λάβδανου, βγες άνθρωπε μου από το καβούκι σου. Κοίτα γύρω σου, μπορεί εσένα να μη σε αγγίζει ακόμα, αλλά ρε φίλε, θα σε φτάσει κι εσένα, όποιος κι αν είσαι.&lt;/p&gt;
-
-&lt;p&gt;Το ξέρω ότι φοβάσαι. Είναι φυσιολογικό όταν υπάρχει τέτοια ανισότητα. Φοβάσαι όσο είσαι από πάνω, φοβάσαι να μιλήσεις μήπως και χάσεις τα προνόμια. Φοβάσαι μήπως βρεθείς από κάτω.&lt;/p&gt;
-
-&lt;p&gt;Ω, το ντύνεις με &lt;a href=&quot;http://news.radiobubble.gr/2011/12/blog-post_08.html?spref=tw&quot;&gt;&amp;quot;συμβαίνουν αυτά&amp;quot;&lt;/a&gt;, με &amp;quot;δε πειράζει μωρέ&amp;quot;, με &amp;quot;αλβανούς&amp;quot; , με &amp;quot;ρώσους&amp;quot;,  με &amp;quot;αναρχικούς&amp;quot; μα δεν παύει να είναι φόβος. &lt;/p&gt;
-
-&lt;p&gt;Το ξέρω, γιατί είμαι κι εγώ σαν κι εσένα. Αλλά το ίδιο είναι και ο @menacius και τα παιδιά που ξενυχτάνε στη ΓΑΔΑ. Όλοι μας το ίδιο είμαστε και αν δε σηκώσεις το κεφάλι αύριο θα είσαι εσύ στη θέση τους...&lt;/p&gt;
-</description>
-        <pubDate>Fri, 09 Dec 2011 15:16:43 +0100</pubDate>
-        <link>http://www.ampelofilosofies.gr/rumblings/2011/12/09/epilektikotita</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/rumblings/2011/12/09/epilektikotita</guid>
       </item>
     
   </channel>
