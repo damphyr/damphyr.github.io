@@ -7,6 +7,42 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>ForgetMeNot:  Setting up SSH keys for Capistrano on Windows</title>
+        <description>&lt;p&gt;New project, old problems.&lt;/p&gt;
+
+&lt;p&gt;Getting familiar with the 3.0 version of Capistrano (the guys deserve praise for adopting the Rake DSL) and immediately I stumbled on the old &amp;quot;SSH passwordless logins won&amp;#39;t work on Windows&amp;quot; problem.  &lt;/p&gt;
+
+&lt;p&gt;It&amp;#39;s a myth, but you have to fumble a bit till it can work. Did this 4 or 5 years ago (and it was slightly more work) and had to do it again this week, so here&amp;#39;s a forgetmenot on how to get Capistrano 3.x to use SSH keys for passwordless login on Windows7.&lt;/p&gt;
+
+&lt;h3&gt;Generate your keys&lt;/h3&gt;
+
+&lt;p&gt;No reason to go through it (which saves me like half a dozen steps from this list), but if you&amp;#39;re on Windows and you use puttygen please note that you will need to export the keys in OpenSSH format and copy the &lt;em&gt;exported&lt;/em&gt; public key in the authorized_keys file on the server side.&lt;/p&gt;
+
+&lt;h3&gt;Copy the OpenSSH format key in C:\Users\your_username\.ssh&lt;/h3&gt;
+
+&lt;p&gt;Now, in the *ix world keys and configuration are expected in ~/.ssh by default. Where you keep them on Windows doesn&amp;#39;t really matter, the  C:\Users\your_username\.ssh is just for conceptual consistency.&lt;/p&gt;
+
+&lt;h3&gt;Tell Capistrano where to find the keys&lt;/h3&gt;
+
+&lt;p&gt;The default value for key location in Capistrano is the *ixy one (doh!) so on Windows you need to go the extra mile.&lt;/p&gt;
+
+&lt;p&gt;Now choosing C:\Users\your_username\.ssh gives us an advantage: Your keys are now in %USERPROFILE%\.ssh which means we can use the environment and get multiple user support for free. So in your stage deployment configuration set the Capistrano SSH options as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:ssh_options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;ss&quot;&gt;keys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ENV&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;USERPROFILE&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/.ssh/key.id_rsa&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;do substitute key.id_rsa with whatever filename your keys are stored in plz ;)&lt;/p&gt;
+
+&lt;p&gt;Also depending on the server setup there might be a :forward_agent option there or not, but if you&amp;#39;re doing :forward_agent magic with the server you don&amp;#39;t need me to tell you how to setup your ssh options.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 27 Sep 2013 11:00:00 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2013/09/27/capistrano-windows-ssh</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2013/09/27/capistrano-windows-ssh</guid>
+      </item>
+    
+      <item>
         <title>ForgetMeNot: SublimeText, jekyll and rake</title>
         <description>&lt;p&gt;&lt;em&gt;One more in the series of let-me-jot-this-down-cause-I-forget-easily articles&lt;/em&gt;&lt;/p&gt;
 
@@ -384,92 +420,6 @@ Why would you need this you will ask?&lt;/p&gt;
         <pubDate>Fri, 13 Jan 2012 15:16:43 +0100</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2012/01/13/rake-dynamic-prerequisites</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2012/01/13/rake-dynamic-prerequisites</guid>
-      </item>
-    
-      <item>
-        <title>Poor man's test parallelism</title>
-        <description>&lt;h3&gt;Problematic luxury&lt;/h3&gt;
-
-&lt;p&gt;Recently in our current project we ran up against a luxury problem: The number of our tests has grown so much that it became unfeasible to let them run on a per-commit basis.&lt;/p&gt;
-
-&lt;p&gt;There are also so called &amp;#39;long running&amp;#39; tests that test processes with a standard duration of several minutes&lt;sup&gt;1&lt;/sup&gt;. We actually want to run all tests on all builds but we were faced with a few hurdles.&lt;/p&gt;
-
-&lt;p&gt;The build used for the tests is &lt;strong&gt;big&lt;/strong&gt; - meaning it contains the whole system and thus has the slowest build times. Running the tests in the same build job only exasperates the problem blowing the self-imposed 10 minute limit sky high.&lt;/p&gt;
-
-&lt;p&gt;Currently the &amp;quot;monster&amp;quot; build (all platforms, all components) clocks in at ~30 minutes under high load or ~12 minutes if it gets the build server to itself&lt;sup&gt;2&lt;/sup&gt;. The build required for tests comes second at ~8 minutes.&lt;/p&gt;
-
-&lt;h3&gt;Throw hardware at the problem&lt;/h3&gt;
-
-&lt;p&gt;The conventional approach fits our problem well: Split the tests in separate test suites and throw hardware at the problem. Since we are using VMs for our development environment it is actually very easy to instantiate a VM for every test suite and let the testing commence in parallel (for other reasons we cannot run test suites in parallel in the same VM).&lt;/p&gt;
-
-&lt;p&gt;Where it gets a bit complicated is coordinating the builds and the tests. We use &lt;a href=&quot;http://jenkins-ci.org/&quot;&gt;Jenkins&lt;/a&gt; for build management and 
-it is feasible to create a master-slave configuration feeding the build package to the test jobs but it still strikes me as unnecessarily complicated&lt;sup&gt;3&lt;/sup&gt;. &lt;/p&gt;
-
-&lt;p&gt;It also means that the data on the dependencies between the different build jobs is distributed in the Jenkins instances. I have a particular aversion to this type of configuration: ideally any job management system should be able to function without built-in knowledge of it&amp;#39;s place in the system. It just needs to know where to go for the information and we get to manage it centrally&lt;sup&gt;4&lt;/sup&gt;.&lt;/p&gt;
-
-&lt;h3&gt;What do you actually want?&lt;/h3&gt;
-
-&lt;p&gt;In order to kick off the tests all we need is a URL pointing to the build package and a bit of metadata, in this case the revision the build corresponds to.&lt;/p&gt;
-
-&lt;p&gt;Once the tests are executed we need to know the status of the tests for the revision and a URL pointing to the detailed logs.&lt;/p&gt;
-
-&lt;p&gt;Given that we want to test all change sets and that test suites have greatly varying execution times we want to know as soon as possible which revision breaks a test suite...per test suite.&lt;/p&gt;
-
-&lt;h3&gt;Please join the queue in an orderly fashion&lt;/h3&gt;
-
-&lt;p&gt;So we want to distribute one build to N testers without knowing when they are going to be available to process it. Sounds like a background job thingy doesn&amp;#39;t it?&lt;/p&gt;
-
-&lt;p&gt;Setup a queue for each tester, publish the build information (URL &amp;amp; revision) and let the tester grab the build and do it&amp;#39;s thing. Fire and forget!&lt;/p&gt;
-
-&lt;p&gt;This type of job processing is bread and butter for web applications and there&amp;#39;s a lot of libraries/systems that do this: &lt;a href=&quot;https://github.com/defunkt/resque&quot;&gt;resque&lt;/a&gt;, &lt;a href=&quot;http://agilewebdevelopment.com/plugins/bj&quot;&gt;BackgroundJob&lt;/a&gt;, &lt;a href=&quot;https://github.com/tobi/delayed_job&quot;&gt;DelayedJob&lt;/a&gt; etc.&lt;/p&gt;
-
-&lt;p&gt;Still too complicated. You need Redis, or Rails, or some SQL database or you&amp;#39;re tied to a POSIX OS&lt;sup&gt;5&lt;/sup&gt;. You get all kinds of goodies like priority scheduling, persistence and monitoring (Resque is my particular favorite with the nifty web GUI) but honestly this is the best case of YAGNI I have yet encountered.&lt;/p&gt;
-
-&lt;h3&gt;Not created here&lt;/h3&gt;
-
-&lt;p&gt;Why can&amp;#39;t I find something simple, with minimal dependencies that will run everywhere? Probably because it takes less time to built it than to look for it! &lt;/p&gt;
-
-&lt;p&gt;Take &lt;a href=&quot;http://www.sinatrarb.com/&quot;&gt;Sinatra&lt;/a&gt; and Ruby&amp;#39;s built-in Queue class, sprinkle some JSON and you get &lt;a href=&quot;https://github.com/damphyr/rplex&quot;&gt;rplex&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3&gt;How it works&lt;/h3&gt;
-
-&lt;p&gt;The rplex service waits. In Jenkins at the end of the build we simple post the data to rplex.&lt;/p&gt;
-
-&lt;p&gt;On the tester side an endless loop (implemented in Rplex::Processor) runs the tests whenever a build appears.&lt;/p&gt;
-
-&lt;p&gt;How do we get the test results? Same concept: At the end of the test run we post the data back to rplex, this time targeting a single rplex client. That process just updates our information radiator.&lt;/p&gt;
-
-&lt;h3&gt;Simple complexity&lt;/h3&gt;
-
-&lt;p&gt;We have a whole bunch of rplex clients now but nowhere near the maintenance overhead of Jenkins jobs. The process looks like this:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Start a VM&lt;/li&gt;
-&lt;li&gt;Start the rake task with the Rplex::Processor&lt;/li&gt;
-&lt;li&gt;Do something else&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Fiddling with the data format allows us to do everything we need without touching rplex. If we get a huge backlog for slow test suites we simply restart rplex and empty the queues&lt;sup&gt;6&lt;/sup&gt;.&lt;/p&gt;
-
-&lt;p&gt;Come to think of it, I could replace Jenkins completely using rplex as the core...hmmmm!&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; We&amp;#39;re talking integration and system tests here. Where unit tests are concerned we exert draconian control to ensure fast build times.&lt;/p&gt;
-
-&lt;p&gt;&lt;sup&gt;2&lt;/sup&gt; Network based license schemes for compilers suck big time!&lt;/p&gt;
-
-&lt;p&gt;&lt;sup&gt;3&lt;/sup&gt; Some initial problems with setting up master-slave in Jenkins with our firewall and network zone configuration did not help.&lt;/p&gt;
-
-&lt;p&gt;&lt;sup&gt;4&lt;/sup&gt; Which means we get to version control a single source of configuration and handle redundancy by cloning instances.&lt;/p&gt;
-
-&lt;p&gt;&lt;sup&gt;5&lt;/sup&gt; Oh Windows! Thou art the bane of my developer life!&lt;/p&gt;
-
-&lt;p&gt;&lt;sup&gt;6&lt;/sup&gt; While in theory you would not want to leave any build untested when development is in full swing and you get 5 or 10 patches in the space of 5 minutes - just because somebody was careless - you only care about the last one.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 03 Jan 2012 15:16:43 +0100</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2012/01/03/poor-mans-test-parallelism</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2012/01/03/poor-mans-test-parallelism</guid>
       </item>
     
   </channel>
