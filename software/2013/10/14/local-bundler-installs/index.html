@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>ForgetMeNot:  Maintaining a cache for local bundler installs</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>ForgetMeNot:  Maintaining a cache for local bundler installs</h1>
+<p class="meta">14 Oct 2013</p>
+
+<div class="post">
+<p>Very often I find myself needing to install a certain set of gems without access to rubygems.org or sometimes without any network access.</p>
+
+<p><a href="http://bundler.io/">Bundler</a> allows you perform bundle install from a cache. All you need to do is put all your gems in a vendor/cache directory where your Gemfile is and bundler will look in there if you call it with --local:</p>
+
+<div class="highlight"><pre><code class="bash">bundle install --local
+</code></pre></div>
+
+<p>The really neat trick is that bundler will always update the cache if the vendor/cache directory is present. So doing a simple <em>bundle install</em> with an empty vendor/cache will net you an up-to-date cache you can take with you offline.</p>
+
+<p>My typical use case for this is to use a Gemfile to describe my system&#39;s gems (in really complicated cases there might be a couple of Gemfiles), add the vendor/cache directory, perform bundle install and commit everything but the Gemfile.lock file. </p>
+
+<p>In the developer VM then the environment:update task will perform a local bundle install. This way we have easy and consistent gem updates across the whole team.</p>
+
+</div>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

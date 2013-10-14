@@ -7,6 +7,26 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>ForgetMeNot:  Maintaining a cache for local bundler installs</title>
+        <description>&lt;p&gt;Very often I find myself needing to install a certain set of gems without access to rubygems.org or sometimes without any network access.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://bundler.io/&quot;&gt;Bundler&lt;/a&gt; allows you perform bundle install from a cache. All you need to do is put all your gems in a vendor/cache directory where your Gemfile is and bundler will look in there if you call it with --local:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;bundle install --local
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The really neat trick is that bundler will always update the cache if the vendor/cache directory is present. So doing a simple &lt;em&gt;bundle install&lt;/em&gt; with an empty vendor/cache will net you an up-to-date cache you can take with you offline.&lt;/p&gt;
+
+&lt;p&gt;My typical use case for this is to use a Gemfile to describe my system&amp;#39;s gems (in really complicated cases there might be a couple of Gemfiles), add the vendor/cache directory, perform bundle install and commit everything but the Gemfile.lock file. &lt;/p&gt;
+
+&lt;p&gt;In the developer VM then the environment:update task will perform a local bundle install. This way we have easy and consistent gem updates across the whole team.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 14 Oct 2013 11:00:00 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2013/10/14/local-bundler-installs</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2013/10/14/local-bundler-installs</guid>
+      </item>
+    
+      <item>
         <title>ForgetMeNot:  Setting up SSH keys for Capistrano on Windows</title>
         <description>&lt;p&gt;New project, old problems.&lt;/p&gt;
 
@@ -373,53 +393,6 @@ In other cases things are superseded by newer functionality or the developers ad
         <pubDate>Wed, 18 Apr 2012 16:16:43 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2012/04/18/dealing-with-cruft</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2012/04/18/dealing-with-cruft</guid>
-      </item>
-    
-      <item>
-        <title>rake dynamic prerequisites</title>
-        <description>&lt;p&gt;There&amp;#39;s a behaviour in rake I keep stumbling on. It&amp;#39;s the inability to dynamically add prerequisite tasks on a task from one of it&amp;#39;s prerequisites.&lt;/p&gt;
-
-&lt;p&gt;I&amp;#39;ve used this gist a couple of times now: &lt;/p&gt;
-
-&lt;script src=&quot;https://gist.github.com/847273.js?file=rakefile&quot;&gt; &lt;/script&gt;
-
-&lt;p&gt;I&amp;#39;m pretty sure the first time I actually stumbled on this was &lt;a href=&quot;http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/159167&quot;&gt;sometime in 2005&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3&gt;Why?&lt;/h3&gt;
-
-&lt;p&gt;The output from the rakefile above is 
-&lt;script src=&quot;https://gist.github.com/847273.js?file=output&quot;&gt; &lt;/script&gt;
-when, if the dependency tree was built dynamically, &amp;#39;c&amp;#39; should pop up before &amp;#39;a&amp;#39;:
-&lt;script src=&quot;https://gist.github.com/847273.js?file=outut%20as%20it%20should%20be&quot;&gt; &lt;/script&gt;
-Why would you need this you will ask?&lt;/p&gt;
-
-&lt;p&gt;Well, it helps to do things like &lt;code&gt;task :build =&amp;gt; :determine_sources&lt;/code&gt; instead of &lt;code&gt;task :build =&amp;gt; determine_sources()&lt;/code&gt; and avoid the performance hit of scanning for dependencies before you actually call the task.&lt;/p&gt;
-
-&lt;p&gt;This improves rake responsiveness which has a positive effect on team moral (no kidding, this is important!)&lt;/p&gt;
-
-&lt;p&gt;The workaround is to calculate all dependencies for all tasks when the rakefile loads and it does not scale.&lt;/p&gt;
-
-&lt;p&gt;Case in point: Currently our rakefile builds a C system with a changing number of small applications. Manually adding tasks for every new application costs too much so it is done automatically. Because no dynamic prerequisites are allowed, the method that creates the tasks also needs to scan the source and determine the complete dependency tree for every app task.&lt;/p&gt;
-
-&lt;p&gt;This adds unnecessary delays in rake&amp;#39;s startup. As we usually only call one build task we only need to calculate the dependencies for that one task (this is actually done but with a whole bunch of code that essentially controls task creation based on the task called and it is fragile and prevents us from calling multiple tasks in the same command line - basically it&amp;#39;s a hack)&lt;/p&gt;
-
-&lt;h3&gt;Put your money...&lt;/h3&gt;
-
-&lt;p&gt;The &lt;a href=&quot;https://github.com/damphyr/rake/commit/609ca3b434a7ff6689ca476a9ee5d7d22437042a&quot;&gt;patch&lt;/a&gt; is actually trivial, a two line change in lib/rake/task.rb in the invoke_prerequisites method&lt;sup&gt;1&lt;/sup&gt;.&lt;/p&gt;
-
-&lt;h3&gt;Where&amp;#39;s the catch?&lt;/h3&gt;
-
-&lt;p&gt;Well, this actually only works if a prereq is changing the prerequisite list it is a member of. Anything else is dependent on the sequence the tasks appear in the prerequisites list and has unexpected results.&lt;/p&gt;
-
-&lt;p&gt;There&amp;#39;s also the slight delay introduced by iterating over the prerequisites again, but this barely registers compared with the actual task invocation times.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; And yet it took me almost 7 years to fix. Talk about procrastination...&lt;/p&gt;
-</description>
-        <pubDate>Fri, 13 Jan 2012 15:16:43 +0100</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2012/01/13/rake-dynamic-prerequisites</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2012/01/13/rake-dynamic-prerequisites</guid>
       </item>
     
   </channel>
