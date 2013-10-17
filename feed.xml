@@ -7,6 +7,119 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Vagrant with QNX Neutrino</title>
+        <description>&lt;p&gt;&lt;em&gt;If you don&amp;#39;t know what QNX is don&amp;#39;t be scared, but if you don&amp;#39;t know what vagrant is this post is probably not for you :) &lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Most of my career I have lamented not being able to use the best and most exciting tools because they just won&amp;#39;t work for whatever I have to get running at the time.&lt;/p&gt;
+
+&lt;p&gt;Working with Windows you learn very fast to not expect much comfort, or support, or sane functioning command line interfaces for that matter. But I love edge cases, they represent a chalenge.&lt;/p&gt;
+
+&lt;p&gt;So for the past week or so I have been putting together a setup for QNX Neutrino 6.5 machines.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.qnx.com/products/neutrino-rtos/neutrino-rtos.html&quot;&gt;QNX Neutrino&lt;/a&gt; is a real time operating system offered by QNX Software Systems which apparently belongs to RIM now. It&amp;#39;s a nifty microkernel RTOS, very Unix-like, more BSD than Linux in some ways and you can add all kinds of open source goodies to it.&lt;/p&gt;
+
+&lt;p&gt;QNX is also very kind and offers a VMWare VM with the latest version of the OS. For the task at hand that was a godsend. So I made a few copies and started experimenting with the setup until it was done. &lt;/p&gt;
+
+&lt;p&gt;And then the yak shaving started.&lt;/p&gt;
+
+&lt;p&gt;See, every time I made a mistake I just deleted the VM, made another copy from the QNX master and continued the work. Sounds familiar? &lt;/p&gt;
+
+&lt;p&gt;It&amp;#39;s more or less the vagrant work flow: Define your VM, do &lt;em&gt;vagrant up&lt;/em&gt; to start it, do the work with &lt;em&gt;vagrant ssh&lt;/em&gt; and when you&amp;#39;re finished &lt;em&gt;vagrant halt&lt;/em&gt; or &lt;em&gt;vagrant destroy&lt;/em&gt; if you went too far. The idea was to use a shell provisioning setup and easily test the setup scripts.&lt;/p&gt;
+
+&lt;p&gt;How hard can it be to build a vagrant basebox for QNX? Considering it&amp;#39;s 23:00 and I started this at around 19:00 I would not say it&amp;#39;s easy.&lt;/p&gt;
+
+&lt;h2&gt;Creating the basebox&lt;/h2&gt;
+
+&lt;p&gt;The QNX VM came in VMWare format, I have a VM Workstation license and there is a (commercial) vagrant plugin for VMWare which I promptly acquired. I did not want to go through the trouble of converting the QNX VM from VMWare to VirtualBox just in case the yak became a yak herd. &lt;/p&gt;
+
+&lt;p&gt;Before we package the whole thing there are a few things that need to be done on the QNX VM to allow vagrant to work with it. Everything listed is run as root.&lt;/p&gt;
+
+&lt;h3&gt;Setup sshd&lt;/h3&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#! /bin/sh&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;#setup ssh access &lt;/span&gt;
+random -t
+&lt;span class=&quot;c&quot;&gt;#use emtpy passphrases&lt;/span&gt;
+ssh-keygen -t rsa -f /etc/ssh/ssh_host_key -b 2048
+ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key
+ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key
+&lt;span class=&quot;c&quot;&gt;#and start the server&lt;/span&gt;
+/usr/sbin/sshd&amp;amp;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Also, edit /etc/rc.d/rc.local and add the line &lt;em&gt;/usr/sbin/sshd&amp;amp;&lt;/em&gt; at the end so that sshd starts when the machine reboots.&lt;/p&gt;
+
+&lt;h3&gt;Setup the vagrant user&lt;/h3&gt;
+
+&lt;p&gt;I really dislike this because I have not found a way to automate it further. You need to go through the passwd questions manually.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#! /bin/sh&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#Accept default values and use vagrant as the password&lt;/span&gt;
+passwd vagrant
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;After this you need to add &amp;#39;users:x:100:&amp;#39; at the end of /etc/group&lt;/p&gt;
+
+&lt;h3&gt;Passwordless ssh access&lt;/h3&gt;
+
+&lt;p&gt;Get the &lt;a href=&quot;https://github.com/mitchellh/vagrant/blob/master/keys/vagrant.pub&quot;&gt;vagrant insecure public key&lt;/a&gt; and copy it into /home/vagrant/.ssh/authorized_keys. Then to make sure do the following&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;chown -R vagrant:users /home/vagrant/.ssh
+chmod -R 700 /home/vagrant/.ssh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If the permissions are not set corretly openSSH will not login succesfully (and you will not know why!)&lt;/p&gt;
+
+&lt;h3&gt;Actually create the base box&lt;/h3&gt;
+
+&lt;p&gt;The basebox format is actually very basic: Whatever VM files your provider requires to start the VM plus a metadata.json file with the following content:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;provider:&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;quot;vmware_workstation&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Values that are valid at the time of writing are &amp;quot;vmware&lt;em&gt;workstation&amp;quot;, &amp;quot;vmware&lt;/em&gt;fusion&amp;quot; and &amp;quot;virtualbox&amp;quot;.&lt;/p&gt;
+
+&lt;p&gt;For VMWare VMs the following should do the trick when run in the VMs directory.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;tar cvf qnx65.box *.vmdk *.vmx *.vmxf *.nvram metadata.json
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;(add the .json file yourself :) )&lt;/p&gt;
+
+&lt;h2&gt;Enter Vagrant&lt;/h2&gt;
+
+&lt;p&gt;So we do the &lt;em&gt;vagrant init&lt;/em&gt; and edit the Vagrantfile&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;VAGRANTFILE_API_VERSION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;2&amp;quot;&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;Vagrant&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;configure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;VAGRANTFILE_API_VERSION&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;box&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;qnx65&amp;quot;&lt;/span&gt; 
+  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;box&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;qnx65.box&amp;quot;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#No real URL, the basebox was just in the same directory&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The first &lt;em&gt;vagrant up&lt;/em&gt; needs to specify the provider otherwise vagrant defaults to Virtualbox&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;vagrant up --provider vmware_workstation
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now, if you did not setup ssh correctly then vagrant is going to hang with &amp;quot;Waiting for VM to boot. This can take a few minutes&amp;quot;. This can be easily ascertained if you set the environment variable VAGRANT_LOG=debug and watch how vagrant repeatedly tries to connect and fails miserably never giving up. Go back and set those permissions...&lt;/p&gt;
+
+&lt;p&gt;If you have setup ssh correctly then you&amp;#39;re going to get a &amp;quot;The guest operating system of the machine could not be detected!&amp;quot;. So much for Unix-like. &lt;/p&gt;
+
+&lt;p&gt;Fun fact: If ssh is not correctly setup and &lt;em&gt;vagrant up&lt;/em&gt; hangs, then you can control-C and then try &lt;em&gt;vagrant halt&lt;/em&gt;. After an inordinate amount of time the VM is going to  shutdown. If ssh does work then &lt;em&gt;vagrant halt&lt;/em&gt; will die horribly complaining that it cannot recognise the OS.&lt;/p&gt;
+
+&lt;p&gt;Which means that there&amp;#39;s going to be a continuation to this adventure, where we dwell into the creation of a vagrant guest plugin. This yak is not yet completely shaved.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 18 Oct 2013 01:00:00 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2013/10/18/qnx-vagrant</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2013/10/18/qnx-vagrant</guid>
+      </item>
+    
+      <item>
         <title>ForgetMeNot:  Maintaining a cache for local bundler installs</title>
         <description>&lt;p&gt;Very often I find myself needing to install a certain set of gems without access to rubygems.org or sometimes without any network access.&lt;/p&gt;
 
@@ -323,76 +436,6 @@ This percentage is skewed by the long running builds that are unfortunately affe
         <pubDate>Tue, 24 Apr 2012 16:16:43 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2012/04/24/ruby-performance-improvements-on-windows</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2012/04/24/ruby-performance-improvements-on-windows</guid>
-      </item>
-    
-      <item>
-        <title>Dealing with cruft</title>
-        <description>&lt;p&gt;Working to enhance a software team&amp;#39;s productivity is a never ending task with a very vague goal. &lt;/p&gt;
-
-&lt;p&gt;It looks very bad on any burndown chart, task-based productivity report or velocity factor if you look at it on an individual basis. &lt;/p&gt;
-
-&lt;p&gt;Jon Udell &lt;a href=&quot;http://blog.jonudell.net/2012/01/09/another-way-to-think-about-geeks-and-repetitive-tasks/&quot;&gt;posted an article&lt;/a&gt; with a sane viewpoint on the geek vs. others automation meme and I found the closing comment describes very nicely (part of) the role of a &amp;quot;productivity engineer&amp;quot;&lt;sup&gt;1&lt;/sup&gt;:&lt;/p&gt;
-
-&lt;p&gt;&amp;quot;&lt;em&gt;In this view of the world, tasks that involve data manipulation (as so many modern chores do) are undertaken by teams. There is an infinite supply of manual chores. Everybody tackles them. Ideally there is one member of the team I call the toolsmith. Working shoulder to shoulder with the team, the toolsmith spots an opportunity to automate some piece of the work, writes some code, deploys it, observes how it gets used (or doesn’t get used), assesses its impact (or lack of impact), and then iterates on the code. Meanwhile the toolsmith keeps working alongside the team, chipping away at the never-ending and always-evolving list of manual chores, looking for more opportunities to automate, and exploiting them in an incremental and collaborative way.&lt;/em&gt;&amp;quot;&lt;/p&gt;
-
-&lt;p&gt;There comes a point where the collection of automation utilities becomes cumbersome. Since currently I am deep in build systems and rake I see the same effect in the number of tasks that become available as we add automation steps and combinations of steps targeted at different workflows within our project (i.e. flashing the target when developing, debugging or testing).&lt;/p&gt;
-
-&lt;p&gt;In some cases you start thinking about &lt;del&gt;object&lt;/del&gt;task hierarchies.
-In other cases things are superseded by newer functionality or the developers adopt a different/quicker/more productive workflow along the iterative process that is a software project.&lt;/p&gt;
-
-&lt;p&gt;In my own mind the system code just grows old. It can grow old with me - which just means I can read the code without retching and it will continue to work as wished - or grow old without me, in which case it becomes a grumpy, needy old man with a grudge and a cane to hit me with whenever I want to change something.&lt;/p&gt;
-
-&lt;p&gt;So how do you grow old in health and good spirits? You need exercise, regular checkups and some preventive medicine.&lt;/p&gt;
-
-&lt;h3&gt;As an example...&lt;/h3&gt;
-
-&lt;p&gt;Imagine a large build system built with rake. Something to the tune of ~8K lines of Ruby, with a lot of tasks controlling every aspect of software development from compiling and linking to document generation, documentation, release mechanics, metrics collection and automated testing.&lt;/p&gt;
-
-&lt;p&gt;Although not the traditional software example, such a system exhibits a compressed timeline of the code lifecycle especially where the build up of cruft and the speed with which parts of the code become obsolete are concerned so it serves really well for this article. And no it&amp;#39;s not just because that&amp;#39;s all I have been doing lately and I have nothing more interesting to talk about&lt;sup&gt;2&lt;/sup&gt;.&lt;/p&gt;
-
-&lt;h3&gt;Exercise&lt;/h3&gt;
-
-&lt;p&gt;Code that does not run grows old really fast. The easiest way to keep up is to have tests. Without them large chunks of code fall into obscurity, things start breaking in tasks of &amp;quot;secondary importance&amp;quot; (i.e. documentation generation vs. system build). &lt;/p&gt;
-
-&lt;p&gt;100% test coverage is an ultimately useless effort but you do need enough so that most of your code gets exercised and you have to test all of the entry points to the system.&lt;/p&gt;
-
-&lt;h3&gt;Regular checkups&lt;/h3&gt;
-
-&lt;p&gt;So you have collected all this code but do you actually need it? &lt;/p&gt;
-
-&lt;p&gt;Collect usage metrics - which tasks are called, how often etc. There is a misconception that this needs to be done automatically and it sure is an efficient way but going around and interviewing your users/developers also works. It depends on your system.&lt;/p&gt;
-
-&lt;p&gt;Sometimes interviewing actually works better as you discover or point out new ways of doing things. Actual human communication goes a long way towards assuring that your software actually does what your users want it to do, which I guess is the whole point behind agile methodologies.&lt;/p&gt;
-
-&lt;p&gt;Visualization techniques are also very useful in uncovering forgotten corners, complex dependencies or optimization opportunities. Having a graph of tasks and dependencies works much better than staring at several pages of code. Then you can go around, paper in hand, and literally point and ask &amp;quot;do you actually use this?&amp;quot;&lt;sup&gt;3&lt;/sup&gt;&lt;/p&gt;
-
-&lt;h3&gt;Preventive medicine&lt;/h3&gt;
-
-&lt;p&gt;Sometimes your checkups will uncover things that have been left to rot. The only way to deal with them is to take a scalpel to them.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Do not be afraid to throw away code!&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Armed with the information your checkups provide, together with the tests, you should be confident enough to trim down the fat and keep that old code lean and healthy.&lt;/p&gt;
-
-&lt;h3&gt;Nothing new under the sun&lt;/h3&gt;
-
-&lt;p&gt;When expressing a metaphor on caring about and for your code I realize belatedly that I&amp;#39;m not saying anything about software development that has not been included in iterative, test driven - agile if you want - development practices. &lt;/p&gt;
-
-&lt;p&gt;But I&amp;#39;m talking about automation and development infrastructure, tools and scripts! The quick and dirty hacks you throw together so that you can then get on with the real work. &lt;/p&gt;
-
-&lt;p&gt;You&amp;#39;re going to have a &lt;em&gt;very&lt;/em&gt; grumpy old man if you don&amp;#39;t treat your development environment as it should be treated: just like another &lt;a href=&quot;/software/2011/02/04/managing-your-development-environment/&quot;&gt;software project&lt;/a&gt;&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt;I really hate the term. I wish I could find something that sounds cooler and conveys the role of a software engineer that enables his/her team to work faster, with greater efficiency and less hassle, bringing enjoyment into the workplace. Productivity engineer just conjures the image of a suited consultant gaming the numbers. Toolsmith is too narrow a term as you tend to work on process as much as tools.&lt;/p&gt;
-
-&lt;p&gt;&lt;sup&gt;2&lt;/sup&gt;And I take offence at even the suggestion that such a system is not interesting/cutting edge/insert-cool-term-here.&lt;/p&gt;
-
-&lt;p&gt;&lt;sup&gt;3&lt;/sup&gt;In Ruby the graph gem is a very useful resource and for rake systems that use less crazy dynamic task creation than mine it comes with a script to plot a graph of tasks off the shelf.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 18 Apr 2012 16:16:43 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2012/04/18/dealing-with-cruft</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2012/04/18/dealing-with-cruft</guid>
       </item>
     
   </channel>
