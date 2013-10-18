@@ -7,6 +7,128 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Building a vagrant guest plugin for QNX</title>
+        <description>&lt;p&gt;The yak shaving expedition continues...&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;/software/2013/10/18/qnx-vagrant&quot;&gt;Previously&lt;/a&gt; I set out to create a base box for QNX and naively expected to do a &lt;em&gt;vagrant up&lt;/em&gt; and have everything work. HA!&lt;/p&gt;
+
+&lt;p&gt;Vagrant was very offended at my presumption and started going on about how it was impossible to recognise the OS I was trying to use.&lt;/p&gt;
+
+&lt;p&gt;So I entered the magical world of vagrant &lt;a href=&quot;http://docs.vagrantup.com/v2/plugins/development-basics.html&quot;&gt;plugins&lt;/a&gt; and specifically &lt;a href=&quot;http://docs.vagrantup.com/v2/plugins/guests.html&quot;&gt;guest&lt;/a&gt; and &lt;a href=&quot;http://docs.vagrantup.com/v2/plugins/guest-capabilities.html&quot;&gt;guest capability&lt;/a&gt; plugins&lt;/p&gt;
+
+&lt;p&gt;Let me start by saying that the vagrant API is beautifuly done. Simple, flexible and cleanly coded. The only downside, which is a result of this flexibility, is that you won&amp;#39;t ever get an exhaustive reference. You have to dive into the code!&lt;/p&gt;
+
+&lt;p&gt;Now, to build a guest plugin there are four things that need to be defined:&lt;/p&gt;
+
+&lt;h2&gt;Guest&lt;/h2&gt;
+
+&lt;p&gt;The guest plugin needs it&amp;#39;s name and one method, detect? and looks like this&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;vagrant&amp;quot;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;VagrantPlugins&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;GuestQNX&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Guest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Vagrant&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plugin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;2&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:guest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;detect?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;machine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;machine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;communicate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;uname -s | grep QNX&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We did say that QNX is BSD-like, didn&amp;#39;t we?&lt;/p&gt;
+
+&lt;h2&gt;Guest capabilities&lt;/h2&gt;
+
+&lt;p&gt;With a bit of trial and error I figured out the minimum amount of capabilities that a guest plugin must have to survive booting and shutting down.&lt;/p&gt;
+
+&lt;p&gt;These are &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/damphyr/vagrant-qnx/blob/master/vagrant-guest-qnx/lib/qnx/vagrant/cap/configure_networks.rb&quot;&gt;configure_networks&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/damphyr/vagrant-qnx/blob/master/vagrant-guest-qnx/lib/qnx/vagrant/cap/halt.rb&quot;&gt;halt&lt;/a&gt; &lt;/p&gt;
+
+&lt;p&gt;I added &lt;a href=&quot;https://github.com/damphyr/vagrant-qnx/blob/master/vagrant-guest-qnx/lib/qnx/vagrant/cap/change_hostname.rb&quot;&gt;change_hostname&lt;/a&gt; just because it was easy.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Instead of listing here the implementation code and make this post miles long with copy-paste-able information why don&amp;#39;t you head on to &lt;a href=&quot;http://https://github.com/damphyr/vagrant-qnx/tree/master/vagrant-guest-qnx&quot;&gt;github&lt;/a&gt; and browse at leisure?&lt;/p&gt;
+
+&lt;h2&gt;What took you so long?&lt;/h2&gt;
+
+&lt;p&gt;So a few things that I had to get right for this plugin to work.&lt;/p&gt;
+
+&lt;h3&gt;Gem structure&lt;/h3&gt;
+
+&lt;p&gt;I&amp;#39;m not really sure, but a file named exactly like your plugin (in this case vagrant-guest-qnx.rb) at the top of your gem&amp;#39;s structure seems to be what vagrant expects. Didn&amp;#39;t actually see it documented anywhere but I browsed several 3rd party plugins and copied the structure from vagrant-berkshelf.&lt;/p&gt;
+
+&lt;p&gt;I lifted the handy loader guard there as well:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;begin&lt;/span&gt; 
+ &lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;vagrant&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;rescue&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;LoadError&lt;/span&gt;
+ &lt;span class=&quot;k&quot;&gt;raise&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;The Vagrant Guest QNX plugin must be run within vagrant&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So this code won&amp;#39;t give you ugly stacktraces by chance.&lt;/p&gt;
+
+&lt;h3&gt;The shell&lt;/h3&gt;
+
+&lt;p&gt;This actually cost quite a bit of time. Vagrant generally has awesome logging, very detailed, but in this case it kept exiting with &amp;quot;no error message&amp;quot; so I had to dig in and use the magical powers of sprinkled puts. Turns out all machine.communicate.execute calls were returning exit status 126.&lt;/p&gt;
+
+&lt;p&gt;Now for all you youngsters out there, 126 and 127 are usually shell code for &amp;quot;bloody hell, I can&amp;#39;t find what you want me to run&amp;quot;. And as it turns out, when communicating over ssh vagrant defaults to running everything with bash.&lt;/p&gt;
+
+&lt;p&gt;Unfortunately bash is not available on stock QNX which uses ksh and links it to /bin/sh. So we need &lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ssh&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shell&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;sh&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;in the Vagrantfile.&lt;/p&gt;
+
+&lt;h3&gt;Shared folders&lt;/h3&gt;
+
+&lt;p&gt;There are no VMWare Tools or Guest Additions for QNX. I don&amp;#39;t expect there will ever be. Yet Vagrant tries to establish a share between host and the VM and (in by now typical fashion) ends up hanging forever. So one more addition to the Vagrantfile is needed&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;synced_folder&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;.&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;/vagrant&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:disabled&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And that&amp;#39;s it!&lt;/p&gt;
+
+&lt;h2&gt;Tadaaa!&lt;/h2&gt;
+
+&lt;p&gt;This is the bare minimum Vagrantfile needed to operate the base box you created by faithfully following &lt;a href=&quot;software/2013/10/18/qnx-vagrant&quot;&gt;my instructions&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Vagrantfile API/syntax version. Don&amp;#39;t touch unless you know what you&amp;#39;re doing!&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;VAGRANTFILE_API_VERSION&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;2&amp;quot;&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;Vagrant&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;configure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;VAGRANTFILE_API_VERSION&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;box&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;qnx65&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;box_url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;qnx65sp1.box&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ssh&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shell&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;sh&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;synced_folder&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;.&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;/vagrant&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:disabled&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You will need to install the vagrant-guest-qnx plugin (yes, it&amp;#39;s up on rubygems)&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;vagrant plugin install vagrant-guest-qnx
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;There are also a few constraints on the QNX VM:&lt;/p&gt;
+
+&lt;p&gt;Because there is no sudo in the stock VM everything is done with su. For that reason the default no-password setting for root is still there. For the purposes of this yak shaving expedition that is more than enough. There is a sudo package for QNX and if by some miracle someone is interested, a pull request will be very welcome.&lt;/p&gt;
+
+&lt;p&gt;Halting does not shutdown very fast. Although shutdown is performed, because there are no VM extensions the VM is still listed as running. So you have to wait for the forced shutdown. Not very nice but good enough.&lt;/p&gt;
+
+&lt;p&gt;I now declare this yak shaved!&lt;/p&gt;
+</description>
+        <pubDate>Sat, 19 Oct 2013 01:00:00 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2013/10/19/vagrant-guest-qnx</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2013/10/19/vagrant-guest-qnx</guid>
+      </item>
+    
+      <item>
         <title>Vagrant with QNX Neutrino</title>
         <description>&lt;p&gt;&lt;em&gt;If you don&amp;#39;t know what QNX is don&amp;#39;t be scared, but if you don&amp;#39;t know what vagrant is this post is probably not for you :) &lt;/em&gt;&lt;/p&gt;
 
@@ -113,6 +235,8 @@ chmod -R 700 /home/vagrant/.ssh
 &lt;p&gt;Fun fact: If ssh is not correctly setup and &lt;em&gt;vagrant up&lt;/em&gt; hangs, then you can control-C and then try &lt;em&gt;vagrant halt&lt;/em&gt;. After an inordinate amount of time the VM is going to  shutdown. If ssh does work then &lt;em&gt;vagrant halt&lt;/em&gt; will die horribly complaining that it cannot recognise the OS.&lt;/p&gt;
 
 &lt;p&gt;Which means that there&amp;#39;s going to be a continuation to this adventure, where we dwell into the creation of a vagrant guest plugin. This yak is not yet completely shaved.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;There&amp;#39;s a &lt;a href=&quot;/software/2013/10/18/vagrant-guest-qnx&quot;&gt;follow up post&lt;/a&gt; with the QNX guest plugin&lt;/em&gt; &lt;/p&gt;
 </description>
         <pubDate>Fri, 18 Oct 2013 01:00:00 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2013/10/18/qnx-vagrant</link>
@@ -392,50 +516,6 @@ They couldn&amp;#39;t have chosen a worse time for it. With preparations for EuR
         <pubDate>Sun, 27 May 2012 16:16:43 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/rumblings/2012/05/27/europe-serious-sillines</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/rumblings/2012/05/27/europe-serious-sillines</guid>
-      </item>
-    
-      <item>
-        <title>Ruby performance improvements on Windows</title>
-        <description>&lt;p&gt;Thanks to &lt;a href=&quot;http://twitter.com/#!/luislavena&quot;&gt;@luislavena&lt;/a&gt; I got wind of the &lt;a href=&quot;https://groups.google.com/forum/?fromgroups#!topic/thecodeshop/WVA4N2lJoM4&quot;&gt;1.9.3 TCS experimental build&lt;/a&gt;. The promise of faster File operations under Windows was too good to pass up.&lt;/p&gt;
-
-&lt;p&gt;My by now legendary ( ;) ) build system (see &lt;a href=&quot;/2011/08/09/script-performance/&quot;&gt;here&lt;/a&gt;, &lt;a href=&quot;/software/2011/06/08/rake-performance-check-the-mirror/&quot;&gt;here&lt;/a&gt;, &lt;a href=&quot;/software/2011/05/20/rake-performance-sh-im-working/&quot;&gt;here&lt;/a&gt; and &lt;a href=&quot;/software/2011/05/10/ruby-performance-what-a-difference-the-compiler-makes/&quot;&gt;here&lt;/a&gt; in reverse chronological order) is ideal as a realistic benchmark: It&amp;#39;s a production system that relies heavily on File operations, reading, writing files and manipulating paths by the thousands. On Windows!&lt;/p&gt;
-
-&lt;p&gt;And it has a rather large performance-measuring test suite.&lt;/p&gt;
-
-&lt;h3&gt;The environment&lt;/h3&gt;
-
-&lt;p&gt;Everything runs within a Win7 32bit virtual machine with 2 logical cores and 3Gb of RAM hosted on Win7 64Bit on a quad core Dell Latitude with 8Gb RAM and a 7200 rpm spinning disk. I&amp;#39;ve gone to great lengths to ensure that all tests run under the same conditions (no other processes but VMWare Player, laptop plugged in, sources on the same revision etc.).&lt;/p&gt;
-
-&lt;h3&gt;The tests&lt;/h3&gt;
-
-&lt;p&gt;As stated, the system currently runs on 1.9.2p290. I cloned the VM twice and installed &lt;a href=&quot;http://rubyinstaller.org/downloads/&quot;&gt;1.9.3p194&lt;/a&gt; on one and the &lt;a href=&quot;https://github.com/thecodeshop/ruby/wiki/Downloads&quot;&gt;tcs-ruby193&lt;em&gt;require&lt;/em&gt;fenix&lt;em&gt;gc&lt;/em&gt;hash_20120413-2&lt;/a&gt; binary on the other. I then run my gem install scripts so that I had freshly compiled gems for each installation.&lt;/p&gt;
-
-&lt;h3&gt;Results&lt;/h3&gt;
-
-&lt;p&gt;The Y axis is seconds (yes, that&amp;#39;s an almost half hour build right there - I&amp;#39;d hung my head in shame if it wasn&amp;#39;t really monumental)&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/193_performance.png&quot;/&gt;&lt;/p&gt;
-
-&lt;p&gt;The performance improvement that 1.9.3 offers is excellent. Across the board the average improvement from 1.9.2 is 18.7%.
-This percentage is skewed by the long running builds that are unfortunately affected by the network (due to floating license servers) which might also explain the spike in task 13. For the short tasks that do only file manipulation, file I/O and data conversions the average improvement is over 40% (but with those tasks being short a good chunk is the improvement in require times).&lt;/p&gt;
-
-&lt;p&gt;Tasks 4, 10, 13 and 14 are big, full builds that probably trigger the garbage collector but I can&amp;#39;t say for sure without instrumenting the code. 13 and 14 are also dependent on the networked license server and thus there&amp;#39;s an additional factor of unreliability there (builds were ran nights to minimize the danger of the license server croaking, but then there&amp;#39;s a host of servers doing nightly builds as well)&lt;/p&gt;
-
-&lt;p&gt;The TCS ruby improves a further 9% on average over the 1.9.3 RubyInstaller but it fares worse on the big slow tasks that are most painful to my team.&lt;/p&gt;
-
-&lt;p&gt;My &amp;quot;require&amp;quot; benchmark is rake -T (task #1) and for that the absolute numbers are 10.11s for 1.9.2, 5.37s for 1.9.3 and 4.87s for TCS. Active Record continues to be the worst offender here but the new require logic makes things bearable.&lt;/p&gt;
-
-&lt;p&gt;Tasks 6 and 8 are IDE project creation tasks which means file generation using erubis templates with the content being FileList[] instances of manipulated pathnames. The TCS build blows everything out of the water here, being 20% faster than stock 1.9.3 which is in turn 20% faster then 1.9.2. That to me says one thing: &amp;quot;Please,please, &lt;strong&gt;please&lt;/strong&gt; merge the fenix patch into Ruby!&amp;quot;&lt;/p&gt;
-
-&lt;h3&gt;Conclusion&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;If you &amp;#39;re still on 1.9.2 then you should switch to 1.9.3&lt;/strong&gt;. Performance is improved across the board.&lt;/p&gt;
-
-&lt;p&gt;I won&amp;#39;t yet jump on the TCS bandwagon because of the performance lag in the long tasks but I think that the fenix patch should be merged into Ruby main, the numbers are simply so much better.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 24 Apr 2012 16:16:43 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2012/04/24/ruby-performance-improvements-on-windows</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2012/04/24/ruby-performance-improvements-on-windows</guid>
       </item>
     
   </channel>
