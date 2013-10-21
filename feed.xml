@@ -7,7 +7,7 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
-        <title>Building with rake. Part I: Compilers and configurations</title>
+        <title>Building with rake: Introduction</title>
         <description>&lt;h2&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;This is the introduction to a series of articles I&amp;#39;ve been meaning to write for a while now. I&amp;#39;ve been working with Ruby for the last 12 years now and I&amp;#39;ve never done Rails or - the occasional Sinatra app aside - web applications.&lt;/p&gt;
