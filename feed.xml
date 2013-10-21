@@ -7,6 +7,68 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Building with rake. Part I: Compilers and configurations</title>
+        <description>&lt;h2&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;This is the introduction to a series of articles I&amp;#39;ve been meaning to write for a while now. I&amp;#39;ve been working with Ruby for the last 12 years now and I&amp;#39;ve never done Rails or - the occasional Sinatra app aside - web applications.&lt;/p&gt;
+
+&lt;p&gt;So this series will serve as an example of what you can do with Ruby away from Rails and also help me clarify and organise my own knowledge. Code samples will go up on GitHub.&lt;/p&gt;
+
+&lt;p&gt;So let&amp;#39;s start by creating a build system from scratch. To simplify the subject but still keep things interesting we will create a build system for a project in C that runs on the RX63N (just because I have one lying around)&lt;/p&gt;
+
+&lt;h2&gt;The RX63N&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/rx63n.jpg&quot; alt=&quot;RX63N evaluation board&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;This is a nifty little evaluation board for the &lt;a href=&quot;http://www.glyn.de/Produkte/Mikrocontroller/RENESAS/RX63N-SUPPORT-Videos&quot;&gt;RX63N 32bit CPU by Renesas&lt;/a&gt;(link is in German). The RX63N has ethernet and USB capabilities baked in, as well as a whole host of other &amp;quot;embedded&amp;quot; stuff. For the acronym, soup you can look up SPI, Single-Wire, GPIO, PWM, EXTAL etc. &lt;/p&gt;
+
+&lt;p&gt;I won&amp;#39;t really go into the guts of this little system because I won&amp;#39;t get to talk about Ruby at all. The idea is to take one of the example applications offered by Renesas and built it without the provided IDE while also talking about structuring C code and moving away from make&amp;#39;s legacy (I can hear the cries: &amp;quot;HERETIC! INFIDEL!&amp;quot;&amp;quot;)&lt;/p&gt;
+
+&lt;p&gt;Moving away from make means we need a replacement for it, a DSL for building systems that can equal and surpass the capabilities offered by the most cryptical of build tools. Enter rake&lt;/p&gt;
+
+&lt;h2&gt;Rake&lt;/h2&gt;
+
+&lt;p&gt;Rake is an equivalent of make written in Ruby and well known to Rubyists. It&amp;#39;s used every day to run tests, perform database migrations etc.  It&amp;#39;s &amp;quot;task management&amp;quot; software, but let&amp;#39;s not confuse it with a TODO list app. At it&amp;#39;s core it&amp;#39;s dependency resolution software.&lt;/p&gt;
+
+&lt;p&gt;At this point I will skip the introduction to rake and it&amp;#39;s capabilities (which I had written and I removed because it turned into another two articles) and assume you know the basics (read &lt;a href=&quot;http://martinfowler.com/articles/rake.html&quot;&gt;Martin Fowler&amp;#39;s article&lt;/a&gt; from way back in &amp;#39;05 and the &lt;a href=&quot;http://rake.rubyforge.org/&quot;&gt;documentation&lt;/a&gt; to get up to speed)&lt;/p&gt;
+
+&lt;p&gt;Rake&amp;#39;s strong point is that it is a simple DSL on top of Ruby and that apart from the few primitives it defines everything else in your Rakefile (i.e. the equivalent to a Makefile) is Ruby code.&lt;/p&gt;
+
+&lt;p&gt;I cannot even begin to describe what a difference this makes when trying to build stuff. Instead hopefully I will demostrate it over a long series of articles that are going to incrementally compose part of a complex system. &lt;/p&gt;
+
+&lt;p&gt;The original &amp;quot;build system&amp;quot; whose structure and concepts are the basis for these articles is ~8K lines of Ruby. It turns out the term &amp;quot;build system&amp;quot; is not accurate anymore. &amp;quot;Total Development Environment Control&amp;quot; is a much more appropriate term. It has spawned a few articles in it&amp;#39;s day, mainly concerning Ruby performance under Windows and rake trivia.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;/software/2011/05/10/ruby-performance-what-a-difference-the-compiler-makes&quot;&gt;Ruby Performance: What a difference the compiler makes&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;/software/2011/05/20/rake-performance-sh-im-working&quot;&gt;rake performance: sh...I&amp;#39;m working&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;/software/2011/06/08/rake-performance-check-the-mirror&quot;&gt;rake performance: check the mirror&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;/software/2011/08/09/script-performance&quot;&gt;Script performance&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;/software/2012/01/13/rake-dynamic-prerequisites&quot;&gt;rake dynamic prerequisites&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;/software/2012/04/24/ruby-performance-improvements-on-windows&quot;&gt;Ruby performance improvements on Windows&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The time has come to extract the core of this system, the part that actually builds C applications and see how it holds up after three &amp;quot;incarnations&amp;quot;.&lt;/p&gt;
+
+&lt;p&gt;So in the next few posts, while we run the RX63N through it&amp;#39;s paces, we&amp;#39;ll go through:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Building C code with rake&lt;/li&gt;
+&lt;li&gt;DRY Build Systems in rake and managing the Ruby code base.&lt;/li&gt;
+&lt;li&gt;A structure for component-based embedded C systems&lt;/li&gt;
+&lt;li&gt;Managing cross-platform compilation and multi-platform C code bases&lt;/li&gt;
+&lt;li&gt;Getting free of the IDE while still being able to debug&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And to make matters more interesting I&amp;#39;ll do it on Windows but make sure it runs on Linux as well so that we can have as direct a comparison as possible. To that effect, instead of using the Renesas provided (and quite expensive) toolchain I&amp;#39;m going to use the &lt;a href=&quot;http://www.kpitgnutools.com/index.php&quot;&gt;KPIT GNU toolchain&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Now all I need is a nifty name for the series!&lt;/p&gt;
+</description>
+        <pubDate>Tue, 22 Oct 2013 01:00:00 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2013/10/22/building-with-rake-I</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2013/10/22/building-with-rake-I</guid>
+      </item>
+    
+      <item>
         <title>Building a vagrant guest plugin for QNX</title>
         <description>&lt;p&gt;The yak shaving expedition continues...&lt;/p&gt;
 
@@ -487,35 +549,6 @@ They couldn&amp;#39;t have chosen a worse time for it. With preparations for EuR
         <pubDate>Fri, 30 Aug 2013 01:08:43 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/rumblings/2013/08/30/back-on-the-saddle</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/rumblings/2013/08/30/back-on-the-saddle</guid>
-      </item>
-    
-      <item>
-        <title>Η Ευρώπη και η σοβαρή σάχλα</title>
-        <description>&lt;p&gt;Είδαμε και τη Eurovision φέτος.&lt;/p&gt;
-
-&lt;p&gt;Είναι μια από εκείνες τις βασανιστικές εμπειρίες όπου βομβαρδίζεσαι διαδοχικά από οδυνηρά ερεθίσματα που προσβάλουν την αισθητική και τη νοημοσύνη σου στο βαθμό που η μοναδική διέξοδος είναι ο σαρκασμός και το καγχαστό γέλιο μέχρι δακρύων.&lt;/p&gt;
-
-&lt;p&gt;Φυσικά μόνο με παρέα έτσι; Γιατί το να παρακολουθεί κανείς αυτό το έκτρωμα μόνος είναι τραγωδία. Από την άλλη κάποια πράγματα μου έκαναν εντύπωση:&lt;/p&gt;
-
-&lt;p&gt;Η διοργάνωση φέτος έγινε στο Μπακού, την πρωτεύουσα του Αζερμπαϊτζάν, μια χώρα με ένα ποινικό μητρώο για πράξεις κατά των ανθρωπίνων δικαιωμάτων και της ελευθερίας της έκφρασης που πάει πίσω μέχρι και τα χρόνια της τσαρικής Ρωσίας. Η γερμανική αναμετάδοση δε σταμάτησε να το σχολιάζει κατά τη διάρκεια της εκπομπής.&lt;/p&gt;
-
-&lt;p&gt;Οι Νορβηγοί βυθισμένοι μέχρι τα μπούνια σε μια δίκη αντιπαράθεση του άκρατου μίσους με την αξιοπρέπεια και το σεβασμό στον άνθρωπο, &lt;a href=&quot;http://www.youtube.com/watch?v=QdHnenxPPnc&quot;&gt;στέλνουν&lt;/a&gt; έναν ιρανικής καταγωγής, ανοιχτά ομοφυλόφιλο νεαρό στην σύνορα των μουλάδων. Ο οποίος παρεπιπτόντως μπορεί και &lt;a href=&quot;http://www.youtube.com/watch?feature=player_detailpage&amp;amp;v=kIGeUVAuOmM#t=659s&quot;&gt;στέκεται σοβαρότατος και συγκροτημένος&lt;/a&gt; (βάλτε υπότιτλους). Τι κάνουμε η υπόλοιπη Ευρώπη; Τον αφήνουμε τελευταίο.&lt;/p&gt;
-
-&lt;p&gt;Αλλά δεν έχει σημασία γιατί τα χέρια νίυονται με την &amp;quot;μεγαλύτερη συγκομιδή πόντων&amp;quot; της μαροκινής καταγωγής Σουηδέζας. Έτσι δεν είναι; Θα μπορούσα - λέμε τώρα - να κάθομαι να κρατάω σημειώσεις με το ποιά χώρα έδωσε ποιούς πόντους που και να βγάλω μια βαθυστόχαστη και τελείως άκυρη ανάλυση για την ωριμότητα των ανά την Ευρώπη τηλεθεατών, αλλά εδώ μιλάμε για τη Eurovision, υπάρχουν και κάποια όρια.&lt;/p&gt;
-
-&lt;p&gt;Η Ψωροκώσταινα έστειλε τη &amp;quot;δικιά μας&amp;quot; Κυπραία (πάση θυσία να εξασφαλιστεί το 12άρι, δεν είναι καιροί για πειραματισμούς) να τραγουδήσει:&lt;/p&gt;
-
-&lt;p&gt;&amp;quot;You make me dance like a maniac, you make me want your aphrodisiac&amp;quot; κοινώς, &amp;quot;Ανοίξαμε και σας περιμένουμε, ελάτε να μας γ@#&amp;amp;$!τε&amp;quot;&lt;/p&gt;
-
-&lt;p&gt;Εγώ πάντως θα κρατήσω την εξαιρετική Ευρώπη της εποχής του διαδικτύου που στέλνει σε μια ισλαμική χώρα &lt;a href=&quot;http://www.youtube.com/watch?v=WKNRGc71hjc&quot;&gt;6 ορθόδοξες γιαγιούλες&lt;/a&gt; να μαζέψουν χρήματα για τον Ιερό Ναό του χωριού  τραγουδώντας &amp;quot;Party for Everybody&amp;quot;. Και τα καταφέρνουν! &lt;/p&gt;
-
-&lt;p&gt;Δεν ξέρω τι να σκεφτώ όταν κοιτάω τη Eurovision και βλέπω μια γιορτή της Ευρώπης που θέλουμε να έχουμε επενδυμένη με τόσο χάλια μουσική. &lt;/p&gt;
-
-&lt;p&gt;Τραγικομωδία!&lt;/p&gt;
-</description>
-        <pubDate>Sun, 27 May 2012 16:16:43 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/rumblings/2012/05/27/europe-serious-sillines</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/rumblings/2012/05/27/europe-serious-sillines</guid>
       </item>
     
   </channel>
