@@ -7,6 +7,67 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>ATCAR: The Tin Robot Menace</title>
+        <description>&lt;p&gt;What do you get if you put together an Android starter kit, several empty cans, some broken household items, two geekdads and a four year old?&lt;/p&gt;
+
+&lt;p&gt;A kick-ass maker weekend in Berlin!&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://plus.google.com/u/0/114681917079512934320/posts?partnerid=gplp0&quot;&gt;dianthos&lt;/a&gt; welcomed me with &amp;quot;I got these tin cans and this one servo motor, let&amp;#39;s build a robot!&amp;quot;. Obviously the response was &amp;quot;Excellent! Let&amp;#39;s go shopping&amp;quot;.&lt;/p&gt;
+
+&lt;h3&gt;Planning&lt;/h3&gt;
+
+&lt;p&gt;Friday evening was the planning stage. Mostly to decide what the robot wil look like and what we can actually do with the available materials.&lt;/p&gt;
+
+&lt;p&gt;The original idea came to dianthos while looking at &lt;a href=&quot;http://spoonful.com/crafts/can-do-robots&quot;&gt;tin can toys&lt;/a&gt; so we spend a bit choosing the cans and figuring out if and how the Arduino UNO would fit in there.&lt;/p&gt;
+
+&lt;p&gt;While there was no shortage of tin cans and odd bits and pieces,  our electronics stockpile was a bit limited:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;One 180 degree servo motor&lt;/li&gt;
+&lt;li&gt;A couple of buttons&lt;/li&gt;
+&lt;li&gt;One potentiometer&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;We had enough LEDs and resistors and there were a few other bits and pieces in the &lt;a href=&quot;http://shop.fritzing.org/products/fritzing-starter-kit-with-arduino-uno&quot;&gt;starter kit&lt;/a&gt; but what we really were interested in was the servo motor.&lt;/p&gt;
+
+&lt;p&gt;At the end the plan called for a robot that swivels it&amp;#39;s torso and has LEDs for eyes.&lt;/p&gt;
+
+&lt;h3&gt;Shopping&lt;/h3&gt;
+
+&lt;p&gt;Saturday was off to geekdad paradise: Conrad and Bauhaus. For those not familiar with german brands Conrad is an electronics shop and Bauhaus is a DIY shop. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/tinanton_materials.jpg&quot; alt=&quot;materials for the dread robot&quot;&gt;  And to make things difficult, our goal was to NOT buy a brand new Dremel drill just so we can drill a couple of holes in a tin can. We came very close to not achieving the goal.&lt;/p&gt;
+
+&lt;p&gt;Total cost of the materials was about 10€ but our bill run quite a bit higher (useful advice to all wives out there: don&amp;#39;t let your man go to a DIY &lt;em&gt;and&lt;/em&gt; an electronics shop with his best mate. Some cliches are too strong for even the best of us).&lt;/p&gt;
+
+&lt;p&gt;Our materials at hand it was time for coding. This was actually the easiest task. Fritzing and Arduino put together make hobby electronics a breeze.&lt;/p&gt;
+
+&lt;p&gt;Our robot uses the servo to swivel it&amp;#39;s torso 180 degrees, has a red LED for it&amp;#39;s cyclopean eye and the USB light for hands. We took the three Arduino examples Blink, Button and Servo.Knob.&lt;/p&gt;
+
+&lt;p&gt;To make it more interesting we decided that the robot would have two modes of operating. In one the light remains on and the robot can be swiveled using the potentiometer, in the other the robot swivels automatically and the led blinks. Switching between modes is controlled through a button that toggles between the two modes.&lt;/p&gt;
+
+&lt;p&gt;The code for all of this for all of this is just a bit of organisation around code of the three examples and it fits in a &lt;a href=&quot;https://gist.github.com/damphyr/7514713&quot;&gt;gist&lt;/a&gt;. The circuitry is similarly the aggregation of the corresponding examples in Fritzing:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/tinanton_breadboard.jpg&quot; alt=&quot;the breadboard version&quot;&gt;&lt;/p&gt;
+
+&lt;h3&gt;Sunday&lt;/h3&gt;
+
+&lt;p&gt;So with the circuitry and the software decided we proceeded in assembling the robot. Which took us almost the whole day!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/tinanton_assembly.jpg&quot; alt=&quot;starting&quot;&gt; &lt;/p&gt;
+
+&lt;p&gt;the sinister red eye was entirely intended :) It is the 50th Doctor Who anniversary, so the obligatory &amp;quot;Exterminate&amp;quot; was the soundtrack during the robot&amp;#39;s operation.&lt;/p&gt;
+
+&lt;p&gt;ATCAR is up for a revision, it should get a control board for the potentiometer and the button (at the moment there&amp;#39;s just cables leading to the breadboard) and a future version 2.0 will probably incorporate a battery power supply.&lt;/p&gt;
+
+&lt;p&gt;Arduino is so much fun! And trust me, the best way to get the kids involved is to get the geekdads excited!&lt;/p&gt;
+</description>
+        <pubDate>Wed, 13 Nov 2013 00:00:00 +0100</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2013/11/13/tinanton</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2013/11/13/tinanton</guid>
+      </item>
+    
+      <item>
         <title>Building with rake: Introduction</title>
         <description>&lt;h2&gt;Introduction&lt;/h2&gt;
 
@@ -517,38 +578,6 @@ OFFSITE ROR Developers (front/back-end)
         <pubDate>Wed, 04 Sep 2013 16:16:43 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/rumblings/2013/09/04/recruiter-fail</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/rumblings/2013/09/04/recruiter-fail</guid>
-      </item>
-    
-      <item>
-        <title>Back on the saddle</title>
-        <description>&lt;p&gt;Man it&amp;#39;s been a long time!&lt;/p&gt;
-
-&lt;p&gt;It&amp;#39;s been over a year since I published anything on this blog. And it&amp;#39;s been a busy year, an upside-down year, a year of upheaval.&lt;/p&gt;
-
-&lt;p&gt;First of all Joyent decided to terminate it&amp;#39;s VPS hosting in favour of their cloud offerings, thus switching off all textdrive remnants.
-They couldn&amp;#39;t have chosen a worse time for it. With preparations for EuRuKo 2013 in full swing there was simply not enough time to take care of moving.&lt;/p&gt;
-
-&lt;p&gt;So I left it until the servers were turned off. And thus ampelofilosofies disappeared from the net.&lt;/p&gt;
-
-&lt;p&gt;Time to remedy that. After a well earned holiday I get to sit down and redo the blog. Way back in 2005 the third incarnation of this blog (it&amp;#39;s like Doctor Who, it keeps coming back in different forms since 1996) was a static site generated from  HTML and Textile sources and a bunch of home brewed ruby scripts. Back then I was convinced it was the best way to manage my content: text based, version controlled and easy to transform.&lt;/p&gt;
-
-&lt;p&gt;The &lt;a href=&quot;/software/2009-10-05-putting-it-back-together&quot;&gt;4th incarnation&lt;/a&gt; was a Radiant based site. At the time it was easy to setup, there was a wealth of plugins that allowed things like image galleries, comments and attachements so it seemed like a good idea. And I switched from textile to markdown.&lt;/p&gt;
-
-&lt;p&gt;Fast forward 4 years (which seems to be the &amp;quot;reincarnation&amp;quot; time for some reason) and that &amp;quot;good&amp;quot; idea proved to be a big impediment in getting the site back up in the limited free time available. The venerable Radiant installation that was running on the hosted server was outdated, upgrading to the current version proved a huge chore, none of the plugins runs anymore and my content is locked in an sqlite3 database making extraction rather cumbersome.&lt;/p&gt;
-
-&lt;p&gt;This is not about bashing Radiant. It&amp;#39;s more about me not having the time to keep up with the updates in a viable way while having adopted Radiant quite early in it&amp;#39;s development cycle. The latest version has the upgrade process under wraps, but I&amp;#39;m left with an ancient codebase barely running on ruby 1.8.7.&lt;/p&gt;
-
-&lt;p&gt;I still prefer the generate-from-text-source approach. Luckily, since I have absolutely no inclination in resurrecting my ruby scripts (omg! I look at the ruby code I wrote in 2005 and I scoff at the naive stranger who thought it was good), Jekyll follows exactly the same philosophy - only it does things right.&lt;/p&gt;
-
-&lt;p&gt;It has been an enormous pleasure rescuing all the content from the clutches of sqlite3 and Jekyll has proven a joy to work with.&lt;/p&gt;
-
-&lt;p&gt;The most important thing in the migration from Radiant to Jekyll has been maintaining the permalinks. Analytics show that there are some poor souls visiting and linking to a few of my articles (&lt;a href=&quot;/2010/05/20/rumblings/things-you-should-know-while-dating-a-computer-programmer&quot;&gt;Things you should know while dating a computer programmer&lt;/a&gt; being the most popular for some reason) so it would be bad form to change the links. Bad enough that they have been offline for so long.&lt;/p&gt;
-
-&lt;p&gt;Thankfully Jekyll makes it very easy to change the default permalink scheme. So in the coming days I will complete the migration of the content, rework the appearance of the site, activate RSS and comments. After that there&amp;#39;s a few articles that need publishing. Like I said, it has been a long, busy and above all interesting year.&lt;/p&gt;
-</description>
-        <pubDate>Fri, 30 Aug 2013 01:08:43 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/rumblings/2013/08/30/back-on-the-saddle</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/rumblings/2013/08/30/back-on-the-saddle</guid>
       </item>
     
   </channel>

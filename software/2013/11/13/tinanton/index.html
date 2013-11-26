@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>ATCAR: The Tin Robot Menace</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>ATCAR: The Tin Robot Menace</h1>
+<p class="meta">13 Nov 2013</p>
+
+<div class="post">
+<p>What do you get if you put together an Android starter kit, several empty cans, some broken household items, two geekdads and a four year old?</p>
+
+<p>A kick-ass maker weekend in Berlin!</p>
+
+<p><a href="https://plus.google.com/u/0/114681917079512934320/posts?partnerid=gplp0">dianthos</a> welcomed me with &quot;I got these tin cans and this one servo motor, let&#39;s build a robot!&quot;. Obviously the response was &quot;Excellent! Let&#39;s go shopping&quot;.</p>
+
+<h3>Planning</h3>
+
+<p>Friday evening was the planning stage. Mostly to decide what the robot wil look like and what we can actually do with the available materials.</p>
+
+<p>The original idea came to dianthos while looking at <a href="http://spoonful.com/crafts/can-do-robots">tin can toys</a> so we spend a bit choosing the cans and figuring out if and how the Arduino UNO would fit in there.</p>
+
+<p>While there was no shortage of tin cans and odd bits and pieces,  our electronics stockpile was a bit limited:</p>
+
+<ul>
+<li>One 180 degree servo motor</li>
+<li>A couple of buttons</li>
+<li>One potentiometer</li>
+</ul>
+
+<p>We had enough LEDs and resistors and there were a few other bits and pieces in the <a href="http://shop.fritzing.org/products/fritzing-starter-kit-with-arduino-uno">starter kit</a> but what we really were interested in was the servo motor.</p>
+
+<p>At the end the plan called for a robot that swivels it&#39;s torso and has LEDs for eyes.</p>
+
+<h3>Shopping</h3>
+
+<p>Saturday was off to geekdad paradise: Conrad and Bauhaus. For those not familiar with german brands Conrad is an electronics shop and Bauhaus is a DIY shop. </p>
+
+<p><img src="/images/tinanton_materials.jpg" alt="materials for the dread robot">  And to make things difficult, our goal was to NOT buy a brand new Dremel drill just so we can drill a couple of holes in a tin can. We came very close to not achieving the goal.</p>
+
+<p>Total cost of the materials was about 10€ but our bill run quite a bit higher (useful advice to all wives out there: don&#39;t let your man go to a DIY <em>and</em> an electronics shop with his best mate. Some cliches are too strong for even the best of us).</p>
+
+<p>Our materials at hand it was time for coding. This was actually the easiest task. Fritzing and Arduino put together make hobby electronics a breeze.</p>
+
+<p>Our robot uses the servo to swivel it&#39;s torso 180 degrees, has a red LED for it&#39;s cyclopean eye and the USB light for hands. We took the three Arduino examples Blink, Button and Servo.Knob.</p>
+
+<p>To make it more interesting we decided that the robot would have two modes of operating. In one the light remains on and the robot can be swiveled using the potentiometer, in the other the robot swivels automatically and the led blinks. Switching between modes is controlled through a button that toggles between the two modes.</p>
+
+<p>The code for all of this for all of this is just a bit of organisation around code of the three examples and it fits in a <a href="https://gist.github.com/damphyr/7514713">gist</a>. The circuitry is similarly the aggregation of the corresponding examples in Fritzing:</p>
+
+<p><img src="/images/tinanton_breadboard.jpg" alt="the breadboard version"></p>
+
+<h3>Sunday</h3>
+
+<p>So with the circuitry and the software decided we proceeded in assembling the robot. Which took us almost the whole day!</p>
+
+<p><img src="/images/tinanton_assembly.jpg" alt="starting"> </p>
+
+<p>the sinister red eye was entirely intended :) It is the 50th Doctor Who anniversary, so the obligatory &quot;Exterminate&quot; was the soundtrack during the robot&#39;s operation.</p>
+
+<p>ATCAR is up for a revision, it should get a control board for the potentiometer and the button (at the moment there&#39;s just cables leading to the breadboard) and a future version 2.0 will probably incorporate a battery power supply.</p>
+
+<p>Arduino is so much fun! And trust me, the best way to get the kids involved is to get the geekdads excited!</p>
+
+</div>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>
