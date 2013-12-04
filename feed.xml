@@ -7,10 +7,10 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
-        <title>ForgetMeNot: File.join wierdness</title>
+        <title>ForgetMeNot: File.join weirdness</title>
         <description>&lt;p&gt;I&amp;#39;m busy with a paid-for-by-an-actual-client system based on the Renesas RX630 so the RX63N adventure has been tabled for a while.&lt;/p&gt;
 
-&lt;p&gt;Still I stumbled on a little Ruby wierdness today that I have to take down just in case.&lt;/p&gt;
+&lt;p&gt;Still I stumbled on a little Ruby weirdness today that I have to take down just in case.&lt;/p&gt;
 
 &lt;p&gt;So when handling paths, doing a File.join(&amp;quot;/foo/foo&amp;quot;,&amp;quot;../../bar&amp;quot;) should give /bar back. &lt;/p&gt;
 
