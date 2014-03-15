@@ -18,7 +18,9 @@
 
 &lt;p&gt;Oh, and this is dangerous ground. Editor wars, OS wars, the death-through-infrastructure syndrome and a zillion other reasons why it&amp;#39;s not going to work.&lt;/p&gt;
 
-&lt;p&gt;This is a very important step in every project, I can&amp;#39;t stress this enough. Consistency in the development environment is the single most important point when working with embedded software. Consider that apart from the usual software errors you have to deal with new, untested or flaky hardware.&lt;/p&gt;
+&lt;p&gt;This is a very important step in every project, I can&amp;#39;t stress this enough. Consistency in the development environment is the single most important point when working with embedded software. Consider that apart from the usual software errors you have to deal with new, untested or flaky hardware. Just check the picture of a  &amp;quot;smoke tested&amp;quot; board, cuplrit of a failed long running test. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/smoke_test.png&quot; alt=&quot;smoke test&quot;&gt; &lt;/p&gt;
 
 &lt;p&gt;And new electronics are ALWAYS a potential source of errors. Come to think of it, you can take &amp;#39;potential&amp;#39; out of that sentence and it would still be true.&lt;/p&gt;
 
