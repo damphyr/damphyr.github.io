@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>Building with rake: Setup</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>Building with rake: Setup</h1>
+<p class="meta">15 Mar 2014</p>
+
+<div class="post">
+<p>This is the second article in the series,the whole thing starts <a href="/software/2013/10/21/building-with-rake-I">here</a></p>
+
+<p>And while the series is about building C systems with Rake there is a lot of preparation work to be done before we can actually run the first file through the compiler.</p>
+
+<h2>Setting up the environment</h2>
+
+<p>Actually setting up the environment, installing the editor, the IDE, the compiler toolchain and making sure they are accessible from the terminal or the IDE etc. is a task most developers do not consciously consider. As a consequence we tend to underestimate the amount of work required to do it right and the actual cost of getting it wrong.</p>
+
+<p>Oh, and this is dangerous ground. Editor wars, OS wars, the death-through-infrastructure syndrome and a zillion other reasons why it&#39;s not going to work.</p>
+
+<p>This is a very important step in every project, I can&#39;t stress this enough. Consistency in the development environment is the single most important point when working with embedded software. Consider that apart from the usual software errors you have to deal with new, untested or flaky hardware.</p>
+
+<p>And new electronics are ALWAYS a potential source of errors. Come to think of it, you can take &#39;potential&#39; out of that sentence and it would still be true.</p>
+
+<p>The difficulty of locating the cause for a bug increases exponentially with every source of errors. So we need as few error sources as possible. As a first step we establish a consistent development environment so that we can exclude differences between workstations as a culprit.</p>
+
+<p>As a bonus, no developer can use &#39;it works for me&#39; as a cop out when something breaks.</p>
+
+<p>Take care not to misunderstand &#39;consistent&#39; for &#39;limited&#39;. With provisioning tools like Chef, Puppet or Ansible there is very little reason why you can&#39;t satisfy every developer&#39;s wishes when it comes to editor, IDE or any other productivity tool.</p>
+
+<p>And yes, all of this is also true on Windows. Painful, but true.</p>
+
+<h2>Practical matters</h2>
+
+<p>What we&#39;re going to need is <a href="https://www.virtualbox.org/">VirtualBox</a>, <a href="http://www.vagrantup.com/">vagrant</a>, a CentOS basebox and optionally a git repository containing a bunch of <a href="http://www.opscode.com/chef/">Chef</a> recipes.</p>
+
+<p>With these ingredients in the end we will cook up a VM that will be our development environment with the RX63N board.</p>
+
+<p>The CentOS choice is dictated by the fact that the <a href="http://www.kpitgnutools.com/latestToolchain.php">KPIT toolchain</a> comes packaged in RPM format. It also has to be the 32bit version, since KPIT does not come compiled for a x64 Linux flavour.</p>
+
+<p>The base box proved to be problematic as <a href="http://www.vagrantbox.es/">http://www.vagrantbox.es/</a> lists only one recent CentOS box as 32bit but the base box is actually 64bit. Well, creating base boxes is easy. There&#39;s <a href="https://github.com/okfn/ckan/wiki/How-to-Create-a-CentOS-Vagrant-Base-Box">blog posts</a> about it.</p>
+
+<p>Originally I wrote &quot;there&#39;s more interesting things to talk about&quot;. But it seems that once more the combination of versions needed for the task requires some digging and further work. So, following the instructions on the provided link I proceeded to create a 32 bit CentOS 6.5 base box for vagrant. The set of instructions is <a href="https://github.com/damphyr/embedded-C-rake/blob/master/setup/CentOSBaseBox.md">up on GitHub</a></p>
+
+<h2>Hints &amp; Tips for the decrepit mind</h2>
+
+<p>If you&#39;re like me you&#39;ll need to be reminded that on vagrant base boxes the root password is &#39;vagrant&#39;.</p>
+
+<h2>VM at hand</h2>
+
+<p>There are a few things to do that for convenience&#39;s sake I will skip since this is a personal sandbox project.</p>
+
+<p>There should be a project user (or depending on how far you want to take it, one account per team member). Things like repository access, SSH keys etc. need to be setup. For convenience everything will be done with the vagrant user.</p>
+
+<p>Also, to keep software updates under control, there should be a chef/puppet/ansible installation and the contents of the VM should be managed as source. Since this is a one man team environment and there&#39;s only really two software packages to install we will skip the overhead for now.</p>
+
+<p>It should be noted though that between the time I started putting this environment together and now (which is about 5 months) there have been 4 new vagrant versions, a major CentOS update, 3 KPIT toolchain updates (one major version), a new Ruby version and uncountable gem updates. At the rate I&#39;m writing I will be forced to add Chef recipes just to be able to keep the environment current.</p>
+
+<p>In the next installment we&#39;ll setup the toolchain and the RX63N board and figure out how to call everything from rake.</p>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

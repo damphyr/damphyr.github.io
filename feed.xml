@@ -7,6 +7,63 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Building with rake: Setup</title>
+        <description>&lt;p&gt;This is the second article in the series,the whole thing starts &lt;a href=&quot;/software/2013/10/21/building-with-rake-I&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;And while the series is about building C systems with Rake there is a lot of preparation work to be done before we can actually run the first file through the compiler.&lt;/p&gt;
+
+&lt;h2&gt;Setting up the environment&lt;/h2&gt;
+
+&lt;p&gt;Actually setting up the environment, installing the editor, the IDE, the compiler toolchain and making sure they are accessible from the terminal or the IDE etc. is a task most developers do not consciously consider. As a consequence we tend to underestimate the amount of work required to do it right and the actual cost of getting it wrong.&lt;/p&gt;
+
+&lt;p&gt;Oh, and this is dangerous ground. Editor wars, OS wars, the death-through-infrastructure syndrome and a zillion other reasons why it&amp;#39;s not going to work.&lt;/p&gt;
+
+&lt;p&gt;This is a very important step in every project, I can&amp;#39;t stress this enough. Consistency in the development environment is the single most important point when working with embedded software. Consider that apart from the usual software errors you have to deal with new, untested or flaky hardware.&lt;/p&gt;
+
+&lt;p&gt;And new electronics are ALWAYS a potential source of errors. Come to think of it, you can take &amp;#39;potential&amp;#39; out of that sentence and it would still be true.&lt;/p&gt;
+
+&lt;p&gt;The difficulty of locating the cause for a bug increases exponentially with every source of errors. So we need as few error sources as possible. As a first step we establish a consistent development environment so that we can exclude differences between workstations as a culprit.&lt;/p&gt;
+
+&lt;p&gt;As a bonus, no developer can use &amp;#39;it works for me&amp;#39; as a cop out when something breaks.&lt;/p&gt;
+
+&lt;p&gt;Take care not to misunderstand &amp;#39;consistent&amp;#39; for &amp;#39;limited&amp;#39;. With provisioning tools like Chef, Puppet or Ansible there is very little reason why you can&amp;#39;t satisfy every developer&amp;#39;s wishes when it comes to editor, IDE or any other productivity tool.&lt;/p&gt;
+
+&lt;p&gt;And yes, all of this is also true on Windows. Painful, but true.&lt;/p&gt;
+
+&lt;h2&gt;Practical matters&lt;/h2&gt;
+
+&lt;p&gt;What we&amp;#39;re going to need is &lt;a href=&quot;https://www.virtualbox.org/&quot;&gt;VirtualBox&lt;/a&gt;, &lt;a href=&quot;http://www.vagrantup.com/&quot;&gt;vagrant&lt;/a&gt;, a CentOS basebox and optionally a git repository containing a bunch of &lt;a href=&quot;http://www.opscode.com/chef/&quot;&gt;Chef&lt;/a&gt; recipes.&lt;/p&gt;
+
+&lt;p&gt;With these ingredients in the end we will cook up a VM that will be our development environment with the RX63N board.&lt;/p&gt;
+
+&lt;p&gt;The CentOS choice is dictated by the fact that the &lt;a href=&quot;http://www.kpitgnutools.com/latestToolchain.php&quot;&gt;KPIT toolchain&lt;/a&gt; comes packaged in RPM format. It also has to be the 32bit version, since KPIT does not come compiled for a x64 Linux flavour.&lt;/p&gt;
+
+&lt;p&gt;The base box proved to be problematic as &lt;a href=&quot;http://www.vagrantbox.es/&quot;&gt;http://www.vagrantbox.es/&lt;/a&gt; lists only one recent CentOS box as 32bit but the base box is actually 64bit. Well, creating base boxes is easy. There&amp;#39;s &lt;a href=&quot;https://github.com/okfn/ckan/wiki/How-to-Create-a-CentOS-Vagrant-Base-Box&quot;&gt;blog posts&lt;/a&gt; about it.&lt;/p&gt;
+
+&lt;p&gt;Originally I wrote &amp;quot;there&amp;#39;s more interesting things to talk about&amp;quot;. But it seems that once more the combination of versions needed for the task requires some digging and further work. So, following the instructions on the provided link I proceeded to create a 32 bit CentOS 6.5 base box for vagrant. The set of instructions is &lt;a href=&quot;https://github.com/damphyr/embedded-C-rake/blob/master/setup/CentOSBaseBox.md&quot;&gt;up on GitHub&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2&gt;Hints &amp;amp; Tips for the decrepit mind&lt;/h2&gt;
+
+&lt;p&gt;If you&amp;#39;re like me you&amp;#39;ll need to be reminded that on vagrant base boxes the root password is &amp;#39;vagrant&amp;#39;.&lt;/p&gt;
+
+&lt;h2&gt;VM at hand&lt;/h2&gt;
+
+&lt;p&gt;There are a few things to do that for convenience&amp;#39;s sake I will skip since this is a personal sandbox project.&lt;/p&gt;
+
+&lt;p&gt;There should be a project user (or depending on how far you want to take it, one account per team member). Things like repository access, SSH keys etc. need to be setup. For convenience everything will be done with the vagrant user.&lt;/p&gt;
+
+&lt;p&gt;Also, to keep software updates under control, there should be a chef/puppet/ansible installation and the contents of the VM should be managed as source. Since this is a one man team environment and there&amp;#39;s only really two software packages to install we will skip the overhead for now.&lt;/p&gt;
+
+&lt;p&gt;It should be noted though that between the time I started putting this environment together and now (which is about 5 months) there have been 4 new vagrant versions, a major CentOS update, 3 KPIT toolchain updates (one major version), a new Ruby version and uncountable gem updates. At the rate I&amp;#39;m writing I will be forced to add Chef recipes just to be able to keep the environment current.&lt;/p&gt;
+
+&lt;p&gt;In the next installment we&amp;#39;ll setup the toolchain and the RX63N board and figure out how to call everything from rake.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 15 Mar 2014 14:00:00 +0100</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2014/03/15/building-with-rake-II</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2014/03/15/building-with-rake-II</guid>
+      </item>
+    
+      <item>
         <title>ForgetMeNot: File.join weirdness</title>
         <description>&lt;p&gt;I&amp;#39;m busy with a paid-for-by-an-actual-client system based on the Renesas RX630 so the RX63N adventure has been tabled for a while.&lt;/p&gt;
 
@@ -522,69 +579,6 @@ They will go out of their way to welcome new members and are generous with their
         <pubDate>Wed, 18 Sep 2013 14:00:00 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2013/09/18/baruco2013</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2013/09/18/baruco2013</guid>
-      </item>
-    
-      <item>
-        <title>(Gender)Diversity...oh my!</title>
-        <description>&lt;p&gt;Diversity is a huge subject and doesn&amp;#39;t just cover gender or racial colour differentiations. European events tend to be extremely diverse on a different level than the current diversity discussion. We are fond of saying that you can drive a hundred miles in Europe and you will cross 6 countries. &lt;/p&gt;
-
-&lt;p&gt;We don&amp;#39;t actually have an accurate count of the languages spoken at EuRuKo or the countries of origin for the delegates (but in my 5yr old son&amp;#39;s school the count stands at 28). &lt;/p&gt;
-
-&lt;p&gt;We know that there were participants from every inhabited continent on this planet (-1 if you count Antarctica in that set) and from a questionnaire that only about a quarter of the delegates filled-in we have a listing of 24 different countries. Having invited people from countries that are missing from that list (Japan, Brasil and France come to mind) we can guarantee that it&amp;#39;s not complete.&lt;/p&gt;
-
-&lt;p&gt;This post is explicitly concentrated on the issue of gender diversity and the goals the EuRuKo committee had set about it. It&amp;#39;s also my own personal view on the subject with the benefit of a couple of months of distance to the conference.&lt;/p&gt;
-
-&lt;p&gt;EuRuKo ended up with an all male lineup. So typically we actually failed on one of the goals set from the beginning.&lt;/p&gt;
-
-&lt;p&gt;Personally, I&amp;#39;m stumped about what more we could have done. Let&amp;#39;s go through the list once more:&lt;/p&gt;
-
-&lt;p&gt;We went out and invited female speakers. They declined, each for their own very good reasons (sorry guys, but except for Matz, you were all &amp;quot;second choice material&amp;quot; ;) ). In hindsight I am really happy they couldn&amp;#39;t come and end up as a lonesome diversity token.&lt;/p&gt;
-
-&lt;p&gt;We set a &lt;a href=&quot;http://euruko2013.org/codeofconduct/&quot;&gt;code of conduct&lt;/a&gt;, designed to keep racuous, young, white males in check (aaaand I&amp;#39;m done stereotyping).&lt;/p&gt;
-
-&lt;p&gt;Then we came up with a CfP process with a blind selection phase aiming to encourage submissions by everyone. And we went completely nuts trying to promote it. Devchix, RailsGirls, every ruby group list we could find, you name it, it got an email (or more) from us. I&amp;#39;m surprised that we didn&amp;#39;t get blacklisted as major geek spammers.&lt;/p&gt;
-
-&lt;p&gt;There were 91 talk proposals and all kinds of metrics that tell you that the whole process stimulated interest and created discussions and participation from the community. And when we pulled back the curtains just one - a single one! - was submitted by a woman!&lt;/p&gt;
-
-&lt;p&gt;Dammit ladies, you didn&amp;#39;t even give us a chance! Submit a couple of talks, let the community show it&amp;#39;s bias...or not. &lt;/p&gt;
-
-&lt;p&gt;In the aftermath of the CfP there were a lot of discussions about the reasons for the lack of female participation.&lt;/p&gt;
-
-&lt;p&gt;In one of those &lt;a href=&quot;https://twitter.com/ashedryden&quot;&gt;@ashedryden&lt;/a&gt; summarized for me the following points:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;have they accepted women speakers before?&lt;/li&gt;
-&lt;li&gt;are they interested in having women speakers?&lt;/li&gt;
-&lt;li&gt;how involved are they (conference itself and its organizers) with groups that support women in technology?&lt;/li&gt;
-&lt;li&gt;do I know people that are attending, speaking, or organizing?&lt;/li&gt;
-&lt;li&gt;can I afford to go if the conference doesn&amp;#39;t cover anything for speakers?&lt;/li&gt;
-&lt;li&gt;will it be a safe place for me to present?&lt;/li&gt;
-&lt;li&gt;will the venue and location be a safe place for me to travel alone?&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The answer to every one of those points (except for 2 were it&amp;#39;s a crystal clear yes) is complicated by the nature of EuRuKo and how it is organized. &lt;/p&gt;
-
-&lt;p&gt;Let&amp;#39;s say that the organizers were an unknown quantity and Greece&amp;#39;s miniscule Ruby community is busy drumming up support for the community in general within a framework of complete abandonement from any official source.&lt;/p&gt;
-
-&lt;p&gt;Cost was also a factor. Not for the conference per se, which probably is the cheapest conference of that caliber that you will ever attend, but because Athens is on the ass end of flight connections and a tourist destination at the end of June, which makes getting there...expensive.&lt;/p&gt;
-
-&lt;p&gt;There was an effort to enable at least the speakers to save money. Some things (like the &lt;a href=&quot;http://www.google.com/jobs/students/proscho/scholarships/emea/travelgrants/&quot;&gt;Google female scientists EMEA grant&lt;/a&gt;) did not pan out, others (like offering sponsor deals for companies that payed their employee travelling expenses) worked really well.&lt;/p&gt;
-
-&lt;p&gt;The one thing we failed to address explicitly, because of our own bias, was safety. We live, work and move around in Athens and by any measure or metric Athens is way safer than any big US city and safer than many big European cities. And I mean that in the walk-alone-on-the-street-in-the-middle-of-the-night sense. But safer does not mean safe.&lt;/p&gt;
-
-&lt;p&gt;We had a doctor on standby and there was security personel in the venue, but these are general measures meant for everyone.&lt;/p&gt;
-
-&lt;p&gt;Greece in general and Athens in particular has made the news in very sensational ways the last few years. Our venue selection was explicitly influenced by the wish to avoid having our delegates move in the &amp;quot;demonstration&amp;quot; zone of Athens and thus risk - there is no reason to hide it - having to treat tear-gas victims. That would have put a huge damper on the whole conference!  &lt;/p&gt;
-
-&lt;p&gt;Still any reasonably well informed and intelligent person (which overlaps quite a bit with our target audience) has been inundated in the past couple of years by dark and ugly news from the &amp;quot;birthplace of Democracy&amp;quot; and to work against that bias was difficult from the beginning. Maybe targeting it specifically would have put female participants more at ease, maybe it would have scared more people away.  Either way it was the one thing we did not address in public.&lt;/p&gt;
-
-&lt;p&gt;At the end we had less than 10% female participation at the event, a point Kiev should improve on in 2014. &lt;/p&gt;
-
-&lt;p&gt;Still, there&amp;#39;s about 400 more people with fresh EuRuKo Athens experience in the community and I bet they will all tell you that you should have been there and that you shouldn&amp;#39;t miss the next one.&lt;/p&gt;
-</description>
-        <pubDate>Sun, 15 Sep 2013 17:00:00 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/rumblings/2013/09/15/diversity-oh-my</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/rumblings/2013/09/15/diversity-oh-my</guid>
       </item>
     
   </channel>
