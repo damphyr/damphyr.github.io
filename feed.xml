@@ -7,8 +7,105 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Building with rake: Provisions</title>
+        <description>&lt;p&gt;This is the third article in the series and it is part two of the setup saga. the whole thing starts &lt;a href=&quot;/software/2013/10/22/building-with-rake-I&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In &lt;a href=&quot;/software/2014/03/15/building-with-rake-II&quot;&gt;part one&lt;/a&gt; we laid the ground work and ended up with a 32bit CentOS 6.5 installation in a virtual machine configured for control via vagrant.&lt;/p&gt;
+
+&lt;p&gt;With the groundwork laid it is time for the provisioning part. The main reason for creating a vagrant base box was because I have never before worked with CentOS, or the KPIT toolchain, so naturally I tend to make mistakes. Sometimes I&amp;#39;ll just blunder so bad that the only way to get back to a viable state is to start from the beginning. With the vagrant base box this whole process is as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;vagrant up 
+vagrant ssh
+&lt;span class=&quot;c&quot;&gt;#blunder about&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#mess up&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;
+vagrant halt
+vagrant destroy &lt;span class=&quot;c&quot;&gt;#rinse&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#repeat&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+ 
+
+&lt;p&gt;Anything that works ends up in the provisioning script&lt;/p&gt;
+
+&lt;h2&gt;Provisioning&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/tools.jpg&quot; alt=&quot;tools&quot;&gt; Provisioning is the act of installing and configuring software on a computer. &lt;/p&gt;
+
+&lt;p&gt;Ideally it would be all software, operating system included, so we could plug in a machine and it would start and auto-magically become a fully functional computer without human intervention. And then we would name it SkySomething and it would form a network with it&amp;#39;s siblings which consequently would be SkyNe...omg, I am working towards the destruction of the human race!&lt;/p&gt;
+
+&lt;p&gt;Back to the present, we generally pick a basis configuration for the OS (ergo the base box) and then automate everything else. Full grown provisioning tools like Chef, Puppet and Ansible will allow you to keep large numbers of machines working and also let you use the collective expertise of several thousand IT administrators. I&amp;#39;m just using a shell script and I&amp;#39;m going to embed it in the &lt;a href=&quot;https://github.com/damphyr/embedded-C-rake/blob/master/Vagrantfile&quot;&gt;Vagrantfile&lt;/a&gt;. So there...&lt;/p&gt;
+
+&lt;p&gt;To (finally) start building our C code we will need Ruby (you still remember this whole thing is &amp;quot;Building with Rake&amp;quot; I hope) and the &lt;a href=&quot;http://www.kpitgnutools.com/latestToolchain.php&quot;&gt;KPIT RX toolchain&lt;/a&gt; .&lt;/p&gt;
+
+&lt;h2&gt;HowTo&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Clone the &lt;a href=&quot;https://github.com/damphyr/embedded-C-rake/&quot;&gt;git repository&lt;/a&gt; acompanying this blog post series.&lt;/li&gt;
+&lt;li&gt;Download the &lt;a href=&quot;http://www.kpitgnutools.com/latestToolchain.php&quot;&gt;RPM&lt;/a&gt; for the elf-rx tools from KPIT and place it in the setup/ directory&lt;/li&gt;
+&lt;li&gt;vagrant up&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The repository has &lt;a href=&quot;https://github.com/damphyr/embedded-C-rake/tree/master/setup&quot;&gt;more detailed instructions&lt;/a&gt; with all the ifs and buts for those who don&amp;#39;t want to follow convention. &lt;/p&gt;
+
+&lt;p&gt;Once &amp;#39;vagrant up&amp;#39; is finished, log in the VM with &amp;#39;vagrant ssh&amp;#39; and you&amp;#39;re set to work. &lt;/p&gt;
+
+&lt;h2&gt;Practical stuff&lt;/h2&gt;
+
+&lt;p&gt;Package managers all across *ix distributions are a mess. Specifically for Ruby the versions available are usually about a month away from end-of-life or at best a couple of years behind the current stable.&lt;/p&gt;
+
+&lt;p&gt;Even more specific, yum lists a 1.8.7 version that is long dead and consigned to the history books. So installation from source it is. For the purposes of this experiment this is more than adequate. And to make matters more interesting, lets get the latest and greatest at the time of writing, 2.1.1.&lt;/p&gt;
+
+&lt;p&gt;The provisioning &amp;quot;script&amp;quot; is:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;yum -y install zlib zlib-devel
+yum -y install openssl-devel
+yum -y install libyaml libyaml-devel
+yum -y install wget
+wget http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.1.tar.gz
+tar xvf ruby-2.1.1.tar.gz
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;ruby-2.1.1
+./configure
+make
+make install
+&lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;Setting up environment
+cp /home/vagrant/host_share/setup/bash_profile /home/vagrant/.bash_profile
+chown vagrant:vagrant /home/vagrant/.bash_profile
+chmod 544 /home/vagrant/.bash_profile
+rpm --install /home/vagrant/host_share/setup/gnurx_v14.01_elf-1-1.i386.rpm
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I mean, really, this thing has no error handling, nothing. It&amp;#39;s a shambles masquerading as a script. But hey, it mostly works&lt;/p&gt;
+
+&lt;p&gt;This script will evolve as we add gems, things go wrong, versions change etc. That is OK. More than OK, it is desired. This is the single source for our development environment.&lt;/p&gt;
+
+&lt;h2&gt;Other tricks&lt;/h2&gt;
+
+&lt;p&gt;You will notice there is a setup/bash_profile file and in the provisioning script it is used as the .bash_profile for the vagrant user. This is part of a method I use very often when creating development environments under *ix systems. &lt;/p&gt;
+
+&lt;p&gt;Instead of creating elaborate scripts that add users, services, environment variables etc. recreate the filesystem structure for the system under version control and save only the differences to the base installation. &lt;/p&gt;
+
+&lt;p&gt;To update the system just copy everything over.  Any scripting can be done in your working environment. &lt;/p&gt;
+
+&lt;p&gt;This is especially useful when your target is a constrained system that lacks most development tools but it has a lot of other advantages as well. To list a few:&lt;/p&gt;
+
+&lt;p&gt;Search across all administered systems from the comfort of your workstation, versioned changes and instant reset to a known state with a simple copy action.&lt;/p&gt;
+
+&lt;h2&gt;Afterthoughts&lt;/h2&gt;
+
+&lt;p&gt;For any other project the toolchain RPM and the Ruby tarfile would be in the repository and the provisioning script would start by installing git and then pulling the repository in the VM. This project will live on the bleeding edge :P !&lt;/p&gt;
+
+&lt;p&gt;It&amp;#39;s not unusual for embedded projects to have support lifecycles of 5 years or more. Can you remember which CentOS version was state-of-the-art 7 years ago? Can you guarantee that 6.5 will be available in seven years time? The longer a project will be supported for, the more of it&amp;#39;s environment should be in the repository. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/the_dream.png&quot; alt=&quot;that&amp;#39;s the dream&quot;&gt;  The goal is to be able to recreate the development environment at any point in time with just a copy of HEAD at hand.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 19 Mar 2014 00:00:00 +0100</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2014/03/19/building-with-rake-III</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2014/03/19/building-with-rake-III</guid>
+      </item>
+    
+      <item>
         <title>Building with rake: Setup</title>
-        <description>&lt;p&gt;This is the second article in the series,the whole thing starts &lt;a href=&quot;/software/2013/10/21/building-with-rake-I&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+        <description>&lt;p&gt;This is the second article in the series,the whole thing starts &lt;a href=&quot;/software/2013/10/22/building-with-rake-I&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;And while the series is about building C systems with Rake there is a lot of preparation work to be done before we can actually run the first file through the compiler.&lt;/p&gt;
 
@@ -550,37 +647,6 @@ chmod -R 700 /home/vagrant/.ssh
         <pubDate>Thu, 19 Sep 2013 14:00:00 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2013/09/19/forgetmenot-sublime-jekyll-rake</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2013/09/19/forgetmenot-sublime-jekyll-rake</guid>
-      </item>
-    
-      <item>
-        <title>Baruco 2013</title>
-        <description>&lt;p&gt;&lt;img src=&quot;/images/icanseethesea.jpg&quot; alt=&quot;I can see the sea&quot;&gt; Baruco is my excuse for the yearly pilgrimage to Barcelona.&lt;/p&gt;
-
-&lt;p&gt;It&amp;#39;s always a great pleasure coming back and the conference program is excellent, ram-packed with really really good talks. &lt;/p&gt;
-
-&lt;p&gt;Truthfully, it&amp;#39;s just sheer pleasure to be able to sit back and watch a few talks without having to get up and run to prepare the next speaker ;).&lt;/p&gt;
-
-&lt;p&gt;The organisation is very good and having gone through the ordeal with the EuRuKo team I&amp;#39;ll just  ignore any small faux-pas and smile. Kudos to the team for a job (very) well done. And guys...nobody expects the Wi-Fi to work.&lt;/p&gt;
-
-&lt;p&gt;Matz, Sandi Metz, Katrina Owen, Avdi Grimm, Chris Kelly, Matt Wynne...ok, I won&amp;#39;t list the whole line up. The talks were great, the discussions in the breaks and the party even better and getting to meet up with old friends and acquaintances is...priceless.&lt;/p&gt;
-
-&lt;p&gt;One thing I would have done differently (well, we did do differently at EuRuKo) would be to stretch the intervals a bit more, to give people more time to talk between talks. But it&amp;#39;s a delicate balance and the chosen format puts more talks on offer which is also great.&lt;/p&gt;
-
-&lt;p&gt;I  managed to squeeze a lightning talk (I even have &lt;a href=&quot;/images/DevopsInTheRealWorld.pdf&quot;&gt;slides&lt;/a&gt; for it) on the two principles a team needs to follow when setting up it&amp;#39;s project development environment.&lt;/p&gt;
-
-&lt;p&gt;There&amp;#39;s two talks I would add to the show-to-every-one-because-it-explains-things-better-than-you-ever-will category. These are Sandi Metz&amp;#39;s &amp;quot;Rules&amp;quot; and Corey Haine&amp;#39;s &amp;quot;Design Patterns And The Proper Cultivation Thereof&amp;quot;. &lt;/p&gt;
-
-&lt;p&gt;For sheer win-win in entertainment and knowledge I&amp;#39;ll push Katrina Owen&amp;#39;s &amp;quot;Here be Dragons&amp;quot; and to start a spirited discussion I&amp;#39;ll just show you Reg Braithwaite&amp;#39;s &amp;quot;What Developing With Ruby Can Teach Us About Developing Ruby&amp;quot;.&lt;/p&gt;
-
-&lt;p&gt;If an outsider ever drops in for a visit at a Ruby conference he might get the impression that Rubyists keep patting themselves on the back and congratulating themselves on what a great, friendly and welcoming community they have. And he might leave with a slight &amp;quot;puff, them Rubyists think too much off themselves&amp;quot;.
-That would be a mistake. The community is this language&amp;#39;s strongest feature. The people are approachable, open minded, hard working and knowledgable.
-They will go out of their way to welcome new members and are generous with their time and knowledge.&lt;/p&gt;
-
-&lt;p&gt;Every Ruby conference I have been to has been a pleasure and an inspiration mainly because of the people attending and Baruco was no exception. It was rather a very nice confirmation of the rule :).&lt;/p&gt;
-</description>
-        <pubDate>Wed, 18 Sep 2013 14:00:00 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2013/09/18/baruco2013</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2013/09/18/baruco2013</guid>
       </item>
     
   </channel>
