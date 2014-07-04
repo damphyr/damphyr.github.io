@@ -7,6 +7,143 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Gaudi versus the dreaded IDE</title>
+        <description>&lt;p&gt;I will come out and say it: I dislike IDEs. From Visual Studio to Eclipse by way of IntelliJ and Netbeans I find them all slow, unwieldy, complicated and buggy. They hide too much of the workings of the toolchains, spread configruation over a zillion dialogs, collaborate with source control like a stray dog with an alley cat and litter the workspace with all kinds of useless files.&lt;/p&gt;
+
+&lt;p&gt;Way back in `07 Jeff Atwood penned &amp;quot;&lt;a href=&quot;http://blog.codinghorror.com/the-f5-key-is-not-a-build-process/&quot;&gt;The F5 Key Is Not A Build Process&lt;/a&gt;&amp;quot;. While I could add about 4 pages of things you can do with a &amp;quot;build script&amp;quot; outside of an IDE it wouldn&amp;#39;t add anything to the point so go read it. &lt;/p&gt;
+
+&lt;p&gt;Then go print &amp;quot;The F5 Key Is Not A Build Process&amp;quot; on a banner, hung it in the office and live by it.&lt;/p&gt;
+
+&lt;h2&gt;But...&lt;/h2&gt;
+
+&lt;p&gt;There is one and only one unavoidable reason to use a fully fledged IDE and that is &lt;em&gt;The Debugger&lt;/em&gt;! 
+Every other reason can be done away with, provided there is sufficient editor and shell foo.&lt;/p&gt;
+
+&lt;p&gt;But IDE projects have big disadvantages when following proper software development practices (e.g. at least continuous integration with automated tests). Generally if you want to develop in an IDE and have a CI system you end up maintaining both separately&lt;sup&gt;1&lt;/sup&gt;. &lt;/p&gt;
+
+&lt;p&gt;We define as maintenance the tasks of adding/removing files, defining dependencies between code components, compiler settings etc.&lt;/p&gt;
+
+&lt;p&gt;Errors in the IDE projects are also very hard to detect automatically: The build server will not use the IDE so the  change is going to propagate to the whole team. There is nothing that drives developers to frustration faster than not being able to compile locally when the build server says everything is fine.&lt;/p&gt;
+
+&lt;p&gt;Solution: make the command line build system the master and provide IDE project generation facilities. &lt;/p&gt;
+
+&lt;p&gt;When a developer wants to use the IDE, she generates the project from a freshly updated workspace with the correct settings and continues working.&lt;/p&gt;
+
+&lt;p&gt;&amp;quot;But, there&amp;#39;s so many IDEs out there and they all use different file formats!&amp;quot; you will say and you will be absolutely correct. &lt;/p&gt;
+
+&lt;p&gt;The best case is when the IDE allows you to use a custom build system. This removes Visual Studio and a couple of more obscure ones from the list of frendlies, but VS has a very good documented XML-based format so there are ways around it.&lt;/p&gt;
+
+&lt;p&gt;Still the following example can be adapted to work in every case.&lt;/p&gt;
+
+&lt;h2&gt;Gaudi &amp;amp; QtCreator Example&lt;/h2&gt;
+
+&lt;p&gt;Let&amp;#39;s say we have a project that uses &lt;a href=&quot;http://github.com/damphyr/gaudi&quot;&gt;Gaudi&lt;/a&gt; as it&amp;#39;s build system. And let&amp;#39;s say the team insisted on using &lt;a href=&quot;https://qt-project.org/doc/qtcreator-2.5/index.html&quot;&gt;QtCreator&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;QCreator uses two separate files: One file (prj.pro) lists the files, resources, paths etc. while the other (prj.user.pro) contains the IDE settings (layout, colors and more importantly the build &amp;amp; run settings). &lt;/p&gt;
+
+&lt;p&gt;Instead of maintaining the QtCreator project files separately we create a template from a functioning project file. In other words use the GUI once to configure everthing just so. &lt;/p&gt;
+
+&lt;p&gt;For convenience we use the ERB format for the templates&lt;sup&gt;2&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;The prj.pro.template is very simple:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;TEMPLATE = app
+CONFIG += console
+CONFIG -= app_bundle
+CONFIG -= qt
+
+SOURCES += \
+    &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%=source_list.join(&amp;quot; \\\n    &amp;quot;)%&amp;gt;
+
+HEADERS += \
+    &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%=header_list.join(&amp;quot; \\\n    &amp;quot;)%&amp;gt;
+
+OTHER_FILES += \
+    &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%=other_list.join(&amp;quot; \\\n    &amp;quot;)%&amp;gt;
+
+INCLUDEPATH += \
+    &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%=include_path_list.join(&amp;quot; \\\n    &amp;quot;)%&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Here we show only the relevant part from the prj.user.pro.template&lt;sup&gt;3&lt;/sup&gt; with the custom build system settings&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;valuemap&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;QVariantMap&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;....Target.BuildConfiguration.0&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;QString&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;....BuildDirectory&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%=build_directory%&amp;gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;valuemap&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;QVariantMap&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;ProjectExplorer.BuildConfiguration.BuildStepList.0&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;valuemap&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;QVariantMap&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;ProjectExplorer.BuildStepList.Step.0&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;bool&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;ProjectExplorer.BuildStep.Enabled&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;true&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;QString&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;...Arguments&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;GAUDI_CONFIG=&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%=system_config_file%&amp;gt; 
+  build:deployment DEPLOYMENT=&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%=deployment_name%&amp;gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;QString&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;...Command&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;rake&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;QString&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;...WorkingDirectory&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%=base%&amp;gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;QString&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;...DefaultDisplayName&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Rake Build&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;QString&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;...DisplayName&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;QString&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;...Id&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;ProjectExplorer.ProcessStep&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/valuemap&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We now have our templates. The parameter names are fully arbitrary at the moment, they serve only as descriptive names.&lt;/p&gt;
+
+&lt;p&gt;We are faced with the task of collecting the file names, setting paths correctly etc. This is where &lt;a href=&quot;http://github.com/damphyr/gaudi&quot;&gt;Gaudi&lt;/a&gt; comes in.
+The Rake task code that generates the prj.pro file looks like the following:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;task&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:qtc&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;#Quick and dirty get the first GCC program available to get the example running&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;program&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Gaudi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Deployment&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;Dummy&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;programs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;gcc&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;#Use the configuration methods to place artifacts within the workspace&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;outfile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vg&quot;&gt;$configuration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;qtcreator&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;program&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;program&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;.pro&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;template&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vg&quot;&gt;$configuration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;tools/templates/qtcreator.pro.template&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;#collect all source and header files&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;source_list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;program&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sources&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;header_list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;program&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;headers&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;#A Gaudi::Program depends on Gaudi::Components &lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;#which are groupings of source files.&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;#This gets us all sources and headers&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;program&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dependencies&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dep&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;source_list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dep&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sources&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;header_list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dep&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;headers&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;#one of the ways to get the include paths&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;include_path_list&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;header_list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;header&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dirname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;header&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uniq&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;#The Hash with the template parameters&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;source_list&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;source_list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uniq&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&amp;quot;header_list&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;header_list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uniq&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&amp;quot;include_path_list&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;include_path_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&amp;quot;other_list&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;program&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;configuration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config_file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uniq&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;write_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outfile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;from_template&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;template&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;What we get from Gaudi:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The configuration defining the workspace (output directory, base directory etc.)&lt;/li&gt;
+&lt;li&gt;A few classes (Deployment, Program, Component) linking sources to binary artifacts and encapsulating the dependencies between code constructs&lt;/li&gt;
+&lt;li&gt;Helpers for template handling (from&lt;em&gt;template, write&lt;/em&gt;file etc.)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Creating IDE project files while maintaining a fully command line enabled build system is not very difficult. The combination of one of the myriad template engines with a few lines of scripting to collect the necessary information gets you quickly to a very usable solution. The bulk of the time spent is dedicated to deciphering the IDE file format and creating the template.&lt;/p&gt;
+
+&lt;h2&gt;You never walk alone&lt;/h2&gt;
+
+&lt;p&gt;QtCreator expertise provided and code polished by &lt;a href=&quot;http://github.com/jahnf&quot;&gt;jahnf&lt;/a&gt; who suffered through all my explanations of Gaudi interna and managed to write tasks at the end.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; It can be done but driving the process of development from the IDE throws up all sorts of hurdles in a proper CI workflow.&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;2&lt;/sup&gt; Gaudi is built on Rake, which is Ruby, which offers ERB in the standard library&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;3&lt;/sup&gt; Because XML! &lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;4&lt;/sup&gt; Once set up and configured properly&lt;/p&gt;
+</description>
+        <pubDate>Thu, 03 Jul 2014 16:00:00 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2014/07/03/gaudi-versus-the-dreaded-ide</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2014/07/03/gaudi-versus-the-dreaded-ide</guid>
+      </item>
+    
+      <item>
         <title>Building with rake: Provisions</title>
         <description>&lt;p&gt;This is the third article in the series and it is part two of the setup saga. the whole thing starts &lt;a href=&quot;/software/2013/10/22/building-with-rake-I&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
@@ -14,15 +151,14 @@
 
 &lt;p&gt;With the groundwork laid it is time for the provisioning part. The main reason for creating a vagrant base box was because I have never before worked with CentOS, or the KPIT toolchain, so naturally I tend to make mistakes. Sometimes I&amp;#39;ll just blunder so bad that the only way to get back to a viable state is to start from the beginning. With the vagrant base box this whole process is as follows:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;vagrant up 
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;vagrant up 
 vagrant ssh
 &lt;span class=&quot;c&quot;&gt;#blunder about&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;#mess up&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;
 vagrant halt
 vagrant destroy &lt;span class=&quot;c&quot;&gt;#rinse&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#repeat&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;span class=&quot;c&quot;&gt;#repeat&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
  
 
 &lt;p&gt;Anything that works ends up in the provisioning script&lt;/p&gt;
@@ -57,7 +193,7 @@ vagrant destroy &lt;span class=&quot;c&quot;&gt;#rinse&lt;/span&gt;
 
 &lt;p&gt;The provisioning &amp;quot;script&amp;quot; is:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;yum -y install zlib zlib-devel
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;yum -y install zlib zlib-devel
 yum -y install openssl-devel
 yum -y install libyaml libyaml-devel
 yum -y install wget
@@ -70,9 +206,8 @@ make install
 &lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;Setting up environment
 cp /home/vagrant/host_share/setup/bash_profile /home/vagrant/.bash_profile
 chown vagrant:vagrant /home/vagrant/.bash_profile
-chmod 544 /home/vagrant/.bash_profile
-rpm --install /home/vagrant/host_share/setup/gnurx_v14.01_elf-1-1.i386.rpm
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+chmod &lt;span class=&quot;m&quot;&gt;544&lt;/span&gt; /home/vagrant/.bash_profile
+rpm --install /home/vagrant/host_share/setup/gnurx_v14.01_elf-1-1.i386.rpm&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;I mean, really, this thing has no error handling, nothing. It&amp;#39;s a shambles masquerading as a script. But hey, it mostly works&lt;/p&gt;
 
@@ -172,24 +307,20 @@ rpm --install /home/vagrant/host_share/setup/gnurx_v14.01_elf-1-1.i386.rpm
 
 &lt;p&gt;If by some twist of luck there&amp;#39;s a space before those first two dots though, the results are quite unexpected:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p195&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;expand_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;/foo/foo&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot; ../../bar&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
- &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;/foo/foo/bar&amp;quot;&lt;/span&gt;
- 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p195&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;expand_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;/foo/foo&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot; ../../bar&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;/foo/foo/bar&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The dots are somehow stripped away. Btw. when doing the same with only one directory level:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p195&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;010&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;expand_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;/foo&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;../../bar&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p195&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;010&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;expand_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;/foo&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;../../bar&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
  &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;/bar&amp;quot;&lt;/span&gt;
 &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p195&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;011&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;expand_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;/foo&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot; ../../bar&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
- &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;/foo/bar&amp;quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+ &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;/foo/bar&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Also, this only happens when there are two sets of dots (&amp;quot;../../&amp;quot;). When there is only one then the sneaky whitespace is easier to detect:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p195&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;012&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;expand_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;/foo&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot; ../bar&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
- &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;/foo/ ../bar&amp;quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p195&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;012&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;expand_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;/foo&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot; ../bar&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;/foo/ ../bar&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 </description>
         <pubDate>Wed, 04 Dec 2013 19:00:00 +0100</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2013/12/04/weird-file-joins</link>
@@ -337,7 +468,7 @@ rpm --install /home/vagrant/host_share/setup/gnurx_v14.01_elf-1-1.i386.rpm
 
 &lt;p&gt;The guest plugin needs it&amp;#39;s name and one method, detect? and looks like this&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;vagrant&amp;quot;&lt;/span&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;vagrant&amp;quot;&lt;/span&gt;
 
 &lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;VagrantPlugins&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;GuestQNX&lt;/span&gt;
@@ -347,8 +478,7 @@ rpm --install /home/vagrant/host_share/setup/gnurx_v14.01_elf-1-1.i386.rpm
       &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;We did say that QNX is BSD-like, didn&amp;#39;t we?&lt;/p&gt;
 
@@ -360,10 +490,10 @@ rpm --install /home/vagrant/host_share/setup/gnurx_v14.01_elf-1-1.i386.rpm
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https://github.com/damphyr/vagrant-qnx/blob/master/vagrant-guest-qnx/lib/qnx/vagrant/cap/configure_networks.rb&quot;&gt;configure_networks&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/damphyr/vagrant-qnx/blob/master/vagrant-guest-qnx/lib/qnx/vagrant/cap/halt.rb&quot;&gt;halt&lt;/a&gt; &lt;/p&gt;
-
-&lt;p&gt;I added &lt;a href=&quot;https://github.com/damphyr/vagrant-qnx/blob/master/vagrant-guest-qnx/lib/qnx/vagrant/cap/change_hostname.rb&quot;&gt;change_hostname&lt;/a&gt; just because it was easy.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/damphyr/vagrant-qnx/blob/master/vagrant-guest-qnx/lib/qnx/vagrant/cap/halt.rb&quot;&gt;halt&lt;/a&gt; &lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;p&gt;I added &lt;a href=&quot;https://github.com/damphyr/vagrant-qnx/blob/master/vagrant-guest-qnx/lib/qnx/vagrant/cap/change_hostname.rb&quot;&gt;change_hostname&lt;/a&gt; just because it was easy.&lt;/p&gt;
 
 &lt;p&gt;Instead of listing here the implementation code and make this post miles long with copy-paste-able information why don&amp;#39;t you head on to &lt;a href=&quot;http://https://github.com/damphyr/vagrant-qnx/tree/master/vagrant-guest-qnx&quot;&gt;github&lt;/a&gt; and browse at leisure?&lt;/p&gt;
 
@@ -377,12 +507,11 @@ rpm --install /home/vagrant/host_share/setup/gnurx_v14.01_elf-1-1.i386.rpm
 
 &lt;p&gt;I lifted the handy loader guard there as well:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;begin&lt;/span&gt; 
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;begin&lt;/span&gt; 
  &lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;vagrant&amp;#39;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;rescue&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;LoadError&lt;/span&gt;
  &lt;span class=&quot;k&quot;&gt;raise&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;The Vagrant Guest QNX plugin must be run within vagrant&amp;#39;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;So this code won&amp;#39;t give you ugly stacktraces by chance.&lt;/p&gt;
 
@@ -394,8 +523,7 @@ rpm --install /home/vagrant/host_share/setup/gnurx_v14.01_elf-1-1.i386.rpm
 
 &lt;p&gt;Unfortunately bash is not available on stock QNX which uses ksh and links it to /bin/sh. So we need &lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ssh&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shell&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;sh&amp;quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ssh&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shell&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;sh&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;in the Vagrantfile.&lt;/p&gt;
 
@@ -403,8 +531,7 @@ rpm --install /home/vagrant/host_share/setup/gnurx_v14.01_elf-1-1.i386.rpm
 
 &lt;p&gt;There are no VMWare Tools or Guest Additions for QNX. I don&amp;#39;t expect there will ever be. Yet Vagrant tries to establish a share between host and the VM and (in by now typical fashion) ends up hanging forever. So one more addition to the Vagrantfile is needed&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;synced_folder&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;.&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;/vagrant&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:disabled&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;synced_folder&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;.&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;/vagrant&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:disabled&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;And that&amp;#39;s it!&lt;/p&gt;
 
@@ -412,7 +539,7 @@ rpm --install /home/vagrant/host_share/setup/gnurx_v14.01_elf-1-1.i386.rpm
 
 &lt;p&gt;This is the bare minimum Vagrantfile needed to operate the base box you created by faithfully following &lt;a href=&quot;software/2013/10/18/qnx-vagrant&quot;&gt;my instructions&lt;/a&gt;&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Vagrantfile API/syntax version. Don&amp;#39;t touch unless you know what you&amp;#39;re doing!&lt;/span&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Vagrantfile API/syntax version. Don&amp;#39;t touch unless you know what you&amp;#39;re doing!&lt;/span&gt;
 &lt;span class=&quot;no&quot;&gt;VAGRANTFILE_API_VERSION&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;2&amp;quot;&lt;/span&gt;
 
 &lt;span class=&quot;no&quot;&gt;Vagrant&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;configure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;VAGRANTFILE_API_VERSION&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
@@ -420,13 +547,11 @@ rpm --install /home/vagrant/host_share/setup/gnurx_v14.01_elf-1-1.i386.rpm
   &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;box_url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;qnx65sp1.box&amp;quot;&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ssh&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shell&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;sh&amp;quot;&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;synced_folder&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;.&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;/vagrant&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:disabled&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;You will need to install the vagrant-guest-qnx plugin (yes, it&amp;#39;s up on rubygems)&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;vagrant plugin install vagrant-guest-qnx
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;vagrant plugin install vagrant-guest-qnx&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;There are also a few constraints on the QNX VM:&lt;/p&gt;
 
@@ -471,7 +596,7 @@ rpm --install /home/vagrant/host_share/setup/gnurx_v14.01_elf-1-1.i386.rpm
 
 &lt;h3&gt;Setup sshd&lt;/h3&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#! /bin/sh&lt;/span&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#! /bin/sh&lt;/span&gt;
 
 &lt;span class=&quot;c&quot;&gt;#setup ssh access &lt;/span&gt;
 random -t
@@ -480,8 +605,7 @@ ssh-keygen -t rsa -f /etc/ssh/ssh_host_key -b 2048
 ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key
 ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key
 &lt;span class=&quot;c&quot;&gt;#and start the server&lt;/span&gt;
-/usr/sbin/sshd&amp;amp;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+/usr/sbin/sshd&lt;span class=&quot;p&quot;&gt;&amp;amp;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Also, edit /etc/rc.d/rc.local and add the line &lt;em&gt;/usr/sbin/sshd&amp;amp;&lt;/em&gt; at the end so that sshd starts when the machine reboots.&lt;/p&gt;
 
@@ -489,10 +613,9 @@ ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key
 
 &lt;p&gt;I really dislike this because I have not found a way to automate it further. You need to go through the passwd questions manually.&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#! /bin/sh&lt;/span&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#! /bin/sh&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;#Accept default values and use vagrant as the password&lt;/span&gt;
-passwd vagrant
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+passwd vagrant&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;After this you need to add &amp;#39;users:x:100:&amp;#39; at the end of /etc/group&lt;/p&gt;
 
@@ -500,9 +623,8 @@ passwd vagrant
 
 &lt;p&gt;Get the &lt;a href=&quot;https://github.com/mitchellh/vagrant/blob/master/keys/vagrant.pub&quot;&gt;vagrant insecure public key&lt;/a&gt; and copy it into /home/vagrant/.ssh/authorized_keys. Then to make sure do the following&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;chown -R vagrant:users /home/vagrant/.ssh
-chmod -R 700 /home/vagrant/.ssh
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;chown -R vagrant:users /home/vagrant/.ssh
+chmod -R &lt;span class=&quot;m&quot;&gt;700&lt;/span&gt; /home/vagrant/.ssh&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;If the permissions are not set corretly openSSH will not login succesfully (and you will not know why!)&lt;/p&gt;
 
@@ -510,17 +632,15 @@ chmod -R 700 /home/vagrant/.ssh
 
 &lt;p&gt;The basebox format is actually very basic: Whatever VM files your provider requires to start the VM plus a metadata.json file with the following content:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;err&quot;&gt;provider:&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;quot;vmware_workstation&amp;quot;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Values that are valid at the time of writing are &amp;quot;vmware&lt;em&gt;workstation&amp;quot;, &amp;quot;vmware&lt;/em&gt;fusion&amp;quot; and &amp;quot;virtualbox&amp;quot;.&lt;/p&gt;
 
 &lt;p&gt;For VMWare VMs the following should do the trick when run in the VMs directory.&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;tar cvf qnx65.box *.vmdk *.vmx *.vmxf *.nvram metadata.json
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;tar cvf qnx65.box *.vmdk *.vmx *.vmxf *.nvram metadata.json&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;(add the .json file yourself :) )&lt;/p&gt;
 
@@ -528,18 +648,16 @@ chmod -R 700 /home/vagrant/.ssh
 
 &lt;p&gt;So we do the &lt;em&gt;vagrant init&lt;/em&gt; and edit the Vagrantfile&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;VAGRANTFILE_API_VERSION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;2&amp;quot;&lt;/span&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;no&quot;&gt;VAGRANTFILE_API_VERSION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;2&amp;quot;&lt;/span&gt;
 
 &lt;span class=&quot;no&quot;&gt;Vagrant&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;configure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;VAGRANTFILE_API_VERSION&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;box&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;qnx65&amp;quot;&lt;/span&gt; 
   &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;box&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;qnx65.box&amp;quot;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#No real URL, the basebox was just in the same directory&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The first &lt;em&gt;vagrant up&lt;/em&gt; needs to specify the provider otherwise vagrant defaults to Virtualbox&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;vagrant up --provider vmware_workstation
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;vagrant up --provider vmware_workstation&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Now, if you did not setup ssh correctly then vagrant is going to hang with &amp;quot;Waiting for VM to boot. This can take a few minutes&amp;quot;. This can be easily ascertained if you set the environment variable VAGRANT_LOG=debug and watch how vagrant repeatedly tries to connect and fails miserably never giving up. Go back and set those permissions...&lt;/p&gt;
 
@@ -562,8 +680,7 @@ chmod -R 700 /home/vagrant/.ssh
 
 &lt;p&gt;&lt;a href=&quot;http://bundler.io/&quot;&gt;Bundler&lt;/a&gt; allows you perform bundle install from a cache. All you need to do is put all your gems in a vendor/cache directory where your Gemfile is and bundler will look in there if you call it with --local:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;bundle install --local
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;bundle install --local&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The really neat trick is that bundler will always update the cache if the vendor/cache directory is present. So doing a simple &lt;em&gt;bundle install&lt;/em&gt; with an empty vendor/cache will net you an up-to-date cache you can take with you offline.&lt;/p&gt;
 
@@ -598,10 +715,9 @@ chmod -R 700 /home/vagrant/.ssh
 
 &lt;p&gt;Now choosing C:\Users\your_username\.ssh gives us an advantage: Your keys are now in %USERPROFILE%\.ssh which means we can use the environment and get multiple user support for free. So in your stage deployment configuration set the Capistrano SSH options as follows:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:ssh_options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:ssh_options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;ss&quot;&gt;keys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;ENV&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;USERPROFILE&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/.ssh/key.id_rsa&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;do substitute key.id_rsa with whatever filename your keys are stored in plz ;)&lt;/p&gt;
 
@@ -610,43 +726,6 @@ chmod -R 700 /home/vagrant/.ssh
         <pubDate>Fri, 27 Sep 2013 11:00:00 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2013/09/27/capistrano-windows-ssh</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2013/09/27/capistrano-windows-ssh</guid>
-      </item>
-    
-      <item>
-        <title>ForgetMeNot: SublimeText, jekyll and rake</title>
-        <description>&lt;p&gt;&lt;em&gt;One more in the series of let-me-jot-this-down-cause-I-forget-easily articles&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;In the blog&amp;#39;s hiatus time I managed to switch from Textmate to SublimeText.&lt;/p&gt;
-
-&lt;p&gt;The reason for switching has to do with SublimeText&amp;#39;s availability on all platforms I work with (namely I can get it to work on Windows). I&amp;#39;ve come to really like this editor with it&amp;#39;s simple JSON configuration and the lightning fast search facilities it offers. And I find increasingly annoying the need to switch outside the editor to perform tasks on the console.&lt;/p&gt;
-
-&lt;p&gt;Luckily SublimeText has a nice and simple (again JSON based) batch execution system (called a Build System). Instead of duplicating knowledge I myself have found somewhere else, go check &lt;a href=&quot;http://addyosmani.com/blog/custom-sublime-text-build-systems-for-popular-tools-and-languages/&quot;&gt;this article by Addy Osmani&lt;/a&gt; which explains things very well.&lt;/p&gt;
-
-&lt;p&gt;Now, switching the blog to jekyll also means I spent a lot more time within SublimeText when I write blogs. In typically lazy fashion I switched to the terminal for &lt;em&gt;jekyll build&lt;/em&gt;.  This got old very fast, so I was looking for a way to get a build system to work.&lt;/p&gt;
-
-&lt;p&gt;The first thing was to call jekyll build directly, which went south pretty fast since I use rvm. The default OS X Ruby installation has actually never been used on my current machine.&lt;/p&gt;
-
-&lt;p&gt;Using Addy&amp;#39;s article I figured out how to set the environment to set the rvm path. Now, instead of using &lt;em&gt;rvm-auto-ruby&lt;/em&gt; I just set the rvm default to the ruby version I use for my personal projects. All other installations don&amp;#39;t have the jekyll gem anyway.&lt;/p&gt;
-
-&lt;p&gt;And instead of creating a build system for jekyll I just created a rakefile that calls &lt;em&gt;jekyll build&lt;/em&gt; and used the following as a build system&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;quot;env&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:{&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;quot;PATH&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;${HOME}/.rvm/bin:${PATH}&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-      &lt;span class=&quot;nt&quot;&gt;&amp;quot;LC_CTYPE&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;UTF-8&amp;quot;&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;quot;cmd&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;rake&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;quot;file_regex&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;^(...*?):([0-9]*):?([0-9]*)&amp;quot;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;That &lt;em&gt;&amp;quot;LC_CTYPE&amp;quot;:&amp;quot;UTF-8&amp;quot;&lt;/em&gt; is crucial, especially with the various greek, german and spanish UTF-8 characters loose on this blog. Jekyll chokes very fast (article number 3 to be exact) if it&amp;#39;s not set.&lt;/p&gt;
-
-&lt;p&gt;The beauty of it is that the standard Ruby regex for errors still works and stacktraces are clickable and open the correct file within the editor. Sweet!&lt;/p&gt;
-</description>
-        <pubDate>Thu, 19 Sep 2013 14:00:00 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2013/09/19/forgetmenot-sublime-jekyll-rake</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2013/09/19/forgetmenot-sublime-jekyll-rake</guid>
       </item>
     
   </channel>
