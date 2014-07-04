@@ -59,15 +59,14 @@
 
 <p>Putting the two together in a parseable format is the next logical step:</p>
 
-<div class="highlight"><pre><code class="xml"><span class="nt">&lt;specification</span> <span class="na">id=</span><span class="s">&quot;id&quot;</span><span class="nt">&gt;</span>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;specification</span> <span class="na">id=</span><span class="s">&quot;id&quot;</span><span class="nt">&gt;</span>
   <span class="nt">&lt;title&gt;</span>Super Test<span class="nt">&lt;/title&gt;</span>
   <span class="nt">&lt;description&gt;</span>Why does this test exist? What is it&#39;s purpose?<span class="nt">&lt;/description&gt;</span>
   <span class="nt">&lt;scenario&gt;</span>
     <span class="nt">&lt;step/&gt;</span>
     <span class="nt">&lt;step/&gt;</span>
   <span class="nt">&lt;/scenario&gt;</span>
-<span class="nt">&lt;/specification&gt;</span>
-</code></pre></div>
+<span class="nt">&lt;/specification&gt;</span></code></pre></div>
 
 <p>Parsing these specifications allows for:
 * Execution of the scenario elements.
@@ -89,14 +88,13 @@ Establishing a format that satisfies the requirements of all projects is an effo
 The goal is to have a simple and intuitive way of defining the scenario (e.g. the sequence of execution steps) in a problem-specific way. In other words, define a testing DSL for the project.
 Using as basis the contrived example project from <a href="/software/2007/04/13/on-test-automation-and-management-part-i">part I</a>, a DSL-expressed scenario could be:</p>
 
-<div class="highlight"><pre><code class="xml"><span class="nt">&lt;scenario&gt;</span>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;scenario&gt;</span>
   <span class="nt">&lt;flash/&gt;</span>
   <span class="nt">&lt;start_sniffer</span> <span class="na">log=</span><span class="s">&quot;testcase.log&quot;</span><span class="nt">/&gt;</span>
   <span class="nt">&lt;guitester</span> <span class="na">script=</span><span class="s">&quot;somescript.gui&quot;</span><span class="nt">/&gt;</span>
   <span class="nt">&lt;stop_sniffer/&gt;</span>
   <span class="nt">&lt;analyze</span> <span class="na">input=</span><span class="s">&quot;testcase.log&quot;</span> <span class="na">script=</span><span class="s">&quot;check_for_errors.usb&quot;</span><span class="nt">/&gt;</span>
-<span class="nt">&lt;/scenario&gt;</span> 
-</code></pre></div>
+<span class="nt">&lt;/scenario&gt;</span></code></pre></div>
 
 <p>Additionally in many cases the specification itself will have to contain more information (i.e. requirement tracing).
 In a <a href="/software/2007/04/16/on-test-automation-and-management-part-iii/">later installment</a> I will present a solution that provides enough flexibility for the adaptation of the parser without exponentially increasing it&#39;s complexity.</p>

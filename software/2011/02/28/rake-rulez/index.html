@@ -65,14 +65,13 @@ Why would you need this you will ask?</p>
 
 <p>Unfortunately, since Rake locks the dependencies when the task is executed, the obvious solution was to create the tasks while Rake instantiates it&#39;s application.</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="k">def</span> <span class="nf">create_tasks</span>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">create_tasks</span>
   <span class="n">task</span> <span class="ss">:compile</span> <span class="o">=&gt;</span> <span class="n">find_components</span>
 <span class="k">end</span>
 
 <span class="n">create_tasks</span>
 
-<span class="n">task</span> <span class="ss">:compile</span>
-</code></pre></div>
+<span class="n">task</span> <span class="ss">:compile</span></code></pre></div>
 
 <p>This proves very ineffective and performance degrades even further the more the project grows.</p>
 
@@ -84,28 +83,25 @@ Why would you need this you will ask?</p>
 
 <p>So we want to build an application that depends on libraries. These are file tasks </p>
 
-<div class="highlight"><pre><code class="ruby"><span class="n">file</span> <span class="s2">&quot;app.exe&quot;</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="s2">&quot;1.lib&quot;</span><span class="p">,</span><span class="s2">&quot;2.lib&quot;</span><span class="o">]</span>
-</code></pre></div>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">file</span> <span class="s2">&quot;app.exe&quot;</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="s2">&quot;1.lib&quot;</span><span class="p">,</span><span class="s2">&quot;2.lib&quot;</span><span class="o">]</span></code></pre></div>
 
 <p>We still have to construct the application file task &quot;on load&quot; and associate it with the library file tasks and then associate the library file tasks with the source files but the scope is drastically reduced and performance is not affected (meaning the time to define the task dependencies is negligible compared with the compilation time of a single component).</p>
 
 <p>Now compilation can be expressed with rules</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="n">rule</span> <span class="s1">&#39;.lib&#39;</span> <span class="k">do</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">rule</span> <span class="s1">&#39;.lib&#39;</span> <span class="k">do</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span>
  <span class="n">build_the_library</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
-<span class="k">end</span>
-</code></pre></div>
+<span class="k">end</span></code></pre></div>
 
 <p>The nice thing about Rake rules is that they can be regular expressions. With a couple of rules like the following you can use the same compilation code for multiple platforms</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="sr">/out\/pc\/.+\/.*\.lib/</span> <span class="k">do</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="sr">/out\/pc\/.+\/.*\.lib/</span> <span class="k">do</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span>
  <span class="n">build_the_library</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="s1">&#39;pc&#39;</span><span class="p">)</span>
 <span class="k">end</span>
 
 <span class="sr">/out\/target\/.+\/.*\.a/</span> <span class="k">do</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span>
  <span class="n">build_the_library</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="s1">&#39;target&#39;</span><span class="p">)</span>
-<span class="k">end</span>
-</code></pre></div>
+<span class="k">end</span></code></pre></div>
 
 <p>For all of this to work it goes hand in hand with naming conventions and a rather strict directory structure. It&#39;s a balance between explicit rules expressed in code and implicit rules expressed in the conventions used that gives us a lot of flexibility - but this is a subject for a later post.</p>
 

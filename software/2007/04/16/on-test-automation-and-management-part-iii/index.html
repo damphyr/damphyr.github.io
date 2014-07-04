@@ -53,12 +53,11 @@
 
 <p>In our contrived example (first talked about <a href="/software/2007/04/13/on-test-automation-and-management-part-i">here</a>), say that a test asks for a measurement using an oscilloscope, and that it has been deemed impractical (or too expensive) to have a programmable oscilloscope. Instead, a snapshot of the expected curve is taken and the tester should perform the measurement and make sure it matches. It could go something like:</p>
 
-<div class="highlight"><pre><code class="xml"><span class="nt">&lt;scenario</span> <span class="na">attended=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;scenario</span> <span class="na">attended=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>
   <span class="nt">&lt;echo</span> <span class="na">text=</span><span class="s">&quot;Please perform oscilloscope measurement.&quot;</span><span class="nt">/&gt;</span>
   <span class="nt">&lt;display</span> <span class="na">img=</span><span class="s">&quot;expected.jpg&quot;</span><span class="nt">/&gt;</span>
   <span class="nt">&lt;yesno&gt;</span>Does the measurement match the expected result?<span class="nt">&lt;/yesno&gt;</span>
-<span class="nt">&lt;/scenario&gt;</span>
-</code></pre></div>
+<span class="nt">&lt;/scenario&gt;</span></code></pre></div>
 
 <p>The advantages of such an approach is that the tester focuses only on the relevant test action that cannot be automated. The rest (test preparation etc.) is done automatically by the tool. The tool also takes care of validating the tester&#39;s input, logging etc. This consistency reduces the possibility of errors.</p>
 

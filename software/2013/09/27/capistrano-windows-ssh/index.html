@@ -63,10 +63,9 @@
 
 <p>Now choosing C:\Users\your_username\.ssh gives us an advantage: Your keys are now in %USERPROFILE%\.ssh which means we can use the environment and get multiple user support for free. So in your stage deployment configuration set the Capistrano SSH options as follows:</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="n">set</span> <span class="ss">:ssh_options</span><span class="p">,</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">set</span> <span class="ss">:ssh_options</span><span class="p">,</span> <span class="p">{</span>
   <span class="ss">keys</span><span class="p">:</span> <span class="o">[</span><span class="s2">&quot;</span><span class="si">#{</span><span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;USERPROFILE&#39;</span><span class="o">]</span><span class="si">}</span><span class="s2">/.ssh/key.id_rsa&quot;</span><span class="o">]</span>
-<span class="p">}</span>
-</code></pre></div>
+<span class="p">}</span></code></pre></div>
 
 <p>do substitute key.id_rsa with whatever filename your keys are stored in plz ;)</p>
 

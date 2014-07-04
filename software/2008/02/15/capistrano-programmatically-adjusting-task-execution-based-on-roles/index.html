@@ -48,8 +48,7 @@ As always, my use case deviates from the normal.</p>
 
 <p>The idea is to be able to say </p>
 
-<div class="highlight"><pre><code class="bash"> cap deploy:some_package <span class="nv">DEPLOY_TO</span><span class="o">=</span>some_node
-</code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">cap deploy:some_package <span class="nv">DEPLOY_TO</span><span class="o">=</span>some_node</code></pre></div>
 
 <p>and have Capistrano assemble and configure the package, copy it and install it. 
 Lets build some vocabulary first:</p>
@@ -72,20 +71,18 @@ Given the definition above, the address of the server should be part of the <str
 <p>Luckily, Capistrano uses lazy evaluation for most of it&#39;s functionality, meaning values are calculated when they are needed and not when the script loads.
 This means that we can assign a task to a role and define/modify the role just before the first remote operation is executed</p>
 
-<div class="highlight"><pre><code class="ruby"> <span class="n">task</span> <span class="ss">:example</span><span class="p">,</span> <span class="n">roles</span><span class="o">=&gt;</span><span class="ss">:important</span> <span class="k">do</span> 
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">task</span> <span class="ss">:example</span><span class="p">,</span> <span class="n">roles</span><span class="o">=&gt;</span><span class="ss">:important</span> <span class="k">do</span> 
    <span class="n">role</span> <span class="ss">:important</span><span class="p">,</span> <span class="s2">&quot;important@server&quot;</span>
    <span class="n">run</span><span class="p">(</span><span class="s2">&quot;start important example&quot;</span><span class="p">)</span>
- <span class="k">end</span>
-</code></pre></div>
+ <span class="k">end</span></code></pre></div>
 
 <p>Caveat: Calling role does not replace the values for the role, it just adds new values, so the following</p>
 
-<div class="highlight"><pre><code class="ruby"> <span class="n">role</span> <span class="ss">:important</span><span class="p">,</span> <span class="s2">&quot;important@server&quot;</span>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">role</span> <span class="ss">:important</span><span class="p">,</span> <span class="s2">&quot;important@server&quot;</span>
  <span class="n">task</span> <span class="ss">:example</span><span class="p">,</span> <span class="n">roles</span><span class="o">=&gt;</span><span class="ss">:important</span> <span class="k">do</span>
    <span class="n">role</span> <span class="ss">:important</span><span class="p">,</span> <span class="s2">&quot;important@other.server&quot;</span>
    <span class="n">run</span><span class="p">(</span><span class="s2">&quot;start important example&quot;</span><span class="p">)</span>
- <span class="k">end</span>
-</code></pre></div>
+ <span class="k">end</span></code></pre></div>
 
 <p>means that the &#39;important example&#39; runs on important@other.server and important@server.</p>
 

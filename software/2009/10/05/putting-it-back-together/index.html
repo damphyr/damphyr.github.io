@@ -59,16 +59,14 @@
 
 <p>ampelofilosofies is developed in my local git repository, that means I have to use the following lines in my <em>config/deploy.rb</em></p>
 
-<div class="highlight"><pre><code class="ruby"><span class="n">set</span> <span class="ss">:repository</span><span class="p">,</span> <span class="s2">&quot;file://.&quot;</span>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">set</span> <span class="ss">:repository</span><span class="p">,</span> <span class="s2">&quot;file://.&quot;</span>
 <span class="n">set</span> <span class="ss">:deploy_via</span><span class="p">,</span> <span class="ss">:copy</span>
-<span class="n">set</span> <span class="ss">:scm</span><span class="p">,</span> <span class="ss">:git</span>
-</code></pre></div>
+<span class="n">set</span> <span class="ss">:scm</span><span class="p">,</span> <span class="ss">:git</span></code></pre></div>
 
 <p>The username on my dev machine does not match the username for the textdrive account so </p>
 
-<div class="highlight"><pre><code class="ruby"><span class="n">set</span> <span class="ss">:user</span><span class="p">,</span> <span class="s2">&quot;your_username&quot;</span>
-<span class="n">set</span> <span class="ss">:use_sudo</span><span class="p">,</span> <span class="kp">false</span>
-</code></pre></div>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">set</span> <span class="ss">:user</span><span class="p">,</span> <span class="s2">&quot;your_username&quot;</span>
+<span class="n">set</span> <span class="ss">:use_sudo</span><span class="p">,</span> <span class="kp">false</span></code></pre></div>
 
 <p>setting :use_sudo to false since we are in a shared host.</p>
 

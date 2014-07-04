@@ -59,7 +59,7 @@
 
 <p>The guest plugin needs it&#39;s name and one method, detect? and looks like this</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="nb">require</span> <span class="s2">&quot;vagrant&quot;</span>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s2">&quot;vagrant&quot;</span>
 
 <span class="k">module</span> <span class="nn">VagrantPlugins</span>
   <span class="k">module</span> <span class="nn">GuestQNX</span>
@@ -69,8 +69,7 @@
       <span class="k">end</span>
     <span class="k">end</span>
   <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div>
+<span class="k">end</span></code></pre></div>
 
 <p>We did say that QNX is BSD-like, didn&#39;t we?</p>
 
@@ -82,10 +81,10 @@
 
 <ul>
 <li><a href="https://github.com/damphyr/vagrant-qnx/blob/master/vagrant-guest-qnx/lib/qnx/vagrant/cap/configure_networks.rb">configure_networks</a></li>
-<li><p><a href="https://github.com/damphyr/vagrant-qnx/blob/master/vagrant-guest-qnx/lib/qnx/vagrant/cap/halt.rb">halt</a> </p>
-
-<p>I added <a href="https://github.com/damphyr/vagrant-qnx/blob/master/vagrant-guest-qnx/lib/qnx/vagrant/cap/change_hostname.rb">change_hostname</a> just because it was easy.</p></li>
+<li><a href="https://github.com/damphyr/vagrant-qnx/blob/master/vagrant-guest-qnx/lib/qnx/vagrant/cap/halt.rb">halt</a> </li>
 </ul>
+
+<p>I added <a href="https://github.com/damphyr/vagrant-qnx/blob/master/vagrant-guest-qnx/lib/qnx/vagrant/cap/change_hostname.rb">change_hostname</a> just because it was easy.</p>
 
 <p>Instead of listing here the implementation code and make this post miles long with copy-paste-able information why don&#39;t you head on to <a href="http://https://github.com/damphyr/vagrant-qnx/tree/master/vagrant-guest-qnx">github</a> and browse at leisure?</p>
 
@@ -99,12 +98,11 @@
 
 <p>I lifted the handy loader guard there as well:</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="k">begin</span> 
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">begin</span> 
  <span class="nb">require</span> <span class="s1">&#39;vagrant&#39;</span>
 <span class="k">rescue</span> <span class="no">LoadError</span>
  <span class="k">raise</span> <span class="s1">&#39;The Vagrant Guest QNX plugin must be run within vagrant&#39;</span>
-<span class="k">end</span>
-</code></pre></div>
+<span class="k">end</span></code></pre></div>
 
 <p>So this code won&#39;t give you ugly stacktraces by chance.</p>
 
@@ -116,8 +114,7 @@
 
 <p>Unfortunately bash is not available on stock QNX which uses ksh and links it to /bin/sh. So we need </p>
 
-<div class="highlight"><pre><code class="ruby"><span class="n">config</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">shell</span> <span class="o">=</span> <span class="s2">&quot;sh&quot;</span>
-</code></pre></div>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">config</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">shell</span> <span class="o">=</span> <span class="s2">&quot;sh&quot;</span></code></pre></div>
 
 <p>in the Vagrantfile.</p>
 
@@ -125,8 +122,7 @@
 
 <p>There are no VMWare Tools or Guest Additions for QNX. I don&#39;t expect there will ever be. Yet Vagrant tries to establish a share between host and the VM and (in by now typical fashion) ends up hanging forever. So one more addition to the Vagrantfile is needed</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">synced_folder</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;/vagrant&quot;</span><span class="p">,</span> <span class="ss">:disabled</span> <span class="o">=&gt;</span> <span class="kp">true</span>
-</code></pre></div>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">synced_folder</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;/vagrant&quot;</span><span class="p">,</span> <span class="ss">:disabled</span> <span class="o">=&gt;</span> <span class="kp">true</span></code></pre></div>
 
 <p>And that&#39;s it!</p>
 
@@ -134,7 +130,7 @@
 
 <p>This is the bare minimum Vagrantfile needed to operate the base box you created by faithfully following <a href="software/2013/10/18/qnx-vagrant">my instructions</a></p>
 
-<div class="highlight"><pre><code class="ruby"><span class="c1"># Vagrantfile API/syntax version. Don&#39;t touch unless you know what you&#39;re doing!</span>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># Vagrantfile API/syntax version. Don&#39;t touch unless you know what you&#39;re doing!</span>
 <span class="no">VAGRANTFILE_API_VERSION</span> <span class="o">=</span> <span class="s2">&quot;2&quot;</span>
 
 <span class="no">Vagrant</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="no">VAGRANTFILE_API_VERSION</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
@@ -142,13 +138,11 @@
   <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box_url</span> <span class="o">=</span> <span class="s2">&quot;qnx65sp1.box&quot;</span>
   <span class="n">config</span><span class="o">.</span><span class="n">ssh</span><span class="o">.</span><span class="n">shell</span> <span class="o">=</span> <span class="s2">&quot;sh&quot;</span>
   <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">synced_folder</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;/vagrant&quot;</span><span class="p">,</span> <span class="ss">:disabled</span> <span class="o">=&gt;</span> <span class="kp">true</span>
-<span class="k">end</span>
-</code></pre></div>
+<span class="k">end</span></code></pre></div>
 
 <p>You will need to install the vagrant-guest-qnx plugin (yes, it&#39;s up on rubygems)</p>
 
-<div class="highlight"><pre><code class="bash">vagrant plugin install vagrant-guest-qnx
-</code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">vagrant plugin install vagrant-guest-qnx</code></pre></div>
 
 <p>There are also a few constraints on the QNX VM:</p>
 

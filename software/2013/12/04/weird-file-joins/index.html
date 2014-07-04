@@ -51,24 +51,20 @@
 
 <p>If by some twist of luck there&#39;s a space before those first two dots though, the results are quite unexpected:</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="n">p195</span> <span class="p">:</span><span class="mo">00</span><span class="mi">8</span> <span class="o">&gt;</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;/foo/foo&#39;</span><span class="p">,</span><span class="s2">&quot; ../../bar&quot;</span><span class="p">))</span>
- <span class="o">=&gt;</span> <span class="s2">&quot;/foo/foo/bar&quot;</span>
- 
-</code></pre></div>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="n">p195</span> <span class="p">:</span><span class="mo">00</span><span class="mi">8</span> <span class="o">&gt;</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;/foo/foo&#39;</span><span class="p">,</span><span class="s2">&quot; ../../bar&quot;</span><span class="p">))</span>
+ <span class="o">=&gt;</span> <span class="s2">&quot;/foo/foo/bar&quot;</span></code></pre></div>
 
 <p>The dots are somehow stripped away. Btw. when doing the same with only one directory level:</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="n">p195</span> <span class="p">:</span><span class="mo">010</span> <span class="o">&gt;</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;/foo&#39;</span><span class="p">,</span><span class="s2">&quot;../../bar&quot;</span><span class="p">))</span>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="n">p195</span> <span class="p">:</span><span class="mo">010</span> <span class="o">&gt;</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;/foo&#39;</span><span class="p">,</span><span class="s2">&quot;../../bar&quot;</span><span class="p">))</span>
  <span class="o">=&gt;</span> <span class="s2">&quot;/bar&quot;</span>
 <span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="n">p195</span> <span class="p">:</span><span class="mo">011</span> <span class="o">&gt;</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;/foo&#39;</span><span class="p">,</span><span class="s2">&quot; ../../bar&quot;</span><span class="p">))</span>
- <span class="o">=&gt;</span> <span class="s2">&quot;/foo/bar&quot;</span>
-</code></pre></div>
+ <span class="o">=&gt;</span> <span class="s2">&quot;/foo/bar&quot;</span></code></pre></div>
 
 <p>Also, this only happens when there are two sets of dots (&quot;../../&quot;). When there is only one then the sneaky whitespace is easier to detect:</p>
 
-<div class="highlight"><pre><code class="ruby"><span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="n">p195</span> <span class="p">:</span><span class="mo">012</span> <span class="o">&gt;</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;/foo&#39;</span><span class="p">,</span><span class="s2">&quot; ../bar&quot;</span><span class="p">))</span>
- <span class="o">=&gt;</span> <span class="s2">&quot;/foo/ ../bar&quot;</span>
-</code></pre></div>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="mi">2</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="n">p195</span> <span class="p">:</span><span class="mo">012</span> <span class="o">&gt;</span> <span class="no">File</span><span class="o">.</span><span class="n">expand_path</span><span class="p">(</span><span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;/foo&#39;</span><span class="p">,</span><span class="s2">&quot; ../bar&quot;</span><span class="p">))</span>
+ <span class="o">=&gt;</span> <span class="s2">&quot;/foo/ ../bar&quot;</span></code></pre></div>
 
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>

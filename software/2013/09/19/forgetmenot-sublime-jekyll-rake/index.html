@@ -59,15 +59,14 @@
 
 <p>And instead of creating a build system for jekyll I just created a rakefile that calls <em>jekyll build</em> and used the following as a build system</p>
 
-<div class="highlight"><pre><code class="json"><span class="p">{</span>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span>
   <span class="nt">&quot;env&quot;</span><span class="p">:{</span>
       <span class="nt">&quot;PATH&quot;</span><span class="p">:</span><span class="s2">&quot;${HOME}/.rvm/bin:${PATH}&quot;</span><span class="p">,</span>
       <span class="nt">&quot;LC_CTYPE&quot;</span><span class="p">:</span><span class="s2">&quot;UTF-8&quot;</span>
   <span class="p">},</span>
   <span class="nt">&quot;cmd&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;rake&quot;</span><span class="p">],</span>
   <span class="nt">&quot;file_regex&quot;</span><span class="p">:</span> <span class="s2">&quot;^(...*?):([0-9]*):?([0-9]*)&quot;</span>
-<span class="p">}</span>
-</code></pre></div>
+<span class="p">}</span></code></pre></div>
 
 <p>That <em>&quot;LC_CTYPE&quot;:&quot;UTF-8&quot;</em> is crucial, especially with the various greek, german and spanish UTF-8 characters loose on this blog. Jekyll chokes very fast (article number 3 to be exact) if it&#39;s not set.</p>
 
