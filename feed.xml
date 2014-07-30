@@ -7,6 +7,28 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>ForgetMeNot: SublimeText shell with errors on Windows</title>
+        <description>&lt;p&gt;I&amp;#39;ve been running &lt;a href=&quot;http://www.sublimetext.com/3&quot;&gt;SublimeText v3&lt;/a&gt; with the &lt;a href=&quot;https://github.com/misfo/Shell-Turtlestein&quot;&gt;Shell-Turtlestein&lt;/a&gt; plugin for a while now.&lt;/p&gt;
+
+&lt;p&gt;There&amp;#39;s rarely a need to switch out of the editor window anymore and I&amp;#39;m feeling more emacsy than ever.&lt;/p&gt;
+
+&lt;p&gt;I use the same setup on all platforms (Windows, OS X and Linux) and all it takes to configure is a couple or JSON files in the correct locations.&lt;/p&gt;
+
+&lt;p&gt;Shell-Turtlestein uses the same technique that the SublimeText build systems use to parse errors from the output of a command and this involves regular expressions (que moan). &lt;/p&gt;
+
+&lt;p&gt;I also mostly run rake and drive minitest unit tests so there is a couple of cases where I would like to jump to the line an error indicates:
+When a test assertion fails and when an exception occurs.&lt;/p&gt;
+
+&lt;p&gt;The following entry in the Shell-Turtlestein settings file will allow the use of F4 to jump to the error line in these two cases on windows (for *ix OSes there&amp;#39;s plenty of examples out there)&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;exec_args&amp;quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;quot;file_regex&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;^\\s*\\w*\\(*\\w*\\)*\\s*\\[*(\\w+:\\/.+\\.*\\w*):([0-9]+)\\]*:()(.*)&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+</description>
+        <pubDate>Wed, 30 Jul 2014 00:00:00 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2014/07/30/forgetmenot-sublimetext-shell-with-errors-on-windows</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2014/07/30/forgetmenot-sublimetext-shell-with-errors-on-windows</guid>
+      </item>
+    
+      <item>
         <title>VAR's Build Rules</title>
         <description>&lt;p&gt;This is a post that came out of a discussion thread at work &lt;sup&gt;1&lt;/sup&gt;. Originally it was a simple question on alternatives to TFS as a build system. But you know how it goes, things evolve into questions you can only answer with 42.&lt;/p&gt;
 
@@ -757,25 +779,6 @@ chmod -R &lt;span class=&quot;m&quot;&gt;700&lt;/span&gt; /home/vagrant/.ssh&lt;
         <pubDate>Fri, 18 Oct 2013 01:00:00 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2013/10/18/qnx-vagrant</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2013/10/18/qnx-vagrant</guid>
-      </item>
-    
-      <item>
-        <title>ForgetMeNot:  Maintaining a cache for local bundler installs</title>
-        <description>&lt;p&gt;Very often I find myself needing to install a certain set of gems without access to rubygems.org or sometimes without any network access.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://bundler.io/&quot;&gt;Bundler&lt;/a&gt; allows you perform bundle install from a cache. All you need to do is put all your gems in a vendor/cache directory where your Gemfile is and bundler will look in there if you call it with --local:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;bundle install --local&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;The really neat trick is that bundler will always update the cache if the vendor/cache directory is present. So doing a simple &lt;em&gt;bundle install&lt;/em&gt; with an empty vendor/cache will net you an up-to-date cache you can take with you offline.&lt;/p&gt;
-
-&lt;p&gt;My typical use case for this is to use a Gemfile to describe my system&amp;#39;s gems (in really complicated cases there might be a couple of Gemfiles), add the vendor/cache directory, perform bundle install and commit everything but the Gemfile.lock file. &lt;/p&gt;
-
-&lt;p&gt;In the developer VM then the environment:update task will perform a local bundle install. This way we have easy and consistent gem updates across the whole team.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 14 Oct 2013 11:00:00 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2013/10/14/local-bundler-installs</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2013/10/14/local-bundler-installs</guid>
       </item>
     
   </channel>
