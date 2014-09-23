@@ -1,0 +1,71 @@
+==================================================================
+https://keybase.io/arcandros
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://www.ampelofilosofies.gr
+  * I am arcandros (https://keybase.io/arcandros) on keybase.
+  * I have a public key with fingerprint D1E4 FC0C 45A3 9A3D 3162  F7D1 99B7 A1A5 F690 9409
+
+To claim this, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "fingerprint": "d1e4fc0c45a39a3d3162f7d199b7a1a5f6909409",
+            "host": "keybase.io",
+            "key_id": "99b7a1a5f6909409",
+            "uid": "b8f2e9b145a3269b23194f1378a4a500",
+            "username": "arcandros"
+        },
+        "revoke": {
+            "sig_ids": [
+                "19bc45348bcd040453ba9a1046d7e520fba59dc140b5e53df01e9a0397d4acf30f"
+            ]
+        },
+        "service": {
+            "hostname": "www.ampelofilosofies.gr",
+            "protocol": "http:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1411494259,
+    "expire_in": 157680000,
+    "prev": "14ec718466068c0cb0de42c9c585668b5666828ef733331994ff29095f9cb098",
+    "seqno": 6,
+    "tag": "signature"
+}
+
+with the aforementioned key, yielding the PGP signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v1.0.5
+Comment: https://keybase.io/crypto
+
+yMIwAnicbVJtSBRBGD41DU2pQOuPRo1FZXLN7M7u7VxEUPajiKK6IE07ZndnbFFv
+r929syhJSIS+iywjKoqoSKgIrR8RmlIk9EEF2ZcJgVoiUoFYQWWzUv+aH/PxzvM+
+z/O+M/dz0gJZKUvyVzybl/G4KOVRZ2kiEJlz090FdNvcCcK7QBWbWLgVq2RO3LFi
+HggDEzHMDWhghcqEyqaMVImHTESIHqKIKlwlkGBIQDHYZrt+hqDRqcuCli1i4hC1
+TBH9Dz4xcaFrXGJER76ApBJdkhHBHMkhjWKqQOgDXebEaA0TaOoYNGY6tgvqioHD
+knYV8z27VqWQcUF4C0BEF2ZlrOmGCTEUW50SiiBWzRBTJMh1qhDTQBjqClNkk0PE
+CIUyCZmYGlyGHFQIbiGZtIwJcr+uv/K1tbVBWhNn1Ta3qm1XzMwNVjrCY9yxPduw
+qwVom+fFw74/b2d8Ionp0b90Ud2KmaK/IiHJHNeyYyCMBNLwLJ8fYYQwwZJCigHb
+EbccFrV8hBJSNSiGL8OSghJhZoSQhlUVqpp4HR2aDEsGMRRNUVVNF5OqSRrjIVkM
+8ViYc0k0XuFEYIkG/AK3x2wQVoVNWikoRQtj1Es4DNR13SufFEjJCmSkp/o/JJCV
+Oe3fv2lzJ49vBR25kYdtL8pWzm3tHS2puTntQENyuOhHdtPHY78T2qz8vBNDvada
+jQZ3za8a43v+mx8efNp4KG95c4vSXDrjdsVLe1/hUrhoY+p4+7uZLYt3jPZc3ZzK
+FsBLG9M7IiP9Cy8d/J19Oqfg8Oqugc8tx87lJFqbc3LfTN+zXm8NP500xb6gDb4f
+yhhXr3yprT9znTU1zC973p9662R47ewTd649ujJccr07++3Y7k3R7AGraKy8e682
+9RA5/XJd45GfZ9OmPMl8dTRYH3gfufGhbaRgcP763sjqu7xnKLOHDwZXdRYUfi57
+ffzb5cfm1wd9Gz71ee19w8tKCy/WN73dv7u74XzaH5NqMq4=
+=2zmR
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/arcandros
+
+==================================================================
