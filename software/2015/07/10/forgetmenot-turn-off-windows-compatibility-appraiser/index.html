@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>ForgetMeNot: Turn off Windows Compatibility Appraiser</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>ForgetMeNot: Turn off Windows Compatibility Appraiser</h1>
+<p class="meta">10 Jul 2015</p>
+
+<div class="post">
+<p>One of the advantages of infrastructure as code is that we now have complete control of the states of a computer.</p>
+
+<p>This consequently means that I can measure performance between two known states and I only have to look at the difference between states to figure out what went wrong.</p>
+
+<p>Well, in theory. Microsoft and the Microsoft Updates keep pulling the carpet under your feet. </p>
+
+<p>In this case, one of the patch Tuesdays in February introduced KB 2952664 which adds the &quot;Microsoft Compatibility Appraiser&quot; to ostensibly ease transition to Windows 10. Unfortunately that drives up CPU usage and brings computers (and much worse, VMs) to their knees. </p>
+
+<p>The whole process is a collection of tasks running regularly, whether a user is logged on or not and more importantly whether you opt-in for the MS customer experience program or not.</p>
+
+<p>It&#39;s all <a href="http://www.infoworld.com/article/2911609/operating-systems/kb-2952664-compatibility-update-for-win7-triggers-unexpected-daily-telemetry-run-may-be-snooping.html">very fishy</a>.</p>
+
+<p>Turns out VMWare has a <a href="https://pubs.vmware.com/view-51/index.jsp?topic=%2Fcom.vmware.view.administration.doc%2FGUID-BE82165B-13BC-4FD9-A9CF-FBEF6343D98A.html">knowledge base article</a> for the tasks that need to be excised.</p>
+
+<p>The following commandlines solve (or at least appear to solve) the problem:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">schtasks /Delete /F /TN &quot;\Microsoft\Windows\Application Experience\AitAgent&quot;
+schtasks /Delete /F /TN &quot;\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser &quot;
+schtasks /Delete /F /TN &quot;\Microsoft\Windows\Application Experience\ProgramDataUpdater&quot;
+schtasks /Delete /F /TN &quot;\Microsoft\Windows\Customer Experience Improvement Program\Consolidator&quot;
+schtasks /Delete /F /TN &quot;\Microsoft\Windows\Customer Experience Improvement Program\KernelCEIPTask&quot;
+schtasks /Delete /F /TN &quot;\Microsoft\Windows\Customer Experience Improvement Program\Use CEIP&quot;
+</code></pre></div>
+<p>These will go into a new <a href="https://github.com/Zuehlke/cookbook-windev">windev</a> recipe for sure.</p>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>
