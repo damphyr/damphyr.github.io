@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>Windows Installations & Virtual Machines</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>Windows Installations & Virtual Machines</h1>
+<p class="meta">17 Oct 2015</p>
+
+<div class="post">
+<p><em>This post was originally written in July 2014 and then lounged in the dusty, dark recesses of my disk because... Windows. The hindsight of a whole year of using the Packeer/Vagrant/Chef workflow led to minor updates, which speaks for the applicability of the approach</em></p>
+
+<p>Automating Windows installations is hard!</p>
+
+<p>Maybe hard is not the right word. &#39;Unecessarily complicated&#39;, &#39;obfuscated&#39;, &#39;frustrating&#39; come to mind<sup>1</sup>. Sometimes, for certain, not so stelarly engineered solutions the word &#39;impossible&#39; creeps around the corner.</p>
+
+<p>And yet things have never been better for anyone trying to solve the riddle. All the tools are there and while looking at the *ix solutions you wish for a lot of things (like a decent shell, or no registry, or a standardized way for installer parameters, or a package repository or...you get my drift) &#39;impossible&#39; has had to hide in some really obscure corners.</p>
+
+<h2>Installation drudgery</h2>
+
+<p>I can&#39;t even begin to estimate the times I have installed Windows from scratch. It became tedious very, very fast but there was no release in sight for a long time.</p>
+
+<p>With the advent of desktop virtualization and laptops that can accomodate a couple of Windows VMs running concurrently I follow the practice of keeping one pristine Windows installation<sup>2</sup> at hand and a bootstrap package of command files that install the latest <a href="http://chefdk.com">ChefDK</a>, an SVN client and git for Windows.</p>
+
+<p>The workflow as it stands:</p>
+
+<ol>
+<li>Copy the VM</li>
+<li>Boot the VM and perform any outstanding updates (this includes Windows and the virtualization tools &amp; drivers)</li>
+<li>Copy the bootstrap package over and run the command file</li>
+<li>Checkout/clone the repository with all my Windows recipes</li>
+<li>Run Chef to provision the VM</li>
+</ol>
+
+<h2>Not enough (?)</h2>
+
+<p>VMs are bulky. With a dynamically growing disk a vanilla Windows VM ways in at about 20GB. Add to that the software for toolchains etc. and it grows very large indeed (my current C/C++ embedded environment weights in at 50GB).</p>
+
+<p>You can&#39;t expect everyone to download it every time it changes so the case for immutable infrastructure when creating development environments is not very strong. Also, developers tend to have a lot of half-finished and ongoing work on disk which means you can&#39;t really throw away the VM when updating, you have to do an incremental update for user friendliness sake.</p>
+
+<p>A properly configured Windows base box is smaller (about 5GB) and we can skip the time it takes to create it from an .iso, because, well, we don&#39;t do it very often.</p>
+
+<p>Create the base box using <a href="http://www.packer.io">Packer</a>, add a Vagrantfile to the repository and host the base box in a known location and we have the capability to recreate the development environment. </p>
+
+<p>How much goes into the base box in terms of software and configuration is your choice but vanilla installations work best, especially with Windows (you get the benefit of having a pristine registry database). </p>
+
+<p>Keep in mind that you have to update the base box regularly to avoid the massive Windows Update penalty when creating new VM instances. Automating the creation process with Packer is thankfully very easy and can be delegated to a CI/cron job.</p>
+
+<p>Everything else is done with Chef and a bit of powershell (to bootstrap Chef from Vagrant). To help with that we have a cookbook by the name of <a href="https://github.com/Zuehlke/cookbook-windev">windev</a>. </p>
+
+<p>So the workflow becomes</p>
+
+<ol>
+<li>vagrant up</li>
+<li>Run Chef to provision the VM</li>
+<li>Go back to 2. when necessary</li>
+</ol>
+
+<p>We still haven&#39;t solved the performance problem. It takes a long time to start a VM and the traditional desktop hypervisors hog a lot of resources. Docker is not a viable solution because Windows, so we have a case of serious OS envy.</p>
+
+<hr>
+
+<p><sup>1</sup> After years of deliberation I am convinced that the Windows Registry is among the top 5 of  engineering solutions that on hindsight revealed themselves as colossal PITA mistakes. It may even occupy the top spot, but then, I&#39;m biased.</p>
+
+<p><sup>2</sup> Meaning just a vanilla installation with no additional software other than the latest Microsoft patches.</p>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>
