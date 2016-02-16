@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>Script performance</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>Script performance</h1>
+<p class="meta">09 Aug 2011</p>
+
+<div class="post">
+<p>Code performance has two aspects: the actual performance measured hard seconds and the perceived performance AKA the responsiveness of the application.</p>
+
+<p>When scripting, which for the purposes of this post I define as writing code that is executed once in the command line and then exits, a crucial metric is the startup time: the time it takes to load your script and start processing.</p>
+
+<p>In the continuing battle to improve the performance and responsiveness of our rake build system (see <a href="/software/2011/06/08/rake-performance-check-the-mirror/">here</a>, <a href="/software/2011/05/20/rake-performance-sh-im-working/">here</a> and <a href="/software/2011/05/10/ruby-performance-what-a-difference-the-compiler-makes/">here</a> in reverse chronological order) the startup delay has now become the number one issue. </p>
+
+<p>We have a name for it: &quot;The Ruby tribute minute&quot;. It&#39;s not actually a minute, but in the last month it has climbed back up to 11 seconds which is a very noticeable delay, especially when you&#39;re doing &#39;rake -T&#39;. </p>
+
+<p>After a bit of experimentation trying (unsuccesfully) to get ruby-prof and profiler.rb running on Windows 7, I forked the code and started decorating it with Benchmark.measure calls.</p>
+
+<p>The results proved very interesting. The overwhelming majority of the startup time was spent requiring couchrest, couchrest<em>model and active</em>record. We use <a href="https://github.com/couchrest/couchrest">couchrest</a> to collect metrics (tasks called, time spent building, lines of code per build, firmware image sizes etc.) in a CouchDB instance which is then used to feed our information radiator.</p>
+
+<p>Requiring couchrest costs ~2 seconds, couchrestmodel costs ~4.5 seconds, activerecord ~3.5 seconds (couchrestmodel requires activerecord but so do other gems we use).</p>
+
+<p>Isolating the problem does not actually help since these numbers fall significantly. For example the following test</p>
+
+<p><noscript><pre>400: Invalid request
+</pre></noscript><script src="https://gist.github.com/1133784.js?file=benchmark_couchrest.rb"> </script></p>
+
+<p>gives significantly reduced times:</p>
+
+<p><noscript><pre>400: Invalid request
+</pre></noscript><script src="https://gist.github.com/1133784.js?file=output%20Windows%207"> </script></p>
+
+<p>btw. the stock Snow Leopard Ruby was <strong>a lot</strong> faster with rubygems 1.5.0:</p>
+
+<p><noscript><pre>400: Invalid request
+</pre></noscript><script src="https://gist.github.com/1133784.js?file=output%20OS%20X,%20rubygems%201.5.0"> </script></p>
+
+<p>but suffers with rubygems 1.8.7</p>
+
+<p><noscript><pre>400: Invalid request
+</pre></noscript><script src="https://gist.github.com/1133784.js?file=output%20OS%20X,%20rubygems%201.8.7"> </script></p>
+
+<p>I will take a wild guess and assume side effects from the additional gems loaded increase loading times but I can only theorize.</p>
+
+<p>The current workaround consists of removing the require statements from the top of the files and adding them in the tasks where the gems are actually used. This shaves about 6.5 seconds from our startup times and improves rake responsiveness significantly but has the drawback of peppering require statements all over the place. I&#39;m extremely interested in figuring out a better way to do this and also why the current rubygems version performs so bad.</p>
+
+<p>Now to go back and refactor <a href="https://github.com/damphyr/rutema">rutema</a> so that active_record is not loaded unless needed...</p>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

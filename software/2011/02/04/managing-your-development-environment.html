@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>Managing your development environment?</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>Managing your development environment?</h1>
+<p class="meta">04 Feb 2011</p>
+
+<div class="post">
+<p>In the natural progression of software development to faster deployments and shorter release cycles continuous deployment pushes the code-release time delta as close to 0 as we humans can get.</p>
+
+<p>This does not come for free. We need highly skilled, highly disciplined developers, versatile enough to assume responsibility for the entire code base and rely on infrastructure as intricate and intelligent as our production systems. </p>
+
+<p>With the drive for continuous deployment systems the development environment increasingly adopts features of productions systems with caching, load balancing etc. Large scale development environments go even further adopting advanced code analysis techniques in order to minimize test execution times and shorten that time delta (check <a href="http://www.infoq.com/presentations/Development-at-Google">Ashish Kumar&#39;s InfoQ talk</a> about Google&#39;s development practices).</p>
+
+<p>How do you manage the code that <em>is</em> your development environment? Is it subjected to the same rigorous testing and vetting procedures you use for your product? </p>
+
+<p>I consider our development environment a production system. It is in production much much earlier than the actual product we are building and usually has much stricter stability and performance requirements. And it&#39;s users are more demanding and a lot more impatient. </p>
+
+<p>Honestly, I am more stressed in the beginning of a project ramping up automation and stabilizing the development environment than on the eve of a release.</p>
+
+<p>Failures in our build system are not tolerated. Case in point: In my current team an hour&#39;s downtime due to a build script error translates to three work days lost not considering frustration and disappointment factors. If the system is down a day I might as well scratch a month&#39;s worth of budget off.</p>
+
+<p>I&#39;ll take a step back now and constrain (or rather expand) the term &#39;development environment&#39;. It is not just your build scripts, your build server and your test infrastructure. It also includes your source control infrastructure, the issue management system, the knowledge servers (wikis, blogs, CMS, information radiators) and all the little tools/scripts you wrote to facilitate menial tasks in the project.</p>
+
+<p>And while we use many third party servers/tools,nothing just works off the shelf. Each project has unique requirements and so a bit of custom &quot;glue&quot; code.</p>
+
+<p>And I will ask again, do you treat your development environment as a production system? Are there tests, versioning, releases? How about continuous integration/deployment?</p>
+
+<p>I fall into a case of infinite recursion thinking about the build system that builds the build system that builds the build system...ad infinitum. But instead of the mental picture of falling into constantly smaller build systems I like to think about the world snake, the snake that eats it&#39;s own tail. Perfect symbol for dogfooding and infinite recursion in one. </p>
+
+<p>So we need a development environment that can support it&#39;s own evolution and the development of our product. Which highlights the need for code reuse, scalability...need I go on? Aren&#39;t these the same qualities we want for our &quot;production&quot; systems?</p>
+
+<p>The answer to how you effectively manage your development infrastructure is typically the same answer you&#39;ll get if you ask how to manage a software project because as it so happens, your development infrastructure <em>is</em> a software project.</p>
+
+<p>And while there might not be a silver bullet or a universal HOWTO on how to do it right, it is important that you do not underestimate the complexity or importance of said environment and plan accordingly.</p>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>Building a vagrant guest plugin for QNX</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>Building a vagrant guest plugin for QNX</h1>
+<p class="meta">19 Oct 2013</p>
+
+<div class="post">
+<p>The yak shaving expedition continues...</p>
+
+<p><a href="/software/2013/10/18/qnx-vagrant">Previously</a> I set out to create a base box for QNX and naively expected to do a <em>vagrant up</em> and have everything work. HA!</p>
+
+<p>Vagrant was very offended at my presumption and started going on about how it was impossible to recognise the OS I was trying to use.</p>
+
+<p>So I entered the magical world of vagrant <a href="http://docs.vagrantup.com/v2/plugins/development-basics.html">plugins</a> and specifically <a href="http://docs.vagrantup.com/v2/plugins/guests.html">guest</a> and <a href="http://docs.vagrantup.com/v2/plugins/guest-capabilities.html">guest capability</a> plugins</p>
+
+<p>Let me start by saying that the vagrant API is beautifuly done. Simple, flexible and cleanly coded. The only downside, which is a result of this flexibility, is that you won&#39;t ever get an exhaustive reference. You have to dive into the code!</p>
+
+<p>Now, to build a guest plugin there are four things that need to be defined:</p>
+
+<h2>Guest</h2>
+
+<p>The guest plugin needs it&#39;s name and one method, detect? and looks like this</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s2">"vagrant"</span>
+
+<span class="k">module</span> <span class="nn">VagrantPlugins</span>
+  <span class="k">module</span> <span class="nn">GuestQNX</span>
+    <span class="k">class</span> <span class="nc">Guest</span> <span class="o">&lt;</span> <span class="no">Vagrant</span><span class="p">.</span><span class="nf">plugin</span><span class="p">(</span><span class="s2">"2"</span><span class="p">,</span> <span class="ss">:guest</span><span class="p">)</span>
+      <span class="k">def</span> <span class="nf">detect?</span><span class="p">(</span><span class="n">machine</span><span class="p">)</span>
+        <span class="n">machine</span><span class="p">.</span><span class="nf">communicate</span><span class="p">.</span><span class="nf">test</span><span class="p">(</span><span class="s1">'uname -s | grep QNX'</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre></figure>
+
+<p>We did say that QNX is BSD-like, didn&#39;t we?</p>
+
+<h2>Guest capabilities</h2>
+
+<p>With a bit of trial and error I figured out the minimum amount of capabilities that a guest plugin must have to survive booting and shutting down.</p>
+
+<p>These are </p>
+
+<ul>
+<li><a href="https://github.com/damphyr/vagrant-qnx/blob/master/vagrant-guest-qnx/lib/qnx/vagrant/cap/configure_networks.rb">configure_networks</a></li>
+<li><a href="https://github.com/damphyr/vagrant-qnx/blob/master/vagrant-guest-qnx/lib/qnx/vagrant/cap/halt.rb">halt</a> </li>
+</ul>
+
+<p>I added <a href="https://github.com/damphyr/vagrant-qnx/blob/master/vagrant-guest-qnx/lib/qnx/vagrant/cap/change_hostname.rb">change_hostname</a> just because it was easy.</p>
+
+<p>Instead of listing here the implementation code and make this post miles long with copy-paste-able information why don&#39;t you head on to <a href="http://https://github.com/damphyr/vagrant-qnx/tree/master/vagrant-guest-qnx">github</a> and browse at leisure?</p>
+
+<h2>What took you so long?</h2>
+
+<p>So a few things that I had to get right for this plugin to work.</p>
+
+<h3>Gem structure</h3>
+
+<p>I&#39;m not really sure, but a file named exactly like your plugin (in this case vagrant-guest-qnx.rb) at the top of your gem&#39;s structure seems to be what vagrant expects. Didn&#39;t actually see it documented anywhere but I browsed several 3rd party plugins and copied the structure from vagrant-berkshelf.</p>
+
+<p>I lifted the handy loader guard there as well:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">begin</span> 
+ <span class="nb">require</span> <span class="s1">'vagrant'</span>
+<span class="k">rescue</span> <span class="no">LoadError</span>
+ <span class="k">raise</span> <span class="s1">'The Vagrant Guest QNX plugin must be run within vagrant'</span>
+<span class="k">end</span></code></pre></figure>
+
+<p>So this code won&#39;t give you ugly stacktraces by chance.</p>
+
+<h3>The shell</h3>
+
+<p>This actually cost quite a bit of time. Vagrant generally has awesome logging, very detailed, but in this case it kept exiting with &quot;no error message&quot; so I had to dig in and use the magical powers of sprinkled puts. Turns out all machine.communicate.execute calls were returning exit status 126.</p>
+
+<p>Now for all you youngsters out there, 126 and 127 are usually shell code for &quot;bloody hell, I can&#39;t find what you want me to run&quot;. And as it turns out, when communicating over ssh vagrant defaults to running everything with bash.</p>
+
+<p>Unfortunately bash is not available on stock QNX which uses ksh and links it to /bin/sh. So we need </p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">config</span><span class="p">.</span><span class="nf">ssh</span><span class="p">.</span><span class="nf">shell</span> <span class="o">=</span> <span class="s2">"sh"</span></code></pre></figure>
+
+<p>in the Vagrantfile.</p>
+
+<h3>Shared folders</h3>
+
+<p>There are no VMWare Tools or Guest Additions for QNX. I don&#39;t expect there will ever be. Yet Vagrant tries to establish a share between host and the VM and (in by now typical fashion) ends up hanging forever. So one more addition to the Vagrantfile is needed</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">config</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">synced_folder</span> <span class="s2">"."</span><span class="p">,</span> <span class="s2">"/vagrant"</span><span class="p">,</span> <span class="ss">:disabled</span> <span class="o">=&gt;</span> <span class="kp">true</span></code></pre></figure>
+
+<p>And that&#39;s it!</p>
+
+<h2>Tadaaa!</h2>
+
+<p>This is the bare minimum Vagrantfile needed to operate the base box you created by faithfully following <a href="software/2013/10/18/qnx-vagrant">my instructions</a></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># Vagrantfile API/syntax version. Don't touch unless you know what you're doing!</span>
+<span class="no">VAGRANTFILE_API_VERSION</span> <span class="o">=</span> <span class="s2">"2"</span>
+
+<span class="no">Vagrant</span><span class="p">.</span><span class="nf">configure</span><span class="p">(</span><span class="no">VAGRANTFILE_API_VERSION</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">box</span> <span class="o">=</span> <span class="s2">"qnx65"</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">box_url</span> <span class="o">=</span> <span class="s2">"qnx65sp1.box"</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">ssh</span><span class="p">.</span><span class="nf">shell</span> <span class="o">=</span> <span class="s2">"sh"</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">synced_folder</span> <span class="s2">"."</span><span class="p">,</span> <span class="s2">"/vagrant"</span><span class="p">,</span> <span class="ss">:disabled</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+<span class="k">end</span></code></pre></figure>
+
+<p>You will need to install the vagrant-guest-qnx plugin (yes, it&#39;s up on rubygems)</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">vagrant plugin install vagrant-guest-qnx</code></pre></figure>
+
+<p>There are also a few constraints on the QNX VM:</p>
+
+<p>Because there is no sudo in the stock VM everything is done with su. For that reason the default no-password setting for root is still there. For the purposes of this yak shaving expedition that is more than enough. There is a sudo package for QNX and if by some miracle someone is interested, a pull request will be very welcome.</p>
+
+<p>Halting does not shutdown very fast. Although shutdown is performed, because there are no VM extensions the VM is still listed as running. So you have to wait for the forced shutdown. Not very nice but good enough.</p>
+
+<p>I now declare this yak shaved!</p>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

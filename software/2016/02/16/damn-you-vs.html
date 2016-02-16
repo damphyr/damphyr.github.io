@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>Damn you Visual Studio</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>Damn you Visual Studio</h1>
+<p class="meta">16 Feb 2016</p>
+
+<div class="post">
+<p><em>I&#39;m not being lazy, the bloody piece of shite is compiling</em></p>
+
+<p>Today was a day of deep learning, which is to say that nothing, but absolutely nothing worked as it was supposed to and it took ages to figure out why.</p>
+
+<p>As of last Friday my project is maintaining two trunks of a rapidly diverging code base - one for the current generation of hardware designated support and master for whatever is coming next.</p>
+
+<p>Adapting our CI was as simple as cloning the build job pipeline and telling git to check out a different branch. And that worked for about 2 builds at which point the first gate keeper that checks the integration of device and host PC started failing for the support builds.</p>
+
+<p>The error came from our host tools, which are written in C# and it provoked a big, loud &quot;WAT?&quot; as per the initial <a href="http://plasmasturm.org/log/6debug/">stages of debugging</a> since it was a &quot;I can&#39;t load type so-and-so in assembly so-and-so&quot; for a type that was definitely nowhere to be found in the sources.</p>
+
+<p><img src="/images/wat.jpg" alt="wat?!?"></p>
+
+<p>Here I have to diverge and explain that we are exposing part of the C# .NET funtionality over COM for use in Ruby scripts and for that reason in the test stages the system registers a couple of assemblies using regasm.</p>
+
+<p>Now, the system includes 3 C/C++ compilers, python, tcl, ruby, a whole bunch of DSL generation steps in addition to the msbuild invocations so for convenience and speed the clean step is removing the directory where the build artifacts are saved.</p>
+
+<p>I am a big fan of out-of-band builds (builds that do not mix sources with artifacts) and the fast, permanent and - up until now - reliable clean function is one of my favorite features.</p>
+
+<p>Trust msbuild to find a way to work around this. So what happened?</p>
+
+<h2>Cause</h2>
+
+<p>The cuplrit is called <strong>IntermediateOutputPath</strong> and is a setting in Visual Studio project files that tells Visual Studio where to place the object files created by it&#39;s compiler before linking. It&#39;s that obj directory that pops up whenever you press F7.</p>
+
+<p>There is no way to set this in the project properties as far as I know. You have to edit the .csproj file and add it, which is what we do (like I said <em>out-of-band</em> builds).</p>
+
+<p>It seems that under certain circumstances (which I have not been able to recreate yet) Visual Studio takes it upon itself to change the value of this parameter.</p>
+
+<p>It then sets it to a random temporary directory using ENV[TEMP] as the basis and puts that value in the .csproj file which obviously gets commited.</p>
+
+<p>And this happened in an indeterminate point in the past before we ever had multiple trunks.</p>
+
+<h2>Effect</h2>
+
+<p>Switch now to the main build server who in the alleged security of out-of-band builds attempts to build both trunks.</p>
+
+<p>Given a team that commits rapidly on the master branch clearing technical debt and sparingly on the support branch, you will very quickly reach the point where the sources on the support branch are by definition older than the corresponding object files in said &quot;temporary&quot; directory.</p>
+
+<p>But msbuild doesn&#39;t know that. It sees newer object files and hapilly goes &quot;I don&#39;t have to build this, hihi&quot; and links some random piece of code for you. And since you&#39;re an idiot and forgot to de-register the assembly before building any type mismatches are not reported by the linker. Hilarity ensues.</p>
+
+<h2>Lessons learned</h2>
+
+<ul>
+<li>This is a fine example of the evils of shared state.</li>
+<li>Not one tool vendor has really thought about building things in parallel.</li>
+<li>Always do clean builds on your CI.
+
+<ul>
+<li>Containers are nice, but...Windows.</li>
+</ul></li>
+<li>Never assume the tool knows better and never assume you cleaned up everything.</li>
+<li>Visual Studio is evil.</li>
+<li>There is always something you missed. Have multiple levels of testing.</li>
+</ul>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

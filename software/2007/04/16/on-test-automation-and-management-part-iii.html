@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>On test automation and management, part III</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>On test automation and management, part III</h1>
+<p class="meta">16 Apr 2007</p>
+
+<div class="post">
+<h3>Automatic and manual tests</h3>
+
+<p>Whether we like it or not, some tests will not be automated.</p>
+
+<p>Instead of separating manual from automatic test specifications - the latter in a well specified machine readable format, the former in specification documents - let all tests be specified in the machine readable form (as talked about <a href="/software/2007/04/15/on-test-automation-and-management-part-ii/">here</a>).</p>
+
+<p>Scenarios for manual tests can be thought as checklists, where the tester is prompted by the tool to perform an action and record it&#39;s result. In 99% of the cases a question answered with a yes/no suffices to evaluate test success.</p>
+
+<p>In our contrived example (first talked about <a href="/software/2007/04/13/on-test-automation-and-management-part-i">here</a>), say that a test asks for a measurement using an oscilloscope, and that it has been deemed impractical (or too expensive) to have a programmable oscilloscope. Instead, a snapshot of the expected curve is taken and the tester should perform the measurement and make sure it matches. It could go something like:</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;scenario</span> <span class="na">attended=</span><span class="s">"true"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;echo</span> <span class="na">text=</span><span class="s">"Please perform oscilloscope measurement."</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;display</span> <span class="na">img=</span><span class="s">"expected.jpg"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;yesno&gt;</span>Does the measurement match the expected result?<span class="nt">&lt;/yesno&gt;</span>
+<span class="nt">&lt;/scenario&gt;</span></code></pre></figure>
+
+<p>The advantages of such an approach is that the tester focuses only on the relevant test action that cannot be automated. The rest (test preparation etc.) is done automatically by the tool. The tool also takes care of validating the tester&#39;s input, logging etc. This consistency reduces the possibility of errors.</p>
+
+<p>Ofcourse it also simplifies management of test specifications using the same facilities used for automated tests.</p>
+
+<h3>Test management, test execution</h3>
+
+<p>Up to now we have been discussing the need for machine readable test specifications with a sample idea using XML and including manual as well as automated tests.</p>
+
+<p>So there is a pile of test specifications in the desired format. From these specifications information can be extracted to:</p>
+
+<ul>
+<li>Create overview documents and lists with information <em>about</em> the test cases (test management)</li>
+<li>Execute tests and store the results (test execution)</li>
+</ul>
+
+<p>The core problem is the existence (or lack of) a system that automates <em>test execution</em> in the sense that it integrates various tools that automate tests. Something like this would be very useful in a CI environment.</p>
+
+<p>So lets present a system to automate <em>test execution</em> using a text (XML) based database of test specifications.
+You just have to wait for the next installment!</p>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

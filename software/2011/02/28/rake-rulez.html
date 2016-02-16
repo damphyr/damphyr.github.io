@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>Rake rulez</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>Rake rulez</h1>
+<p class="meta">28 Feb 2011</p>
+
+<div class="post">
+<p>The original title for this post was &quot;The problem with Rake&quot;. The issue still exists but I have learned enough to mitigate it&#39;s effect.
+But first things first. </p>
+
+<p>The original problem is that Rake will not re-evaluate the dependencies of a task after one of the dependencies executes.</p>
+
+<p>This simply means that there is no way to dynamically add dependencies to a task from one of it&#39;s dependencies.</p>
+
+<p>To illustrate this consider the following rakefile
+<noscript><pre>400: Invalid request
+</pre></noscript><script src="https://gist.github.com/847273.js?file=rakefile"> </script></p>
+
+<p>The output is 
+<noscript><pre>400: Invalid request
+</pre></noscript><script src="https://gist.github.com/847273.js?file=output"> </script>
+when, if the dependency tree was built dynamically, &#39;c&#39; should pop up before &#39;a&#39;:
+<noscript><pre>400: Invalid request
+</pre></noscript><script src="https://gist.github.com/847273.js?file=outut%20as%20it%20should%20be"> </script>
+Why would you need this you will ask?</p>
+
+<p>I believe that a development environment should not impose structure but rather should evolve it&#39;s structure in tandem with the architecture of the system you are trying to build. Empirically it is a much more effective approach when the thought patterns formulated in the architecture are reflected in the structure of your workspace and the tools just support this. This is a variation of the &quot;convention vs. configuration&quot; mantra for when you are actually building something from scratch.</p>
+
+<p>So in a layered, component based C application I would like to write a single method that compiles a component and then have a task that creates as many tasks as there are components, associate them with the sources and be done with it.</p>
+
+<p>Unfortunately, since Rake locks the dependencies when the task is executed, the obvious solution was to create the tasks while Rake instantiates it&#39;s application.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">create_tasks</span>
+  <span class="n">task</span> <span class="ss">:compile</span> <span class="o">=&gt;</span> <span class="n">find_components</span>
+<span class="k">end</span>
+
+<span class="n">create_tasks</span>
+
+<span class="n">task</span> <span class="ss">:compile</span></code></pre></figure>
+
+<p>This proves very ineffective and performance degrades even further the more the project grows.</p>
+
+<p>Some of the fault lies actually with the approach: I approached the problem from the source side, trying to determine which sources belong to a component and creating a task for each component, which essentially forces us to create every task and then the dependency chains. The more components, e.g. code, the longer this procedure takes.</p>
+
+<p>Coupled with the fact that this happens &quot;on load&quot;, this adds a perceptible delay in task invocation for an added psychological effect of slowness.</p>
+
+<p>The solution was to change tack and approach the problem from the results side: Each component corresponds to a library, an artifact of the build process. It is trivial to determine which libraries are needed for each program/task and from there determine which components we have to build.</p>
+
+<p>So we want to build an application that depends on libraries. These are file tasks </p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">file</span> <span class="s2">"app.exe"</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s2">"1.lib"</span><span class="p">,</span><span class="s2">"2.lib"</span><span class="p">]</span></code></pre></figure>
+
+<p>We still have to construct the application file task &quot;on load&quot; and associate it with the library file tasks and then associate the library file tasks with the source files but the scope is drastically reduced and performance is not affected (meaning the time to define the task dependencies is negligible compared with the compilation time of a single component).</p>
+
+<p>Now compilation can be expressed with rules</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">rule</span> <span class="s1">'.lib'</span> <span class="k">do</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span>
+ <span class="n">build_the_library</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="k">end</span></code></pre></figure>
+
+<p>The nice thing about Rake rules is that they can be regular expressions. With a couple of rules like the following you can use the same compilation code for multiple platforms</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="sr">/out\/pc\/.+\/.*\.lib/</span> <span class="k">do</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span>
+ <span class="n">build_the_library</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="s1">'pc'</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="sr">/out\/target\/.+\/.*\.a/</span> <span class="k">do</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span>
+ <span class="n">build_the_library</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="s1">'target'</span><span class="p">)</span>
+<span class="k">end</span></code></pre></figure>
+
+<p>For all of this to work it goes hand in hand with naming conventions and a rather strict directory structure. It&#39;s a balance between explicit rules expressed in code and implicit rules expressed in the conventions used that gives us a lot of flexibility - but this is a subject for a later post.</p>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

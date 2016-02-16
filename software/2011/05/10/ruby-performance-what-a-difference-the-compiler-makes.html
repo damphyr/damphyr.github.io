@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>Ruby Performance: What a difference the compiler makes</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>Ruby Performance: What a difference the compiler makes</h1>
+<p class="meta">10 May 2011</p>
+
+<div class="post">
+<p>For a long time Ruby performance was not an issue. That changed as soon as I moved from Windows to Mac and started supporting development teams on different systems.</p>
+
+<p>Ruby performance under Windows was(is) an embarrassment (when it isn&#39;t a reason to change development environment).</p>
+
+<p>When writing software like build systems there is the factor of perceived performance which can be best defined as the amount of time between starting a program and the moment the first output is given to the user (the startup time) or the amount of time <em>between</em> screen outputs.</p>
+
+<p>Providing clues to the user might actually slow down your scripts (all those stdout prints cost time) but it gives your user the sense that something (hopefully useful) is happening.</p>
+
+<p>Then there is the real performance and lately I have reduced everything down to a single rule: minimize disk I/O. </p>
+
+<p>For a build system that compiles stuff from source there is only so much you can do, but the rule holds.</p>
+
+<p>When my team labeled our startup time the &quot;Ruby Tribute Minute&quot; I knew I couldn&#39;t ignore the problem anymore. In order to keep up with a rapidly growing code base I had to improve performance: run fast in order to stay put.</p>
+
+<p>The platform is Windows 7 32bit and to make matters worse I/O wise, it&#39;s a virtual machine.</p>
+
+<p>RubyInstaller 1.8.7p249 with DevKit 3.4.5 was the original installation. The update is RubyInstaller 1.8.7p334 with DevKit 4.5.1 and recompiled native gems.</p>
+
+<p>Using the same codebase and running over the same amount of code the following graph shows the performance boost that Ruby gets from using a newer compiler on Windows.</p>
+
+<p><img src="/images/ruby_performance.png"/></p>
+
+<p>That first bar is very important. It&#39;s a rake -T, the closest thing to measuring the RTM. The p249 version needs <strong>11 seconds</strong> while the p334 version under 5 (the same operation on my MacBook Pro needs 2 seconds but the comparison is useless since there are less cores and no VM)</p>
+
+<p>The test is very realistic, in that it&#39;s a sequence of rake calls from a living, growing build system: -T, clean, generate, build-1, build-1, build-2, build-2.</p>
+
+<p>The last four measure time for a full rebuild and the minimum incremental build time for our two main targets. Where the compiler actually does the bulk of the job (bars 5 and 7) there is no gain but in every other aspect the new RubyInstaller version is faster and <em>feels</em> faster - it actually feels faster than it is, which goes a long way to placate my team members.</p>
+
+<p>I&#39;m actually quite interested to see what 1.9.2 performance looks like, but need to work out some incompatibilities first.</p>
+
+<p>All I can do is send a great big thanks to Luis Lavena and the RubyInstaller team for doing such a great job and improving the Ruby experience on Windows immensely.</p>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

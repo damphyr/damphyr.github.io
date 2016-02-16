@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>Tried and tested but boring</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>Tried and tested but boring</h1>
+<p class="meta">11 Aug 2011</p>
+
+<div class="post">
+<p>I&#39;ve spent a large part of my professional career helping build software for systems that had to adhere to one standard of safety or other. From remote controlled locomotives to <a href="http://www.accu-chek-mobile.de/">blood sugar measuring handhelds</a>.</p>
+
+<p>I&#39;ve even read the <a href="http://en.wikipedia.org/wiki/DO-178B">DO-178B</a>. As a hacker I find these standards stifling and extremely inconvenient. They lag behind modern programming techniques by what amounts to geological ages in computing and set very strict rules on the form and function of your code. They also bind you to paper-heavy processes that are uniquely unqualified in handling any kind of change.</p>
+
+<p>The infamous MISRA C rules have been hounding me for years and I have been present in countless debates about which rule to turn off and which to keep. The pressure to work around these rules is immense and if I am brutally honest there is no software out there that complies 100% with the highest safety standards. I consider the aforementioned DO-178B - in Europe known as ED-12B - as the strictest but I haven&#39;t seen the standards required for nuclear reactors.</p>
+
+<p>I used to rant against all the standards. Hot on top of the wave of dynamic languages, short development cycles and agile practices I wanted to have all the shiny new toys and find cool ways to do stuff. Cool, dynamic, clever.</p>
+
+<p>It turns out, safety relevant/critical software while doing really cool stuff is a pretty boring experience. You are limited to a small set of languages and a strict standard for each language. The development processes are steeped in documents and in the name of risk assessment (not the development risks most software techies worry about, but actual physical risk to property, environment and life) emulate waterfalls. Instead of one big one you may get a string of smaller waterfalls, but the pattern is there.</p>
+
+<p>And there are reasons for it. Very good reasons actually, reasons to do with accountability, verifiability, the aforementioned risk assessment and mitigation. Still, like I said, pretty boring. I have great respect for safety inspectors, I could never, ever do their job.</p>
+
+<p>And one thing I remain adamant about is that being certified for a safety standard does not make your software safe.</p>
+
+<p>But wait, I&#39;m talking about <strong>production</strong> code.You know, the stuff that is flashed onto the silicon, that beeps and blinks, reads sensors and switches relays and stuff. To write that you need a text editor. Then you get your compiler, assembler and linker, string them together and create your application.
+Put all of these together into a glorified text editor called an IDE and you have the state of a development environment in the embedded world: A whole bunch of word documents and an IDE. While I like to believe that this is by no means as dominant as it was 10 years ago, it is not gone either.</p>
+
+<p>If you leave it at that then you spent most of your time doing reviews and filling Word documents with specifications (requirements/test/delivery/functional/safety/risk - take your pick). Documents that are very likely write-only. Didn&#39;t I say it was boring?</p>
+
+<p>I hate typing inane prose into a document nobody will ever read. I hate binary blobs I cannot diff to figure out what has changed. I hate syncing my repository and downloading megabytes of bits that only take up space. And above all I hate duplicating effort. I really*2 hate it.</p>
+
+<p>On the other hand when that 60-ton locomotive first rolled down the tracks guided by a few bytes transmitted over the air I was glad for the mountain of protocol specifications and test plans and test protocols and checklists that &quot;proved&quot; everything was proper. 
+I was confident. After all I had every requirement covered, I had simulated everything in the protocol specification and thrown in some extra tests for good measure.</p>
+
+<p>That the train drivers escorting me in the locomotive threatened to tie me on the front of the engine while we conducted braking tests made me sweat a little bit. They laughed. The system crashed 6 times in the first hour that first day. The one thing that worked was the transition to the safe state which for the locomotive meant &quot;lock the brakes and stay put&quot;. So, I was right to sweat but I would have survived being tied to the front of the engine.</p>
+
+<p>By the end of that day I was ranting and raving at the absolute waste of effort required to maintain all that paperwork. So much time when I could have thought of cruel and unusual punishments for my code. So much time I could have spent devising and running tests.</p>
+
+<p>It turns out the paperwork is necessary. I urge you to go and read safety standards. They actually state very reasonable, very important and very serious things we need to consider while building the software that moves our world. It helps when you realize that these standards are the result of the work of many very smart people combined with some very hard lessons. Some of those lessons even cost lives.</p>
+
+<p>So these are tried and tested methods and tools, distilled experience we would be fools to ignore.</p>
+
+<p>And I went back and took a long hard look at that glorified text editor ecosystem. What can we do to reduce the boring, repetitive, duplicate work?
+Model driven development, unit testing, continuous integration, executable requirements, simulators, automated regression testing, code coverage, static code analysis, performance and stress testing, document generation. All of it is supposed to give us more time to do the <em>actual</em> work.</p>
+
+<p>Generating documentation was actually the first goal: How out of all the living, changing, actively developed code parts could we get the static, dead, unchanging documentation. So I looked into it, and a door opened into a whole world, a world without restrictions<sup>1</sup>. </p>
+
+<p>I mentioned in <a href="/software/2011/02/04/managing-your-development-environment/">&quot;Managing your development environment?&quot;</a> that the modern software development environment is as intricate and intelligent as the production software it produces. </p>
+
+<p>In an embedded software system that follows safety guidelines the &quot;backstage&quot; is where the interesting stuff is. </p>
+
+<p>You want your build to run faster? You have to apply the same monitoring/profiling concepts and methods you read about web applications.</p>
+
+<p>You want your infrastructure to integrate easily? You should use small web applications (think rack based) with clear and simple APIs. That way you can add off-the-shelf authentication/user management, caching, monitoring and notifications and when the next project comes you get to reuse whatever fits. RESTful APIs are a boon for this.</p>
+
+<p>Best of all, you get to work with current technologies which is the whole point.</p>
+
+<hr>
+
+<p><sup>1</sup> The oxymoron of using error-prone software to prove that software is error-free has not escaped the people that write safety standards. You do have to validate your infrastructure code but the restrictions are not as bad and usually you have to do the same things you would do for a &quot;regular&quot; high availability service.</p>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

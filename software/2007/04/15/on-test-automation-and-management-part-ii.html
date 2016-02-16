@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>On test automation and management, part II</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>On test automation and management, part II</h1>
+<p class="meta">15 Apr 2007</p>
+
+<div class="post">
+<p>The simplest way to define a test is as a sequence of steps which can succeed or fail.</p>
+
+<p>The test is successful when all steps are successful, or it fails when as much as one step fails.</p>
+
+<p>In it&#39;s simplest form a test consists of a single step, a script or a call to an application that runs a(nother) script.</p>
+
+<p>A test specification would contain a description of the test, pre- and post-conditions together with the steps required for execution plus information about the requirements leading to this test.</p>
+
+<p>Pre- and post-conditions are actually satisfied through steps taken during the test execution and become an integral part of the test.</p>
+
+<p>A step can be any action taken when testing but in the context of automated tests it can be defined as a single command for which success or failure can be easily determined (the easiest way being that of a meaningful exit code).</p>
+
+<p>A specification can thus be expressed in two parts: human-readable text that describes the test and can be used in documents and reports and a machine-readable <em>scenario</em> that defines the sequence of steps/commands to execute in order to run the test.</p>
+
+<p>Putting the two together in a parseable format is the next logical step:</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;specification</span> <span class="na">id=</span><span class="s">"id"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;title&gt;</span>Super Test<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;description&gt;</span>Why does this test exist? What is it's purpose?<span class="nt">&lt;/description&gt;</span>
+  <span class="nt">&lt;scenario&gt;</span>
+    <span class="nt">&lt;step/&gt;</span>
+    <span class="nt">&lt;step/&gt;</span>
+  <span class="nt">&lt;/scenario&gt;</span>
+<span class="nt">&lt;/specification&gt;</span></code></pre></figure>
+
+<p>Parsing these specifications allows for:
+* Execution of the scenario elements.
+* Generation of overview documents.
+* Generation of reports for each execution.</p>
+
+<p>To do all of the above, lets separate the three major blocks of functionality and add a <em>manager</em> to handle coordination:</p>
+
+<p><img src="/images/tm.png" alt="manager"></p>
+
+<p>The above XML will <em>not</em> work for every project. Things like units, test groups, attributes that define types, test conditions etc. are universally...different.
+Establishing a format that satisfies the requirements of all projects is an effort that will lead to a too complex, all-knowing and nothing-achieving behemoth. In short it would be futile.</p>
+
+<p>What can be done is define a set of conventions and boundaries within which such specifications can be managed.</p>
+
+<p>This leads unavoidably to a tool-set whose architecture allows it to be customized and adapted for specialized usage within those boundaries. As much as one would like to avoid it, the term framework immediately springs to mind.</p>
+
+<p>The specification parser is the part of the system that needs to be adapted every time.
+The goal is to have a simple and intuitive way of defining the scenario (e.g. the sequence of execution steps) in a problem-specific way. In other words, define a testing DSL for the project.
+Using as basis the contrived example project from <a href="/software/2007/04/13/on-test-automation-and-management-part-i">part I</a>, a DSL-expressed scenario could be:</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;scenario&gt;</span>
+  <span class="nt">&lt;flash/&gt;</span>
+  <span class="nt">&lt;start_sniffer</span> <span class="na">log=</span><span class="s">"testcase.log"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;guitester</span> <span class="na">script=</span><span class="s">"somescript.gui"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;stop_sniffer/&gt;</span>
+  <span class="nt">&lt;analyze</span> <span class="na">input=</span><span class="s">"testcase.log"</span> <span class="na">script=</span><span class="s">"check_for_errors.usb"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/scenario&gt;</span> </code></pre></figure>
+
+<p>Additionally in many cases the specification itself will have to contain more information (i.e. requirement tracing).
+In a <a href="/software/2007/04/16/on-test-automation-and-management-part-iii/">later installment</a> I will present a solution that provides enough flexibility for the adaptation of the parser without exponentially increasing it&#39;s complexity.</p>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

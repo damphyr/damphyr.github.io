@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>VAR's Build Rules</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>VAR's Build Rules</h1>
+<p class="meta">17 Jul 2014</p>
+
+<div class="post">
+<p>This is a post that came out of a discussion thread at work <sup>1</sup>. Originally it was a simple question on alternatives to TFS as a build system. But you know how it goes, things evolve into questions you can only answer with 42.</p>
+
+<p>During the conversation the rules described in this post came out of the woodwork.</p>
+
+<h2>Distinctions, distinctions</h2>
+
+<p>Before we get into the rules we need to distinguish between a build system and a build management system.</p>
+
+<p>A build system performs transformations in sequence according to a predetermined dependency chain to create artifacts. A subset of this is the compilation of sources to binaries.</p>
+
+<p>A build management system coordinates build system(s).</p>
+
+<p>A build system is highly project specific, it is affected by toolchains, project conventions and generally can only run on a specially configured host (i.e. development environment).</p>
+
+<p>A build management system can run everywhere so long as it can start the build system on the appropriate host. The specificity of a build management system is limited to the number of version control systems it supports. Although theoretically it doesn&#39;t have to provide version control support it is a given that such support will be provided in the minimum feature set.</p>
+
+<p>Jenkins, TeamCity, TravisCI, BuildBot are build management systems.</p>
+
+<p>TFS tries to do both at once, mixes them up, confuses the terminology and generally does a bang up job of completely screwing things up.</p>
+
+<h2>VAR&#39;s Build Rules</h2>
+
+<p>(var is my username at work)</p>
+
+<h3>1. I am the build server</h3>
+
+<p>Rule #1 requires that the build server follows the exact same steps as any other developer. </p>
+
+<p>Expressed the other way around: Every developer has to be able to recreate locally the complete build process without deviations given the development environment and the correct version of the source tree.</p>
+
+<h3>2. When the build server says no, it means no!</h3>
+
+<p>Rule #2 says that if a build server says a build is broken, then the build is broken. Drop everything and read the logs. </p>
+
+<p>There is no &quot;it works for me&quot;, your build server is Judge Dredd: judge, juror and executioner.</p>
+
+<p>You can only adhere to this rule if you followed Rule #1</p>
+
+<h3>3. IDEs are the enemy AKA F5 is not a build process</h3>
+
+<p>Which means that if you drive your development process from an IDE there is no way you can adhere to the Build Rules. </p>
+
+<p>This rule has major complications on the development environment, ties directly into the subject of allowing your developers to use whatever tools they feel comfortable with and adherence to it is actively sabotaged by Visual Studio.</p>
+
+<p>My current approach to this problem is laid out in <a href="/software/2014/07/03/gaudi-versus-the-dreaded-ide">Gaudi vs. the dreaded IDE</a></p>
+
+<h2>Adhering to the rules</h2>
+
+<p>To create a system that adheres to rules #1 &amp; #2 you have to think like a Lego builder: Lots of small, specialized tasks that do one thing can be used to compose more complex processes etc.</p>
+
+<p>As an example a <em>release</em> task instead of doing everything in one big implementation will depend on the build tasks for each of the libraries and applications and the tasks that run the tests etc. Using the syntax of rake in a contrived example one would do</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">task</span> <span class="ss">:release</span> <span class="o">=&gt;</span><span class="p">[</span><span class="ss">:"test:all"</span><span class="p">]</span>
+
+<span class="n">task</span> <span class="ss">:"test:all"</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="ss">:"test:foo"</span><span class="p">,</span> <span class="ss">:"test:bar"</span><span class="p">]</span>
+
+<span class="n">task</span> <span class="ss">:"test:foo"</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="ss">:"build:foo"</span><span class="p">]</span>
+<span class="p">.</span><span class="nf">.</span><span class="o">.</span>
+</code></pre></div>
+<p>Now a developer will probably use the component tasks a lot more than the composite :release task and we will certainly have a build job on the server that only does releases.</p>
+
+<p>This is a necessity since the system needs to satisfy different usage  patterns: the build server uses composite tasks that implement complete workflows while the developer usex component tasks with surgical precision in the interest of speed and effectiveness.</p>
+
+<p>From the perspective of the build system engineer this approach is self-evident for the same reason it&#39;s evident when building applications: Small chunks of code are easier to manage, test, reuse and understand.</p>
+
+<p>It&#39;s also one of the reasons why make, ant and the msbuild XML syntax suck big time as general task description languages but that is a subject that requires a whole other post.</p>
+
+<p>All of this segways nicely into the final rule:</p>
+
+<h3>4. Your (build) infrastructure is a software development project</h3>
+
+<p><a href="/software/2011/02/04/managing-your-development-environment">This post has already been written</a></p>
+
+<p>Rule #4 means you need tests and CI and a plan. To make matters worse your users are some of the most obnoxious, impatient and down right pedantic users on the face of the planet. They want everything perfect, robust, simple and fast and they want it yesterday. You better be dogfooding by this point...</p>
+
+<hr>
+
+<p><sup>1</sup> I work at <a href="http://www.zuehlke.com">Zühlke</a> where I have the luck to interact with brilliant engineers. Not just software engineers either.</p>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>Building with rake: Provisions</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>Building with rake: Provisions</h1>
+<p class="meta">19 Mar 2014</p>
+
+<div class="post">
+<p>This is the third article in the series and it is part two of the setup saga. the whole thing starts <a href="/software/2013/10/22/building-with-rake-I">here</a>.</p>
+
+<p>In <a href="/software/2014/03/15/building-with-rake-II">part one</a> we laid the ground work and ended up with a 32bit CentOS 6.5 installation in a virtual machine configured for control via vagrant.</p>
+
+<p>With the groundwork laid it is time for the provisioning part. The main reason for creating a vagrant base box was because I have never before worked with CentOS, or the KPIT toolchain, so naturally I tend to make mistakes. Sometimes I&#39;ll just blunder so bad that the only way to get back to a viable state is to start from the beginning. With the vagrant base box this whole process is as follows:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">vagrant up 
+vagrant ssh
+<span class="c">#blunder about</span>
+<span class="c">#mess up</span>
+<span class="nb">exit
+</span>vagrant halt
+vagrant destroy <span class="c">#rinse</span>
+<span class="c">#repeat</span></code></pre></figure>
+ 
+
+<p>Anything that works ends up in the provisioning script</p>
+
+<h2>Provisioning</h2>
+
+<p><img src="/images/tools.jpg" alt="tools"> Provisioning is the act of installing and configuring software on a computer. </p>
+
+<p>Ideally it would be all software, operating system included, so we could plug in a machine and it would start and auto-magically become a fully functional computer without human intervention. And then we would name it SkySomething and it would form a network with it&#39;s siblings which consequently would be SkyNe...omg, I am working towards the destruction of the human race!</p>
+
+<p>Back to the present, we generally pick a basis configuration for the OS (ergo the base box) and then automate everything else. Full grown provisioning tools like Chef, Puppet and Ansible will allow you to keep large numbers of machines working and also let you use the collective expertise of several thousand IT administrators. I&#39;m just using a shell script and I&#39;m going to embed it in the <a href="https://github.com/damphyr/embedded-C-rake/blob/master/Vagrantfile">Vagrantfile</a>. So there...</p>
+
+<p>To (finally) start building our C code we will need Ruby (you still remember this whole thing is &quot;Building with Rake&quot; I hope) and the <a href="http://www.kpitgnutools.com/latestToolchain.php">KPIT RX toolchain</a> .</p>
+
+<h2>HowTo</h2>
+
+<ul>
+<li>Clone the <a href="https://github.com/damphyr/embedded-C-rake/">git repository</a> acompanying this blog post series.</li>
+<li>Download the <a href="http://www.kpitgnutools.com/latestToolchain.php">RPM</a> for the elf-rx tools from KPIT and place it in the setup/ directory</li>
+<li>vagrant up</li>
+</ul>
+
+<p>The repository has <a href="https://github.com/damphyr/embedded-C-rake/tree/master/setup">more detailed instructions</a> with all the ifs and buts for those who don&#39;t want to follow convention. </p>
+
+<p>Once &#39;vagrant up&#39; is finished, log in the VM with &#39;vagrant ssh&#39; and you&#39;re set to work. </p>
+
+<h2>Practical stuff</h2>
+
+<p>Package managers all across *ix distributions are a mess. Specifically for Ruby the versions available are usually about a month away from end-of-life or at best a couple of years behind the current stable.</p>
+
+<p>Even more specific, yum lists a 1.8.7 version that is long dead and consigned to the history books. So installation from source it is. For the purposes of this experiment this is more than adequate. And to make matters more interesting, lets get the latest and greatest at the time of writing, 2.1.1.</p>
+
+<p>The provisioning &quot;script&quot; is:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">yum -y install zlib zlib-devel
+yum -y install openssl-devel
+yum -y install libyaml libyaml-devel
+yum -y install wget
+wget http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.1.tar.gz
+tar xvf ruby-2.1.1.tar.gz
+<span class="nb">cd </span>ruby-2.1.1
+./configure
+make
+make install
+<span class="nb">echo </span>Setting up environment
+cp /home/vagrant/host_share/setup/bash_profile /home/vagrant/.bash_profile
+chown vagrant:vagrant /home/vagrant/.bash_profile
+chmod 544 /home/vagrant/.bash_profile
+rpm --install /home/vagrant/host_share/setup/gnurx_v14.01_elf-1-1.i386.rpm</code></pre></figure>
+
+<p>I mean, really, this thing has no error handling, nothing. It&#39;s a shambles masquerading as a script. But hey, it mostly works</p>
+
+<p>This script will evolve as we add gems, things go wrong, versions change etc. That is OK. More than OK, it is desired. This is the single source for our development environment.</p>
+
+<h2>Other tricks</h2>
+
+<p>You will notice there is a setup/bash_profile file and in the provisioning script it is used as the .bash_profile for the vagrant user. This is part of a method I use very often when creating development environments under *ix systems. </p>
+
+<p>Instead of creating elaborate scripts that add users, services, environment variables etc. recreate the filesystem structure for the system under version control and save only the differences to the base installation. </p>
+
+<p>To update the system just copy everything over.  Any scripting can be done in your working environment. </p>
+
+<p>This is especially useful when your target is a constrained system that lacks most development tools but it has a lot of other advantages as well. To list a few:</p>
+
+<p>Search across all administered systems from the comfort of your workstation, versioned changes and instant reset to a known state with a simple copy action.</p>
+
+<h2>Afterthoughts</h2>
+
+<p>For any other project the toolchain RPM and the Ruby tarfile would be in the repository and the provisioning script would start by installing git and then pulling the repository in the VM. This project will live on the bleeding edge :P !</p>
+
+<p>It&#39;s not unusual for embedded projects to have support lifecycles of 5 years or more. Can you remember which CentOS version was state-of-the-art 7 years ago? Can you guarantee that 6.5 will be available in seven years time? The longer a project will be supported for, the more of it&#39;s environment should be in the repository. </p>
+
+<p><img src="/images/the_dream.png" alt="that&#39;s the dream">  The goal is to be able to recreate the development environment at any point in time with just a copy of HEAD at hand.</p>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>
