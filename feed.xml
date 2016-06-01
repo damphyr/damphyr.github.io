@@ -7,6 +7,68 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Workaround for Jenkins CLI authentication</title>
+        <description>&lt;p&gt;Been trying to get Jenkins to do various nifty things automatically and it turns out it is possible, only the new 2.x series has authentication turned on by default and we somehow need to authenticate jenkins-cli to be able to do anything.&lt;/p&gt;
+
+&lt;p&gt;This creates a chicken-or-egg problem, since we need jenkins-cli to create the credentials that will enable jenkins-cli to login in the first place. At least if we use the jenkins cookbook or until Jnekins gets a proper HTTP API for these things.&lt;/p&gt;
+
+&lt;p&gt;And as of some recent version before 2.x jenkins-cli will not allow the use of passwords anymore. Sometimes I think people go out of their way to make automating things difficult.&lt;/p&gt;
+
+&lt;p&gt;I chewed at the problem for several days and lots of different angles. At the moment the easiest solution seems to be to disable security for the duration of the setup. Fortunately with a bit of Nokogiri magic this is not a difficult problem.&lt;/p&gt;
+
+&lt;h2&gt;How to turn off security&lt;/h2&gt;
+
+&lt;p&gt;Find the Jenkins &lt;em&gt;config.xml&lt;/em&gt;, set the value of &lt;code&gt;useSecurity&lt;/code&gt; to false.&lt;/p&gt;
+
+&lt;p&gt;Contrary to &lt;a href=&quot;https://wiki.jenkins-ci.org/display/JENKINS/Disable+security&quot;&gt;the Jenkins wiki&lt;/a&gt; advice, you don&amp;#39;t really have to remove the &lt;code&gt;authorizationStrategy&lt;/code&gt; and &lt;code&gt;securityRealm&lt;/code&gt; elements. Leaving them be actually makes restoring the original state easier.&lt;/p&gt;
+
+&lt;p&gt;You can save the following to a file (let&amp;#39;s say &lt;code&gt;security.rb&lt;/code&gt;) and drop it in the libraries/ directory of your cookbook.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;nokogiri&quot;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;jenkins_security&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jenkins_home&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;jenkins_config_file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jenkins_home&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;config.xml&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;raise&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Could not find the Jenkins configuration file at &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jenkins_home&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;. The disable_security recipe needs to run *after* the jenkins-master default recipe.&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;unless&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;exist?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jenkins_config_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;jenkins_config&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Nokogiri&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;XML&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jenkins_config_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;security_settings&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jenkins_config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;xpath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;//hudson//useSecurity&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;state&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:on&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;security_settings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;first&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;true&quot;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:off&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;security_settings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;first&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;false&quot;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;raise&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Only :on and :off are valid state values&quot;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jenkins_config_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;w&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jenkins_config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;to_xml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;The recipe that uses the above code is&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;chef_gem&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;nokogiri&#39;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;ruby_block&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;disable_security&#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;block&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;jenkins_security&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:off&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;jenkins&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;master&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;home&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;notifies&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:restart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;service[jenkins]&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:immediately&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;action&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:run&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;The nice thing about this approach is that once we&amp;#39;re done with Jenkins we can reactivate security (just replace the &lt;code&gt;:off&lt;/code&gt; with &lt;code&gt;:on&lt;/code&gt; in the recipe code) and we&amp;#39;re back to the initial state.&lt;/p&gt;
+
+&lt;h2&gt;Pitfalls&lt;/h2&gt;
+
+&lt;p&gt;You will need to block and wait for Jenkins to boot up before including this. For a way to do this you can check &lt;a href=&quot;https://github.com/Zuehlke/cookbooks-jenkins-simple-app&quot;&gt;cookbooks-jenkins-simple-app&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Mon, 30 May 2016 12:22:44 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2016/05/30/jenkins-cli-authentication</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2016/05/30/jenkins-cli-authentication</guid>
+      </item>
+    
+      <item>
         <title>Damn you Visual Studio</title>
         <description>&lt;p&gt;&lt;em&gt;I&amp;#39;m not being lazy, the bloody piece of shite is compiling&lt;/em&gt;&lt;/p&gt;
 
@@ -102,13 +164,13 @@
 
 &lt;p&gt;A properly configured Windows base box is smaller (about 5GB) and we can skip the time it takes to create it from an .iso, because, well, we don&amp;#39;t do it very often.&lt;/p&gt;
 
-&lt;p&gt;Create the base box using &lt;a href=&quot;http://www.packer.io&quot;&gt;Packer&lt;/a&gt;, add a Vagrantfile to the repository and host the base box in a known location and we have the capability to recreate the development environment. &lt;/p&gt;
+&lt;p&gt;Create the base box using &lt;a href=&quot;http://www.packer.io&quot;&gt;Packer&lt;/a&gt;, add a Vagrantfile to the repository and host the base box in a known location and we have the capability to recreate the development environment.&lt;/p&gt;
 
-&lt;p&gt;How much goes into the base box in terms of software and configuration is your choice but vanilla installations work best, especially with Windows (you get the benefit of having a pristine registry database). &lt;/p&gt;
+&lt;p&gt;How much goes into the base box in terms of software and configuration is your choice but vanilla installations work best, especially with Windows (you get the benefit of having a pristine registry database).&lt;/p&gt;
 
 &lt;p&gt;Keep in mind that you have to update the base box regularly to avoid the massive Windows Update penalty when creating new VM instances. Automating the creation process with Packer is thankfully very easy and can be delegated to a CI/cron job.&lt;/p&gt;
 
-&lt;p&gt;Everything else is done with Chef and a bit of powershell (to bootstrap Chef from Vagrant). To help with that we have a cookbook by the name of &lt;a href=&quot;https://github.com/Zuehlke/cookbook-windev&quot;&gt;windev&lt;/a&gt;. &lt;/p&gt;
+&lt;p&gt;Everything else is done with Chef and a bit of powershell (to bootstrap Chef from Vagrant). To help with that we have a cookbook by the name of &lt;a href=&quot;https://github.com/Zuehlke/cookbook-windev&quot;&gt;windev&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;So the workflow becomes&lt;/p&gt;
 
@@ -585,65 +647,6 @@ rpm --install /home/vagrant/host_share/setup/gnurx_v14.01_elf-1-1.i386.rpm&lt;/c
         <pubDate>Wed, 19 Mar 2014 04:00:00 +0100</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2014/03/19/building-with-rake-III</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2014/03/19/building-with-rake-III</guid>
-      </item>
-    
-      <item>
-        <title>Building with rake: Setup</title>
-        <description>&lt;p&gt;This is the second article in the series,the whole thing starts &lt;a href=&quot;/software/2013/10/22/building-with-rake-I&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;And while the series is about building C systems with Rake there is a lot of preparation work to be done before we can actually run the first file through the compiler.&lt;/p&gt;
-
-&lt;h2&gt;Setting up the environment&lt;/h2&gt;
-
-&lt;p&gt;Actually setting up the environment, installing the editor, the IDE, the compiler toolchain and making sure they are accessible from the terminal or the IDE etc. is a task most developers do not consciously consider. As a consequence we tend to underestimate the amount of work required to do it right and the actual cost of getting it wrong.&lt;/p&gt;
-
-&lt;p&gt;Oh, and this is dangerous ground. Editor wars, OS wars, the death-through-infrastructure syndrome and a zillion other reasons why it&amp;#39;s not going to work.&lt;/p&gt;
-
-&lt;p&gt;This is a very important step in every project, I can&amp;#39;t stress this enough. Consistency in the development environment is the single most important point when working with embedded software. Consider that apart from the usual software errors you have to deal with new, untested or flaky hardware. Just check the picture of a  &amp;quot;smoke tested&amp;quot; board, cuplrit of a failed long running test. &lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/smoke_test.png&quot; alt=&quot;smoke test&quot;&gt; &lt;/p&gt;
-
-&lt;p&gt;And new electronics are ALWAYS a potential source of errors. Come to think of it, you can take &amp;#39;potential&amp;#39; out of that sentence and it would still be true.&lt;/p&gt;
-
-&lt;p&gt;The difficulty of locating the cause for a bug increases exponentially with every source of errors. So we need as few error sources as possible. As a first step we establish a consistent development environment so that we can exclude differences between workstations as a culprit.&lt;/p&gt;
-
-&lt;p&gt;As a bonus, no developer can use &amp;#39;it works for me&amp;#39; as a cop out when something breaks.&lt;/p&gt;
-
-&lt;p&gt;Take care not to misunderstand &amp;#39;consistent&amp;#39; for &amp;#39;limited&amp;#39;. With provisioning tools like Chef, Puppet or Ansible there is very little reason why you can&amp;#39;t satisfy every developer&amp;#39;s wishes when it comes to editor, IDE or any other productivity tool.&lt;/p&gt;
-
-&lt;p&gt;And yes, all of this is also true on Windows. Painful, but true.&lt;/p&gt;
-
-&lt;h2&gt;Practical matters&lt;/h2&gt;
-
-&lt;p&gt;What we&amp;#39;re going to need is &lt;a href=&quot;https://www.virtualbox.org/&quot;&gt;VirtualBox&lt;/a&gt;, &lt;a href=&quot;http://www.vagrantup.com/&quot;&gt;vagrant&lt;/a&gt;, a CentOS basebox and optionally a git repository containing a bunch of &lt;a href=&quot;http://www.opscode.com/chef/&quot;&gt;Chef&lt;/a&gt; recipes.&lt;/p&gt;
-
-&lt;p&gt;With these ingredients in the end we will cook up a VM that will be our development environment with the RX63N board.&lt;/p&gt;
-
-&lt;p&gt;The CentOS choice is dictated by the fact that the &lt;a href=&quot;http://www.kpitgnutools.com/latestToolchain.php&quot;&gt;KPIT toolchain&lt;/a&gt; comes packaged in RPM format. It also has to be the 32bit version, since KPIT does not come compiled for a x64 Linux flavour.&lt;/p&gt;
-
-&lt;p&gt;The base box proved to be problematic as &lt;a href=&quot;http://www.vagrantbox.es/&quot;&gt;http://www.vagrantbox.es/&lt;/a&gt; lists only one recent CentOS box as 32bit but the base box is actually 64bit. Well, creating base boxes is easy. There&amp;#39;s &lt;a href=&quot;https://github.com/okfn/ckan/wiki/How-to-Create-a-CentOS-Vagrant-Base-Box&quot;&gt;blog posts&lt;/a&gt; about it.&lt;/p&gt;
-
-&lt;p&gt;Originally I wrote &amp;quot;there&amp;#39;s more interesting things to talk about&amp;quot;. But it seems that once more the combination of versions needed for the task requires some digging and further work. So, following the instructions on the provided link I proceeded to create a 32 bit CentOS 6.5 base box for vagrant. The set of instructions is &lt;a href=&quot;https://github.com/damphyr/embedded-C-rake/blob/master/setup/CentOSBaseBox.md&quot;&gt;up on GitHub&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2&gt;Hints &amp;amp; Tips for the decrepit mind&lt;/h2&gt;
-
-&lt;p&gt;If you&amp;#39;re like me you&amp;#39;ll need to be reminded that on vagrant base boxes the root password is &amp;#39;vagrant&amp;#39;.&lt;/p&gt;
-
-&lt;h2&gt;VM at hand&lt;/h2&gt;
-
-&lt;p&gt;There are a few things to do that for convenience&amp;#39;s sake I will skip since this is a personal sandbox project.&lt;/p&gt;
-
-&lt;p&gt;There should be a project user (or depending on how far you want to take it, one account per team member). Things like repository access, SSH keys etc. need to be setup. For convenience everything will be done with the vagrant user.&lt;/p&gt;
-
-&lt;p&gt;Also, to keep software updates under control, there should be a chef/puppet/ansible installation and the contents of the VM should be managed as source. Since this is a one man team environment and there&amp;#39;s only really two software packages to install we will skip the overhead for now.&lt;/p&gt;
-
-&lt;p&gt;It should be noted though that between the time I started putting this environment together and now (which is about 5 months) there have been 4 new vagrant versions, a major CentOS update, 3 KPIT toolchain updates (one major version), a new Ruby version and uncountable gem updates. At the rate I&amp;#39;m writing I will be forced to add Chef recipes just to be able to keep the environment current.&lt;/p&gt;
-
-&lt;p&gt;In the next installment we&amp;#39;ll setup the toolchain and the RX63N board and figure out how to call everything from rake.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 15 Mar 2014 14:00:00 +0100</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2014/03/15/building-with-rake-II</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2014/03/15/building-with-rake-II</guid>
       </item>
     
   </channel>

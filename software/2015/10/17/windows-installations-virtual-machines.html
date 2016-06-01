@@ -75,13 +75,13 @@
 
 <p>A properly configured Windows base box is smaller (about 5GB) and we can skip the time it takes to create it from an .iso, because, well, we don&#39;t do it very often.</p>
 
-<p>Create the base box using <a href="http://www.packer.io">Packer</a>, add a Vagrantfile to the repository and host the base box in a known location and we have the capability to recreate the development environment. </p>
+<p>Create the base box using <a href="http://www.packer.io">Packer</a>, add a Vagrantfile to the repository and host the base box in a known location and we have the capability to recreate the development environment.</p>
 
-<p>How much goes into the base box in terms of software and configuration is your choice but vanilla installations work best, especially with Windows (you get the benefit of having a pristine registry database). </p>
+<p>How much goes into the base box in terms of software and configuration is your choice but vanilla installations work best, especially with Windows (you get the benefit of having a pristine registry database).</p>
 
 <p>Keep in mind that you have to update the base box regularly to avoid the massive Windows Update penalty when creating new VM instances. Automating the creation process with Packer is thankfully very easy and can be delegated to a CI/cron job.</p>
 
-<p>Everything else is done with Chef and a bit of powershell (to bootstrap Chef from Vagrant). To help with that we have a cookbook by the name of <a href="https://github.com/Zuehlke/cookbook-windev">windev</a>. </p>
+<p>Everything else is done with Chef and a bit of powershell (to bootstrap Chef from Vagrant). To help with that we have a cookbook by the name of <a href="https://github.com/Zuehlke/cookbook-windev">windev</a>.</p>
 
 <p>So the workflow becomes</p>
 
