@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>Windows 7 Update Hell</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>Windows 7 Update Hell</h1>
+<p class="meta">28 Dec 2016</p>
+
+<div class="post">
+<h2>Welcome to Hell, Windows Update Hell!</h2>
+
+<p>I don&#39;t know if you noticed, but Microsoft broke Windows Update back in April. I didn&#39;t, at least not until it was October.</p>
+
+<p>Luckily by then the Internetz had found a solution. Not that it is an easy one, or an elegant one.</p>
+
+<p>It invloves downloading 3 specific MS hotfixes. If you look around the net you will find a different set of hotfixes required, depending on when the posts where written.</p>
+
+<p>It seems this Windows Update thing broke, got patched, broke again, got patched again and then broke again between April and September, so here is the set of hotfixes that works as of December 2016. It might change in a few months.</p>
+
+<p>Also, it seems this is not your final solution if you want <a href="http://www.infoworld.com/article/3099109/microsoft-windows/microsoft-yanks-buggy-speed-up-patch-kb-3161608-replaces-it-with-kb-3172605-and-3172614.html">working Bluetooth on an Intel chipset</a>.</p>
+
+<h2>Windows 7</h2>
+
+<p>But, it is EOL you will say. It is not available through OEMs you will say. To this I answer: Industry is sluggish, embedded development more so, regulated software development even more so. So we get to enjoy Win7 for a while longer.</p>
+
+<p>Also, anything after Win7 sucks big time as an embedded software development environment.</p>
+
+<p>The 100% CPU bug afflicts Win10 as well, but for my scenarios it suffices to use the anniversary edition to work around it.</p>
+
+<h2>The solution</h2>
+
+<p>You need </p>
+
+<ul>
+<li><a href="https://support.microsoft.com/en-us/kb/3020369">KB3020369</a>: April 2015 rollup update. So that the convenience rollup update <em>can</em> install.</li>
+<li><a href="https://support.microsoft.com/en-us/kb/3125574">KB3125574</a>: the April 2016 convenience rollup, which is what MS calls whatever should have been Win7 SP2, but cannot be called a service pack since it came out way after MS said it will not support Win7 anymore.</li>
+</ul>
+
+<p>and finally</p>
+
+<ul>
+<li><a href="https://support.microsoft.com/en-us/kb/3172605">KB3172605</a> which is the actual fix for the &quot;My CPU is pegged to 100% load for days while looking for windows updates&quot; problem.</li>
+</ul>
+
+<p>After that you can attempt to re-enable Windows Update.</p>
+
+<h2>Automation Hell</h2>
+
+<p>I am a proponent of vanila OS installations, <a href="software/2015/10/17/windows-installations-virtual-machines">especially for Windows</a>
+and I have regular automated builds to produce fresh Vagrant baseboxes with Packer.</p>
+
+<p>Getting the procedure described here with Packer involved a lot of trial and error and a lot of time.</p>
+
+<p>Things I learned:</p>
+
+<ul>
+<li>You cannot install offline updates with the windows-shell provisioner since it uses WinRM and on Windows7 the update agent (wusa.exe) does not have to correct access rights.</li>
+</ul>
+
+<p>This meant that the update installers had to be executed locally within the VM. </p>
+
+<h3>First approach</h3>
+
+<p>Copy the installer in the VM (using the <a href="https://www.packer.io/docs/provisioners/file.html">&#39;file&#39;</a> provisioner) and use <a href="https://www.packer.io/docs/provisioners/shell-local.html">&#39;shell-local&#39;</a>.</p>
+
+<p>To get &#39;shell-local&#39; to work you have to provide the shell executable (as it uses /bin/sh per default)</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shell-local"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"wusa.exe MyUPDATE.msu /quiet /norestart"</span><span class="w">
+   </span><span class="err">execute_command:</span><span class="p">[</span><span class="s2">"cmd.exe"</span><span class="p">,</span><span class="s2">"/C"</span><span class="p">,</span><span class="s2">"{\{.Command\}}"</span><span class="p">]</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Unfortunately .msu installers can exit with a variety of non-zero exit codes, 3010 being the one that indicates a reboot is needed. This messes up things.</p>
+
+<p>Also, copying the large convenience rollup update with the &#39;file&#39; provisioner failed consistently for some reason (it&#39;s a big 500MB file - the rest all copied over with no issues), resulting in a 0 bytes entry and no error on the packer side. </p>
+
+<p>So this didn&#39;t work.</p>
+
+<h3>Second approach</h3>
+
+<p>It was more like the fifth try to be honest. Lots of dead ends.</p>
+
+<p>The one that worked:</p>
+
+<ul>
+<li>Download the installer from within the VM.</li>
+<li>Create a schedule task to install it on logon.</li>
+<li>Reboot.</li>
+<li>Go into a loop till the hotfix shows up in the list of installed updates (or you timeout).</li>
+<li>Rinse and repeat.</li>
+</ul>
+
+<p>Kludgy, complicated and slow, but it works reliably.
+The script I used to detect the hotfix is </p>
+<div class="highlight"><pre><code class="language-" data-lang="">#it looks for HOTFIX_ID (KBxxxxx) in the list of installed hotfixes 
+#and goes in a loop until it shows up or the counter runs out
+
+$id=$env:HOTFIX_ID
+$max_tries=[Int32]$env:HOTFIX_DETECT_TRIES
+if ($max_tries -eq 0){
+  $max_tries=90
+}
+$counter=0
+while($counter -lt $max_tries) {
+  if (get-hotfix -id $id -EA SilentlyContinue){
+    break
+  }
+  else{
+    $counter+=1
+    Start-Sleep 5
+  }
+} 
+if ($counter -eq $max_tries)
+{
+    echo "Timed out waiting for $id - tried $counter times"
+    exit 1
+}
+</code></pre></div>
+<p>and this is how it&#39;s called from Packer:</p>
+<div class="highlight"><pre><code class="language-" data-lang=""><span class="p">{</span><span class="w">
+  </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"powershell"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"environment_vars"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"HOTFIX_ID=KB3125574"</span><span class="p">,</span><span class="s2">"HOTFIX_DETECT_TRIES=240"</span><span class="p">],</span><span class="w">
+  </span><span class="nt">"script"</span><span class="p">:</span><span class="w"> </span><span class="s2">"script/detect-hotfix-install.ps1"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<h2>Groundhog Day: Chef</h2>
+
+<p>Like I said, I like vanila OS installs and deal with VMs and bare metal installations. Also with some old installations that have been working non-stop for years. And since they are not internet facing, nobody really bothered to update them. Well, everyone who tried recently gave up and went home crying.</p>
+
+<p>So I can&#39;t rely on a recently patched version or a freshly produced basebox all the time.</p>
+
+<p>Which means I needed to re-implement the above as a Chef recipe:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">msu_installers=node.fetch("msu_installers",{})
+
+unless msu_installers.empty?
+  reboot 'Restart Computer' do
+    action :nothing
+  end
+  msu_sequence=node.fetch("msu_sequence",[])
+
+  msu_sequence.each do |msu_name|
+  pkg=msu_installers[msu_name]
+  if pkg["source"]
+    windev_cache_package pkg["save_as"] do
+      source pkg["source"]
+      depot node['software_depot']
+    end
+    installer= File.expand_path(File.join(node["software_depot"],pkg['save_as']))
+    ruby_block "installer_exists" do
+      block do
+        raise "Installer #{installer} not found" unless File.exist?(installer)
+      end
+      action :run
+    end
+    powershell_script "Install #{pkg["name"]}" do
+      code "wusa.exe #{pkg["save_as"]} /quite /norestart"
+      action :run
+      not_if "get-hotfix -id #{File.expand_path(installer)} -EA SilentlyContinue"
+      notifies :reboot_now, 'reboot[Restart Computer]', :immediately
+    end
+  end
+end
+</code></pre></div>
+<p>The JSON with the attributes looks like:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">msu_installers":{ 
+  "KB3020369":{"source":"URL",
+    "save_as":"Windows6.1-KB3020369-x64.msu",
+    "name":"KB3020369"
+    },
+    "KB3125574":{"source":"URL",
+    "save_as":"windows6.1-kb3125574-foo.msu",
+    "name":"KB3125574"
+    },
+    "KB3172605":{"source":"URL",
+    "save_as":"Windows6.1-KB3172605-x64.msu",
+    "name":"KB3172605"
+    }
+},
+"msu_sequence":["KB3020369","KB3125574","KB3172605"]
+</code></pre></div>
+<p>To use this you will need the <a href="https://supermarket.chef.io/cookbooks/windev#readme">windev cookbook</a> and you have to also use the auto_chef recipe to handle reboots (if you use Chef without a Chef Server, like I do).</p>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

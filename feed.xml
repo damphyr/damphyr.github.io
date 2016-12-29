@@ -7,6 +7,186 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Windows 7 Update Hell</title>
+        <description>&lt;h2&gt;Welcome to Hell, Windows Update Hell!&lt;/h2&gt;
+
+&lt;p&gt;I don&amp;#39;t know if you noticed, but Microsoft broke Windows Update back in April. I didn&amp;#39;t, at least not until it was October.&lt;/p&gt;
+
+&lt;p&gt;Luckily by then the Internetz had found a solution. Not that it is an easy one, or an elegant one.&lt;/p&gt;
+
+&lt;p&gt;It invloves downloading 3 specific MS hotfixes. If you look around the net you will find a different set of hotfixes required, depending on when the posts where written.&lt;/p&gt;
+
+&lt;p&gt;It seems this Windows Update thing broke, got patched, broke again, got patched again and then broke again between April and September, so here is the set of hotfixes that works as of December 2016. It might change in a few months.&lt;/p&gt;
+
+&lt;p&gt;Also, it seems this is not your final solution if you want &lt;a href=&quot;http://www.infoworld.com/article/3099109/microsoft-windows/microsoft-yanks-buggy-speed-up-patch-kb-3161608-replaces-it-with-kb-3172605-and-3172614.html&quot;&gt;working Bluetooth on an Intel chipset&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Windows 7&lt;/h2&gt;
+
+&lt;p&gt;But, it is EOL you will say. It is not available through OEMs you will say. To this I answer: Industry is sluggish, embedded development more so, regulated software development even more so. So we get to enjoy Win7 for a while longer.&lt;/p&gt;
+
+&lt;p&gt;Also, anything after Win7 sucks big time as an embedded software development environment.&lt;/p&gt;
+
+&lt;p&gt;The 100% CPU bug afflicts Win10 as well, but for my scenarios it suffices to use the anniversary edition to work around it.&lt;/p&gt;
+
+&lt;h2&gt;The solution&lt;/h2&gt;
+
+&lt;p&gt;You need &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://support.microsoft.com/en-us/kb/3020369&quot;&gt;KB3020369&lt;/a&gt;: April 2015 rollup update. So that the convenience rollup update &lt;em&gt;can&lt;/em&gt; install.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://support.microsoft.com/en-us/kb/3125574&quot;&gt;KB3125574&lt;/a&gt;: the April 2016 convenience rollup, which is what MS calls whatever should have been Win7 SP2, but cannot be called a service pack since it came out way after MS said it will not support Win7 anymore.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;and finally&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://support.microsoft.com/en-us/kb/3172605&quot;&gt;KB3172605&lt;/a&gt; which is the actual fix for the &amp;quot;My CPU is pegged to 100% load for days while looking for windows updates&amp;quot; problem.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;After that you can attempt to re-enable Windows Update.&lt;/p&gt;
+
+&lt;h2&gt;Automation Hell&lt;/h2&gt;
+
+&lt;p&gt;I am a proponent of vanila OS installations, &lt;a href=&quot;software/2015/10/17/windows-installations-virtual-machines&quot;&gt;especially for Windows&lt;/a&gt;
+and I have regular automated builds to produce fresh Vagrant baseboxes with Packer.&lt;/p&gt;
+
+&lt;p&gt;Getting the procedure described here with Packer involved a lot of trial and error and a lot of time.&lt;/p&gt;
+
+&lt;p&gt;Things I learned:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;You cannot install offline updates with the windows-shell provisioner since it uses WinRM and on Windows7 the update agent (wusa.exe) does not have to correct access rights.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This meant that the update installers had to be executed locally within the VM. &lt;/p&gt;
+
+&lt;h3&gt;First approach&lt;/h3&gt;
+
+&lt;p&gt;Copy the installer in the VM (using the &lt;a href=&quot;https://www.packer.io/docs/provisioners/file.html&quot;&gt;&amp;#39;file&amp;#39;&lt;/a&gt; provisioner) and use &lt;a href=&quot;https://www.packer.io/docs/provisioners/shell-local.html&quot;&gt;&amp;#39;shell-local&amp;#39;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;To get &amp;#39;shell-local&amp;#39; to work you have to provide the shell executable (as it uses /bin/sh per default)&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;shell-local&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;command&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;wusa.exe MyUPDATE.msu /quiet /norestart&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+   &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;execute_command:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;cmd.exe&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/C&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{\{.Command\}}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+ &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Unfortunately .msu installers can exit with a variety of non-zero exit codes, 3010 being the one that indicates a reboot is needed. This messes up things.&lt;/p&gt;
+
+&lt;p&gt;Also, copying the large convenience rollup update with the &amp;#39;file&amp;#39; provisioner failed consistently for some reason (it&amp;#39;s a big 500MB file - the rest all copied over with no issues), resulting in a 0 bytes entry and no error on the packer side. &lt;/p&gt;
+
+&lt;p&gt;So this didn&amp;#39;t work.&lt;/p&gt;
+
+&lt;h3&gt;Second approach&lt;/h3&gt;
+
+&lt;p&gt;It was more like the fifth try to be honest. Lots of dead ends.&lt;/p&gt;
+
+&lt;p&gt;The one that worked:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Download the installer from within the VM.&lt;/li&gt;
+&lt;li&gt;Create a schedule task to install it on logon.&lt;/li&gt;
+&lt;li&gt;Reboot.&lt;/li&gt;
+&lt;li&gt;Go into a loop till the hotfix shows up in the list of installed updates (or you timeout).&lt;/li&gt;
+&lt;li&gt;Rinse and repeat.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Kludgy, complicated and slow, but it works reliably.
+The script I used to detect the hotfix is &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;#it looks for HOTFIX_ID (KBxxxxx) in the list of installed hotfixes 
+#and goes in a loop until it shows up or the counter runs out
+
+$id=$env:HOTFIX_ID
+$max_tries=[Int32]$env:HOTFIX_DETECT_TRIES
+if ($max_tries -eq 0){
+  $max_tries=90
+}
+$counter=0
+while($counter -lt $max_tries) {
+  if (get-hotfix -id $id -EA SilentlyContinue){
+    break
+  }
+  else{
+    $counter+=1
+    Start-Sleep 5
+  }
+} 
+if ($counter -eq $max_tries)
+{
+    echo &quot;Timed out waiting for $id - tried $counter times&quot;
+    exit 1
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and this is how it&amp;#39;s called from Packer:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;powershell&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;environment_vars&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;HOTFIX_ID=KB3125574&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;HOTFIX_DETECT_TRIES=240&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;script&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;script/detect-hotfix-install.ps1&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;Groundhog Day: Chef&lt;/h2&gt;
+
+&lt;p&gt;Like I said, I like vanila OS installs and deal with VMs and bare metal installations. Also with some old installations that have been working non-stop for years. And since they are not internet facing, nobody really bothered to update them. Well, everyone who tried recently gave up and went home crying.&lt;/p&gt;
+
+&lt;p&gt;So I can&amp;#39;t rely on a recently patched version or a freshly produced basebox all the time.&lt;/p&gt;
+
+&lt;p&gt;Which means I needed to re-implement the above as a Chef recipe:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;msu_installers=node.fetch(&quot;msu_installers&quot;,{})
+
+unless msu_installers.empty?
+  reboot 'Restart Computer' do
+    action :nothing
+  end
+  msu_sequence=node.fetch(&quot;msu_sequence&quot;,[])
+
+  msu_sequence.each do |msu_name|
+  pkg=msu_installers[msu_name]
+  if pkg[&quot;source&quot;]
+    windev_cache_package pkg[&quot;save_as&quot;] do
+      source pkg[&quot;source&quot;]
+      depot node['software_depot']
+    end
+    installer= File.expand_path(File.join(node[&quot;software_depot&quot;],pkg['save_as']))
+    ruby_block &quot;installer_exists&quot; do
+      block do
+        raise &quot;Installer #{installer} not found&quot; unless File.exist?(installer)
+      end
+      action :run
+    end
+    powershell_script &quot;Install #{pkg[&quot;name&quot;]}&quot; do
+      code &quot;wusa.exe #{pkg[&quot;save_as&quot;]} /quite /norestart&quot;
+      action :run
+      not_if &quot;get-hotfix -id #{File.expand_path(installer)} -EA SilentlyContinue&quot;
+      notifies :reboot_now, 'reboot[Restart Computer]', :immediately
+    end
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The JSON with the attributes looks like:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;msu_installers&quot;:{ 
+  &quot;KB3020369&quot;:{&quot;source&quot;:&quot;URL&quot;,
+    &quot;save_as&quot;:&quot;Windows6.1-KB3020369-x64.msu&quot;,
+    &quot;name&quot;:&quot;KB3020369&quot;
+    },
+    &quot;KB3125574&quot;:{&quot;source&quot;:&quot;URL&quot;,
+    &quot;save_as&quot;:&quot;windows6.1-kb3125574-foo.msu&quot;,
+    &quot;name&quot;:&quot;KB3125574&quot;
+    },
+    &quot;KB3172605&quot;:{&quot;source&quot;:&quot;URL&quot;,
+    &quot;save_as&quot;:&quot;Windows6.1-KB3172605-x64.msu&quot;,
+    &quot;name&quot;:&quot;KB3172605&quot;
+    }
+},
+&quot;msu_sequence&quot;:[&quot;KB3020369&quot;,&quot;KB3125574&quot;,&quot;KB3172605&quot;]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;To use this you will need the &lt;a href=&quot;https://supermarket.chef.io/cookbooks/windev#readme&quot;&gt;windev cookbook&lt;/a&gt; and you have to also use the auto_chef recipe to handle reboots (if you use Chef without a Chef Server, like I do).&lt;/p&gt;
+</description>
+        <pubDate>Wed, 28 Dec 2016 11:22:44 +0100</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2016/12/28/windows-update-hell</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2016/12/28/windows-update-hell</guid>
+      </item>
+    
+      <item>
         <title>Workaround for Jenkins CLI authentication</title>
         <description>&lt;p&gt;Been trying to get Jenkins to do various nifty things automatically and it turns out it is possible, only the new 2.x series has authentication turned on by default and we somehow need to authenticate jenkins-cli to be able to do anything.&lt;/p&gt;
 
@@ -47,13 +227,13 @@
 
 &lt;p&gt;The recipe that uses the above code is&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;chef_gem&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;nokogiri&#39;&lt;/span&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;chef_gem&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'nokogiri'&lt;/span&gt;
 
-&lt;span class=&quot;n&quot;&gt;ruby_block&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;disable_security&#39;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;ruby_block&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'disable_security'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;block&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;jenkins_security&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:off&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;jenkins&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;master&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;home&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;jenkins_security&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:off&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'jenkins'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'master'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'home'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;notifies&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:restart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;service[jenkins]&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:immediately&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;notifies&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:restart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'service[jenkins]'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:immediately&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;action&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:run&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
@@ -501,7 +681,7 @@ The Rake task code that generates the prj.pro file looks like the following:&lt;
   &lt;span class=&quot;n&quot;&gt;program&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Gaudi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Deployment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Dummy&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;programs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;gcc&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
   &lt;span class=&quot;c1&quot;&gt;#Use the configuration methods to place artifacts within the workspace&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;outfile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vg&quot;&gt;$configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;qtcreator&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;program&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;program&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;.pro&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;template&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vg&quot;&gt;$configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;tools/templates/qtcreator.pro.template&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;template&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vg&quot;&gt;$configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'tools/templates/qtcreator.pro.template'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
   &lt;span class=&quot;c1&quot;&gt;#collect all source and header files&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;source_list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;program&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;sources&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;header_list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;program&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;headers&lt;/span&gt;
@@ -552,101 +732,6 @@ The Rake task code that generates the prj.pro file looks like the following:&lt;
         <pubDate>Thu, 03 Jul 2014 16:00:00 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2014/07/03/gaudi-versus-the-dreaded-ide</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2014/07/03/gaudi-versus-the-dreaded-ide</guid>
-      </item>
-    
-      <item>
-        <title>Building with rake: Provisions</title>
-        <description>&lt;p&gt;This is the third article in the series and it is part two of the setup saga. the whole thing starts &lt;a href=&quot;/software/2013/10/22/building-with-rake-I&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;In &lt;a href=&quot;/software/2014/03/15/building-with-rake-II&quot;&gt;part one&lt;/a&gt; we laid the ground work and ended up with a 32bit CentOS 6.5 installation in a virtual machine configured for control via vagrant.&lt;/p&gt;
-
-&lt;p&gt;With the groundwork laid it is time for the provisioning part. The main reason for creating a vagrant base box was because I have never before worked with CentOS, or the KPIT toolchain, so naturally I tend to make mistakes. Sometimes I&amp;#39;ll just blunder so bad that the only way to get back to a viable state is to start from the beginning. With the vagrant base box this whole process is as follows:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;vagrant up 
-vagrant ssh
-&lt;span class=&quot;c&quot;&gt;#blunder about&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#mess up&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;exit
-&lt;/span&gt;vagrant halt
-vagrant destroy &lt;span class=&quot;c&quot;&gt;#rinse&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#repeat&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
- 
-
-&lt;p&gt;Anything that works ends up in the provisioning script&lt;/p&gt;
-
-&lt;h2&gt;Provisioning&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/tools.jpg&quot; alt=&quot;tools&quot;&gt; Provisioning is the act of installing and configuring software on a computer. &lt;/p&gt;
-
-&lt;p&gt;Ideally it would be all software, operating system included, so we could plug in a machine and it would start and auto-magically become a fully functional computer without human intervention. And then we would name it SkySomething and it would form a network with it&amp;#39;s siblings which consequently would be SkyNe...omg, I am working towards the destruction of the human race!&lt;/p&gt;
-
-&lt;p&gt;Back to the present, we generally pick a basis configuration for the OS (ergo the base box) and then automate everything else. Full grown provisioning tools like Chef, Puppet and Ansible will allow you to keep large numbers of machines working and also let you use the collective expertise of several thousand IT administrators. I&amp;#39;m just using a shell script and I&amp;#39;m going to embed it in the &lt;a href=&quot;https://github.com/damphyr/embedded-C-rake/blob/master/Vagrantfile&quot;&gt;Vagrantfile&lt;/a&gt;. So there...&lt;/p&gt;
-
-&lt;p&gt;To (finally) start building our C code we will need Ruby (you still remember this whole thing is &amp;quot;Building with Rake&amp;quot; I hope) and the &lt;a href=&quot;http://www.kpitgnutools.com/latestToolchain.php&quot;&gt;KPIT RX toolchain&lt;/a&gt; .&lt;/p&gt;
-
-&lt;h2&gt;HowTo&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Clone the &lt;a href=&quot;https://github.com/damphyr/embedded-C-rake/&quot;&gt;git repository&lt;/a&gt; acompanying this blog post series.&lt;/li&gt;
-&lt;li&gt;Download the &lt;a href=&quot;http://www.kpitgnutools.com/latestToolchain.php&quot;&gt;RPM&lt;/a&gt; for the elf-rx tools from KPIT and place it in the setup/ directory&lt;/li&gt;
-&lt;li&gt;vagrant up&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The repository has &lt;a href=&quot;https://github.com/damphyr/embedded-C-rake/tree/master/setup&quot;&gt;more detailed instructions&lt;/a&gt; with all the ifs and buts for those who don&amp;#39;t want to follow convention. &lt;/p&gt;
-
-&lt;p&gt;Once &amp;#39;vagrant up&amp;#39; is finished, log in the VM with &amp;#39;vagrant ssh&amp;#39; and you&amp;#39;re set to work. &lt;/p&gt;
-
-&lt;h2&gt;Practical stuff&lt;/h2&gt;
-
-&lt;p&gt;Package managers all across *ix distributions are a mess. Specifically for Ruby the versions available are usually about a month away from end-of-life or at best a couple of years behind the current stable.&lt;/p&gt;
-
-&lt;p&gt;Even more specific, yum lists a 1.8.7 version that is long dead and consigned to the history books. So installation from source it is. For the purposes of this experiment this is more than adequate. And to make matters more interesting, lets get the latest and greatest at the time of writing, 2.1.1.&lt;/p&gt;
-
-&lt;p&gt;The provisioning &amp;quot;script&amp;quot; is:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;yum -y install zlib zlib-devel
-yum -y install openssl-devel
-yum -y install libyaml libyaml-devel
-yum -y install wget
-wget http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.1.tar.gz
-tar xvf ruby-2.1.1.tar.gz
-&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;ruby-2.1.1
-./configure
-make
-make install
-&lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;Setting up environment
-cp /home/vagrant/host_share/setup/bash_profile /home/vagrant/.bash_profile
-chown vagrant:vagrant /home/vagrant/.bash_profile
-chmod 544 /home/vagrant/.bash_profile
-rpm --install /home/vagrant/host_share/setup/gnurx_v14.01_elf-1-1.i386.rpm&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;I mean, really, this thing has no error handling, nothing. It&amp;#39;s a shambles masquerading as a script. But hey, it mostly works&lt;/p&gt;
-
-&lt;p&gt;This script will evolve as we add gems, things go wrong, versions change etc. That is OK. More than OK, it is desired. This is the single source for our development environment.&lt;/p&gt;
-
-&lt;h2&gt;Other tricks&lt;/h2&gt;
-
-&lt;p&gt;You will notice there is a setup/bash_profile file and in the provisioning script it is used as the .bash_profile for the vagrant user. This is part of a method I use very often when creating development environments under *ix systems. &lt;/p&gt;
-
-&lt;p&gt;Instead of creating elaborate scripts that add users, services, environment variables etc. recreate the filesystem structure for the system under version control and save only the differences to the base installation. &lt;/p&gt;
-
-&lt;p&gt;To update the system just copy everything over.  Any scripting can be done in your working environment. &lt;/p&gt;
-
-&lt;p&gt;This is especially useful when your target is a constrained system that lacks most development tools but it has a lot of other advantages as well. To list a few:&lt;/p&gt;
-
-&lt;p&gt;Search across all administered systems from the comfort of your workstation, versioned changes and instant reset to a known state with a simple copy action.&lt;/p&gt;
-
-&lt;h2&gt;Afterthoughts&lt;/h2&gt;
-
-&lt;p&gt;For any other project the toolchain RPM and the Ruby tarfile would be in the repository and the provisioning script would start by installing git and then pulling the repository in the VM. This project will live on the bleeding edge :P !&lt;/p&gt;
-
-&lt;p&gt;It&amp;#39;s not unusual for embedded projects to have support lifecycles of 5 years or more. Can you remember which CentOS version was state-of-the-art 7 years ago? Can you guarantee that 6.5 will be available in seven years time? The longer a project will be supported for, the more of it&amp;#39;s environment should be in the repository. &lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/the_dream.png&quot; alt=&quot;that&amp;#39;s the dream&quot;&gt;  The goal is to be able to recreate the development environment at any point in time with just a copy of HEAD at hand.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 19 Mar 2014 04:00:00 +0100</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2014/03/19/building-with-rake-III</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2014/03/19/building-with-rake-III</guid>
       </item>
     
   </channel>
