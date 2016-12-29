@@ -102,8 +102,8 @@ and I have regular automated builds to produce fresh Vagrant baseboxes with Pack
 <p>To get &#39;shell-local&#39; to work you have to provide the shell executable (as it uses /bin/sh per default)</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="w"> </span><span class="p">{</span><span class="w">
   </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shell-local"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"wusa.exe MyUPDATE.msu /quiet /norestart"</span><span class="w">
-   </span><span class="err">execute_command:</span><span class="p">[</span><span class="s2">"cmd.exe"</span><span class="p">,</span><span class="s2">"/C"</span><span class="p">,</span><span class="s2">"{\{.Command\}}"</span><span class="p">]</span><span class="w">
+  </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"wusa.exe MyUPDATE.msu /quiet /norestart"</span><span class="p">,</span><span class="w">
+   </span><span class="nt">"execute_command"</span><span class="p">:[</span><span class="s2">"cmd.exe"</span><span class="p">,</span><span class="s2">"/C"</span><span class="p">,</span><span class="s2">"{\{.Command\}}"</span><span class="p">]</span><span class="w">
  </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Unfortunately .msu installers can exit with a variety of non-zero exit codes, 3010 being the one that indicates a reboot is needed. This messes up things.</p>
