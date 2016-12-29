@@ -128,32 +128,32 @@ and I have regular automated builds to produce fresh Vagrant baseboxes with Pack
 
 <p>Kludgy, complicated and slow, but it works reliably.
 The script I used to detect the hotfix is </p>
-<div class="highlight"><pre><code class="language-" data-lang="">#it looks for HOTFIX_ID (KBxxxxx) in the list of installed hotfixes 
-#and goes in a loop until it shows up or the counter runs out
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="c1">#it looks for HOTFIX_ID (KBxxxxx) in the list of installed hotfixes </span>
+<span class="c1">#and goes in a loop until it shows up or the counter runs out</span>
 
-$id=$env:HOTFIX_ID
-$max_tries=[Int32]$env:HOTFIX_DETECT_TRIES
-if ($max_tries -eq 0){
-  $max_tries=90
-}
-$counter=0
-while($counter -lt $max_tries) {
-  if (get-hotfix -id $id -EA SilentlyContinue){
-    break
-  }
-  else{
-    $counter+=1
-    Start-Sleep 5
-  }
-} 
-if ($counter -eq $max_tries)
-{
-    echo "Timed out waiting for $id - tried $counter times"
-    exit 1
-}
+<span class="nv">$id</span><span class="o">=</span><span class="nv">$env</span>:HOTFIX_ID
+<span class="nv">$max_tries</span><span class="o">=[</span>Int32]<span class="nv">$env</span>:HOTFIX_DETECT_TRIES
+<span class="k">if</span> <span class="o">(</span><span class="nv">$max_tries</span> -eq 0<span class="o">){</span>
+  <span class="nv">$max_tries</span><span class="o">=</span>90
+<span class="o">}</span>
+<span class="nv">$counter</span><span class="o">=</span>0
+<span class="k">while</span><span class="o">(</span><span class="nv">$counter</span> -lt <span class="nv">$max_tries</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(</span>get-hotfix -id <span class="nv">$id</span> -EA SilentlyContinue<span class="o">){</span>
+    <span class="k">break</span>
+  <span class="o">}</span>
+  <span class="k">else</span><span class="o">{</span>
+    <span class="nv">$counter</span>+<span class="o">=</span>1
+    <span class="nb">Start-Sleep </span>5
+  <span class="o">}</span>
+<span class="o">}</span> 
+<span class="k">if</span> <span class="o">(</span><span class="nv">$counter</span> -eq <span class="nv">$max_tries</span><span class="o">)</span>
+<span class="o">{</span>
+    <span class="nb">echo</span> <span class="s2">"Timed out waiting for </span><span class="nv">$id</span><span class="s2"> - tried </span><span class="nv">$counter</span><span class="s2"> times"</span>
+    <span class="k">exit </span>1
+<span class="o">}</span>
 </code></pre></div>
 <p>and this is how it&#39;s called from Packer:</p>
-<div class="highlight"><pre><code class="language-" data-lang=""><span class="p">{</span><span class="w">
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
   </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"powershell"</span><span class="p">,</span><span class="w">
   </span><span class="nt">"environment_vars"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"HOTFIX_ID=KB3125574"</span><span class="p">,</span><span class="s2">"HOTFIX_DETECT_TRIES=240"</span><span class="p">],</span><span class="w">
   </span><span class="nt">"script"</span><span class="p">:</span><span class="w"> </span><span class="s2">"script/detect-hotfix-install.ps1"</span><span class="w">
@@ -166,54 +166,54 @@ if ($counter -eq $max_tries)
 <p>So I can&#39;t rely on a recently patched version or a freshly produced basebox all the time.</p>
 
 <p>Which means I needed to re-implement the above as a Chef recipe:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">msu_installers=node.fetch("msu_installers",{})
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">msu_installers</span><span class="o">=</span><span class="n">node</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="s2">"msu_installers"</span><span class="p">,{})</span>
 
-unless msu_installers.empty?
-  reboot 'Restart Computer' do
-    action :nothing
-  end
-  msu_sequence=node.fetch("msu_sequence",[])
+<span class="k">unless</span> <span class="n">msu_installers</span><span class="p">.</span><span class="nf">empty?</span>
+  <span class="n">reboot</span> <span class="s1">'Restart Computer'</span> <span class="k">do</span>
+    <span class="n">action</span> <span class="ss">:nothing</span>
+  <span class="k">end</span>
+  <span class="n">msu_sequence</span><span class="o">=</span><span class="n">node</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="s2">"msu_sequence"</span><span class="p">,[])</span>
 
-  msu_sequence.each do |msu_name|
-  pkg=msu_installers[msu_name]
-  if pkg["source"]
-    windev_cache_package pkg["save_as"] do
-      source pkg["source"]
-      depot node['software_depot']
-    end
-    installer= File.expand_path(File.join(node["software_depot"],pkg['save_as']))
-    ruby_block "installer_exists" do
-      block do
-        raise "Installer #{installer} not found" unless File.exist?(installer)
-      end
-      action :run
-    end
-    powershell_script "Install #{pkg["name"]}" do
-      code "wusa.exe #{pkg["save_as"]} /quite /norestart"
-      action :run
-      not_if "get-hotfix -id #{File.expand_path(installer)} -EA SilentlyContinue"
-      notifies :reboot_now, 'reboot[Restart Computer]', :immediately
-    end
-  end
-end
+  <span class="n">msu_sequence</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">msu_name</span><span class="o">|</span>
+  <span class="n">pkg</span><span class="o">=</span><span class="n">msu_installers</span><span class="p">[</span><span class="n">msu_name</span><span class="p">]</span>
+  <span class="k">if</span> <span class="n">pkg</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span>
+    <span class="n">windev_cache_package</span> <span class="n">pkg</span><span class="p">[</span><span class="s2">"save_as"</span><span class="p">]</span> <span class="k">do</span>
+      <span class="n">source</span> <span class="n">pkg</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span>
+      <span class="n">depot</span> <span class="n">node</span><span class="p">[</span><span class="s1">'software_depot'</span><span class="p">]</span>
+    <span class="k">end</span>
+    <span class="n">installer</span><span class="o">=</span> <span class="no">File</span><span class="p">.</span><span class="nf">expand_path</span><span class="p">(</span><span class="no">File</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">"software_depot"</span><span class="p">],</span><span class="n">pkg</span><span class="p">[</span><span class="s1">'save_as'</span><span class="p">]))</span>
+    <span class="n">ruby_block</span> <span class="s2">"installer_exists"</span> <span class="k">do</span>
+      <span class="n">block</span> <span class="k">do</span>
+        <span class="k">raise</span> <span class="s2">"Installer </span><span class="si">#{</span><span class="n">installer</span><span class="si">}</span><span class="s2"> not found"</span> <span class="k">unless</span> <span class="no">File</span><span class="p">.</span><span class="nf">exist?</span><span class="p">(</span><span class="n">installer</span><span class="p">)</span>
+      <span class="k">end</span>
+      <span class="n">action</span> <span class="ss">:run</span>
+    <span class="k">end</span>
+    <span class="n">powershell_script</span> <span class="s2">"Install </span><span class="si">#{</span><span class="n">pkg</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span> <span class="k">do</span>
+      <span class="n">code</span> <span class="s2">"wusa.exe </span><span class="si">#{</span><span class="n">pkg</span><span class="p">[</span><span class="s2">"save_as"</span><span class="p">]</span><span class="si">}</span><span class="s2"> /quite /norestart"</span>
+      <span class="n">action</span> <span class="ss">:run</span>
+      <span class="n">not_if</span> <span class="s2">"get-hotfix -id </span><span class="si">#{</span><span class="no">File</span><span class="p">.</span><span class="nf">expand_path</span><span class="p">(</span><span class="n">installer</span><span class="p">)</span><span class="si">}</span><span class="s2"> -EA SilentlyContinue"</span>
+      <span class="n">notifies</span> <span class="ss">:reboot_now</span><span class="p">,</span> <span class="s1">'reboot[Restart Computer]'</span><span class="p">,</span> <span class="ss">:immediately</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 </code></pre></div>
 <p>The JSON with the attributes looks like:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">msu_installers":{ 
-  "KB3020369":{"source":"URL",
-    "save_as":"Windows6.1-KB3020369-x64.msu",
-    "name":"KB3020369"
-    },
-    "KB3125574":{"source":"URL",
-    "save_as":"windows6.1-kb3125574-foo.msu",
-    "name":"KB3125574"
-    },
-    "KB3172605":{"source":"URL",
-    "save_as":"Windows6.1-KB3172605-x64.msu",
-    "name":"KB3172605"
-    }
-},
-"msu_sequence":["KB3020369","KB3125574","KB3172605"]
-</code></pre></div>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"msu_installers"</span><span class="err">:</span><span class="p">{</span><span class="w"> 
+  </span><span class="nt">"KB3020369"</span><span class="p">:{</span><span class="nt">"source"</span><span class="p">:</span><span class="s2">"URL"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"save_as"</span><span class="p">:</span><span class="s2">"Windows6.1-KB3020369-x64.msu"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="s2">"KB3020369"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"KB3125574"</span><span class="p">:{</span><span class="nt">"source"</span><span class="p">:</span><span class="s2">"URL"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"save_as"</span><span class="p">:</span><span class="s2">"windows6.1-kb3125574-foo.msu"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="s2">"KB3125574"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"KB3172605"</span><span class="p">:{</span><span class="nt">"source"</span><span class="p">:</span><span class="s2">"URL"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"save_as"</span><span class="p">:</span><span class="s2">"Windows6.1-KB3172605-x64.msu"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="s2">"KB3172605"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="err">,</span><span class="w">
+</span><span class="s2">"msu_sequence"</span><span class="err">:</span><span class="p">[</span><span class="s2">"KB3020369"</span><span class="p">,</span><span class="s2">"KB3125574"</span><span class="p">,</span><span class="s2">"KB3172605"</span><span class="p">]</span><span class="w">
+</span></code></pre></div>
 <p>To use this you will need the <a href="https://supermarket.chef.io/cookbooks/windev#readme">windev cookbook</a> and you have to also use the auto_chef recipe to handle reboots (if you use Chef without a Chef Server, like I do).</p>
 
   <p>
