@@ -7,6 +7,43 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>There are no rules</title>
+        <description>&lt;p&gt;A few years ago (at BaRuCo 2013) &lt;a href=&quot;https://twitter.com/sandimetz&quot;&gt;Sandi Metz&lt;/a&gt; held a talk about &lt;a href=&quot;https://www.youtube.com/watch?v=npOGOmkxuio&quot;&gt;rules&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Afterwards at the party, a conversation ensued where I remember her mention that she put together the rules after years of having clients insisting on them. If I remember correctly she mentioned how she didn&amp;#39;t like formulating rules at all but everyone kept asking for a list until she gave up.&lt;/p&gt;
+
+&lt;p&gt;At the time I accepted it as confirmation for my own bias against rules. But I gave up adding caveats and ifs and only-whens to the list of guidelines not long after that.&lt;/p&gt;
+
+&lt;p&gt;For years, when presented with rules, alarms would go off in my head and the inner scream of &amp;quot;HOW DARE YOU! YOU DON&amp;#39;T GET TO TELL ME HOW TO DO MY JOB!!!&amp;quot; (three exclamation marks at least) would drown all other thoughts.&lt;/p&gt;
+
+&lt;p&gt;A list of rules to follow blindly reeks of oversimplification. &lt;em&gt;I still believe that&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;The older I get the more I like &amp;quot;rules&amp;quot; - quotes here because I break rules so often as to render the term non-sensical:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;They are a powerful communication medium, catch-phrases that stick to the mind&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;The conundrum is that there is no set of rules to apply permanently.&lt;/p&gt;
+
+&lt;p&gt;The perennial software developer answer to any question is &amp;quot;it depends&amp;quot; and that is probably the biggest truth in software development today.&lt;/p&gt;
+
+&lt;p&gt;It depends on your team, the problem, the tools, the organizational structure and a multitude of other factors.&lt;/p&gt;
+
+&lt;h2&gt;There are no rules&lt;/h2&gt;
+
+&lt;p&gt;...but until we learn when to break which one without impacting our goals, a small set of simple to follow guidelines agreed by the team is invaluable as a communication baseline, a teaching medium and an onboarding resource.&lt;/p&gt;
+
+&lt;h2&gt;There is a code of conduct&lt;/h2&gt;
+
+&lt;p&gt;If you don&amp;#39;t call them rules, but collaboration guidelines instead, then you are obliged as a well-behaved team member to inform your peers when the guidelines are not followed and to justify your choice.&lt;/p&gt;
+
+&lt;p&gt;Sandi&amp;#39;s &amp;quot;you can break the rule if your pair OKs it&amp;quot; is a nice guideline on how to do it.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 04 Jan 2017 16:19:44 +0100</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2017/01/04/there-are-no-rules</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/01/04/there-are-no-rules</guid>
+      </item>
+    
+      <item>
         <title>Windows 7 Update Hell</title>
         <description>&lt;h2&gt;Death by a thousand updates&lt;/h2&gt;
 
@@ -597,143 +634,6 @@ When a test assertion fails and when an exception occurs.&lt;/p&gt;
         <pubDate>Thu, 17 Jul 2014 16:00:00 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2014/07/17/vars-build-rules</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2014/07/17/vars-build-rules</guid>
-      </item>
-    
-      <item>
-        <title>Gaudi versus the dreaded IDE</title>
-        <description>&lt;p&gt;I will come out and say it: I dislike IDEs. From Visual Studio to Eclipse by way of IntelliJ and Netbeans I find them all slow, unwieldy, complicated and buggy. They hide too much of the workings of the toolchains, spread configruation over a zillion dialogs, collaborate with source control like a stray dog with an alley cat and litter the workspace with all kinds of useless files.&lt;/p&gt;
-
-&lt;p&gt;Way back in `07 Jeff Atwood penned &amp;quot;&lt;a href=&quot;http://blog.codinghorror.com/the-f5-key-is-not-a-build-process/&quot;&gt;The F5 Key Is Not A Build Process&lt;/a&gt;&amp;quot;. While I could add about 4 pages of things you can do with a &amp;quot;build script&amp;quot; outside of an IDE it wouldn&amp;#39;t add anything to the point so go read it. &lt;/p&gt;
-
-&lt;p&gt;Then go print &amp;quot;The F5 Key Is Not A Build Process&amp;quot; on a banner, hung it in the office and live by it.&lt;/p&gt;
-
-&lt;h2&gt;But...&lt;/h2&gt;
-
-&lt;p&gt;There is one and only one unavoidable reason to use a fully fledged IDE and that is &lt;em&gt;The Debugger&lt;/em&gt;! 
-Every other reason can be done away with, provided there is sufficient editor and shell foo.&lt;/p&gt;
-
-&lt;p&gt;But IDE projects have big disadvantages when following proper software development practices (e.g. at least continuous integration with automated tests). Generally if you want to develop in an IDE and have a CI system you end up maintaining both separately&lt;sup&gt;1&lt;/sup&gt;. &lt;/p&gt;
-
-&lt;p&gt;We define as maintenance the tasks of adding/removing files, defining dependencies between code components, compiler settings etc.&lt;/p&gt;
-
-&lt;p&gt;Errors in the IDE projects are also very hard to detect automatically: The build server will not use the IDE so the  change is going to propagate to the whole team. There is nothing that drives developers to frustration faster than not being able to compile locally when the build server says everything is fine.&lt;/p&gt;
-
-&lt;p&gt;Solution: make the command line build system the master and provide IDE project generation facilities. &lt;/p&gt;
-
-&lt;p&gt;When a developer wants to use the IDE, she generates the project from a freshly updated workspace with the correct settings and continues working.&lt;/p&gt;
-
-&lt;p&gt;&amp;quot;But, there&amp;#39;s so many IDEs out there and they all use different file formats!&amp;quot; you will say and you will be absolutely correct. &lt;/p&gt;
-
-&lt;p&gt;The best case is when the IDE allows you to use a custom build system. This removes Visual Studio and a couple of more obscure ones from the list of frendlies, but VS has a very good documented XML-based format so there are ways around it.&lt;/p&gt;
-
-&lt;p&gt;Still the following example can be adapted to work in every case.&lt;/p&gt;
-
-&lt;h2&gt;Gaudi &amp;amp; QtCreator Example&lt;/h2&gt;
-
-&lt;p&gt;Let&amp;#39;s say we have a project that uses &lt;a href=&quot;http://github.com/damphyr/gaudi&quot;&gt;Gaudi&lt;/a&gt; as it&amp;#39;s build system. And let&amp;#39;s say the team insisted on using &lt;a href=&quot;https://qt-project.org/doc/qtcreator-2.5/index.html&quot;&gt;QtCreator&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;QCreator uses two separate files: One file (prj.pro) lists the files, resources, paths etc. while the other (prj.user.pro) contains the IDE settings (layout, colors and more importantly the build &amp;amp; run settings). &lt;/p&gt;
-
-&lt;p&gt;Instead of maintaining the QtCreator project files separately we create a template from a functioning project file. In other words use the GUI once to configure everthing just so. &lt;/p&gt;
-
-&lt;p&gt;For convenience we use the ERB format for the templates&lt;sup&gt;2&lt;/sup&gt;&lt;/p&gt;
-
-&lt;p&gt;The prj.pro.template is very simple:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;TEMPLATE = app
-CONFIG += console
-CONFIG -= app_bundle
-CONFIG -= qt
-
-SOURCES += \
-    &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%=source_list.join(&quot; \\\n    &quot;)%&amp;gt;
-
-HEADERS += \
-    &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%=header_list.join(&quot; \\\n    &quot;)%&amp;gt;
-
-OTHER_FILES += \
-    &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%=other_list.join(&quot; \\\n    &quot;)%&amp;gt;
-
-INCLUDEPATH += \
-    &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%=include_path_list.join(&quot; \\\n    &quot;)%&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Here we show only the relevant part from the prj.user.pro.template&lt;sup&gt;3&lt;/sup&gt; with the custom build system settings&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;valuemap&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;QVariantMap&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;....Target.BuildConfiguration.0&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;QString&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;....BuildDirectory&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%=build_directory%&amp;gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;valuemap&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;QVariantMap&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ProjectExplorer.BuildConfiguration.BuildStepList.0&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;valuemap&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;QVariantMap&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ProjectExplorer.BuildStepList.Step.0&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;bool&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ProjectExplorer.BuildStep.Enabled&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;true&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;QString&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;...Arguments&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;GAUDI_CONFIG=&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%=system_config_file%&amp;gt; 
-  build:deployment DEPLOYMENT=&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%=deployment_name%&amp;gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;QString&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;...Command&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;rake&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;QString&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;...WorkingDirectory&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;%=base%&amp;gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;QString&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;...DefaultDisplayName&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Rake Build&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;QString&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;...DisplayName&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;QString&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;key=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;...Id&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;ProjectExplorer.ProcessStep&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/valuemap&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;We now have our templates. The parameter names are fully arbitrary at the moment, they serve only as descriptive names.&lt;/p&gt;
-
-&lt;p&gt;We are faced with the task of collecting the file names, setting paths correctly etc. This is where &lt;a href=&quot;http://github.com/damphyr/gaudi&quot;&gt;Gaudi&lt;/a&gt; comes in.
-The Rake task code that generates the prj.pro file looks like the following:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;task&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:qtc&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;#Quick and dirty get the first GCC program available to get the example running&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;program&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Gaudi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Deployment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Dummy&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;programs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;gcc&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;#Use the configuration methods to place artifacts within the workspace&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;outfile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vg&quot;&gt;$configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;qtcreator&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;program&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;program&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;.pro&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;template&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vg&quot;&gt;$configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'tools/templates/qtcreator.pro.template'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;#collect all source and header files&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;source_list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;program&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;sources&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;header_list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;program&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;headers&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;#A Gaudi::Program depends on Gaudi::Components &lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;#which are groupings of source files.&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;#This gets us all sources and headers&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;program&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;dependencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dep&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;source_list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;sources&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;header_list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;headers&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;#one of the ways to get the include paths&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;include_path_list&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;header_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;header&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;dirname&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;header&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;uniq&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;#The Hash with the template parameters&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;source_list&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;source_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;uniq&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;header_list&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;header_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;uniq&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;include_path_list&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;include_path_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;other_list&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;program&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;config_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;uniq&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;write_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;outfile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;from_template&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;template&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;What we get from Gaudi:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The configuration defining the workspace (output directory, base directory etc.)&lt;/li&gt;
-&lt;li&gt;A few classes (Deployment, Program, Component) linking sources to binary artifacts and encapsulating the dependencies between code constructs&lt;/li&gt;
-&lt;li&gt;Helpers for template handling (from&lt;em&gt;template, write&lt;/em&gt;file etc.)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;Creating IDE project files while maintaining a fully command line enabled build system is not very difficult. The combination of one of the myriad template engines with a few lines of scripting to collect the necessary information gets you quickly to a very usable solution. The bulk of the time spent is dedicated to deciphering the IDE file format and creating the template.&lt;/p&gt;
-
-&lt;h2&gt;You never walk alone&lt;/h2&gt;
-
-&lt;p&gt;QtCreator expertise provided and code polished by &lt;a href=&quot;http://github.com/jahnf&quot;&gt;jahnf&lt;/a&gt; who suffered through all my explanations of Gaudi interna and managed to write tasks at the end.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; It can be done but driving the process of development from the IDE throws up all sorts of hurdles in a proper CI workflow.&lt;/p&gt;
-
-&lt;p&gt;&lt;sup&gt;2&lt;/sup&gt; Gaudi is built on Rake, which is Ruby, which offers ERB in the standard library&lt;/p&gt;
-
-&lt;p&gt;&lt;sup&gt;3&lt;/sup&gt; Because XML! &lt;/p&gt;
-
-&lt;p&gt;&lt;sup&gt;4&lt;/sup&gt; Once set up and configured properly&lt;/p&gt;
-</description>
-        <pubDate>Thu, 03 Jul 2014 16:00:00 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2014/07/03/gaudi-versus-the-dreaded-ide</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2014/07/03/gaudi-versus-the-dreaded-ide</guid>
       </item>
     
   </channel>
