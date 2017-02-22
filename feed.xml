@@ -7,6 +7,63 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>ForgetMeNot: Jenkins test result aggregation in the Pipeline DSL</title>
+        <description>&lt;p&gt;Took me awhile to figure this out. One more thing for the list of things that Jenkins makes unnecessarily complex.&lt;/p&gt;
+
+&lt;h2&gt;The Problem&lt;/h2&gt;
+
+&lt;p&gt;We have a pipeline job that starts a handful of other jobs - call them subjobs -  and we want to aggregate the test results of the subjobs in our pipeline.&lt;/p&gt;
+
+&lt;h2&gt;The required list of extra plugins you need&lt;/h2&gt;
+
+&lt;p&gt;To get this done I had to add the &lt;a href=&quot;https://wiki.jenkins-ci.org/display/JENKINS/Copy+Artifact+Plugin&quot;&gt;copyartifact plugin&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;You will also need one of JUnit/NUnit/xUnit depending on what your reports look like.&lt;/p&gt;
+
+&lt;h2&gt;How to do it&lt;/h2&gt;
+
+&lt;p&gt;Use archiveArtifact in the subjob to archive the test results. Somehting like &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;archiveArtifacts artifacts: 'results\\*.xml', fingerprint: true
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Then in the job you do the aggregation make sure to keep the references to the subjobs. &lt;/p&gt;
+
+&lt;p&gt;From the reference we then get the 
+build number for each of the test jobs which we need in order to find the correct artifacts to copy.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;def test_jobs=[:]
+def subjobs=[:] 
+for(int i = 0; i &amp;lt; test_suites.size(); i++){ 
+  def instanceNumber=i  
+  subjobs[&quot;${env.BUILD_DISPLAY_NAME}-${instanceNumber}&quot;]={
+    tj=build job: 'Test'
+    test_jobs&amp;lt;&amp;lt;tj.getNumber()
+  }
+}
+parallel subjobs 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Another tricky thing that has to do with how Groovy scopes things: &lt;/p&gt;
+
+&lt;p&gt;If &lt;code&gt;i&lt;/code&gt; is not assigned to a variable within the closure then you will only get one job in the subjobs map.&lt;/p&gt;
+
+&lt;p&gt;Then, once the subjobs are finished we pick a node to have a workspace and grab the test reports.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;node(){
+  for(int i = 0; i &amp;lt; test_jobs.size(); i++){
+    selector = [$class: 'SpecificBuildSelector', 
+                buildNumber: &quot;${test_jobs[i]}&quot;]
+    step ([$class: 'CopyArtifact',
+          projectName: 'Test',
+          selector: selector])
+  }
+  //Your test results plugin here
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;That selector trick I found in the &lt;a href=&quot;https://github.com/jenkinsci/blueocean-acceptance-test/blob/master/Jenkinsfile#L103&quot;&gt;blueocean sources&lt;/a&gt; (don&amp;#39;t even ask me how I arrived there)&lt;/p&gt;
+</description>
+        <pubDate>Wed, 22 Feb 2017 16:19:44 +0100</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2017/02/22/forgetmenot-jenkins-aggregation</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/02/22/forgetmenot-jenkins-aggregation</guid>
+      </item>
+    
+      <item>
         <title>There are no rules</title>
         <description>&lt;p&gt;A few years ago (at BaRuCo 2013) &lt;a href=&quot;https://twitter.com/sandimetz&quot;&gt;Sandi Metz&lt;/a&gt; held a talk about &lt;a href=&quot;https://www.youtube.com/watch?v=npOGOmkxuio&quot;&gt;rules&lt;/a&gt;.&lt;/p&gt;
 
@@ -549,91 +606,6 @@ When a test assertion fails and when an exception occurs.&lt;/p&gt;
         <pubDate>Wed, 30 Jul 2014 00:00:00 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2014/07/30/forgetmenot-sublimetext-shell-with-errors-on-windows</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2014/07/30/forgetmenot-sublimetext-shell-with-errors-on-windows</guid>
-      </item>
-    
-      <item>
-        <title>VAR's Build Rules</title>
-        <description>&lt;p&gt;This is a post that came out of a discussion thread at work &lt;sup&gt;1&lt;/sup&gt;. Originally it was a simple question on alternatives to TFS as a build system. But you know how it goes, things evolve into questions you can only answer with 42.&lt;/p&gt;
-
-&lt;p&gt;During the conversation the rules described in this post came out of the woodwork.&lt;/p&gt;
-
-&lt;h2&gt;Distinctions, distinctions&lt;/h2&gt;
-
-&lt;p&gt;Before we get into the rules we need to distinguish between a build system and a build management system.&lt;/p&gt;
-
-&lt;p&gt;A build system performs transformations in sequence according to a predetermined dependency chain to create artifacts. A subset of this is the compilation of sources to binaries.&lt;/p&gt;
-
-&lt;p&gt;A build management system coordinates build system(s).&lt;/p&gt;
-
-&lt;p&gt;A build system is highly project specific, it is affected by toolchains, project conventions and generally can only run on a specially configured host (i.e. development environment).&lt;/p&gt;
-
-&lt;p&gt;A build management system can run everywhere so long as it can start the build system on the appropriate host. The specificity of a build management system is limited to the number of version control systems it supports. Although theoretically it doesn&amp;#39;t have to provide version control support it is a given that such support will be provided in the minimum feature set.&lt;/p&gt;
-
-&lt;p&gt;Jenkins, TeamCity, TravisCI, BuildBot are build management systems.&lt;/p&gt;
-
-&lt;p&gt;TFS tries to do both at once, mixes them up, confuses the terminology and generally does a bang up job of completely screwing things up.&lt;/p&gt;
-
-&lt;h2&gt;VAR&amp;#39;s Build Rules&lt;/h2&gt;
-
-&lt;p&gt;(var is my username at work)&lt;/p&gt;
-
-&lt;h3&gt;1. I am the build server&lt;/h3&gt;
-
-&lt;p&gt;Rule #1 requires that the build server follows the exact same steps as any other developer. &lt;/p&gt;
-
-&lt;p&gt;Expressed the other way around: Every developer has to be able to recreate locally the complete build process without deviations given the development environment and the correct version of the source tree.&lt;/p&gt;
-
-&lt;h3&gt;2. When the build server says no, it means no!&lt;/h3&gt;
-
-&lt;p&gt;Rule #2 says that if a build server says a build is broken, then the build is broken. Drop everything and read the logs. &lt;/p&gt;
-
-&lt;p&gt;There is no &amp;quot;it works for me&amp;quot;, your build server is Judge Dredd: judge, juror and executioner.&lt;/p&gt;
-
-&lt;p&gt;You can only adhere to this rule if you followed Rule #1&lt;/p&gt;
-
-&lt;h3&gt;3. IDEs are the enemy AKA F5 is not a build process&lt;/h3&gt;
-
-&lt;p&gt;Which means that if you drive your development process from an IDE there is no way you can adhere to the Build Rules. &lt;/p&gt;
-
-&lt;p&gt;This rule has major complications on the development environment, ties directly into the subject of allowing your developers to use whatever tools they feel comfortable with and adherence to it is actively sabotaged by Visual Studio.&lt;/p&gt;
-
-&lt;p&gt;My current approach to this problem is laid out in &lt;a href=&quot;/software/2014/07/03/gaudi-versus-the-dreaded-ide&quot;&gt;Gaudi vs. the dreaded IDE&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2&gt;Adhering to the rules&lt;/h2&gt;
-
-&lt;p&gt;To create a system that adheres to rules #1 &amp;amp; #2 you have to think like a Lego builder: Lots of small, specialized tasks that do one thing can be used to compose more complex processes etc.&lt;/p&gt;
-
-&lt;p&gt;As an example a &lt;em&gt;release&lt;/em&gt; task instead of doing everything in one big implementation will depend on the build tasks for each of the libraries and applications and the tasks that run the tests etc. Using the syntax of rake in a contrived example one would do&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;task&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:release&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:&quot;test:all&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;task&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:&quot;test:all&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:&quot;test:foo&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:&quot;test:bar&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;task&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:&quot;test:foo&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:&quot;build:foo&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now a developer will probably use the component tasks a lot more than the composite :release task and we will certainly have a build job on the server that only does releases.&lt;/p&gt;
-
-&lt;p&gt;This is a necessity since the system needs to satisfy different usage  patterns: the build server uses composite tasks that implement complete workflows while the developer usex component tasks with surgical precision in the interest of speed and effectiveness.&lt;/p&gt;
-
-&lt;p&gt;From the perspective of the build system engineer this approach is self-evident for the same reason it&amp;#39;s evident when building applications: Small chunks of code are easier to manage, test, reuse and understand.&lt;/p&gt;
-
-&lt;p&gt;It&amp;#39;s also one of the reasons why make, ant and the msbuild XML syntax suck big time as general task description languages but that is a subject that requires a whole other post.&lt;/p&gt;
-
-&lt;p&gt;All of this segways nicely into the final rule:&lt;/p&gt;
-
-&lt;h3&gt;4. Your (build) infrastructure is a software development project&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&quot;/software/2011/02/04/managing-your-development-environment&quot;&gt;This post has already been written&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Rule #4 means you need tests and CI and a plan. To make matters worse your users are some of the most obnoxious, impatient and down right pedantic users on the face of the planet. They want everything perfect, robust, simple and fast and they want it yesterday. You better be dogfooding by this point...&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; I work at &lt;a href=&quot;http://www.zuehlke.com&quot;&gt;Zühlke&lt;/a&gt; where I have the luck to interact with brilliant engineers. Not just software engineers either.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 17 Jul 2014 16:00:00 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2014/07/17/vars-build-rules</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2014/07/17/vars-build-rules</guid>
       </item>
     
   </channel>
