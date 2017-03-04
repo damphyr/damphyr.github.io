@@ -123,7 +123,7 @@
 
 <p>We check to see if a node is offline and if that was deliberate, we also check if the disk on the node is running full and then if the node is not busy we switch the context to within the node and start checking things.</p>
 
-<p>That last stage is the tricky part because it needs to really, really fast, otherwise we run the risk of blocking executors while the team is working.</p>
+<p>That last stage is the tricky part because it needs to be really, really fast, otherwise we run the risk of blocking executors while the team is working.</p>
 
 <p>The pipeline looks like this:</p>
 <div class="highlight"><pre><code class="language-groovy" data-lang="groovy"><span class="n">env</span><span class="o">.</span><span class="na">STATION</span><span class="o">=</span><span class="n">STATION</span>
