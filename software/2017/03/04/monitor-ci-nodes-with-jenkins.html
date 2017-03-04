@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>Monitor CI nodes with Jenkins</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>Monitor CI nodes with Jenkins</h1>
+<p class="meta">04 Mar 2017</p>
+
+<div class="post">
+<p>My team and I have had a dreadful couple of weeks.</p>
+
+<p>Network issues, license issues, Windows issues, compiler issues, flip-floping test results etc., all of them piled one on top of the other and driving us nuts. With some of these issues we have to live with and compromise (I have a rant, a crazed, raving mad rant about companies forcing you to generate development licenses <em>every week</em>).</p>
+
+<p>We also scaled out our CI infrastructure. Do not imagine anything huge, we went from 4 nodes running on 6-year old hardware to 16 nodes running on modern i5s, but that still means that we now have to keep an eye on 16 nodes instead of 4.</p>
+
+<p>The work never stops and we needed a health monitor for the nodes something quick, so we cobbled something together using the Jenkins Job &amp; Pipeline DSLs.</p>
+
+<h2>What you need</h2>
+
+<p>Jenkins 2.x with the build-monitor-plugin plugin.</p>
+
+<h2>All of the nodes.</h2>
+
+<p>We have fixed CI nodes - none of that dynamic mumbo-jumbo with Docker or AWS. The reason is simple: </p>
+
+<p>We need Windows and we build embedded software and test on target.</p>
+
+<p>We just ask Jenkins to tell us how many nodes are registered and then create one job for each node, naming the job after the node:</p>
+<div class="highlight"><pre><code class="language-groovy" data-lang="groovy"><span class="kt">def</span> <span class="n">content</span> <span class="o">=</span> <span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="err">'</span><span class="nl">http:</span><span class="c1">//localhost:8080/computer/api/xml?</span>
+<span class="n">wrapper</span><span class="o">=</span><span class="n">slaves</span><span class="o">&amp;</span><span class="n">xpath</span><span class="o">=</span><span class="c1">//computer/displayName').getText()</span>
+<span class="kt">def</span> <span class="n">build_nodes</span> <span class="o">=</span> <span class="k">new</span> <span class="n">groovy</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">XmlSlurper</span><span class="o">().</span><span class="na">parseText</span><span class="o">(</span><span class="n">content</span><span class="o">)</span>
+
+<span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">build_nodes</span><span class="o">.</span><span class="na">displayName</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++){</span> 
+  <span class="kt">def</span> <span class="n">index</span><span class="o">=</span><span class="n">i</span>
+  <span class="kt">def</span> <span class="n">nodeName</span><span class="o">=</span><span class="n">build_nodes</span><span class="o">.</span><span class="na">displayName</span><span class="o">[</span><span class="n">index</span><span class="o">].</span><span class="na">text</span><span class="o">()</span>
+    <span class="c1">//the job definition - skipped for clarity, see below</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>I tried to use the Jenkins API (the hudson.model.* and jenkins.model.*) but quickly gave up because of major Groovy-Java dissonance and totally uninformative messages.</p>
+
+<p>So the code above queries the HTTP API - this would be more complicated if we had authentication turned on, but we don&#39;t ;).</p>
+
+<p>The job definition is simple: Run every 3 minutes and take the node name as a parameter. It is also totally generic, pulling the pipeline definition off our repo.</p>
+<div class="highlight"><pre><code class="language-groovy" data-lang="groovy"><span class="n">pipelineJob</span><span class="o">(</span><span class="n">nodeName</span><span class="o">)</span>
+<span class="o">{</span>
+  <span class="n">description</span> <span class="err">"</span><span class="n">Monitors</span> <span class="n">$</span><span class="o">{</span><span class="n">nodeName</span><span class="o">}.</span>
+  <span class="n">Failure</span> <span class="n">signifies</span> <span class="n">the</span> <span class="n">node</span> <span class="n">is</span> <span class="n">offline</span><span class="o">,</span> <span class="n">abort</span> <span class="n">status</span> <span class="n">that</span> <span class="n">it</span> 
+  <span class="n">has</span> <span class="n">been</span> <span class="n">taken</span> <span class="n">offline</span> <span class="n">and</span> <span class="n">an</span> <span class="n">unstable</span> <span class="n">status</span> <span class="n">means</span> <span class="n">maintenance</span> 
+  <span class="n">is</span> <span class="n">required</span> <span class="o">-</span> <span class="n">with</span> <span class="n">details</span> <span class="k">in</span> <span class="n">the</span> <span class="n">log</span><span class="o">.</span><span class="err">"</span>
+  <span class="n">logRotator</span> <span class="o">{</span>
+    <span class="n">daysToKeep</span><span class="o">(</span><span class="mi">7</span><span class="o">)</span>
+  <span class="o">}</span>
+  <span class="n">triggers</span> <span class="o">{</span>
+      <span class="n">cron</span><span class="o">(</span><span class="s1">'*/3 * * * *'</span><span class="o">)</span>
+  <span class="o">}</span>
+  <span class="n">parameters</span> <span class="o">{</span>
+    <span class="n">stringParam</span><span class="o">(</span><span class="s1">'STATION'</span><span class="o">,</span><span class="n">nodeName</span><span class="o">,</span><span class="s1">'The station to monitor'</span><span class="o">)</span>
+  <span class="o">}</span>
+  <span class="n">definition</span> <span class="o">{</span>
+    <span class="n">cps</span> <span class="o">{</span>
+      <span class="n">script</span><span class="o">(</span><span class="n">readFileFromWorkspace</span><span class="o">(</span><span class="s1">'jenkins/pipelines/monitor.groovy'</span><span class="o">))</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div>
+<p>The only reason we instantiated one job for every node is for display purposes, which brings us to the view definition</p>
+<div class="highlight"><pre><code class="language-groovy" data-lang="groovy"><span class="n">buildMonitorView</span><span class="o">(</span><span class="s1">'CI Health'</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">description</span><span class="o">(</span><span class="s1">'CI infrastructure status'</span><span class="o">)</span>
+  <span class="kt">def</span> <span class="n">content</span> <span class="o">=</span> <span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="err">'</span><span class="nl">http:</span><span class="c1">//localhost:8080/computer/api/xml?</span>
+  <span class="n">wrapper</span><span class="o">=</span><span class="n">slaves</span><span class="o">&amp;</span><span class="n">xpath</span><span class="o">=</span><span class="c1">//computer/displayName').getText()</span>
+  <span class="kt">def</span> <span class="n">build_nodes</span> <span class="o">=</span> <span class="k">new</span> <span class="n">groovy</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">XmlSlurper</span><span class="o">().</span><span class="na">parseText</span><span class="o">(</span><span class="n">content</span><span class="o">)</span>
+  <span class="n">jobs</span> <span class="o">{</span>
+    <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">build_nodes</span><span class="o">.</span><span class="na">displayName</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++){</span>
+      <span class="kt">def</span> <span class="n">index</span><span class="o">=</span><span class="n">i</span>
+      <span class="kt">def</span> <span class="n">nodeName</span><span class="o">=</span><span class="n">build_nodes</span><span class="o">.</span><span class="na">displayName</span><span class="o">[</span><span class="n">index</span><span class="o">].</span><span class="na">text</span><span class="o">()</span>
+      <span class="n">name</span><span class="o">(</span><span class="n">nodeName</span><span class="o">)</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>The code above gives us a nice monitor view:</p>
+
+<p><img src="/images/ci_health.png" alt="CI Health Monitor"></p>
+
+<h2>The interesting parts</h2>
+
+<p>We ended up doing quite a few things in this job.</p>
+
+<p>We check to see if a node is offline and if that was deliberate, we also check if the disk on the node is running full and then if the node is not busy we switch the context to within the node and start checking things.</p>
+
+<p>That last stage is the tricky part because it needs to really, really fast, otherwise we run the risk of blocking executors while the team is working.</p>
+
+<p>The pipeline looks like this:</p>
+<div class="highlight"><pre><code class="language-groovy" data-lang="groovy"><span class="n">env</span><span class="o">.</span><span class="na">STATION</span><span class="o">=</span><span class="n">STATION</span>
+<span class="nd">@NonCPS</span>
+<span class="kt">def</span> <span class="nf">freeSpaceCheck</span><span class="o">(</span><span class="n">monitorData</span><span class="o">)</span>
+<span class="o">{</span>
+    <span class="kt">def</span> <span class="n">result</span><span class="o">=</span><span class="kc">true</span>
+    <span class="n">monitorData</span><span class="o">.</span><span class="na">children</span><span class="o">().</span><span class="na">each</span><span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">it</span><span class="o">.</span><span class="na">name</span><span class="o">()==</span><span class="s2">"hudson.node_monitors.DiskSpaceMonitor"</span><span class="o">){</span>
+          <span class="n">freeSpace</span><span class="o">=</span><span class="n">it</span><span class="o">.</span><span class="na">size</span><span class="o">.</span><span class="na">text</span><span class="o">()</span> <span class="k">as</span> <span class="n">Double</span>
+          <span class="k">if</span><span class="o">(</span><span class="n">freeSpace</span><span class="o">&lt;</span><span class="mi">6000000000</span><span class="o">){</span>
+            <span class="n">result</span><span class="o">=</span><span class="kc">false</span>
+          <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">result</span>
+<span class="o">}</span>
+<span class="nd">@NonCPS</span>
+<span class="kt">def</span> <span class="nf">checkIdle</span><span class="o">(</span><span class="n">nodeData</span><span class="o">)</span>
+<span class="o">{</span>
+  <span class="n">nodeData</span><span class="o">.</span><span class="na">idle</span><span class="o">.</span><span class="na">text</span><span class="o">()==</span><span class="s2">"true"</span>
+<span class="o">}</span>
+
+<span class="kt">def</span> <span class="n">isNodeIdle</span><span class="o">=</span><span class="kc">true</span>
+<span class="n">stage</span><span class="o">(</span><span class="s2">"Node State"</span><span class="o">)</span>
+<span class="o">{</span>
+  <span class="n">currentBuild</span><span class="o">.</span><span class="na">result</span><span class="o">=</span><span class="s2">"SUCCESS"</span>  
+  <span class="kt">def</span> <span class="n">content</span> <span class="o">=</span> <span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s2">"http://localhost:8080/computer/${env.STATION}/api/xml"</span><span class="o">).</span><span class="na">getText</span><span class="o">()</span>
+  <span class="kt">def</span> <span class="n">build_node</span> <span class="o">=</span> <span class="k">new</span> <span class="n">groovy</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">XmlSlurper</span><span class="o">().</span><span class="na">parseText</span><span class="o">(</span><span class="n">content</span><span class="o">)</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">build_node</span><span class="o">.</span><span class="na">offline</span><span class="o">.</span><span class="na">text</span><span class="o">()==</span><span class="s2">"true"</span><span class="o">){</span>
+    <span class="n">currentBuild</span><span class="o">.</span><span class="na">result</span> <span class="o">=</span> <span class="s1">'FAILED'</span>
+    <span class="n">currentBuild</span><span class="o">.</span><span class="na">setDisplayName</span><span class="o">(</span><span class="s2">"${env.BUILD_NUMBER}-offline"</span><span class="o">)</span>
+  <span class="o">}</span>
+  <span class="k">if</span><span class="o">(</span><span class="n">build_node</span><span class="o">.</span><span class="na">temporarilyOffline</span><span class="o">.</span><span class="na">text</span><span class="o">()==</span><span class="s2">"true"</span><span class="o">)</span>
+  <span class="o">{</span>
+    <span class="n">currentBuild</span><span class="o">.</span><span class="na">result</span> <span class="o">=</span> <span class="s1">'ABORTED'</span>
+    <span class="n">currentBuild</span><span class="o">.</span><span class="na">setDisplayName</span><span class="o">(</span><span class="s2">"${env.BUILD_NUMBER}-parked"</span><span class="o">)</span>
+  <span class="o">}</span>
+  <span class="k">if</span><span class="o">(!</span><span class="n">freeSpaceCheck</span><span class="o">(</span><span class="n">build_node</span><span class="o">.</span><span class="na">monitorData</span><span class="o">)){</span>
+    <span class="n">println</span> <span class="s2">"WARNING: Disk space is low!"</span>
+    <span class="n">currentBuild</span><span class="o">.</span><span class="na">result</span> <span class="o">=</span> <span class="s1">'UNSTABLE'</span>
+    <span class="n">currentBuild</span><span class="o">.</span><span class="na">setDisplayName</span><span class="o">(</span><span class="s2">"${env.BUILD_NUMBER}-nospace"</span><span class="o">)</span>
+  <span class="o">}</span>
+  <span class="n">isNodeIdle</span><span class="o">=</span><span class="n">checkIdle</span><span class="o">(</span><span class="n">build_node</span><span class="o">)</span>
+<span class="o">}</span>
+<span class="n">stage</span><span class="o">(</span><span class="s2">"Check Node"</span><span class="o">)</span>
+<span class="o">{</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">currentBuild</span><span class="o">.</span><span class="na">result</span><span class="o">==</span><span class="s2">"SUCCESS"</span> <span class="o">&amp;&amp;</span> <span class="n">isNodeIdle</span> <span class="o">)</span>
+  <span class="o">{</span>
+    <span class="n">node</span><span class="o">(</span><span class="n">env</span><span class="o">.</span><span class="na">STATION</span><span class="o">){</span>
+      <span class="c1">//this will run on the node if the node is not busy</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>We subvert the meaning of the job stati a bit (as documented in the description of the job). This is so that we can adhere to &quot;green means relax, yellow means work is coming your way, red means drop everything else and fix it&quot;.</p>
+
+<p>We also use the build display name to hint at the reason for the status.</p>
+
+<p>Those @nonCPS methods are there so that Jenkins does not have a fit trying to serialize the XmlSlurper.</p>
+
+<p>It would have been less code and a lot more readable if I had managed to talk to the Java API, but wierdness happened and the HTTP API does the work.</p>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>
