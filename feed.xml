@@ -7,10 +7,8 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
-        <title>ForgetMeNot: Jenkins Pipeline Builds polling SCM changes</title>
-        <description>&lt;h1&gt;How to get PipelineDSL jobs to poll the SCM for changes&lt;/h1&gt;
-
-&lt;p&gt;It took me a disproportionate amount of time and significant reserves of google foo to figure this out, so it merits documentation.&lt;/p&gt;
+        <title>ForgetMeNot: Jenkins Pipeline Jobs polling SCM changes</title>
+        <description>&lt;p&gt;It took me a disproportionate amount of time and significant reserves of google foo to figure this out, so it merits documentation.&lt;/p&gt;
 
 &lt;h2&gt;The Problem&lt;/h2&gt;
 
