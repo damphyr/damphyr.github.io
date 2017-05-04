@@ -7,6 +7,47 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>ForgetMeNot: Jenkins Pipeline Builds polling SCM changes</title>
+        <description>&lt;h1&gt;How to get PipelineDSL jobs to poll the SCM for changes&lt;/h1&gt;
+
+&lt;p&gt;It took me a disproportionate amount of time and significant reserves of google foo to figure this out, so it merits documentation.&lt;/p&gt;
+
+&lt;h2&gt;The Problem&lt;/h2&gt;
+
+&lt;p&gt;I use a setup that involves creating all jobs via JobDSL definitions and have several jobs leveraging the PipelineDSL.&lt;/p&gt;
+
+&lt;p&gt;It was unclear how to tell the git which repo to poll, which credentials to use etc.&lt;/p&gt;
+
+&lt;p&gt;Just a warning: none of the options to the scm trigger in JobDSL work for a pipeline job. &lt;/p&gt;
+
+&lt;p&gt;You just define a plain, dumb scm poll in the frequency you require, for example:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;triggers {
+  scm 'H(3) * * * 1-5'
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;What works?&lt;/h2&gt;
+
+&lt;p&gt;The rest of information is passed to git in the Pipeline definition.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;node(){
+  git changelog: true, credentialsId: 'bla-bla-bla', poll: true, url: 'https://url.to.repo', branch: brnch  
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The critical part here is setting &lt;em&gt;poll&lt;/em&gt; to &lt;strong&gt;true&lt;/strong&gt;. The job will trigger, enter the pipeline and then setup polling for any future job invocations. I tend to set &lt;em&gt;changelog&lt;/em&gt; to &lt;strong&gt;true&lt;/strong&gt; as well, because if we&amp;#39;re going to pay the penalty (see further down) we might as well get as much as possible out of it.&lt;/p&gt;
+
+&lt;h2&gt;Handicap&lt;/h2&gt;
+
+&lt;p&gt;I find this approach problematic, since it requires us to have a workspace (so we need a node() context in the pipeline) and we need to clone the repo.&lt;/p&gt;
+
+&lt;p&gt;In my case this is exarcebated by bad repository care practices (lots of binary data commited makes the repo way to large relative to it&amp;#39;s content). Also, I tend to structure pipelines with simple jobs (things like Build Module, Test Module, Package &amp;amp; Publish) that are then strung together as a pipeline and the composite jobs usually do not need a workspace. So this cloning is really pure overhead.&lt;/p&gt;
+
+&lt;p&gt;If anyone knows how to get polling working without requiring a full clone, please have a go at the comments.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 05 Mar 2017 13:14:44 +0100</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2017/03/05/forgetmenot-jenkins-pipeline-polling</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/03/05/forgetmenot-jenkins-pipeline-polling</guid>
+      </item>
+    
+      <item>
         <title>Monitor CI nodes with Jenkins</title>
         <description>&lt;p&gt;My team and I have had a dreadful couple of weeks.&lt;/p&gt;
 
@@ -674,67 +715,6 @@ schtasks /Delete /F /TN &quot;\Microsoft\Windows\Customer Experience Improvement
         <pubDate>Fri, 10 Jul 2015 14:00:00 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2015/07/10/forgetmenot-turn-off-windows-compatibility-appraiser</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2015/07/10/forgetmenot-turn-off-windows-compatibility-appraiser</guid>
-      </item>
-    
-      <item>
-        <title>Θέατρο του Παραλόγου</title>
-        <description>&lt;p&gt;Αναρωτιέμαι εδώ και μέρες, διαβάζει κανείς τα κείμενα που ανταλλάσονται πυρετωδώς σε αυτές τις μαραθώνιες συνομιλίες;&lt;/p&gt;
-
-&lt;p&gt;Έγινε το δημοψήφισμα ένα &amp;quot;ΝΑΙ ή ΌΧΙ στην Ευρωπαϊκή Ένωση&amp;quot; και κανείς δεν αναρωτιέται ποιόν ακριβώς βολεύει αυτό.&lt;/p&gt;
-
-&lt;p&gt;Ας τα πάρουμε από την αρχή. Τα παρακάτω σημεία παρατίθονται αξιωματικά για να οικονομηθεί χώρος. Τίποτα δεν είναι απόλυτο, σε ένα άπειρο σύμπαν ακόμα και η μηδενική πιθανότητα είναι βέβαιο γεγονός (υποβάλλω την ύπαρξη του υποκείμενου πλανήτη ως αποδεικτικό στοιχείο) αλλά στο μέτρο που μου επιτρέπει η μόρφωση, η νοημοσύνη και τα γεγονότα των 5 περασμένων ετών αποδέχομαι τα παρακάτω ως αληθή:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Το πρόγραμμα λιτότητας όπως έχει εφαρμοστεί ΔΕΝ αποφέρει αποτελέσματα, το αντίθετο, χειροτερεύει την κατάσταση.&lt;/li&gt;
-&lt;li&gt;Το χρέος ΔΕΝ είναι βιώσιμο, κοινώς δεν μπορεί να πληρωθεί όσος χρόνος κι αν περάσει.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Άρα, η πρόταση των δανειστών δεν είναι λύση. Δεν είναι ένα &amp;quot;ας σφίξουμε το ζωνάρι, ας κάνουμε κουράγιο, θα βοηθήσουν και οι άλλοι, πιάσαμε πάτο, άντε να πάρουμε την ανηφόρα&amp;quot;, είναι &amp;quot;χώστους ακόμα πιο βαθιά να μη βγουν ποτέ στην επιφάνεια&amp;quot;. Στα αγγλικά αυτό το λένε indentured service, εδώ όταν σταματήσαμε να το λέμε σκλαβιά ονομάζαμε τους άνθρωπους κολίγους.&lt;/p&gt;
-
-&lt;p&gt;Το μόνο που μας προσφέρει η αποδοχή της συμφωνίας ως έχει είναι μια παράταση (δύο ή τριών χρόνων το πολύ, κι αυτό εάν δεν σφίξουν τα πράγματα αλλού) κατά τη διάρκεια της οποίας θα ολισθαίνουμε με σταθερή ταχύτητα, ακριβώς όπως κάναμε τα τελευταία πέντε χρόνια. Ποιόν εξυπηρετεί αυτό; Το μικρομεσαίο άνεργο που έχει ήδη φάει ότι υπήρχε και ζει μέρα με τη μέρα μετρώντας τα ψιλά; Τον συνταξιούχο του οποίου η σύνταξη θα μειωθεί ενώ τα φάρμακα θα αυξηθούν και τα παιδιά του είναι άνεργα; Όποιος έχει θα φροντίσει να τα βγάλει, η χρεωκοπία είναι προδιαγεγραμμένη, ωφελούνται δλδ όσοι ωφελήθηκαν μέχρι τώρα.&lt;/p&gt;
-
-&lt;p&gt;Πιστεύω ακράδαντα ότι εάν η πρόταση που κατέθεσε ο ΣΥΡΙΖΑ είχε κατατεθεί από άλλη κυβέρνηση θα είχε γίνει αποδεκτή. Δεν έχει γίνει καμία κριτική επί της ουσίας, κανείς δεν έκατσε να αμφισβητήσει τα ισοδύναμα μέτρα με νούμερα. Όλη η επιχειρηματολογία έχει να κάνει με το ύφος του Βαρουφάκη, την αλαζονεία του Τσίπρα και τον ερασιτεχνισμό της κυβέρνησης. Σαν να ακούω Τεξανούς να επιχειρηματολογούν για τη θεωρία της εξέλιξης και την κλιματική αλλαγή&lt;sup&gt;1&lt;/sup&gt;. Ή σαν να ακούω τον 6χρονο γιο μου όταν του φωνάζω να φάει το φαϊ του.&lt;/p&gt;
-
-&lt;p&gt;Ξανά, για να το εμπεδώσουμε:&lt;/p&gt;
-
-&lt;p&gt;Οι προηγούμενες κυβερνήσεις της Ελλάδας, άμεσα υπεύθυνες για το χάλι, αντιμετωπίστηκαν ως σοβαροί και αξιόπιστοι συνομιλητές ενώ αποδεδειγμένα μαγείρεψαν τα νούμερα, απέφυγαν μεταρυθμίσεις για πολιτικό κέρδος και κάνανε τα αδύνατα δυνατά για να αποποιηθούν ή να καλύψουν τις ευθύνες τους.&lt;/p&gt;
-
-&lt;p&gt;Η παρούσα κυβέρνηση, χωρίς κανένα ιστορικό (πάντα στα ευρωπαϊκά σαλόνια) και με ελάχιστο χρόνο να συλλέξει και να αποκαλύψει το τι αφήσανε πίσω οι προηγούμενοι (που πήραν και το χαρτί της τουαλέτας από τα γραφεία φεύγοντας) αντιμετωπίζεται ως αναξιόπιστη και υπεροπτική.&lt;/p&gt;
-
-&lt;p&gt;Γιατί;&lt;/p&gt;
-
-&lt;p&gt;Μπορώ να κάνω χιλιάδες υποθέσεις, να ψάξω τεχνοκρατικούς λόγους, να συγκρίνω μεγέθη, να κρίνω το έργο πέντε μηνών, αλλά γυρνάω και κολλάω ξανά και ξανά στη χρήση της λέξης κομμουνισμός. Και όταν τα επιχειρήματα που έχεις απέναντι στα νούμερα έχουν να κάνουν με το ύφος που έχω όταν σου απαγγέλω αυτά τα νούμερα ή κατασκευασμένα ιδεολογικά τέρατα του παρελθόντος τότε με συγχωρείς, αλλά δε θες να βοηθήσεις, δε σε ενδιαφέρει ούτε καν στο ελάχιστο.&lt;/p&gt;
-
-&lt;p&gt;Συνεπώς, εμένα, τον Ελληνικό Λαό, που διάλεξα να αλλάξω τους τσαρλατάνους που σας εξυπηρετούσαν με γράφεις κανονικά, χρησιμοποιώντας ψυχροπολεμική ρητορεία της δεκαετίας του &amp;#39;50, επιβάλλοντας τρομοκρατία και δικτατορικά μέτρα με τη χρήση μη εκλεγμένων γραφειοκρατών και με καταδικάζεις σε μόνιμη λιτότητα.&lt;/p&gt;
-
-&lt;p&gt;Και οι βαλτοί, οι δικοί σου, τάχαμου πατριώτες, τάχαμου εθνικά υπερήφανοι, αυτοί οι κοτζαμπάσηδες. Α, ρε Αρτέμη Μάτσα, τον Έλληνα έπαιζες πάντα.&lt;/p&gt;
-
-&lt;p&gt;Ψυχραιμίιιιιια! Το σενάριο αποδοχής των όρων (επίσης γνωστό και ως παράδοση άνευ όρων) ξέρουμε που οδηγεί. Το ζουμε καθημερινά, το είδαμε εδω και πέντε χρόνια, είναι οικείο. Και τελικά εκεί εναπόκειται όλο το επιχείρημα τους: Είναι οικείο, είναι γνωστό, είναι προδιαγεγραμμένο άρα μπορεί κανείς να το διαχειριστεί. Τι είναι 11 εκατομμύρια άνθρωποι μπροστά στο άγνωστο;&lt;/p&gt;
-
-&lt;p&gt;Γιατί ότι και να σου πει λαουτζίκο ο οποιοσδήποτε, η εναλλακτική στο ΝΑΙ είναι ... άγνωστο. Όλες οι απειλές, όλες οι προβλέψεις, όλη η τρομοκρατία στην ουσία κρύβει την άγνοια. Κανείς δεν ξέρει. Το μόνο που ξέρουμε είναι ότι θα είναι δύσκολα. Άσχημα. Φτώχια και πείνα. Για τους Έλληνες μια από τα ίδια.&lt;/p&gt;
-
-&lt;p&gt;Ας γράψω λίγο επιστημονική φαντασία, να εξερευνήσω τα σενάρια του ΟΧΙ.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Με το Λαό δεν παίζει κανείς, η Ευρώπη είναι για τους Λαούς, εντάξει, θα υποχωρήσουμε (πάρτε, φάτε, και μη νοιάζεστε)&lt;/li&gt;
-&lt;li&gt;Ποιοί είναι αυτοί οι βρωμιάρηδες που θα μας πούνε εμάς τι θα κάνουμε. Θάψτε τους, κάψτε τα σπαρτά και αλατίστε τα χωράφια (έξω απ&amp;#39;το €, έξω από ΕΕ)&lt;/li&gt;
-&lt;li&gt;Ναι μεν οι κανόνες λένε αυτό, αλλά εδώ ένας ολόκληρος λαός πεινάει και κύμματα εξαθλιωμένων αποβιβάζονται στις ακτές του. Κάτι πρέπει να γίνει, ανασκουμπωθείτε. (πολιτική λύση με αυστηρές μεταρυθμίσεις αλλά και οικονομική περίοδο χάριτος και χαλάρωση της λιτότητας).&lt;/li&gt;
-&lt;li&gt;Η υπάρχουσα Ελληνική πρόταση (είπαμε, επιστημονική φαντασία)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Προφανώς και θέλουν να νομίζουμε ότι το δεύτερο σενάριο είναι μονόδρομος.&lt;/p&gt;
-
-&lt;p&gt;&amp;quot;Μην αυτοκτονείτε απ&amp;#39;το φόβο του Θανάτου&amp;quot; είπε ο Juncker, πιο δόκιμα μεταφρασμένος, και ο παραλογισμός αυτής της πρότασης θα έπρεπε να είναι φανερός. &lt;/p&gt;
-
-&lt;p&gt;Όταν με καταδιώκουνε αλαλάζοντας για να με γδάρουν και να με σκοτώσουν και πηδάω από το γκρεμό δεν αυτοκτονώ. Άμα κάτσω να με πιάσουν έχω αυτοκτονήσει, άμα πηδήξω ελπίζω, ελπίζω ότι θα πέσω στο νερό και όχι στα βράχια, ότι ο γκρεμός δεν θα είναι πολύ ψηλά, ότι κι αν σπάσω τα πόδια δε θα μείνω αναίσθητος, ότι θα βρώ καμιά βάρκα να με περισυλλέξει. Από τη μια ξέρω τι θα γίνει, από την άλλη είναι το άγνωστο και μια μικρή ελπίδα.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; ΡΕ ΜΑΛΆΚΕΣ! ΤΑ ΝΟΎΜΕΡΑ &lt;em&gt;ΔΕΝ&lt;/em&gt; ΒΓΑΊΝΟΥΝ! 11 εκατομμύρια κόσμος και σας πείραξε το υφάκι του Βαρουφάκη; Μικρόμυαλοι, άξεστοι, αδαείς, καλοβολεμένοι υπαλληλίσκοι, γαμώ τη φάρα σας, γαμώ.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 01 Jul 2015 14:00:00 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/rumblings/2015/07/01/theater-of-the-absurd</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/rumblings/2015/07/01/theater-of-the-absurd</guid>
       </item>
     
   </channel>
