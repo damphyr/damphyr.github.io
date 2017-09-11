@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>Handling pull requests with Jenkins</title>
+        <meta name="viewport" content="width=device-width">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>Handling pull requests with Jenkins</h1>
+<p class="meta">09 Sep 2017</p>
+
+<div class="post">
+<p>My requirements for handling pull requests in CI are:</p>
+
+<ul>
+<li>I want to build the merge reference of a branch for which there is an open pull request and I want to do it every time something is commited on either branch participating in the pull request.</li>
+<li>I want to be able to structure my build jobs in separate, parametrizable &quot;component&quot; jobs which I can then compose in highly prallelizable pipelines.</li>
+<li>I want all of the above &quot;as code&quot;, meaning no GUI interaction necessary to setup.</li>
+</ul>
+
+<p>This in the current state of my build stack seems nigh on impossible.</p>
+
+<p>Lets take it from the beginning: </p>
+
+<p>Git hosting and PR support is provided by BitBucket Server, build management by Jenkins 2.x.</p>
+
+<p>Add <a href="https://wiki.jenkins-ci.org/display/JENKINS/Bitbucket+Branch+Source+Plugin">BitBucket Branch Source Plugin</a> to get the option of triggering builds that have open PRs on a multi branch pipeline.</p>
+
+<p>The as-code part means we have a job DSL spec, the pull request trigger and &quot;componetized&quot; jobs means a multi-branch pipeline job.</p>
+
+<h2>Components and Composites</h2>
+
+<p>We have a big system with lots of moving parts. I tend to structure my code in building blocks and now that I can code my CI jobs, I tend to do the same.</p>
+
+<p>So we have &quot;component&quot; jobs, that do one thing (build, test) and are implemented as parametrized pipeline jobs. These are the jobs that require a workspace, check out the repository and do the heavy duty compiling and testing.</p>
+
+<p>I tend to implement them as reusable as possible, so one of the parameters is the branch to build.</p>
+
+<p>Then we have &quot;composite&quot; jobs, which take care of scaling our CI. They put together batches of the component jobs, adjust parameters according to scale criteria (e.g &quot;fast&quot;, &quot;thorough&quot; etc.), launch jobs in parallel and then aggregate results and report.</p>
+
+<p>Most of the time we end up with a single composite pipeline which then becomes Main, Nightly or Release with the adjustment of a couple of parameters. Having a branch parameter allows us to do the same thing on any branch.</p>
+
+<p>Tweaking this pipeline to use in pull requests was the exercise leading to this post.</p>
+
+<h2>You can&#39;t have what you want</h2>
+
+<p>Right from the start it becomes obvious that I cannot have builds that build the merge ref. </p>
+
+<p>Mostly because it means figuring out the two SHAs (easy when reading the checkout step&#39;s return values) and then adjusting the component jobs to perform the merge every time - which kinda defeats the purpose of the component jobs, since we do this merge only for pull requests and not for the rest of the mainline builds. We end up with a second set of component jobs built specifically for the pull request which is not worth the effort.</p>
+
+<p>I can live with building just the PR source branch and letting BitBucket detect merge conflicts given that we rebase frequently and aim for short lived branches.
+Not building the merge ref increases the probability of integration test breakage on the master branch after merging, so it is now up to the devs to ensure master does not break by an obscure integration problem. </p>
+
+<p>Que requiring a rebase before merge.</p>
+
+<p>The other problem is that we can only build the tip of the source branch and not the specific SHA that triggered the build. </p>
+
+<p>The reason for that is that <a href="https://jenkins.io/doc/pipeline/steps/git/#git-git">&#39;git&#39;</a> in the Pipeline DSL does not understand SHAs. It is possible to do by falling back to the generic <a href="https://jenkins.io/doc/pipeline/steps/workflow-scm-step/#checkout-general-scm">checkout</a> directive but omg! is that unreadable.</p>
+
+<p>Again, not the end of the world, just less than exact verification than we wish and the possibility for building the same ref twice. Still BitBucket keeps track of the build status for each ref and merging requires a green build for that last commit.</p>
+
+<p>Btw. this problem exists also for the mainline builds so I consider it a major bug of git integration in Jenkins.</p>
+
+<p>Some way of passing the scm context to jobs started via <a href="https://jenkins.io/doc/pipeline/steps/pipeline-build-step/#build-build-a-job">build</a> would be nice. Might also be possible to hack with current means.</p>
+
+<h2>Regroup.</h2>
+
+<p>The compromise we come to is:</p>
+
+<ul>
+<li>Build the tip of the source branch for every open PR.</li>
+<li>Re-use the main pipeline script.</li>
+</ul>
+
+<p>To get everything as code we had to revert to manipulating XML. I did not manage to get the <a href="https://github.com/jenkinsci/job-dsl-plugin/wiki/The-Configure-Block">configure</a> block correctly set using the overloaded syntax.</p>
+
+<p>I kept getting missing method errors for String.div() and could not set class for the XML elements. The sollution was to go back to proper XML. </p>
+
+<p>The following code defines two XML snippets in the beginning. The first configures the <a href="https://wiki.jenkins-ci.org/display/JENKINS/Bitbucket+Branch+Source+Plugin">BitBucket Branch Source Plugin</a> for the multibranch pipeline so that only PRs trigger.</p>
+
+<p>The second snippet changes the location and filename that is used as Jenkinsfile.</p>
+
+<p>Thus we get a multibranch pipeline job that polls BitBucket every minute, triggering the &quot;Jenkinsfile&quot; pipeline when it detects changes in open pull requests.</p>
+<div class="highlight"><pre><code class="language-groovy" data-lang="groovy"><span class="kt">def</span> <span class="n">xmlSources</span><span class="o">=</span><span class="s1">'&lt;sources class="jenkins.branch.MultiBranchProject$BranchSourceList"&gt;&lt;data&gt;&lt;jenkins.branch.BranchSource&gt;&lt;source class="com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSource"&gt;&lt;serverUrl&gt;https://bitbucket.zuehlke.com&lt;/serverUrl&gt;&lt;credentialsId&gt;f2361e6b-b8e0-dead-beef-5eed5bc1a59f&lt;/credentialsId&gt;&lt;repoOwner&gt;FOO&lt;/repoOwner&gt;&lt;repository&gt;bar&lt;/repository&gt;&lt;traits&gt;&lt;com.cloudbees.jenkins.plugins.bitbucket.BranchDiscoveryTrait&gt;&lt;strategyId&gt;1&lt;/strategyId&gt;&lt;/com.cloudbees.jenkins.plugins.bitbucket.BranchDiscoveryTrait&gt;&lt;com.cloudbees.jenkins.plugins.bitbucket.OriginPullRequestDiscoveryTrait&gt;&lt;strategyId&gt;2&lt;/strategyId&gt;&lt;/com.cloudbees.jenkins.plugins.bitbucket.OriginPullRequestDiscoveryTrait&gt;&lt;/traits&gt;&lt;/source&gt;&lt;strategy class="jenkins.branch.DefaultBranchPropertyStrategy"&gt;&lt;properties class="empty-list"/&gt;&lt;/strategy&gt;&lt;/jenkins.branch.BranchSource&gt;&lt;/data&gt;&lt;owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/&gt;&lt;/sources&gt;'</span>
+
+<span class="kt">def</span> <span class="n">factorySource</span><span class="o">=</span><span class="s1">'&lt;factory class="org.jenkinsci.plugins.workflow.multibranch.WorkflowBranchProjectFactory"&gt;&lt;owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/&gt;&lt;scriptPath&gt;Tools/jenkins/pipelines/PullRequest.groovy&lt;/scriptPath&gt;&lt;/factory&gt;'</span>
+<span class="kt">def</span> <span class="n">sourcesNode</span><span class="o">=</span> <span class="k">new</span> <span class="n">XmlParser</span><span class="o">().</span><span class="na">parseText</span><span class="o">(</span><span class="n">xmlSources</span><span class="o">)</span>
+<span class="kt">def</span> <span class="n">factoryNode</span><span class="o">=</span> <span class="k">new</span> <span class="n">XmlParser</span><span class="o">().</span><span class="na">parseText</span><span class="o">(</span><span class="n">factorySource</span><span class="o">)</span>
+<span class="n">multibranchPipelineJob</span><span class="o">(</span><span class="s1">'PullRequests'</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">description</span> <span class="s2">"Pull request builds"</span>
+  <span class="n">displayName</span> <span class="s2">"PullRequests"</span>
+  <span class="n">triggers</span><span class="o">{</span>
+    <span class="n">periodic</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+  <span class="o">}</span>
+  <span class="n">orphanedItemStrategy</span> <span class="o">{</span>
+    <span class="n">discardOldItems</span> <span class="o">{</span>
+        <span class="n">numToKeep</span><span class="o">(</span><span class="mi">20</span><span class="o">)</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="n">configure</span> <span class="o">{</span> <span class="n">project</span> <span class="o">-&gt;</span> 
+    <span class="n">project</span><span class="o">&lt;&lt;</span><span class="n">sourcesNode</span>
+  <span class="o">}</span>
+  <span class="n">configure</span> <span class="o">{</span> <span class="n">project</span> <span class="o">-&gt;</span> 
+    <span class="n">project</span> <span class="o">&lt;&lt;</span> <span class="n">factoryNode</span>
+  <span class="o">}</span>
+</code></pre></div>
+<p>Within the pipeline, the source branch of the pull request is then in the environment variable CHANGE_BRANCH</p>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

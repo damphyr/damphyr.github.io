@@ -7,6 +7,110 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Handling pull requests with Jenkins</title>
+        <description>&lt;p&gt;My requirements for handling pull requests in CI are:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;I want to build the merge reference of a branch for which there is an open pull request and I want to do it every time something is commited on either branch participating in the pull request.&lt;/li&gt;
+&lt;li&gt;I want to be able to structure my build jobs in separate, parametrizable &amp;quot;component&amp;quot; jobs which I can then compose in highly prallelizable pipelines.&lt;/li&gt;
+&lt;li&gt;I want all of the above &amp;quot;as code&amp;quot;, meaning no GUI interaction necessary to setup.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This in the current state of my build stack seems nigh on impossible.&lt;/p&gt;
+
+&lt;p&gt;Lets take it from the beginning: &lt;/p&gt;
+
+&lt;p&gt;Git hosting and PR support is provided by BitBucket Server, build management by Jenkins 2.x.&lt;/p&gt;
+
+&lt;p&gt;Add &lt;a href=&quot;https://wiki.jenkins-ci.org/display/JENKINS/Bitbucket+Branch+Source+Plugin&quot;&gt;BitBucket Branch Source Plugin&lt;/a&gt; to get the option of triggering builds that have open PRs on a multi branch pipeline.&lt;/p&gt;
+
+&lt;p&gt;The as-code part means we have a job DSL spec, the pull request trigger and &amp;quot;componetized&amp;quot; jobs means a multi-branch pipeline job.&lt;/p&gt;
+
+&lt;h2&gt;Components and Composites&lt;/h2&gt;
+
+&lt;p&gt;We have a big system with lots of moving parts. I tend to structure my code in building blocks and now that I can code my CI jobs, I tend to do the same.&lt;/p&gt;
+
+&lt;p&gt;So we have &amp;quot;component&amp;quot; jobs, that do one thing (build, test) and are implemented as parametrized pipeline jobs. These are the jobs that require a workspace, check out the repository and do the heavy duty compiling and testing.&lt;/p&gt;
+
+&lt;p&gt;I tend to implement them as reusable as possible, so one of the parameters is the branch to build.&lt;/p&gt;
+
+&lt;p&gt;Then we have &amp;quot;composite&amp;quot; jobs, which take care of scaling our CI. They put together batches of the component jobs, adjust parameters according to scale criteria (e.g &amp;quot;fast&amp;quot;, &amp;quot;thorough&amp;quot; etc.), launch jobs in parallel and then aggregate results and report.&lt;/p&gt;
+
+&lt;p&gt;Most of the time we end up with a single composite pipeline which then becomes Main, Nightly or Release with the adjustment of a couple of parameters. Having a branch parameter allows us to do the same thing on any branch.&lt;/p&gt;
+
+&lt;p&gt;Tweaking this pipeline to use in pull requests was the exercise leading to this post.&lt;/p&gt;
+
+&lt;h2&gt;You can&amp;#39;t have what you want&lt;/h2&gt;
+
+&lt;p&gt;Right from the start it becomes obvious that I cannot have builds that build the merge ref. &lt;/p&gt;
+
+&lt;p&gt;Mostly because it means figuring out the two SHAs (easy when reading the checkout step&amp;#39;s return values) and then adjusting the component jobs to perform the merge every time - which kinda defeats the purpose of the component jobs, since we do this merge only for pull requests and not for the rest of the mainline builds. We end up with a second set of component jobs built specifically for the pull request which is not worth the effort.&lt;/p&gt;
+
+&lt;p&gt;I can live with building just the PR source branch and letting BitBucket detect merge conflicts given that we rebase frequently and aim for short lived branches.
+Not building the merge ref increases the probability of integration test breakage on the master branch after merging, so it is now up to the devs to ensure master does not break by an obscure integration problem. &lt;/p&gt;
+
+&lt;p&gt;Que requiring a rebase before merge.&lt;/p&gt;
+
+&lt;p&gt;The other problem is that we can only build the tip of the source branch and not the specific SHA that triggered the build. &lt;/p&gt;
+
+&lt;p&gt;The reason for that is that &lt;a href=&quot;https://jenkins.io/doc/pipeline/steps/git/#git-git&quot;&gt;&amp;#39;git&amp;#39;&lt;/a&gt; in the Pipeline DSL does not understand SHAs. It is possible to do by falling back to the generic &lt;a href=&quot;https://jenkins.io/doc/pipeline/steps/workflow-scm-step/#checkout-general-scm&quot;&gt;checkout&lt;/a&gt; directive but omg! is that unreadable.&lt;/p&gt;
+
+&lt;p&gt;Again, not the end of the world, just less than exact verification than we wish and the possibility for building the same ref twice. Still BitBucket keeps track of the build status for each ref and merging requires a green build for that last commit.&lt;/p&gt;
+
+&lt;p&gt;Btw. this problem exists also for the mainline builds so I consider it a major bug of git integration in Jenkins.&lt;/p&gt;
+
+&lt;p&gt;Some way of passing the scm context to jobs started via &lt;a href=&quot;https://jenkins.io/doc/pipeline/steps/pipeline-build-step/#build-build-a-job&quot;&gt;build&lt;/a&gt; would be nice. Might also be possible to hack with current means.&lt;/p&gt;
+
+&lt;h2&gt;Regroup.&lt;/h2&gt;
+
+&lt;p&gt;The compromise we come to is:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Build the tip of the source branch for every open PR.&lt;/li&gt;
+&lt;li&gt;Re-use the main pipeline script.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;To get everything as code we had to revert to manipulating XML. I did not manage to get the &lt;a href=&quot;https://github.com/jenkinsci/job-dsl-plugin/wiki/The-Configure-Block&quot;&gt;configure&lt;/a&gt; block correctly set using the overloaded syntax.&lt;/p&gt;
+
+&lt;p&gt;I kept getting missing method errors for String.div() and could not set class for the XML elements. The sollution was to go back to proper XML. &lt;/p&gt;
+
+&lt;p&gt;The following code defines two XML snippets in the beginning. The first configures the &lt;a href=&quot;https://wiki.jenkins-ci.org/display/JENKINS/Bitbucket+Branch+Source+Plugin&quot;&gt;BitBucket Branch Source Plugin&lt;/a&gt; for the multibranch pipeline so that only PRs trigger.&lt;/p&gt;
+
+&lt;p&gt;The second snippet changes the location and filename that is used as Jenkinsfile.&lt;/p&gt;
+
+&lt;p&gt;Thus we get a multibranch pipeline job that polls BitBucket every minute, triggering the &amp;quot;Jenkinsfile&amp;quot; pipeline when it detects changes in open pull requests.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-groovy&quot; data-lang=&quot;groovy&quot;&gt;&lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xmlSources&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'&amp;lt;sources class=&quot;jenkins.branch.MultiBranchProject$BranchSourceList&quot;&amp;gt;&amp;lt;data&amp;gt;&amp;lt;jenkins.branch.BranchSource&amp;gt;&amp;lt;source class=&quot;com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSource&quot;&amp;gt;&amp;lt;serverUrl&amp;gt;https://bitbucket.zuehlke.com&amp;lt;/serverUrl&amp;gt;&amp;lt;credentialsId&amp;gt;f2361e6b-b8e0-dead-beef-5eed5bc1a59f&amp;lt;/credentialsId&amp;gt;&amp;lt;repoOwner&amp;gt;FOO&amp;lt;/repoOwner&amp;gt;&amp;lt;repository&amp;gt;bar&amp;lt;/repository&amp;gt;&amp;lt;traits&amp;gt;&amp;lt;com.cloudbees.jenkins.plugins.bitbucket.BranchDiscoveryTrait&amp;gt;&amp;lt;strategyId&amp;gt;1&amp;lt;/strategyId&amp;gt;&amp;lt;/com.cloudbees.jenkins.plugins.bitbucket.BranchDiscoveryTrait&amp;gt;&amp;lt;com.cloudbees.jenkins.plugins.bitbucket.OriginPullRequestDiscoveryTrait&amp;gt;&amp;lt;strategyId&amp;gt;2&amp;lt;/strategyId&amp;gt;&amp;lt;/com.cloudbees.jenkins.plugins.bitbucket.OriginPullRequestDiscoveryTrait&amp;gt;&amp;lt;/traits&amp;gt;&amp;lt;/source&amp;gt;&amp;lt;strategy class=&quot;jenkins.branch.DefaultBranchPropertyStrategy&quot;&amp;gt;&amp;lt;properties class=&quot;empty-list&quot;/&amp;gt;&amp;lt;/strategy&amp;gt;&amp;lt;/jenkins.branch.BranchSource&amp;gt;&amp;lt;/data&amp;gt;&amp;lt;owner class=&quot;org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject&quot; reference=&quot;../..&quot;/&amp;gt;&amp;lt;/sources&amp;gt;'&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;factorySource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'&amp;lt;factory class=&quot;org.jenkinsci.plugins.workflow.multibranch.WorkflowBranchProjectFactory&quot;&amp;gt;&amp;lt;owner class=&quot;org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject&quot; reference=&quot;../..&quot;/&amp;gt;&amp;lt;scriptPath&amp;gt;Tools/jenkins/pipelines/PullRequest.groovy&amp;lt;/scriptPath&amp;gt;&amp;lt;/factory&amp;gt;'&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sourcesNode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;XmlParser&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parseText&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xmlSources&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;factoryNode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;XmlParser&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parseText&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;factorySource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;multibranchPipelineJob&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'PullRequests'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;description&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Pull request builds&quot;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;displayName&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;PullRequests&quot;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;triggers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;periodic&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;orphanedItemStrategy&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;discardOldItems&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;numToKeep&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;configure&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;project&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; 
+    &lt;span class=&quot;n&quot;&gt;project&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sourcesNode&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;configure&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;project&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; 
+    &lt;span class=&quot;n&quot;&gt;project&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;factoryNode&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Within the pipeline, the source branch of the pull request is then in the environment variable CHANGE_BRANCH&lt;/p&gt;
+</description>
+        <pubDate>Sat, 09 Sep 2017 14:14:44 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2017/09/09/handling-pull-requests</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/09/09/handling-pull-requests</guid>
+      </item>
+    
+      <item>
         <title>ForgetMeNot: Jenkins Pipeline Jobs polling SCM changes</title>
         <description>&lt;p&gt;It took me a disproportionate amount of time and significant reserves of google foo to figure this out, so it merits documentation.&lt;/p&gt;
 
@@ -682,37 +786,6 @@ The script I used to detect the hotfix is &lt;/p&gt;
         <pubDate>Sun, 30 Aug 2015 14:00:00 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/rumblings/2015/08/30/cars-to-drive-or-not-to-drive</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/rumblings/2015/08/30/cars-to-drive-or-not-to-drive</guid>
-      </item>
-    
-      <item>
-        <title>ForgetMeNot: Turn off Windows Compatibility Appraiser</title>
-        <description>&lt;p&gt;One of the advantages of infrastructure as code is that we now have complete control of the states of a computer.&lt;/p&gt;
-
-&lt;p&gt;This consequently means that I can measure performance between two known states and I only have to look at the difference between states to figure out what went wrong.&lt;/p&gt;
-
-&lt;p&gt;Well, in theory. Microsoft and the Microsoft Updates keep pulling the carpet under your feet. &lt;/p&gt;
-
-&lt;p&gt;In this case, one of the patch Tuesdays in February introduced KB 2952664 which adds the &amp;quot;Microsoft Compatibility Appraiser&amp;quot; to ostensibly ease transition to Windows 10. Unfortunately that drives up CPU usage and brings computers (and much worse, VMs) to their knees. &lt;/p&gt;
-
-&lt;p&gt;The whole process is a collection of tasks running regularly, whether a user is logged on or not and more importantly whether you opt-in for the MS customer experience program or not.&lt;/p&gt;
-
-&lt;p&gt;It&amp;#39;s all &lt;a href=&quot;http://www.infoworld.com/article/2911609/operating-systems/kb-2952664-compatibility-update-for-win7-triggers-unexpected-daily-telemetry-run-may-be-snooping.html&quot;&gt;very fishy&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Turns out VMWare has a &lt;a href=&quot;https://pubs.vmware.com/view-51/index.jsp?topic=%2Fcom.vmware.view.administration.doc%2FGUID-BE82165B-13BC-4FD9-A9CF-FBEF6343D98A.html&quot;&gt;knowledge base article&lt;/a&gt; for the tasks that need to be excised.&lt;/p&gt;
-
-&lt;p&gt;The following commandlines solve (or at least appear to solve) the problem:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;schtasks /Delete /F /TN &quot;\Microsoft\Windows\Application Experience\AitAgent&quot;
-schtasks /Delete /F /TN &quot;\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser &quot;
-schtasks /Delete /F /TN &quot;\Microsoft\Windows\Application Experience\ProgramDataUpdater&quot;
-schtasks /Delete /F /TN &quot;\Microsoft\Windows\Customer Experience Improvement Program\Consolidator&quot;
-schtasks /Delete /F /TN &quot;\Microsoft\Windows\Customer Experience Improvement Program\KernelCEIPTask&quot;
-schtasks /Delete /F /TN &quot;\Microsoft\Windows\Customer Experience Improvement Program\Use CEIP&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;These will go into a new &lt;a href=&quot;https://github.com/Zuehlke/cookbook-windev&quot;&gt;windev&lt;/a&gt; recipe for sure.&lt;/p&gt;
-</description>
-        <pubDate>Fri, 10 Jul 2015 14:00:00 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2015/07/10/forgetmenot-turn-off-windows-compatibility-appraiser</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2015/07/10/forgetmenot-turn-off-windows-compatibility-appraiser</guid>
       </item>
     
   </channel>
