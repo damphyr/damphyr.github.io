@@ -114,9 +114,37 @@ Not building the merge ref increases the probability of integration test breakag
 <p>The second snippet changes the location and filename that is used as Jenkinsfile.</p>
 
 <p>Thus we get a multibranch pipeline job that polls BitBucket every minute, triggering the &quot;Jenkinsfile&quot; pipeline when it detects changes in open pull requests.</p>
-<div class="highlight"><pre><code class="language-groovy" data-lang="groovy"><span class="kt">def</span> <span class="n">xmlSources</span><span class="o">=</span><span class="s1">'&lt;sources class="jenkins.branch.MultiBranchProject$BranchSourceList"&gt;&lt;data&gt;&lt;jenkins.branch.BranchSource&gt;&lt;source class="com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSource"&gt;&lt;serverUrl&gt;https://bitbucket.zuehlke.com&lt;/serverUrl&gt;&lt;credentialsId&gt;f2361e6b-b8e0-dead-beef-5eed5bc1a59f&lt;/credentialsId&gt;&lt;repoOwner&gt;FOO&lt;/repoOwner&gt;&lt;repository&gt;bar&lt;/repository&gt;&lt;traits&gt;&lt;com.cloudbees.jenkins.plugins.bitbucket.BranchDiscoveryTrait&gt;&lt;strategyId&gt;1&lt;/strategyId&gt;&lt;/com.cloudbees.jenkins.plugins.bitbucket.BranchDiscoveryTrait&gt;&lt;com.cloudbees.jenkins.plugins.bitbucket.OriginPullRequestDiscoveryTrait&gt;&lt;strategyId&gt;2&lt;/strategyId&gt;&lt;/com.cloudbees.jenkins.plugins.bitbucket.OriginPullRequestDiscoveryTrait&gt;&lt;/traits&gt;&lt;/source&gt;&lt;strategy class="jenkins.branch.DefaultBranchPropertyStrategy"&gt;&lt;properties class="empty-list"/&gt;&lt;/strategy&gt;&lt;/jenkins.branch.BranchSource&gt;&lt;/data&gt;&lt;owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/&gt;&lt;/sources&gt;'</span>
 
-<span class="kt">def</span> <span class="n">factorySource</span><span class="o">=</span><span class="s1">'&lt;factory class="org.jenkinsci.plugins.workflow.multibranch.WorkflowBranchProjectFactory"&gt;&lt;owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/&gt;&lt;scriptPath&gt;Tools/jenkins/pipelines/PullRequest.groovy&lt;/scriptPath&gt;&lt;/factory&gt;'</span>
+<p><em>Addendum 2017/09/13</em> </p>
+
+<h2>Things break when faced with the real world</h2>
+
+<p>The snippet configuring the <a href="https://wiki.jenkins-ci.org/display/JENKINS/Bitbucket+Branch+Source+Plugin">BitBucket Branch Source Plugin</a> originally defined two traits. The first one was a branch discovery trait and it resulted in not only building a pull requests but also the source branch for the pull request as well. Chaos ensued and resources were wasted.</p>
+
+<p>The code is now also formated for humans :).</p>
+<div class="highlight"><pre><code class="language-groovy" data-lang="groovy"><span class="kt">def</span> <span class="n">xmlSources</span><span class="o">=</span><span class="s1">'''&lt;sources class="jenkins.branch.MultiBranchProject$BranchSourceList"&gt;
+&lt;data&gt;&lt;jenkins.branch.BranchSource&gt;
+&lt;source class="com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSource"&gt;
+&lt;serverUrl&gt;https://bitbucket.zuehlke.com&lt;/serverUrl&gt;
+&lt;credentialsId&gt;f2361e6b-b8e0-dead-beef-5eed5bc1a59f&lt;/credentialsId&gt;
+&lt;repoOwner&gt;FOO&lt;/repoOwner&gt;
+&lt;repository&gt;bar&lt;/repository&gt;
+&lt;traits&gt;
+&lt;com.cloudbees.jenkins.plugins.bitbucket.OriginPullRequestDiscoveryTrait&gt;
+&lt;strategyId&gt;2&lt;/strategyId&gt;
+&lt;/com.cloudbees.jenkins.plugins.bitbucket.OriginPullRequestDiscoveryTrait&gt;
+&lt;/traits&gt;
+&lt;/source&gt;
+&lt;strategy class="jenkins.branch.DefaultBranchPropertyStrategy"&gt;
+&lt;properties class="empty-list"/&gt;
+&lt;/strategy&gt;&lt;/jenkins.branch.BranchSource&gt;
+&lt;/data&gt;
+&lt;owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/&gt;&lt;/sources&gt;'''</span>
+
+<span class="kt">def</span> <span class="n">factorySource</span><span class="o">=</span><span class="s1">'''
+&lt;factory class="org.jenkinsci.plugins.workflow.multibranch.WorkflowBranchProjectFactory"&gt;
+&lt;owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/&gt;
+&lt;scriptPath&gt;Tools/jenkins/pipelines/PullRequest.groovy&lt;/scriptPath&gt;&lt;/factory&gt;'''</span>
 <span class="kt">def</span> <span class="n">sourcesNode</span><span class="o">=</span> <span class="k">new</span> <span class="n">XmlParser</span><span class="o">().</span><span class="na">parseText</span><span class="o">(</span><span class="n">xmlSources</span><span class="o">)</span>
 <span class="kt">def</span> <span class="n">factoryNode</span><span class="o">=</span> <span class="k">new</span> <span class="n">XmlParser</span><span class="o">().</span><span class="na">parseText</span><span class="o">(</span><span class="n">factorySource</span><span class="o">)</span>
 <span class="n">multibranchPipelineJob</span><span class="o">(</span><span class="s1">'PullRequests'</span><span class="o">)</span> <span class="o">{</span>

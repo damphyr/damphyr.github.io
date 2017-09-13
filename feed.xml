@@ -79,9 +79,37 @@ Not building the merge ref increases the probability of integration test breakag
 &lt;p&gt;The second snippet changes the location and filename that is used as Jenkinsfile.&lt;/p&gt;
 
 &lt;p&gt;Thus we get a multibranch pipeline job that polls BitBucket every minute, triggering the &amp;quot;Jenkinsfile&amp;quot; pipeline when it detects changes in open pull requests.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-groovy&quot; data-lang=&quot;groovy&quot;&gt;&lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xmlSources&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'&amp;lt;sources class=&quot;jenkins.branch.MultiBranchProject$BranchSourceList&quot;&amp;gt;&amp;lt;data&amp;gt;&amp;lt;jenkins.branch.BranchSource&amp;gt;&amp;lt;source class=&quot;com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSource&quot;&amp;gt;&amp;lt;serverUrl&amp;gt;https://bitbucket.zuehlke.com&amp;lt;/serverUrl&amp;gt;&amp;lt;credentialsId&amp;gt;f2361e6b-b8e0-dead-beef-5eed5bc1a59f&amp;lt;/credentialsId&amp;gt;&amp;lt;repoOwner&amp;gt;FOO&amp;lt;/repoOwner&amp;gt;&amp;lt;repository&amp;gt;bar&amp;lt;/repository&amp;gt;&amp;lt;traits&amp;gt;&amp;lt;com.cloudbees.jenkins.plugins.bitbucket.BranchDiscoveryTrait&amp;gt;&amp;lt;strategyId&amp;gt;1&amp;lt;/strategyId&amp;gt;&amp;lt;/com.cloudbees.jenkins.plugins.bitbucket.BranchDiscoveryTrait&amp;gt;&amp;lt;com.cloudbees.jenkins.plugins.bitbucket.OriginPullRequestDiscoveryTrait&amp;gt;&amp;lt;strategyId&amp;gt;2&amp;lt;/strategyId&amp;gt;&amp;lt;/com.cloudbees.jenkins.plugins.bitbucket.OriginPullRequestDiscoveryTrait&amp;gt;&amp;lt;/traits&amp;gt;&amp;lt;/source&amp;gt;&amp;lt;strategy class=&quot;jenkins.branch.DefaultBranchPropertyStrategy&quot;&amp;gt;&amp;lt;properties class=&quot;empty-list&quot;/&amp;gt;&amp;lt;/strategy&amp;gt;&amp;lt;/jenkins.branch.BranchSource&amp;gt;&amp;lt;/data&amp;gt;&amp;lt;owner class=&quot;org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject&quot; reference=&quot;../..&quot;/&amp;gt;&amp;lt;/sources&amp;gt;'&lt;/span&gt;
 
-&lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;factorySource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'&amp;lt;factory class=&quot;org.jenkinsci.plugins.workflow.multibranch.WorkflowBranchProjectFactory&quot;&amp;gt;&amp;lt;owner class=&quot;org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject&quot; reference=&quot;../..&quot;/&amp;gt;&amp;lt;scriptPath&amp;gt;Tools/jenkins/pipelines/PullRequest.groovy&amp;lt;/scriptPath&amp;gt;&amp;lt;/factory&amp;gt;'&lt;/span&gt;
+&lt;p&gt;&lt;em&gt;Addendum 2017/09/13&lt;/em&gt; &lt;/p&gt;
+
+&lt;h2&gt;Things break when faced with the real world&lt;/h2&gt;
+
+&lt;p&gt;The snippet configuring the &lt;a href=&quot;https://wiki.jenkins-ci.org/display/JENKINS/Bitbucket+Branch+Source+Plugin&quot;&gt;BitBucket Branch Source Plugin&lt;/a&gt; originally defined two traits. The first one was a branch discovery trait and it resulted in not only building a pull requests but also the source branch for the pull request as well. Chaos ensued and resources were wasted.&lt;/p&gt;
+
+&lt;p&gt;The code is now also formated for humans :).&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-groovy&quot; data-lang=&quot;groovy&quot;&gt;&lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xmlSources&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'''&amp;lt;sources class=&quot;jenkins.branch.MultiBranchProject$BranchSourceList&quot;&amp;gt;
+&amp;lt;data&amp;gt;&amp;lt;jenkins.branch.BranchSource&amp;gt;
+&amp;lt;source class=&quot;com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSource&quot;&amp;gt;
+&amp;lt;serverUrl&amp;gt;https://bitbucket.zuehlke.com&amp;lt;/serverUrl&amp;gt;
+&amp;lt;credentialsId&amp;gt;f2361e6b-b8e0-dead-beef-5eed5bc1a59f&amp;lt;/credentialsId&amp;gt;
+&amp;lt;repoOwner&amp;gt;FOO&amp;lt;/repoOwner&amp;gt;
+&amp;lt;repository&amp;gt;bar&amp;lt;/repository&amp;gt;
+&amp;lt;traits&amp;gt;
+&amp;lt;com.cloudbees.jenkins.plugins.bitbucket.OriginPullRequestDiscoveryTrait&amp;gt;
+&amp;lt;strategyId&amp;gt;2&amp;lt;/strategyId&amp;gt;
+&amp;lt;/com.cloudbees.jenkins.plugins.bitbucket.OriginPullRequestDiscoveryTrait&amp;gt;
+&amp;lt;/traits&amp;gt;
+&amp;lt;/source&amp;gt;
+&amp;lt;strategy class=&quot;jenkins.branch.DefaultBranchPropertyStrategy&quot;&amp;gt;
+&amp;lt;properties class=&quot;empty-list&quot;/&amp;gt;
+&amp;lt;/strategy&amp;gt;&amp;lt;/jenkins.branch.BranchSource&amp;gt;
+&amp;lt;/data&amp;gt;
+&amp;lt;owner class=&quot;org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject&quot; reference=&quot;../..&quot;/&amp;gt;&amp;lt;/sources&amp;gt;'''&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;factorySource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'''
+&amp;lt;factory class=&quot;org.jenkinsci.plugins.workflow.multibranch.WorkflowBranchProjectFactory&quot;&amp;gt;
+&amp;lt;owner class=&quot;org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject&quot; reference=&quot;../..&quot;/&amp;gt;
+&amp;lt;scriptPath&amp;gt;Tools/jenkins/pipelines/PullRequest.groovy&amp;lt;/scriptPath&amp;gt;&amp;lt;/factory&amp;gt;'''&lt;/span&gt;
 &lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sourcesNode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;XmlParser&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parseText&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xmlSources&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;factoryNode&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;XmlParser&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parseText&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;factorySource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;multibranchPipelineJob&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'PullRequests'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;

@@ -66,6 +66,8 @@ ul.posts span {
   text-align: justify;
   margin: 3em auto 2em;
   line-height: 1.5em;
+  width: calc(100% - 2em);
+  max-width: 60em;
 }
 .header {
   margin-bottom: 1em;
