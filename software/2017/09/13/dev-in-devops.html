@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>DevOps for development</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>DevOps for development</h1>
+<p class="meta">13 Sep 2017</p>
+
+<div class="post">
+<p><em>This post was started in May 2016, went on a sabbatical and is back having changed intent</em></p>
+
+<p>Back from the annual Zühlke Camp and some conversations keep bouncing around in my head.</p>
+
+<p>It has been about 5 years now that we started using Chef to drive infrastructure-as-code into our projects. The incentive that led to this is documented in a post back in <a href="/software/2011/02/04/managing-your-development-environment">February &#39;11</a>. Seems I have spent 5 years melting silver to make bullets.</p>
+
+<p>For a company like <a href="http://www.zuehlke.com">Zühlke</a> the use of provisioning tools like Chef might not be apparent from the start: It does not operate a data center, does not do traditional Ops<sup>1</sup> and does not deal with a large scale of server instances per project.</p>
+
+<p>What it does<sup>2</sup> (and really, really well I might add) is put together engineering teams that build high quality software which - when occasion warrants it - is correctly integrated into a system of electronic and mechanical components (which it also develops).</p>
+
+<p>What does that have to do with DevOps?</p>
+
+<h2>You now have two problems</h2>
+
+<p>Any software engineering team of significant size (arbitrarily defined as 5+ people) faces two problems:</p>
+
+<h3>Problem Number One: It works for me</h3>
+
+<p><img src="/images/spot-the-difference.jpg" alt="spot the difference"> You can&#39;t build the software, but your colleague next to you cannot reproduce the problem. You are reduced to playing &quot;Spot The Difference&quot; to figure out what is wrong.</p>
+
+<p>Few things are more frustrating than inconsistencies across your development infrastructure. It costs a lot of time and consequently money but it also has a severe psychological impact: <em>You can never be sure<sup>3</sup> if a green build really means there were no errors</em>.</p>
+
+<h3>Problem Number Two: Newbie Blues</h3>
+
+<p>You hire me to write code and I spent a week installing software, fiddling with settings and most importantly consume time of your already stressed developers because the installation guide the trainee wrote three years ago in Word is outdated and only the people working know exactly what is going on and how it fits together. </p>
+
+<p>Worse yet, there is only one guy who knows all the details and he&#39;s on holiday (true story).</p>
+
+<h2>Strategic advantage</h2>
+
+<p>A technology consultant firm like <a href="http://www.zuhelke.com">Zühlke</a> might not operate servers on scale, but it does engineering teams on scale, so the above mentioned problems become hurdles and the solution a strategic advantage in ensuring a high quality, high standards environment in the shortest time possible: The team hits the ground running.</p>
+
+<h2>Automation is codified expertise</h2>
+
+<p>I don&#39;t remember coining the phrase but it has been attributed to me probably because I keep repeating it.</p>
+
+<p>In a lot of ways automating is scaling your experts: Specific practices and solutions, especially in building and testing software systems can be automated, which means the computer takes over the boring, repetitive work.</p>
+
+<h2>Silver(ish) bullet</h2>
+
+<p>Both problems mentioned above are solved treating infrastructure as code and development environments as infrastructure: </p>
+
+<p>Consistency reduces discrepancies leading to faster defect localization. Automation accelerates onboarding.</p>
+
+<p>But just like regular expressions you have now introduced a whole other layer of complexity. You have <em>added</em> to your technology stack and this opens new issues.</p>
+
+<p>Maintenance and documentation, the bane of every software. We are surprised by how much work is required - <strong>every single time, for every piece of software we use</strong>.</p>
+
+<h2>The irony of doing</h2>
+
+<p>I complained loudly (at camp) that I spent a lot more time explaining things instead of doing what I used to do: explore bleeding edge technologies and learn new stuff.</p>
+
+<p>A colleague reposted with &quot;you&#39;re getting old mate, we have to get all that knowledge out of your head before you turn senile&quot;. Apart from the old part (sic!) his statement reflects a perfect irony: the more you do, the more you find yourself having to set aside time to explain what you did, <em>ending up doing less</em>.</p>
+
+<p>This post started as a highly technical tour of Chef usage for provisioning development environments. It turns out you get that out of the way in a couple of paragraphs.</p>
+
+<p>The technical foundations of all this are not the really interesting parts. They are tools, tools that enable better communication, better teamwork, better planning.</p>
+
+<p>What we aspire to is a team whose members have a common understanding of the system they are building and each member is enabled to develop, detect problems early and release on schedule. And we want that for every team.</p>
+
+<p>And this leads us back to what I consider DevOps to be all about<sup>4</sup>:</p>
+
+<ul>
+<li>Holistic system thinking</li>
+<li>No silos between disciplines</li>
+<li>Short/fast feedback loops</li>
+<li>High degree of automation</li>
+</ul>
+
+<p>Do you know what it actually means? It means we want higly motivated, educated people that have an interest in what they do and want to learn about every aspect of it. And we want these people to work together as a team, complementing each other in their tasks, learning all the way.</p>
+
+<p>Mutual respect, appreciation, reasonable hours, good pay and interesting problems. Software development is mostly about people.</p>
+
+<p>You didn&#39;t expect that, did you?</p>
+
+<hr>
+
+<p><sup>1</sup> Not quite true - basically Zühlke does not manage a data center but Ops are part of the portfolio of services offered. </p>
+
+<p><sup>2</sup> Marketing will hound me to the end of my days for that sentence. <a href="http://www.zuhelke.com">Zühlke</a> of course does more things. Great teams of great engineers building great software is my favourite though.</p>
+
+<p><sup>3</sup> Well, you can never be absolutely sure, that is a given - we are talking software development after all. But you should be <em>reasonably</em> sure.</p>
+
+<p><sup>4</sup>See what I did there? I used a hyped up marketing term to get you hooked and kept airily going on about abstracty this and thats vaguely within the broad marketing blanket of the term. At least I&#39;m nice enough to give you a definition at the end.</p>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

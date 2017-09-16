@@ -7,6 +7,98 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>DevOps for development</title>
+        <description>&lt;p&gt;&lt;em&gt;This post was started in May 2016, went on a sabbatical and is back having changed intent&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Back from the annual Zühlke Camp and some conversations keep bouncing around in my head.&lt;/p&gt;
+
+&lt;p&gt;It has been about 5 years now that we started using Chef to drive infrastructure-as-code into our projects. The incentive that led to this is documented in a post back in &lt;a href=&quot;/software/2011/02/04/managing-your-development-environment&quot;&gt;February &amp;#39;11&lt;/a&gt;. Seems I have spent 5 years melting silver to make bullets.&lt;/p&gt;
+
+&lt;p&gt;For a company like &lt;a href=&quot;http://www.zuehlke.com&quot;&gt;Zühlke&lt;/a&gt; the use of provisioning tools like Chef might not be apparent from the start: It does not operate a data center, does not do traditional Ops&lt;sup&gt;1&lt;/sup&gt; and does not deal with a large scale of server instances per project.&lt;/p&gt;
+
+&lt;p&gt;What it does&lt;sup&gt;2&lt;/sup&gt; (and really, really well I might add) is put together engineering teams that build high quality software which - when occasion warrants it - is correctly integrated into a system of electronic and mechanical components (which it also develops).&lt;/p&gt;
+
+&lt;p&gt;What does that have to do with DevOps?&lt;/p&gt;
+
+&lt;h2&gt;You now have two problems&lt;/h2&gt;
+
+&lt;p&gt;Any software engineering team of significant size (arbitrarily defined as 5+ people) faces two problems:&lt;/p&gt;
+
+&lt;h3&gt;Problem Number One: It works for me&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/spot-the-difference.jpg&quot; alt=&quot;spot the difference&quot;&gt; You can&amp;#39;t build the software, but your colleague next to you cannot reproduce the problem. You are reduced to playing &amp;quot;Spot The Difference&amp;quot; to figure out what is wrong.&lt;/p&gt;
+
+&lt;p&gt;Few things are more frustrating than inconsistencies across your development infrastructure. It costs a lot of time and consequently money but it also has a severe psychological impact: &lt;em&gt;You can never be sure&lt;sup&gt;3&lt;/sup&gt; if a green build really means there were no errors&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Problem Number Two: Newbie Blues&lt;/h3&gt;
+
+&lt;p&gt;You hire me to write code and I spent a week installing software, fiddling with settings and most importantly consume time of your already stressed developers because the installation guide the trainee wrote three years ago in Word is outdated and only the people working know exactly what is going on and how it fits together. &lt;/p&gt;
+
+&lt;p&gt;Worse yet, there is only one guy who knows all the details and he&amp;#39;s on holiday (true story).&lt;/p&gt;
+
+&lt;h2&gt;Strategic advantage&lt;/h2&gt;
+
+&lt;p&gt;A technology consultant firm like &lt;a href=&quot;http://www.zuhelke.com&quot;&gt;Zühlke&lt;/a&gt; might not operate servers on scale, but it does engineering teams on scale, so the above mentioned problems become hurdles and the solution a strategic advantage in ensuring a high quality, high standards environment in the shortest time possible: The team hits the ground running.&lt;/p&gt;
+
+&lt;h2&gt;Automation is codified expertise&lt;/h2&gt;
+
+&lt;p&gt;I don&amp;#39;t remember coining the phrase but it has been attributed to me probably because I keep repeating it.&lt;/p&gt;
+
+&lt;p&gt;In a lot of ways automating is scaling your experts: Specific practices and solutions, especially in building and testing software systems can be automated, which means the computer takes over the boring, repetitive work.&lt;/p&gt;
+
+&lt;h2&gt;Silver(ish) bullet&lt;/h2&gt;
+
+&lt;p&gt;Both problems mentioned above are solved treating infrastructure as code and development environments as infrastructure: &lt;/p&gt;
+
+&lt;p&gt;Consistency reduces discrepancies leading to faster defect localization. Automation accelerates onboarding.&lt;/p&gt;
+
+&lt;p&gt;But just like regular expressions you have now introduced a whole other layer of complexity. You have &lt;em&gt;added&lt;/em&gt; to your technology stack and this opens new issues.&lt;/p&gt;
+
+&lt;p&gt;Maintenance and documentation, the bane of every software. We are surprised by how much work is required - &lt;strong&gt;every single time, for every piece of software we use&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h2&gt;The irony of doing&lt;/h2&gt;
+
+&lt;p&gt;I complained loudly (at camp) that I spent a lot more time explaining things instead of doing what I used to do: explore bleeding edge technologies and learn new stuff.&lt;/p&gt;
+
+&lt;p&gt;A colleague reposted with &amp;quot;you&amp;#39;re getting old mate, we have to get all that knowledge out of your head before you turn senile&amp;quot;. Apart from the old part (sic!) his statement reflects a perfect irony: the more you do, the more you find yourself having to set aside time to explain what you did, &lt;em&gt;ending up doing less&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;This post started as a highly technical tour of Chef usage for provisioning development environments. It turns out you get that out of the way in a couple of paragraphs.&lt;/p&gt;
+
+&lt;p&gt;The technical foundations of all this are not the really interesting parts. They are tools, tools that enable better communication, better teamwork, better planning.&lt;/p&gt;
+
+&lt;p&gt;What we aspire to is a team whose members have a common understanding of the system they are building and each member is enabled to develop, detect problems early and release on schedule. And we want that for every team.&lt;/p&gt;
+
+&lt;p&gt;And this leads us back to what I consider DevOps to be all about&lt;sup&gt;4&lt;/sup&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Holistic system thinking&lt;/li&gt;
+&lt;li&gt;No silos between disciplines&lt;/li&gt;
+&lt;li&gt;Short/fast feedback loops&lt;/li&gt;
+&lt;li&gt;High degree of automation&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Do you know what it actually means? It means we want higly motivated, educated people that have an interest in what they do and want to learn about every aspect of it. And we want these people to work together as a team, complementing each other in their tasks, learning all the way.&lt;/p&gt;
+
+&lt;p&gt;Mutual respect, appreciation, reasonable hours, good pay and interesting problems. Software development is mostly about people.&lt;/p&gt;
+
+&lt;p&gt;You didn&amp;#39;t expect that, did you?&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; Not quite true - basically Zühlke does not manage a data center but Ops are part of the portfolio of services offered. &lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;2&lt;/sup&gt; Marketing will hound me to the end of my days for that sentence. &lt;a href=&quot;http://www.zuhelke.com&quot;&gt;Zühlke&lt;/a&gt; of course does more things. Great teams of great engineers building great software is my favourite though.&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;3&lt;/sup&gt; Well, you can never be absolutely sure, that is a given - we are talking software development after all. But you should be &lt;em&gt;reasonably&lt;/em&gt; sure.&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;4&lt;/sup&gt;See what I did there? I used a hyped up marketing term to get you hooked and kept airily going on about abstracty this and thats vaguely within the broad marketing blanket of the term. At least I&amp;#39;m nice enough to give you a definition at the end.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 13 Sep 2017 12:02:44 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2017/09/13/dev-in-devops</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/09/13/dev-in-devops</guid>
+      </item>
+    
+      <item>
         <title>Handling pull requests with Jenkins</title>
         <description>&lt;p&gt;My requirements for handling pull requests in CI are:&lt;/p&gt;
 
@@ -789,31 +881,6 @@ The script I used to detect the hotfix is &lt;/p&gt;
         <pubDate>Sat, 17 Oct 2015 14:02:44 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2015/10/17/windows-installations-virtual-machines</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2015/10/17/windows-installations-virtual-machines</guid>
-      </item>
-    
-      <item>
-        <title>Cars: To drive or not to drive?</title>
-        <description>&lt;p&gt;I don&amp;#39;t own a car and on the rare occasions I need one, I rent. So I get to drive lots of different cars and most of them brand new. In my daily slog I don&amp;#39;t use a car, it&amp;#39;s trains, trains, trains. Wouldn&amp;#39;t use a car even if I owned one. Which in hindsight is probably why I enjoy driving so much.&lt;/p&gt;
-
-&lt;p&gt;This summer I got to drive a lot in Greece and the UK. All the rentals came equiped with cruise control (for the curious: a Pegeuot 307, a Honda Jazz and a Ford Kuga) and initially the novelty of the feature was a fun game. Then I drove on the M62 in England and was glad for it because it made obeying the draconian speed limits simpler and easier. &lt;/p&gt;
-
-&lt;p&gt;The empty expanse of a three lane motorway stretched infront of me and begged me to drop my foot on the gas pedal like a lead weight. Cruise control kept me in check. And then I got bored. Driving isn&amp;#39;t really fun on the motorway.&lt;/p&gt;
-
-&lt;p&gt;I enjoy complex things and driving is one of the most complex activities we undertake: In a manual transmission car it requires the coordinated but independent actions of all four limbs while processing audio and visual sensory input and all of this moving at high speeds in a chaotic system. &lt;/p&gt;
-
-&lt;p&gt;An automatic transmission takes the left foot out of the equation, cruise control does the same for the right (for certain motorway stretches - don&amp;#39;t ever use cruise control on the mountains of Greece, it won&amp;#39;t turn out OK). &lt;/p&gt;
-
-&lt;p&gt;It&amp;#39;s an approximation of how it will feel in a self-driving car. Only it&amp;#39;s not, because you &amp;#39;re still on constant alert, actively scanning with peripheral vision, judging the relative speeds of cars in front, steering etc. All I can say is, bring me the self-driving car, I don&amp;#39;t like this stressful in-between state.&lt;/p&gt;
-
-&lt;p&gt;I am all for self-driving cars, even considering the &lt;a href=&quot;https://medium.com/basic-income/self-driving-trucks-are-going-to-hit-us-like-a-human-driven-truck-b8507d9c5961&quot;&gt;downsides&lt;/a&gt;. The benefits are overwhelming.&lt;/p&gt;
-
-&lt;p&gt;Imagine an electric self-driving car: It needs no transmission, no pedals, no steering wheel. It can be symmetric, doesn&amp;#39;t need to have a designated front or back. It&amp;#39;s going to be lighter and roomier, will move faster through roads with no traffic jams, consume less energy and have better active/passive safety than anything with a slightly sleepy, distracted driver.&lt;/p&gt;
-
-&lt;p&gt;Driving should be consigned to a hobby, much like riding horses is. Riding horses is unarguably the more useful skill to have in a post-apocalyptic society but I find the complexity of driving appealing.&lt;/p&gt;
-</description>
-        <pubDate>Sun, 30 Aug 2015 14:00:00 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/rumblings/2015/08/30/cars-to-drive-or-not-to-drive</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/rumblings/2015/08/30/cars-to-drive-or-not-to-drive</guid>
       </item>
     
   </channel>
