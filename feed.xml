@@ -7,6 +7,27 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>ForgetMeNot: Kill Jenkins Zombies</title>
+        <description>&lt;p&gt;With the new &lt;a href=&quot;/software/2017/09/09/handling-pull-requests/&quot;&gt;multibranch PR jobs&lt;/a&gt; we&amp;#39;ve noticed that some jobs for closed PRs were kept although we are very strict with cleaning up after the jobs (a legacy of an unwieldy and bloated repo).&lt;/p&gt;
+
+&lt;p&gt;The multibranch scan log claimed that jobs were still running and therefore the PR jobs could not be deleted. This was indeed the case. Although no process was running and Jenkins had been restarted a couple of times, there was seemingly no way of getting rid of these zombies.&lt;/p&gt;
+
+&lt;p&gt;Open the script console (from the &amp;#39;Manage Jenkins&amp;#39; page) and type &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;Jenkins.instance.getItemByFullName(&quot;JobName&quot;).getBuildByNumber(JobNumber)
+.finish(hudson.model.Result.ABORTED, new java.io.IOException(&quot;Aborting build&quot;));
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;replacing JobName with the name of your job and JobNumber with the number of the build job you want to terminate.&lt;/p&gt;
+
+&lt;p&gt;And that is how you kill the Jenkins zombies.&lt;/p&gt;
+
+&lt;p&gt;I&amp;#39;ve obviously googled that...&lt;/p&gt;
+</description>
+        <pubDate>Tue, 19 Sep 2017 19:14:44 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2017/09/19/forget-me-not-kill-jenkins-zombies</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/09/19/forget-me-not-kill-jenkins-zombies</guid>
+      </item>
+    
+      <item>
         <title>DevOps for development</title>
         <description>&lt;p&gt;&lt;em&gt;This post was started in May 2016, went on a sabbatical and is back having changed intent&lt;/em&gt;&lt;/p&gt;
 
@@ -818,69 +839,6 @@ The script I used to detect the hotfix is &lt;/p&gt;
         <pubDate>Tue, 16 Feb 2016 14:02:44 +0100</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2016/02/16/damn-you-vs</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2016/02/16/damn-you-vs</guid>
-      </item>
-    
-      <item>
-        <title>Windows Installations & Virtual Machines</title>
-        <description>&lt;p&gt;&lt;em&gt;This post was originally written in July 2014 and then lounged in the dusty, dark recesses of my disk because... Windows. The hindsight of a whole year of using the Packer/Vagrant/Chef workflow led to minor updates, which speaks for the applicability of the approach&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Automating Windows installations is hard!&lt;/p&gt;
-
-&lt;p&gt;Maybe hard is not the right word. &amp;#39;Unecessarily complicated&amp;#39;, &amp;#39;obfuscated&amp;#39;, &amp;#39;frustrating&amp;#39; come to mind&lt;sup&gt;1&lt;/sup&gt;. Sometimes, for certain, not so stelarly engineered solutions the word &amp;#39;impossible&amp;#39; creeps around the corner.&lt;/p&gt;
-
-&lt;p&gt;And yet things have never been better for anyone trying to solve the riddle. All the tools are there and while looking at the *ix solutions you wish for a lot of things (like a decent shell, or no registry, or a standardized way for installer parameters, or a package repository or...you get my drift) &amp;#39;impossible&amp;#39; has had to hide in some really obscure corners.&lt;/p&gt;
-
-&lt;h2&gt;Installation drudgery&lt;/h2&gt;
-
-&lt;p&gt;I can&amp;#39;t even begin to estimate the times I have installed Windows from scratch. It became tedious very, very fast but there was no release in sight for a long time.&lt;/p&gt;
-
-&lt;p&gt;With the advent of desktop virtualization and laptops that can accomodate a couple of Windows VMs running concurrently I follow the practice of keeping one pristine Windows installation&lt;sup&gt;2&lt;/sup&gt; at hand and a bootstrap package of command files that install the latest &lt;a href=&quot;http://chefdk.com&quot;&gt;ChefDK&lt;/a&gt;, an SVN client and git for Windows.&lt;/p&gt;
-
-&lt;p&gt;The workflow as it stands:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Copy the VM&lt;/li&gt;
-&lt;li&gt;Boot the VM and perform any outstanding updates (this includes Windows and the virtualization tools &amp;amp; drivers)&lt;/li&gt;
-&lt;li&gt;Copy the bootstrap package over and run the command file&lt;/li&gt;
-&lt;li&gt;Checkout/clone the repository with all my Windows recipes&lt;/li&gt;
-&lt;li&gt;Run Chef to provision the VM&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2&gt;Not enough (?)&lt;/h2&gt;
-
-&lt;p&gt;VMs are bulky. With a dynamically growing disk a vanilla Windows VM ways in at about 20GB. Add to that the software for toolchains etc. and it grows very large indeed (my current C/C++ embedded environment weights in at 50GB).&lt;/p&gt;
-
-&lt;p&gt;You can&amp;#39;t expect everyone to download it every time it changes so the case for immutable infrastructure when creating development environments is not very strong. Also, developers tend to have a lot of half-finished and ongoing work on disk which means you can&amp;#39;t really throw away the VM when updating, you have to do an incremental update for user friendliness sake.&lt;/p&gt;
-
-&lt;p&gt;A properly configured Windows base box is smaller (about 5GB) and we can skip the time it takes to create it from an .iso, because, well, we don&amp;#39;t do it very often.&lt;/p&gt;
-
-&lt;p&gt;Create the base box using &lt;a href=&quot;http://www.packer.io&quot;&gt;Packer&lt;/a&gt;, add a Vagrantfile to the repository and host the base box in a known location and we have the capability to recreate the development environment.&lt;/p&gt;
-
-&lt;p&gt;How much goes into the base box in terms of software and configuration is your choice but vanilla installations work best, especially with Windows (you get the benefit of having a pristine registry database).&lt;/p&gt;
-
-&lt;p&gt;Keep in mind that you have to update the base box regularly to avoid the massive Windows Update penalty when creating new VM instances. Automating the creation process with Packer is thankfully very easy and can be delegated to a CI/cron job.&lt;/p&gt;
-
-&lt;p&gt;Everything else is done with Chef and a bit of powershell (to bootstrap Chef from Vagrant). To help with that we have a cookbook by the name of &lt;a href=&quot;https://github.com/Zuehlke/cookbook-windev&quot;&gt;windev&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;So the workflow becomes&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;vagrant up&lt;/li&gt;
-&lt;li&gt;Run Chef to provision the VM&lt;/li&gt;
-&lt;li&gt;Go back to 2. when necessary&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;We still haven&amp;#39;t solved the performance problem. It takes a long time to start a VM and the traditional desktop hypervisors hog a lot of resources. Docker is not a viable solution because Windows, so we have a case of serious OS envy.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; After years of deliberation I am convinced that the Windows Registry is among the top 5 of  engineering solutions that on hindsight revealed themselves as colossal PITA mistakes. It may even occupy the top spot, but then, I&amp;#39;m biased.&lt;/p&gt;
-
-&lt;p&gt;&lt;sup&gt;2&lt;/sup&gt; Meaning just a vanilla installation with no additional software other than the latest Microsoft patches.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 17 Oct 2015 14:02:44 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2015/10/17/windows-installations-virtual-machines</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2015/10/17/windows-installations-virtual-machines</guid>
       </item>
     
   </channel>
