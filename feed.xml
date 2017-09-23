@@ -7,6 +7,23 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Rutema 2.0.0!</title>
+        <description>&lt;p&gt;It has been over ten years since the initial version of &lt;a href=&quot;http://www.ampelofilosofies.gr/rutema&quot;&gt;rutema&lt;/a&gt; saw the light, nine since it hit 1.0, five since the last official update of the gem and a full two years since I rewrote the engine.&lt;/p&gt;
+
+&lt;p&gt;Fifteen release candidate versions and - at long last - bugfixes and contributions by other people!&lt;/p&gt;
+
+&lt;p&gt;There is only one thing to say about this code: It is stable. &lt;/p&gt;
+
+&lt;p&gt;It has been filed down over the years, it has been in constant use for the entirety of its existence and it has been a tremendously useful tool in realizing highly complex test automation scenarios.&lt;/p&gt;
+
+&lt;p&gt;Also: &lt;strong&gt;oh my god, it has been ten years!!!&lt;/strong&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sat, 23 Sep 2017 15:14:21 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2017/09/23/rutema-two-oh</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/09/23/rutema-two-oh</guid>
+      </item>
+    
+      <item>
         <title>ForgetMeNot: Kill Jenkins Zombies</title>
         <description>&lt;p&gt;With the new &lt;a href=&quot;/software/2017/09/09/handling-pull-requests/&quot;&gt;multibranch PR jobs&lt;/a&gt; we&amp;#39;ve noticed that some jobs for closed PRs were kept although we are very strict with cleaning up after the jobs (a legacy of an unwieldy and bloated repo).&lt;/p&gt;
 
@@ -777,68 +794,6 @@ The script I used to detect the hotfix is &lt;/p&gt;
         <pubDate>Mon, 30 May 2016 12:22:44 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2016/05/30/jenkins-cli-authentication</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2016/05/30/jenkins-cli-authentication</guid>
-      </item>
-    
-      <item>
-        <title>Damn you Visual Studio</title>
-        <description>&lt;p&gt;&lt;em&gt;I&amp;#39;m not being lazy, the bloody piece of shite is compiling&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Today was a day of deep learning, which is to say that nothing, but absolutely nothing worked as it was supposed to and it took ages to figure out why.&lt;/p&gt;
-
-&lt;p&gt;As of last Friday my project is maintaining two trunks of a rapidly diverging code base - one for the current generation of hardware designated support and master for whatever is coming next.&lt;/p&gt;
-
-&lt;p&gt;Adapting our CI was as simple as cloning the build job pipeline and telling git to check out a different branch. And that worked for about 2 builds at which point the first gate keeper that checks the integration of device and host PC started failing for the support builds.&lt;/p&gt;
-
-&lt;p&gt;The error came from our host tools, which are written in C# and it provoked a big, loud &amp;quot;WAT?&amp;quot; as per the initial &lt;a href=&quot;http://plasmasturm.org/log/6debug/&quot;&gt;stages of debugging&lt;/a&gt; since it was a &amp;quot;I can&amp;#39;t load type so-and-so in assembly so-and-so&amp;quot; for a type that was definitely nowhere to be found in the sources.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/wat.jpg&quot; alt=&quot;wat?!?&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;Here I have to diverge and explain that we are exposing part of the C# .NET funtionality over COM for use in Ruby scripts and for that reason in the test stages the system registers a couple of assemblies using regasm.&lt;/p&gt;
-
-&lt;p&gt;Now, the system includes 3 C/C++ compilers, python, tcl, ruby, a whole bunch of DSL generation steps in addition to the msbuild invocations so for convenience and speed the clean step is removing the directory where the build artifacts are saved.&lt;/p&gt;
-
-&lt;p&gt;I am a big fan of out-of-band builds (builds that do not mix sources with artifacts) and the fast, permanent and - up until now - reliable clean function is one of my favorite features.&lt;/p&gt;
-
-&lt;p&gt;Trust msbuild to find a way to work around this. So what happened?&lt;/p&gt;
-
-&lt;h2&gt;Cause&lt;/h2&gt;
-
-&lt;p&gt;The cuplrit is called &lt;strong&gt;IntermediateOutputPath&lt;/strong&gt; and is a setting in Visual Studio project files that tells Visual Studio where to place the object files created by it&amp;#39;s compiler before linking. It&amp;#39;s that obj directory that pops up whenever you press F7.&lt;/p&gt;
-
-&lt;p&gt;There is no way to set this in the project properties as far as I know. You have to edit the .csproj file and add it, which is what we do (like I said &lt;em&gt;out-of-band&lt;/em&gt; builds).&lt;/p&gt;
-
-&lt;p&gt;It seems that under certain circumstances (which I have not been able to recreate yet) Visual Studio takes it upon itself to change the value of this parameter.&lt;/p&gt;
-
-&lt;p&gt;It then sets it to a random temporary directory using ENV[TEMP] as the basis and puts that value in the .csproj file which obviously gets commited.&lt;/p&gt;
-
-&lt;p&gt;And this happened in an indeterminate point in the past before we ever had multiple trunks.&lt;/p&gt;
-
-&lt;h2&gt;Effect&lt;/h2&gt;
-
-&lt;p&gt;Switch now to the main build server who in the alleged security of out-of-band builds attempts to build both trunks.&lt;/p&gt;
-
-&lt;p&gt;Given a team that commits rapidly on the master branch clearing technical debt and sparingly on the support branch, you will very quickly reach the point where the sources on the support branch are by definition older than the corresponding object files in said &amp;quot;temporary&amp;quot; directory.&lt;/p&gt;
-
-&lt;p&gt;But msbuild doesn&amp;#39;t know that. It sees newer object files and hapilly goes &amp;quot;I don&amp;#39;t have to build this, hihi&amp;quot; and links some random piece of code for you. And since you&amp;#39;re an idiot and forgot to de-register the assembly before building any type mismatches are not reported by the linker. Hilarity ensues.&lt;/p&gt;
-
-&lt;h2&gt;Lessons learned&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;This is a fine example of the evils of shared state.&lt;/li&gt;
-&lt;li&gt;Not one tool vendor has really thought about building things in parallel.&lt;/li&gt;
-&lt;li&gt;Always do clean builds on your CI.
-
-&lt;ul&gt;
-&lt;li&gt;Containers are nice, but...Windows.&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Never assume the tool knows better and never assume you cleaned up everything.&lt;/li&gt;
-&lt;li&gt;Visual Studio is evil.&lt;/li&gt;
-&lt;li&gt;There is always something you missed. Have multiple levels of testing.&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Tue, 16 Feb 2016 14:02:44 +0100</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2016/02/16/damn-you-vs</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2016/02/16/damn-you-vs</guid>
       </item>
     
   </channel>
