@@ -7,6 +7,55 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>gaudi 1.0.0</title>
+        <description>&lt;p&gt;Four years ago, almost to the day (the first commit was on the 15th November 2013) I took the work of about a year and a half, spent a week cleaning it up and rewriting and then put it up on GitHub.&lt;/p&gt;
+
+&lt;p&gt;gaudi started as a build system for a very specific and opinionated way of building C: The code organized in small self-contained &amp;quot;units&amp;quot; we so conveniently/confusingly named components, all options concentrated in one place, everything text based and one very consistent user interface thanks to rake.&lt;/p&gt;
+
+&lt;p&gt;The intentions from the beginning were the clear mapping of an architecture (N layers and componetized) on the source directory structure, the single source of truth for configuration options, and the simplicity of rake in creating a consistent usage model. Boy did it prove powerful.&lt;/p&gt;
+
+&lt;p&gt;I spent the next couple of years building all-encompassing systems around systems on that simple basis. Consistent, repeatable, all knowing, all measuring build/test/deploy/release juggernauts across toolchains and platforms&lt;sup&gt;1/&lt;sup&gt;.&lt;/p&gt;
+
+&lt;p&gt;And then there were no more C/C++ projects. But there was a project with Java and some wierd XML compiler stuff and half a dozen other tools and also massive amounts of data shunted through Jenkins via shell scripts and everything had to go to the cloud.&lt;/p&gt;
+
+&lt;p&gt;And then another project with .NET, but also angular and grunt and gradle and msbuild and at first impression every other technology under the sun mixed in a cement mixer after being pounded by Mjölnir.&lt;/p&gt;
+
+&lt;p&gt;And then that client that was adamant that Ruby could not be used, and it had to be Python&lt;sup&gt;2&lt;/sup&gt;. &lt;/p&gt;
+
+&lt;p&gt;The same concepts, wildly different technologies, every case bordering on total chaos. It served as a focusing lens. And so we come to gaudi 1.0.0.&lt;/p&gt;
+
+&lt;p&gt;I am insanely proud of this gaudi release: It&amp;#39;s the first time in my career I ship something *&lt;em&gt;by removing 70% of the features and code and repackaging&lt;/em&gt;. It is my love of deleting code made manifest :)&lt;/p&gt;
+
+&lt;p&gt;The code itself is not important. Copy it, port it, throw it away. I dare you to find a language/tool combo that is better suited to this task than Ruby/rake - I&amp;#39;ve tried them all: graddle, grunt, gulp, ant, cmake, make, nmake, dmake, maven, scons. The list is long. Only Elixir/mix comes close.&lt;/p&gt;
+
+&lt;p&gt;I&amp;#39;m old, and I like Ruby and this code has worked for over 5 years across all 1.9 and 2.x versions of Ruby. Still not the important part.&lt;/p&gt;
+
+&lt;p&gt;The important part was &lt;a href=&quot;https://github.com/damphyr/gaudi/blob/master/doc/BUILDSYSTEMS.md&quot;&gt;the distinction between build system and build management system&lt;/a&gt;, also discussed previously in &lt;a href=&quot;/software/2014/07/17/vars-build-rules&quot;&gt;VAR&amp;#39;s build rules&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;And the other one is the &lt;a href=&quot;https://github.com/damphyr/gaudi/blob/master/doc/ASPIRATIONS.md&quot;&gt;list of aspirations&lt;/a&gt;. Theory in bullet points if you will, but oh so important if you ever want to get a team on board.&lt;/p&gt;
+
+&lt;p&gt;There are more things that belong to this list, I just haven&amp;#39;t finished the distillation process. The core will not get any additional features apart from some self-documenting tasks. &lt;/p&gt;
+
+&lt;p&gt;What I think is possible is taking the idea behind gaudi-c (code substrate for an opinionated methodology) and applying it to the areas of responsibility of a build system with an eye toward building &lt;em&gt;systems&lt;/em&gt; as opposed to &lt;em&gt;technologies&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/BuildSystem.png&quot; alt=&quot;Areas of Responsibility&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;A &amp;quot;blue&amp;quot; module is almost too easy considering &lt;a href=&quot;https://github.com/damphyr/rutema&quot;&gt;rutema&lt;/a&gt; is based on a similar set of principles with a narrower application domain.&lt;/p&gt;
+
+&lt;p&gt;But in the end it is all glorified batch processing of command lines placed at various points of an acyclical dependency graph. So much fun!&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; I had already worked myself up to the corner of &amp;quot;the automation guy&amp;quot; but this was the all-in. I can code in a dozen programming languages, have written bootloaders in C, web services in Java, .NET and Ruby, daemons for Linux, a persistency layer in Java, remote control software for locomotives but I am now &amp;quot;the build system&amp;quot; guy. Worse, I am the &amp;quot;devops guy&amp;quot;. But that is a rant for another time.&lt;/p&gt;
+
+&lt;p&gt;&lt;sup&gt;2&lt;/sup&gt;That hurt, not because of Ruby vs. Python, but because of rake vs. absolutely-nothing-approaching-usable.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 29 Nov 2017 14:14:21 +0100</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2017/11/29/gaudi-one-oh</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/11/29/gaudi-one-oh</guid>
+      </item>
+    
+      <item>
         <title>Simple Cooking: Κολοκυθοτυρόπιτα της ξενιτιάς</title>
         <description>&lt;p&gt;Ένα από τα πράγματα που μου λείπουν έντονα στην ξενιτιά είναι οι πίτες. &lt;/p&gt;
 
@@ -592,188 +641,6 @@ parallel subjobs
         <pubDate>Wed, 04 Jan 2017 16:19:44 +0100</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2017/01/04/there-are-no-rules</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/01/04/there-are-no-rules</guid>
-      </item>
-    
-      <item>
-        <title>Windows 7 Update Hell</title>
-        <description>&lt;h2&gt;Death by a thousand updates&lt;/h2&gt;
-
-&lt;p&gt;I don&amp;#39;t know if you noticed, but Microsoft broke Windows Update back in April. I didn&amp;#39;t, at least not until it was October.&lt;/p&gt;
-
-&lt;p&gt;Luckily by then the Internetz had found a solution. Not that it is an easy one, or an elegant one.&lt;/p&gt;
-
-&lt;p&gt;It involves downloading 3 specific MS hotfixes. If you look around the net you will find a different set of hotfixes required, depending on when the posts where written.&lt;/p&gt;
-
-&lt;p&gt;It seems this Windows Update thing broke, got patched, broke again, got patched again and then broke again between April and September, so here is the set of hotfixes that works as of December 2016. It might change in a few months.&lt;/p&gt;
-
-&lt;p&gt;Also, it seems this is not your final solution if you want &lt;a href=&quot;http://www.infoworld.com/article/3099109/microsoft-windows/microsoft-yanks-buggy-speed-up-patch-kb-3161608-replaces-it-with-kb-3172605-and-3172614.html&quot;&gt;working Bluetooth on an Intel chipset&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2&gt;Windows 7&lt;/h2&gt;
-
-&lt;p&gt;But, it is EOL you will say. It is not available through OEMs you will say. To this I answer: Industry is sluggish, embedded development more so, regulated software development even more so. So we get to enjoy Win7 for a while longer.&lt;/p&gt;
-
-&lt;p&gt;Also, anything after Win7 sucks big time as an embedded software development environment.&lt;/p&gt;
-
-&lt;p&gt;The 100% CPU bug afflicts Win10 as well, but for my scenarios it suffices to use the anniversary edition to work around it.&lt;/p&gt;
-
-&lt;h2&gt;The solution&lt;/h2&gt;
-
-&lt;p&gt;You need &lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://support.microsoft.com/en-us/kb/3020369&quot;&gt;KB3020369&lt;/a&gt;: April 2015 rollup update. So that the convenience rollup update &lt;em&gt;can&lt;/em&gt; install.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://support.microsoft.com/en-us/kb/3125574&quot;&gt;KB3125574&lt;/a&gt;: the April 2016 convenience rollup, which is what MS calls whatever should have been Win7 SP2, but cannot be called a service pack since it came out way after MS said it will not support Win7 anymore.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;and finally&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://support.microsoft.com/en-us/kb/3172605&quot;&gt;KB3172605&lt;/a&gt; which is the actual fix for the &amp;quot;My CPU is pegged to 100% load for days while looking for windows updates&amp;quot; problem.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;After that you can attempt to re-enable Windows Update.&lt;/p&gt;
-
-&lt;h2&gt;Automation Hell&lt;/h2&gt;
-
-&lt;p&gt;I am a proponent of vanila OS installations, &lt;a href=&quot;software/2015/10/17/windows-installations-virtual-machines&quot;&gt;especially for Windows&lt;/a&gt;
-and I have regular automated builds to produce fresh Vagrant baseboxes with Packer.&lt;/p&gt;
-
-&lt;p&gt;Getting the procedure described here with Packer involved a lot of trial and error and a lot of time.&lt;/p&gt;
-
-&lt;p&gt;Things I learned:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;You cannot install offline updates with the windows-shell provisioner since it uses WinRM and on Windows7 the update agent (wusa.exe) does not have to correct access rights.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;This meant that the update installers had to be executed locally within the VM. &lt;/p&gt;
-
-&lt;h3&gt;First approach&lt;/h3&gt;
-
-&lt;p&gt;Copy the installer in the VM (using the &lt;a href=&quot;https://www.packer.io/docs/provisioners/file.html&quot;&gt;&amp;#39;file&amp;#39;&lt;/a&gt; provisioner) and use &lt;a href=&quot;https://www.packer.io/docs/provisioners/shell-local.html&quot;&gt;&amp;#39;shell-local&amp;#39;&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;To get &amp;#39;shell-local&amp;#39; to work you have to provide the shell executable (as it uses /bin/sh per default)&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;shell-local&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;command&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;wusa.exe MyUPDATE.msu /quiet /norestart&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-   &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;execute_command&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;cmd.exe&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/C&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{\{.Command\}}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
- &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Unfortunately .msu installers can exit with a variety of non-zero exit codes, 3010 being the one that indicates a reboot is needed. This messes up things.&lt;/p&gt;
-
-&lt;p&gt;Also, copying the large convenience rollup update with the &amp;#39;file&amp;#39; provisioner failed consistently for some reason (it&amp;#39;s a big 500MB file - the rest all copied over with no issues), resulting in a 0 bytes entry and no error on the packer side. &lt;/p&gt;
-
-&lt;p&gt;So this didn&amp;#39;t work.&lt;/p&gt;
-
-&lt;h3&gt;Second approach&lt;/h3&gt;
-
-&lt;p&gt;It was more like the fifth try to be honest. Lots of dead ends.&lt;/p&gt;
-
-&lt;p&gt;The one that worked:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Download the installer from within the VM.&lt;/li&gt;
-&lt;li&gt;Create a schedule task to install it on logon.&lt;/li&gt;
-&lt;li&gt;Reboot.&lt;/li&gt;
-&lt;li&gt;Go into a loop till the hotfix shows up in the list of installed updates (or you timeout).&lt;/li&gt;
-&lt;li&gt;Rinse and repeat.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Kludgy, complicated and slow, but it works reliably.
-The script I used to detect the hotfix is &lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;c1&quot;&gt;#it looks for HOTFIX_ID (KBxxxxx) in the list of installed hotfixes &lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#and goes in a loop until it shows up or the counter runs out&lt;/span&gt;
-
-&lt;span class=&quot;nv&quot;&gt;$id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$env&lt;/span&gt;:HOTFIX_ID
-&lt;span class=&quot;nv&quot;&gt;$max_tries&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=[&lt;/span&gt;Int32]&lt;span class=&quot;nv&quot;&gt;$env&lt;/span&gt;:HOTFIX_DETECT_TRIES
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$max_tries&lt;/span&gt; -eq 0&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
-  &lt;span class=&quot;nv&quot;&gt;$max_tries&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;90
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$counter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0
-&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$counter&lt;/span&gt; -lt &lt;span class=&quot;nv&quot;&gt;$max_tries&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;get-hotfix -id &lt;span class=&quot;nv&quot;&gt;$id&lt;/span&gt; -EA SilentlyContinue&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nv&quot;&gt;$counter&lt;/span&gt;+&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
-    &lt;span class=&quot;nb&quot;&gt;Start-Sleep &lt;/span&gt;5
-  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; 
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$counter&lt;/span&gt; -eq &lt;span class=&quot;nv&quot;&gt;$max_tries&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Timed out waiting for &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$id&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; - tried &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$counter&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; times&quot;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;exit &lt;/span&gt;1
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;and this is how it&amp;#39;s called from Packer:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;powershell&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;environment_vars&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;HOTFIX_ID=KB3125574&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;HOTFIX_DETECT_TRIES=240&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;script&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;script/detect-hotfix-install.ps1&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2&gt;Groundhog Day: Chef&lt;/h2&gt;
-
-&lt;p&gt;Like I said, I like vanila OS installs and deal with VMs and bare metal installations. Also with some old installations that have been working non-stop for years. And since they are not internet facing, nobody really bothered to update them. Well, everyone who tried recently gave up and went home crying.&lt;/p&gt;
-
-&lt;p&gt;So I can&amp;#39;t rely on a recently patched version or a freshly produced basebox all the time.&lt;/p&gt;
-
-&lt;p&gt;Which means I needed to re-implement the above as a Chef recipe:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;msu_installers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;msu_installers&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,{})&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;unless&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;msu_installers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;empty?&lt;/span&gt;
-
-  &lt;span class=&quot;n&quot;&gt;reboot&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Restart Computer'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;action&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:nothing&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-  &lt;span class=&quot;n&quot;&gt;msu_sequence&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;msu_sequence&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,[])&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;msu_sequence&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msu_name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;pkg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msu_installers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;msu_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pkg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;source&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;windev_cache_package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pkg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;save_as&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;source&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pkg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;source&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;depot&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'software_depot'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;installer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;software_depot&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pkg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'save_as'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;ruby_block&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;installer_exists&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;block&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-          &lt;span class=&quot;k&quot;&gt;raise&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Installer &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;expand_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;installer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; not found&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;unless&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;exist?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;expand_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;installer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;action&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:run&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;powershell_script&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Install &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pkg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;wusa.exe &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pkg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;save_as&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; /quiet /norestart&quot;&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;action&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:run&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;not_if&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;get-hotfix -id &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pkg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; -EA SilentlyContinue&quot;&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;notifies&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:reboot_now&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'reboot[Restart Computer]'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:immediately&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The JSON with the attributes looks like:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;s2&quot;&gt;&quot;msu_installers&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
-  &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;KB3020369&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:{&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;source&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;URL&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;save_as&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Windows6.1-KB3020369-x64.msu&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;KB3020369&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;KB3125574&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:{&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;source&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;URL&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;save_as&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;windows6.1-kb3125574-foo.msu&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;KB3125574&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;KB3172605&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:{&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;source&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;URL&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;save_as&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Windows6.1-KB3172605-x64.msu&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;KB3172605&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;msu_sequence&quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;KB3020369&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;KB3125574&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;KB3172605&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;To use this you will need the &lt;a href=&quot;https://supermarket.chef.io/cookbooks/windev#readme&quot;&gt;windev cookbook&lt;/a&gt; and you have to also use the auto_chef recipe to handle reboots (if you use Chef without a Chef Server, like I do).&lt;/p&gt;
-</description>
-        <pubDate>Wed, 28 Dec 2016 11:22:44 +0100</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2016/12/28/windows-update-hell</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2016/12/28/windows-update-hell</guid>
       </item>
     
   </channel>
