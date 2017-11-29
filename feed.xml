@@ -24,7 +24,7 @@
 
 &lt;p&gt;The same concepts, wildly different technologies, every case bordering on total chaos. It served as a focusing lens. And so we come to gaudi 1.0.0.&lt;/p&gt;
 
-&lt;p&gt;I am insanely proud of this gaudi release: It&amp;#39;s the first time in my career I ship something *&lt;em&gt;by removing 70% of the features and code and repackaging&lt;/em&gt;. It is my love of deleting code made manifest :)&lt;/p&gt;
+&lt;p&gt;I am insanely proud of this gaudi release: It&amp;#39;s the first time in my career I ship something &lt;strong&gt;by removing 70% of the features and code and repackaging&lt;/strong&gt;. It is my love of deleting code made manifest :)&lt;/p&gt;
 
 &lt;p&gt;The code itself is not important. Copy it, port it, throw it away. I dare you to find a language/tool combo that is better suited to this task than Ruby/rake - I&amp;#39;ve tried them all: graddle, grunt, gulp, ant, cmake, make, nmake, dmake, maven, scons. The list is long. Only Elixir/mix comes close.&lt;/p&gt;
 
