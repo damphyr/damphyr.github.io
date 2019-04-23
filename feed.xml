@@ -7,6 +7,58 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>ForgetMeNot: Git Submodules</title>
+        <description>&lt;p&gt;I&amp;#39;m more likely to choose a monorepo solution if possible and I generally dislike the submodule feature in git but as always there are valid use cases (e.g. think about building a platform instead of a system).&lt;/p&gt;
+
+&lt;p&gt;So I put git submodules to work and immediately started doing the same mistake again and again: typos in the directory name for the module.&lt;/p&gt;
+
+&lt;p&gt;Now, just changing the entries in the .gitmodules file is not enough to get the module out of the way, we also need to remove the repository index entries.&lt;/p&gt;
+
+&lt;p&gt;To cleanly remove a git submodule you need the following:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git submodule deinit module
+git rm typoed_module_dir
+git commit -m &lt;span class=&quot;s2&quot;&gt;&quot;Removed submodule module&quot;&lt;/span&gt;
+rm -rf .git/modules/typoed_module_dir
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You then add the submodule back (after you have checked the spelling this time) and obviously explicitly set the branch and the checkout directory so that you can verify everything is typed correctly.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git submodule add -b master https://git.host/module.git CorrectlySpelledDir
+git submodule init
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        <pubDate>Sun, 17 Mar 2019 10:15:21 +0000</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2019/03/17/forgetmenot-git-submodules</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2019/03/17/forgetmenot-git-submodules</guid>
+      </item>
+    
+      <item>
+        <title>On laziness</title>
+        <description>&lt;p&gt;I am a lazy person. Apparently this is not unusual, on the contrary &lt;a href=&quot;https://www.sciencedirect.com/science/article/pii/S0028393218303981&quot;&gt;recently published research&lt;/a&gt; indicates this is the default setting for humans.&lt;/p&gt;
+
+&lt;p&gt;I&amp;#39;m also a software developer, so according to Larry Wall I already posess one of the three great virtues (the other two being impatience and hubris) required for greatness. And I have to say my innate tendency to avoid work has helped immensely in shaping my career and success as a software developer.&lt;/p&gt;
+
+&lt;p&gt;The funny thing is, it took a lot of work. I am a lazy person with 20 years hard work behind him. Most of it is relabeling work as fun.&lt;/p&gt;
+
+&lt;p&gt;A small aside on language: In Greek, there are two words for work, &amp;quot;δουλειά&amp;quot; and &amp;quot;εργασία&amp;quot;. The first one shares the same root as the word for slavery, the second shares the root with the word for project (also the root that leads to English words like ergonomics). There is a clear distinction between work you &lt;em&gt;have&lt;/em&gt; to do (&amp;quot;δουλειά&amp;quot;) and work that contributes something (&amp;quot;έργο&amp;quot;).&lt;/p&gt;
+
+&lt;p&gt;So, with this in mind, as long as I work to contribute (&amp;quot;εργάζομαι&amp;quot;) instead of having to work (&amp;quot;δουλεύω&amp;quot;) all is good. Meaning that if the work is intellectually stimulating, presents an interesting problem to solve and is conducted in a friendly, appreciating and supportive environment, well, it does not feel like work.&lt;/p&gt;
+
+&lt;p&gt;So I find myself working hard and appreciating the benefits, but with a complete understanding for my 9 year old&amp;#39;s utter disinterest in doing homework.&lt;/p&gt;
+
+&lt;p&gt;The current approach of parental influence is to differentiate lazy into &amp;quot;smart lazy&amp;quot; and &amp;quot;dumb lazy&amp;quot; since &amp;quot;smart&amp;quot; is good and we like being &amp;quot;smart&amp;quot;, while &amp;quot;lazy&amp;quot; is not necessarily totally negative since grandma calls dad lazy all the time and grandma has absolute authority but we like dad :P.&lt;/p&gt;
+
+&lt;p&gt;Smart lazy is learning your maths tables by heart, dumb lazy is doing &amp;quot;6 times 5&amp;quot; by doing &amp;quot;5,10,15,20,25,30&amp;quot; every single time.&lt;/p&gt;
+
+&lt;p&gt;But the upfront cost of memorizing multiplication tables is something not easily accepted. &amp;quot;Avoid boring repetiteveness&amp;quot; is not an argument that has traction with either 9 year olds or management - both groups simply let others do the boring bits.&lt;/p&gt;
+
+&lt;p&gt;There&amp;#39;s some obvious parallels to software development and automation and tools and all this DevOps hooha. Most of the content on this blog is dedicated to figuring out how to let the computers do the repetitive boring stuff. What it leaves out is how often we have to do the boring, repetitive stuff because it just seems &amp;quot;easier&amp;quot; or &amp;quot;cheaper&amp;quot;.&lt;/p&gt;
+
+&lt;p&gt;Which leads us to the next chapter: &amp;quot;justifying upfront investment on the promise of future gains&amp;quot;. 9 year olds are an even tougher crowd than management on this subject. Send help.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 20 Sep 2018 08:15:21 +0000</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2018/09/20/on-laziness</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2018/09/20/on-laziness</guid>
+      </item>
+    
+      <item>
         <title>On remote working</title>
         <description>&lt;p&gt;&lt;img src=&quot;https://imgs.xkcd.com/comics/duty_calls.png&quot; alt=&quot;Duty calls&quot;&gt; &lt;/p&gt;
 
@@ -74,7 +126,7 @@
 
 &lt;p&gt;But I find it is a good compromise between the inflexibility of on-premise teams and the isolation of working remotely.&lt;/p&gt;
 </description>
-        <pubDate>Mon, 28 May 2018 10:15:21 +0200</pubDate>
+        <pubDate>Mon, 28 May 2018 08:15:21 +0000</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2018/05/28/on-remote-working</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2018/05/28/on-remote-working</guid>
       </item>
@@ -123,7 +175,7 @@
 
 &lt;p&gt;&lt;sup&gt;2&lt;/sup&gt;That hurt, not because of Ruby vs. Python, but because of rake vs. absolutely-nothing-approaching-usable.&lt;/p&gt;
 </description>
-        <pubDate>Wed, 29 Nov 2017 14:14:21 +0100</pubDate>
+        <pubDate>Wed, 29 Nov 2017 13:14:21 +0000</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2017/11/29/gaudi-one-oh</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/11/29/gaudi-one-oh</guid>
       </item>
@@ -165,7 +217,7 @@
 
 &lt;p&gt;Απλώνουμε πάνω στο ένα φύλο, σκεπάζουμε με το άλλο φύλο, βάζουμε στο φούρνο στους 200 βαθμούς για 20 λεπτά.&lt;/p&gt;
 </description>
-        <pubDate>Sat, 25 Nov 2017 11:16:43 +0100</pubDate>
+        <pubDate>Sat, 25 Nov 2017 10:16:43 +0000</pubDate>
         <link>http://www.ampelofilosofies.gr/rumblings/2017/11/25/pumpkin-pie-ala-griega</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/rumblings/2017/11/25/pumpkin-pie-ala-griega</guid>
       </item>
@@ -182,7 +234,7 @@
 
 &lt;p&gt;Also: &lt;strong&gt;oh my god, it has been ten years!!!&lt;/strong&gt;&lt;/p&gt;
 </description>
-        <pubDate>Sat, 23 Sep 2017 15:14:21 +0200</pubDate>
+        <pubDate>Sat, 23 Sep 2017 13:14:21 +0000</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2017/09/23/rutema-two-oh</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/09/23/rutema-two-oh</guid>
       </item>
@@ -203,7 +255,7 @@
 
 &lt;p&gt;I&amp;#39;ve obviously googled that...&lt;/p&gt;
 </description>
-        <pubDate>Tue, 19 Sep 2017 19:14:44 +0200</pubDate>
+        <pubDate>Tue, 19 Sep 2017 17:14:44 +0000</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2017/09/19/forget-me-not-kill-jenkins-zombies</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/09/19/forget-me-not-kill-jenkins-zombies</guid>
       </item>
@@ -295,7 +347,7 @@
 
 &lt;p&gt;&lt;sup&gt;4&lt;/sup&gt;See what I did there? I used a hyped up marketing term to get you hooked and kept airily going on about abstracty this and thats vaguely within the broad marketing blanket of the term. At least I&amp;#39;m nice enough to give you a definition at the end.&lt;/p&gt;
 </description>
-        <pubDate>Wed, 13 Sep 2017 12:02:44 +0200</pubDate>
+        <pubDate>Wed, 13 Sep 2017 10:02:44 +0000</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2017/09/13/dev-in-devops</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/09/13/dev-in-devops</guid>
       </item>
@@ -427,7 +479,7 @@ Not building the merge ref increases the probability of integration test breakag
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Within the pipeline, the source branch of the pull request is then in the environment variable CHANGE_BRANCH&lt;/p&gt;
 </description>
-        <pubDate>Sat, 09 Sep 2017 14:14:44 +0200</pubDate>
+        <pubDate>Sat, 09 Sep 2017 12:14:44 +0000</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2017/09/09/handling-pull-requests</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/09/09/handling-pull-requests</guid>
       </item>
@@ -466,217 +518,9 @@ Not building the merge ref increases the probability of integration test breakag
 
 &lt;p&gt;If anyone knows how to get polling working without requiring a full clone, please have a go at the comments.&lt;/p&gt;
 </description>
-        <pubDate>Sun, 05 Mar 2017 13:14:44 +0100</pubDate>
+        <pubDate>Sun, 05 Mar 2017 12:14:44 +0000</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2017/03/05/forgetmenot-jenkins-pipeline-polling</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/03/05/forgetmenot-jenkins-pipeline-polling</guid>
-      </item>
-    
-      <item>
-        <title>Monitor CI nodes with Jenkins</title>
-        <description>&lt;p&gt;My team and I have had a dreadful couple of weeks.&lt;/p&gt;
-
-&lt;p&gt;Network issues, license issues, Windows issues, compiler issues, flip-floping test results etc., all of them piled one on top of the other and driving us nuts. With some of these issues we have to live with and compromise (I have a rant, a crazed, raving mad rant about companies forcing you to generate development licenses &lt;em&gt;every week&lt;/em&gt;).&lt;/p&gt;
-
-&lt;p&gt;We also scaled out our CI infrastructure. Do not imagine anything huge, we went from 4 nodes running on 6-year old hardware to 16 nodes running on modern i5s, but that still means that we now have to keep an eye on 16 nodes instead of 4.&lt;/p&gt;
-
-&lt;p&gt;The work never stops and we needed a health monitor for the nodes something quick, so we cobbled something together using the Jenkins Job &amp;amp; Pipeline DSLs.&lt;/p&gt;
-
-&lt;h2&gt;What you need&lt;/h2&gt;
-
-&lt;p&gt;Jenkins 2.x with the build-monitor-plugin plugin.&lt;/p&gt;
-
-&lt;h2&gt;All of the nodes.&lt;/h2&gt;
-
-&lt;p&gt;We have fixed CI nodes - none of that dynamic mumbo-jumbo with Docker or AWS. The reason is simple: &lt;/p&gt;
-
-&lt;p&gt;We need Windows and we build embedded software and test on target.&lt;/p&gt;
-
-&lt;p&gt;We just ask Jenkins to tell us how many nodes are registered and then create one job for each node, naming the job after the node:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-groovy&quot; data-lang=&quot;groovy&quot;&gt;&lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;URL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;http:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//localhost:8080/computer/api/xml?&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;wrapper&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;slaves&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xpath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//computer/displayName').getText()&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;build_nodes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;groovy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;util&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;XmlSlurper&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parseText&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;build_nodes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;displayName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++){&lt;/span&gt; 
-  &lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;
-  &lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nodeName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;build_nodes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;displayName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;//the job definition - skipped for clarity, see below&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;I tried to use the Jenkins API (the hudson.model.* and jenkins.model.*) but quickly gave up because of major Groovy-Java dissonance and totally uninformative messages.&lt;/p&gt;
-
-&lt;p&gt;So the code above queries the HTTP API - this would be more complicated if we had authentication turned on, but we don&amp;#39;t ;).&lt;/p&gt;
-
-&lt;p&gt;The job definition is simple: Run every 3 minutes and take the node name as a parameter. It is also totally generic, pulling the pipeline definition off our repo.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-groovy&quot; data-lang=&quot;groovy&quot;&gt;&lt;span class=&quot;n&quot;&gt;pipelineJob&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nodeName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;description&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Monitors&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nodeName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}.&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;Failure&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;signifies&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;offline&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;abort&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;status&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;that&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;it&lt;/span&gt; 
-  &lt;span class=&quot;n&quot;&gt;has&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;been&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;taken&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;offline&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;an&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unstable&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;status&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;means&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;maintenance&lt;/span&gt; 
-  &lt;span class=&quot;n&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;required&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;details&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&quot;&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;logRotator&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;daysToKeep&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;triggers&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;cron&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'*/3 * * * *'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;parameters&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;stringParam&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'STATION'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nodeName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'The station to monitor'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;definition&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;cps&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;readFileFromWorkspace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'jenkins/pipelines/monitor.groovy'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The only reason we instantiated one job for every node is for display purposes, which brings us to the view definition&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-groovy&quot; data-lang=&quot;groovy&quot;&gt;&lt;span class=&quot;n&quot;&gt;buildMonitorView&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'CI Health'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'CI infrastructure status'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;URL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;http:&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//localhost:8080/computer/api/xml?&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;wrapper&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;slaves&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xpath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//computer/displayName').getText()&lt;/span&gt;
-  &lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;build_nodes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;groovy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;util&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;XmlSlurper&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parseText&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;jobs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;build_nodes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;displayName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++){&lt;/span&gt;
-      &lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;
-      &lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nodeName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;build_nodes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;displayName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nodeName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The code above gives us a nice monitor view:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/ci_health.png&quot; alt=&quot;CI Health Monitor&quot;&gt;&lt;/p&gt;
-
-&lt;h2&gt;The interesting parts&lt;/h2&gt;
-
-&lt;p&gt;We ended up doing quite a few things in this job.&lt;/p&gt;
-
-&lt;p&gt;We check to see if a node is offline and if that was deliberate, we also check if the disk on the node is running full and then if the node is not busy we switch the context to within the node and start checking things.&lt;/p&gt;
-
-&lt;p&gt;That last stage is the tricky part because it needs to be really, really fast, otherwise we run the risk of blocking executors while the team is working.&lt;/p&gt;
-
-&lt;p&gt;The pipeline looks like this:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-groovy&quot; data-lang=&quot;groovy&quot;&gt;&lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;STATION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;STATION&lt;/span&gt;
-&lt;span class=&quot;nd&quot;&gt;@NonCPS&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;freeSpaceCheck&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;monitorData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;monitorData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;children&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;each&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;it&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()==&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;hudson.node_monitors.DiskSpaceMonitor&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
-          &lt;span class=&quot;n&quot;&gt;freeSpace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;it&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Double&lt;/span&gt;
-          &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;freeSpace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6000000000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;
-          &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;nd&quot;&gt;@NonCPS&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;checkIdle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nodeData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;nodeData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;idle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()==&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;true&quot;&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;isNodeIdle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;stage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Node State&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;currentBuild&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;SUCCESS&quot;&lt;/span&gt;  
-  &lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;URL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:8080/computer/${env.STATION}/api/xml&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getText&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-  &lt;span class=&quot;kt&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;build_node&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;groovy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;util&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;XmlSlurper&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parseText&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;build_node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;offline&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()==&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;currentBuild&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'FAILED'&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;currentBuild&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setDisplayName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;${env.BUILD_NUMBER}-offline&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;build_node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;temporarilyOffline&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()==&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;currentBuild&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'ABORTED'&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;currentBuild&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setDisplayName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;${env.BUILD_NUMBER}-parked&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;freeSpaceCheck&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;build_node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;monitorData&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)){&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;println&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;WARNING: Disk space is low!&quot;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;currentBuild&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'UNSTABLE'&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;currentBuild&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setDisplayName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;${env.BUILD_NUMBER}-nospace&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;isNodeIdle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;checkIdle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;build_node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;stage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Check Node&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;currentBuild&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;SUCCESS&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;isNodeIdle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;STATION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
-      &lt;span class=&quot;c1&quot;&gt;//this will run on the node if the node is not busy&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;We subvert the meaning of the job stati a bit (as documented in the description of the job). This is so that we can adhere to &amp;quot;green means relax, yellow means work is coming your way, red means drop everything else and fix it&amp;quot;.&lt;/p&gt;
-
-&lt;p&gt;We also use the build display name to hint at the reason for the status.&lt;/p&gt;
-
-&lt;p&gt;Those @nonCPS methods are there so that Jenkins does not have a fit trying to serialize the XmlSlurper.&lt;/p&gt;
-
-&lt;p&gt;It would have been less code and a lot more readable if I had managed to talk to the Java API, but wierdness happened and the HTTP API does the work.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 04 Mar 2017 13:14:44 +0100</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2017/03/04/monitor-ci-nodes-with-jenkins</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/03/04/monitor-ci-nodes-with-jenkins</guid>
-      </item>
-    
-      <item>
-        <title>ForgetMeNot: Jenkins test result aggregation in the Pipeline DSL</title>
-        <description>&lt;p&gt;Took me awhile to figure this out. One more thing for the list of things that Jenkins makes unnecessarily complex.&lt;/p&gt;
-
-&lt;h2&gt;The Problem&lt;/h2&gt;
-
-&lt;p&gt;We have a pipeline job that starts a handful of other jobs - call them subjobs -  and we want to aggregate the test results of the subjobs in our pipeline.&lt;/p&gt;
-
-&lt;h2&gt;The required list of extra plugins you need&lt;/h2&gt;
-
-&lt;p&gt;To get this done I had to add the &lt;a href=&quot;https://wiki.jenkins-ci.org/display/JENKINS/Copy+Artifact+Plugin&quot;&gt;copyartifact plugin&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;You will also need one of JUnit/NUnit/xUnit depending on what your reports look like.&lt;/p&gt;
-
-&lt;h2&gt;How to do it&lt;/h2&gt;
-
-&lt;p&gt;Use archiveArtifact in the subjob to archive the test results. Somehting like &lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;archiveArtifacts artifacts: 'results\\*.xml', fingerprint: true
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Then in the job you do the aggregation make sure to keep the references to the subjobs. &lt;/p&gt;
-
-&lt;p&gt;From the reference we then get the 
-build number for each of the test jobs which we need in order to find the correct artifacts to copy.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;def test_jobs=[:]
-def subjobs=[:] 
-for(int i = 0; i &amp;lt; test_suites.size(); i++){ 
-  def instanceNumber=i  
-  subjobs[&quot;${env.BUILD_DISPLAY_NAME}-${instanceNumber}&quot;]={
-    tj=build job: 'Test'
-    test_jobs&amp;lt;&amp;lt;tj.getNumber()
-  }
-}
-parallel subjobs 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Another tricky thing that has to do with how Groovy scopes things: &lt;/p&gt;
-
-&lt;p&gt;If &lt;code&gt;i&lt;/code&gt; is not assigned to a variable within the closure then you will only get one job in the subjobs map.&lt;/p&gt;
-
-&lt;p&gt;Then, once the subjobs are finished we pick a node to have a workspace and grab the test reports.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;node(){
-  for(int i = 0; i &amp;lt; test_jobs.size(); i++){
-    selector = [$class: 'SpecificBuildSelector', 
-                buildNumber: &quot;${test_jobs[i]}&quot;]
-    step ([$class: 'CopyArtifact',
-          projectName: 'Test',
-          selector: selector])
-  }
-  //Your test results plugin here
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;That selector trick I found in the &lt;a href=&quot;https://github.com/jenkinsci/blueocean-acceptance-test/blob/master/Jenkinsfile#L103&quot;&gt;blueocean sources&lt;/a&gt; (don&amp;#39;t even ask me how I arrived there)&lt;/p&gt;
-</description>
-        <pubDate>Wed, 22 Feb 2017 16:19:44 +0100</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2017/02/22/forgetmenot-jenkins-aggregation</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/02/22/forgetmenot-jenkins-aggregation</guid>
       </item>
     
   </channel>

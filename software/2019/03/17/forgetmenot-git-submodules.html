@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>ForgetMeNot: Git Submodules</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>ForgetMeNot: Git Submodules</h1>
+<p class="meta">17 Mar 2019</p>
+
+<div class="post">
+<p>I&#39;m more likely to choose a monorepo solution if possible and I generally dislike the submodule feature in git but as always there are valid use cases (e.g. think about building a platform instead of a system).</p>
+
+<p>So I put git submodules to work and immediately started doing the same mistake again and again: typos in the directory name for the module.</p>
+
+<p>Now, just changing the entries in the .gitmodules file is not enough to get the module out of the way, we also need to remove the repository index entries.</p>
+
+<p>To cleanly remove a git submodule you need the following:</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git submodule deinit module
+git rm typoed_module_dir
+git commit -m <span class="s2">"Removed submodule module"</span>
+rm -rf .git/modules/typoed_module_dir
+</code></pre></div>
+<p>You then add the submodule back (after you have checked the spelling this time) and obviously explicitly set the branch and the checkout directory so that you can verify everything is typed correctly.</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git submodule add -b master https://git.host/module.git CorrectlySpelledDir
+git submodule init
+</code></pre></div>
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>
