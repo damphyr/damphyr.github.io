@@ -91,21 +91,21 @@ vagrant destroy <span class="c">#rinse</span>
 
 <p>The provisioning &quot;script&quot; is:</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">yum -y install zlib zlib-devel
-yum -y install openssl-devel
-yum -y install libyaml libyaml-devel
-yum -y install wget
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">yum <span class="nt">-y</span> <span class="nb">install </span>zlib zlib-devel
+yum <span class="nt">-y</span> <span class="nb">install </span>openssl-devel
+yum <span class="nt">-y</span> <span class="nb">install </span>libyaml libyaml-devel
+yum <span class="nt">-y</span> <span class="nb">install </span>wget
 wget http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.1.tar.gz
-tar xvf ruby-2.1.1.tar.gz
+<span class="nb">tar </span>xvf ruby-2.1.1.tar.gz
 <span class="nb">cd </span>ruby-2.1.1
 ./configure
 make
-make install
-<span class="nb">echo </span>Setting up environment
-cp /home/vagrant/host_share/setup/bash_profile /home/vagrant/.bash_profile
-chown vagrant:vagrant /home/vagrant/.bash_profile
-chmod 544 /home/vagrant/.bash_profile
-rpm --install /home/vagrant/host_share/setup/gnurx_v14.01_elf-1-1.i386.rpm</code></pre></figure>
+make <span class="nb">install
+echo </span>Setting up environment
+<span class="nb">cp</span> /home/vagrant/host_share/setup/bash_profile /home/vagrant/.bash_profile
+<span class="nb">chown </span>vagrant:vagrant /home/vagrant/.bash_profile
+<span class="nb">chmod </span>544 /home/vagrant/.bash_profile
+rpm <span class="nt">--install</span> /home/vagrant/host_share/setup/gnurx_v14.01_elf-1-1.i386.rpm</code></pre></figure>
 
 <p>I mean, really, this thing has no error handling, nothing. It&#39;s a shambles masquerading as a script. But hey, it mostly works</p>
 

@@ -51,12 +51,12 @@
 
 <p>To cleanly remove a git submodule you need the following:</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">git submodule deinit module
-git rm typoed_module_dir
-git commit -m <span class="s2">"Removed submodule module"</span>
-rm -rf .git/modules/typoed_module_dir
+git <span class="nb">rm </span>typoed_module_dir
+git commit <span class="nt">-m</span> <span class="s2">"Removed submodule module"</span>
+<span class="nb">rm</span> <span class="nt">-rf</span> .git/modules/typoed_module_dir
 </code></pre></div>
 <p>You then add the submodule back (after you have checked the spelling this time) and obviously explicitly set the branch and the checkout directory so that you can verify everything is typed correctly.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">git submodule add -b master https://git.host/module.git CorrectlySpelledDir
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git submodule add <span class="nt">-b</span> master https://git.host/module.git CorrectlySpelledDir
 git submodule init
 </code></pre></div>
   <p>

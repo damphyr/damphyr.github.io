@@ -74,11 +74,11 @@
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#! /bin/sh</span>
 
 <span class="c">#setup ssh access </span>
-random -t
+random <span class="nt">-t</span>
 <span class="c">#use emtpy passphrases</span>
-ssh-keygen -t rsa -f /etc/ssh/ssh_host_key -b 2048
-ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key
-ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key
+ssh-keygen <span class="nt">-t</span> rsa <span class="nt">-f</span> /etc/ssh/ssh_host_key <span class="nt">-b</span> 2048
+ssh-keygen <span class="nt">-t</span> rsa <span class="nt">-f</span> /etc/ssh/ssh_host_rsa_key
+ssh-keygen <span class="nt">-t</span> dsa <span class="nt">-f</span> /etc/ssh/ssh_host_dsa_key
 <span class="c">#and start the server</span>
 /usr/sbin/sshd&amp;</code></pre></figure>
 
@@ -98,8 +98,8 @@ passwd vagrant</code></pre></figure>
 
 <p>Get the <a href="https://github.com/mitchellh/vagrant/blob/master/keys/vagrant.pub">vagrant insecure public key</a> and copy it into /home/vagrant/.ssh/authorized_keys. Then to make sure do the following</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">chown -R vagrant:users /home/vagrant/.ssh
-chmod -R 700 /home/vagrant/.ssh</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">chown</span> <span class="nt">-R</span> vagrant:users /home/vagrant/.ssh
+<span class="nb">chmod</span> <span class="nt">-R</span> 700 /home/vagrant/.ssh</code></pre></figure>
 
 <p>If the permissions are not set corretly openSSH will not login succesfully (and you will not know why!)</p>
 
@@ -108,14 +108,14 @@ chmod -R 700 /home/vagrant/.ssh</code></pre></figure>
 <p>The basebox format is actually very basic: Whatever VM files your provider requires to start the VM plus a metadata.json file with the following content:</p>
 
 <figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-  </span><span class="err">provider:</span><span class="w"> </span><span class="nt">"vmware_workstation"</span><span class="w">
-</span><span class="err">}</span></code></pre></figure>
+  </span><span class="err">provider</span><span class="p">:</span><span class="w"> </span><span class="s2">"vmware_workstation"</span><span class="w">
+</span><span class="p">}</span></code></pre></figure>
 
 <p>Values that are valid at the time of writing are &quot;vmware<em>workstation&quot;, &quot;vmware</em>fusion&quot; and &quot;virtualbox&quot;.</p>
 
 <p>For VMWare VMs the following should do the trick when run in the VMs directory.</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">tar cvf qnx65.box <span class="k">*</span>.vmdk <span class="k">*</span>.vmx <span class="k">*</span>.vmxf <span class="k">*</span>.nvram metadata.json</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">tar </span>cvf qnx65.box <span class="k">*</span>.vmdk <span class="k">*</span>.vmx <span class="k">*</span>.vmxf <span class="k">*</span>.nvram metadata.json</code></pre></figure>
 
 <p>(add the .json file yourself :) )</p>
 
@@ -132,7 +132,7 @@ chmod -R 700 /home/vagrant/.ssh</code></pre></figure>
 
 <p>The first <em>vagrant up</em> needs to specify the provider otherwise vagrant defaults to Virtualbox</p>
 
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">vagrant up --provider vmware_workstation</code></pre></figure>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">vagrant up <span class="nt">--provider</span> vmware_workstation</code></pre></figure>
 
 <p>Now, if you did not setup ssh correctly then vagrant is going to hang with &quot;Waiting for VM to boot. This can take a few minutes&quot;. This can be easily ascertained if you set the environment variable VAGRANT_LOG=debug and watch how vagrant repeatedly tries to connect and fails miserably never giving up. Go back and set those permissions...</p>
 

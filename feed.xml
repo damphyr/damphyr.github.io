@@ -7,6 +7,37 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Adventures in Azure DevOps: It begins</title>
+        <description>&lt;p&gt;I&amp;#39;ve been doing work with Azure Devops lately and since there&amp;#39;s things to learn, there will be blog posts.&lt;/p&gt;
+
+&lt;p&gt;Now I am well known for my vitriolic views on Microsoft&amp;#39;s approach to ALM (Application Lifecycle Management) which were mainly represented in TFS, a behemoth that is now in its 5th (?) rebranding phase. Only this time it looks more like a reincarnation. It has been 13 years since they first gave it a go after all.&lt;/p&gt;
+
+&lt;h2&gt;First impressions&lt;/h2&gt;
+
+&lt;p&gt;The complexity is now mostly gone, hidden away. This is a good thing.
+You can still trace Microsoft&amp;#39;s need to satisfy enterprise policies and wierd gate-keeping bureaucracy, but these things are mostly hidden in security and access policy configuration pages. And the defaults are finally sane.&lt;/p&gt;
+
+&lt;p&gt;The mainly point-and-click GUI driven way of doing everything is still there and it is still offered as the &amp;quot;way to do things&amp;quot; but at least the docs make it obvious that there is a way to script &lt;em&gt;everything&lt;/em&gt; and that it is there from the beginning.&lt;/p&gt;
+
+&lt;p&gt;So, usable and dare I say, promising.&lt;/p&gt;
+
+&lt;h2&gt;Things to come&lt;/h2&gt;
+
+&lt;p&gt;There&amp;#39;s very little I will be able to say about issue tracking, the default Agile/Scrum issue tracker with the standard boards more than covers whatever requirements I have for maintaining a backlog. My job is to get automation up and running: builds, tests, packaging and deployment.&lt;/p&gt;
+
+&lt;p&gt;You will notice I avoid saying &amp;quot;DevOps&amp;quot; and CI. The first does not apply to me individually, but to my team, and the second is a byproduct of getting all the things right (i.e. if we get the automation right and we apply it to every change &lt;em&gt;then&lt;/em&gt; we will have CI)&lt;/p&gt;
+
+&lt;p&gt;On the other hand, expect a lot on pipelines and how they get implement in Azure Devops.
+Getting a single build for a single tech up and running is ridiculously easy - the system analyzes your code and pretty much serves you the build jobs on a platter.&lt;/p&gt;
+
+&lt;p&gt;But I never have a single build or a system that uses a single tech, do I?&lt;/p&gt;
+</description>
+        <pubDate>Thu, 06 Jun 2019 12:15:21 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2019/06/06/azure-devops-beginning</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2019/06/06/azure-devops-beginning</guid>
+      </item>
+    
+      <item>
         <title>ForgetMeNot: Git Submodules</title>
         <description>&lt;p&gt;I&amp;#39;m more likely to choose a monorepo solution if possible and I generally dislike the submodule feature in git but as always there are valid use cases (e.g. think about building a platform instead of a system).&lt;/p&gt;
 
@@ -16,15 +47,15 @@
 
 &lt;p&gt;To cleanly remove a git submodule you need the following:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git submodule deinit module
-git rm typoed_module_dir
-git commit -m &lt;span class=&quot;s2&quot;&gt;&quot;Removed submodule module&quot;&lt;/span&gt;
-rm -rf .git/modules/typoed_module_dir
+git &lt;span class=&quot;nb&quot;&gt;rm &lt;/span&gt;typoed_module_dir
+git commit &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Removed submodule module&quot;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; .git/modules/typoed_module_dir
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;You then add the submodule back (after you have checked the spelling this time) and obviously explicitly set the branch and the checkout directory so that you can verify everything is typed correctly.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git submodule add -b master https://git.host/module.git CorrectlySpelledDir
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git submodule add &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; master https://git.host/module.git CorrectlySpelledDir
 git submodule init
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
-        <pubDate>Sun, 17 Mar 2019 10:15:21 +0000</pubDate>
+        <pubDate>Sun, 17 Mar 2019 11:15:21 +0100</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2019/03/17/forgetmenot-git-submodules</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2019/03/17/forgetmenot-git-submodules</guid>
       </item>
@@ -53,7 +84,7 @@ git submodule init
 
 &lt;p&gt;Which leads us to the next chapter: &amp;quot;justifying upfront investment on the promise of future gains&amp;quot;. 9 year olds are an even tougher crowd than management on this subject. Send help.&lt;/p&gt;
 </description>
-        <pubDate>Thu, 20 Sep 2018 08:15:21 +0000</pubDate>
+        <pubDate>Thu, 20 Sep 2018 10:15:21 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2018/09/20/on-laziness</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2018/09/20/on-laziness</guid>
       </item>
@@ -126,7 +157,7 @@ git submodule init
 
 &lt;p&gt;But I find it is a good compromise between the inflexibility of on-premise teams and the isolation of working remotely.&lt;/p&gt;
 </description>
-        <pubDate>Mon, 28 May 2018 08:15:21 +0000</pubDate>
+        <pubDate>Mon, 28 May 2018 10:15:21 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2018/05/28/on-remote-working</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2018/05/28/on-remote-working</guid>
       </item>
@@ -175,7 +206,7 @@ git submodule init
 
 &lt;p&gt;&lt;sup&gt;2&lt;/sup&gt;That hurt, not because of Ruby vs. Python, but because of rake vs. absolutely-nothing-approaching-usable.&lt;/p&gt;
 </description>
-        <pubDate>Wed, 29 Nov 2017 13:14:21 +0000</pubDate>
+        <pubDate>Wed, 29 Nov 2017 14:14:21 +0100</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2017/11/29/gaudi-one-oh</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/11/29/gaudi-one-oh</guid>
       </item>
@@ -217,7 +248,7 @@ git submodule init
 
 &lt;p&gt;Απλώνουμε πάνω στο ένα φύλο, σκεπάζουμε με το άλλο φύλο, βάζουμε στο φούρνο στους 200 βαθμούς για 20 λεπτά.&lt;/p&gt;
 </description>
-        <pubDate>Sat, 25 Nov 2017 10:16:43 +0000</pubDate>
+        <pubDate>Sat, 25 Nov 2017 11:16:43 +0100</pubDate>
         <link>http://www.ampelofilosofies.gr/rumblings/2017/11/25/pumpkin-pie-ala-griega</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/rumblings/2017/11/25/pumpkin-pie-ala-griega</guid>
       </item>
@@ -234,7 +265,7 @@ git submodule init
 
 &lt;p&gt;Also: &lt;strong&gt;oh my god, it has been ten years!!!&lt;/strong&gt;&lt;/p&gt;
 </description>
-        <pubDate>Sat, 23 Sep 2017 13:14:21 +0000</pubDate>
+        <pubDate>Sat, 23 Sep 2017 15:14:21 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2017/09/23/rutema-two-oh</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/09/23/rutema-two-oh</guid>
       </item>
@@ -255,7 +286,7 @@ git submodule init
 
 &lt;p&gt;I&amp;#39;ve obviously googled that...&lt;/p&gt;
 </description>
-        <pubDate>Tue, 19 Sep 2017 17:14:44 +0000</pubDate>
+        <pubDate>Tue, 19 Sep 2017 19:14:44 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2017/09/19/forget-me-not-kill-jenkins-zombies</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/09/19/forget-me-not-kill-jenkins-zombies</guid>
       </item>
@@ -347,7 +378,7 @@ git submodule init
 
 &lt;p&gt;&lt;sup&gt;4&lt;/sup&gt;See what I did there? I used a hyped up marketing term to get you hooked and kept airily going on about abstracty this and thats vaguely within the broad marketing blanket of the term. At least I&amp;#39;m nice enough to give you a definition at the end.&lt;/p&gt;
 </description>
-        <pubDate>Wed, 13 Sep 2017 10:02:44 +0000</pubDate>
+        <pubDate>Wed, 13 Sep 2017 12:02:44 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2017/09/13/dev-in-devops</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/09/13/dev-in-devops</guid>
       </item>
@@ -479,48 +510,9 @@ Not building the merge ref increases the probability of integration test breakag
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Within the pipeline, the source branch of the pull request is then in the environment variable CHANGE_BRANCH&lt;/p&gt;
 </description>
-        <pubDate>Sat, 09 Sep 2017 12:14:44 +0000</pubDate>
+        <pubDate>Sat, 09 Sep 2017 14:14:44 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2017/09/09/handling-pull-requests</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/09/09/handling-pull-requests</guid>
-      </item>
-    
-      <item>
-        <title>ForgetMeNot: Jenkins Pipeline Jobs polling SCM changes</title>
-        <description>&lt;p&gt;It took me a disproportionate amount of time and significant reserves of google foo to figure this out, so it merits documentation.&lt;/p&gt;
-
-&lt;h2&gt;The Problem&lt;/h2&gt;
-
-&lt;p&gt;I use a setup that involves creating all jobs via JobDSL definitions and have several jobs leveraging the PipelineDSL.&lt;/p&gt;
-
-&lt;p&gt;It was unclear how to tell the git which repo to poll, which credentials to use etc.&lt;/p&gt;
-
-&lt;p&gt;Just a warning: none of the options to the scm trigger in JobDSL work for a pipeline job. &lt;/p&gt;
-
-&lt;p&gt;You just define a plain, dumb scm poll in the frequency you require, for example:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;triggers {
-  scm 'H(3) * * * 1-5'
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2&gt;What works?&lt;/h2&gt;
-
-&lt;p&gt;The rest of information is passed to git in the Pipeline definition.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;node(){
-  git changelog: true, credentialsId: 'bla-bla-bla', poll: true, url: 'https://url.to.repo', branch: brnch  
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The critical part here is setting &lt;em&gt;poll&lt;/em&gt; to &lt;strong&gt;true&lt;/strong&gt;. The job will trigger, enter the pipeline and then setup polling for any future job invocations. I tend to set &lt;em&gt;changelog&lt;/em&gt; to &lt;strong&gt;true&lt;/strong&gt; as well, because if we&amp;#39;re going to pay the penalty (see further down) we might as well get as much as possible out of it.&lt;/p&gt;
-
-&lt;h2&gt;Handicap&lt;/h2&gt;
-
-&lt;p&gt;I find this approach problematic, since it requires us to have a workspace (so we need a node() context in the pipeline) and we need to clone the repo.&lt;/p&gt;
-
-&lt;p&gt;In my case this is exarcebated by bad repository care practices (lots of binary data commited makes the repo way to large relative to it&amp;#39;s content). Also, I tend to structure pipelines with simple jobs (things like Build Module, Test Module, Package &amp;amp; Publish) that are then strung together as a pipeline and the composite jobs usually do not need a workspace. So this cloning is really pure overhead.&lt;/p&gt;
-
-&lt;p&gt;If anyone knows how to get polling working without requiring a full clone, please have a go at the comments.&lt;/p&gt;
-</description>
-        <pubDate>Sun, 05 Mar 2017 12:14:44 +0000</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2017/03/05/forgetmenot-jenkins-pipeline-polling</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/03/05/forgetmenot-jenkins-pipeline-polling</guid>
       </item>
     
   </channel>

@@ -101,9 +101,9 @@ and I have regular automated builds to produce fresh Vagrant baseboxes with Pack
 
 <p>To get &#39;shell-local&#39; to work you have to provide the shell executable (as it uses /bin/sh per default)</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="w"> </span><span class="p">{</span><span class="w">
-  </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shell-local"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"wusa.exe MyUPDATE.msu /quiet /norestart"</span><span class="p">,</span><span class="w">
-   </span><span class="nt">"execute_command"</span><span class="p">:[</span><span class="s2">"cmd.exe"</span><span class="p">,</span><span class="s2">"/C"</span><span class="p">,</span><span class="s2">"{\{.Command\}}"</span><span class="p">]</span><span class="w">
+  </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shell-local"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"wusa.exe MyUPDATE.msu /quiet /norestart"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"execute_command"</span><span class="p">:[</span><span class="s2">"cmd.exe"</span><span class="p">,</span><span class="s2">"/C"</span><span class="p">,</span><span class="s2">"{</span><span class="se">\{</span><span class="s2">.Command</span><span class="se">\}</span><span class="s2">}"</span><span class="p">]</span><span class="w">
  </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Unfortunately .msu installers can exit with a variety of non-zero exit codes, 3010 being the one that indicates a reboot is needed. This messes up things.</p>
@@ -138,7 +138,7 @@ The script I used to detect the hotfix is </p>
 <span class="o">}</span>
 <span class="nv">$counter</span><span class="o">=</span>0
 <span class="k">while</span><span class="o">(</span><span class="nv">$counter</span> -lt <span class="nv">$max_tries</span><span class="o">)</span> <span class="o">{</span>
-  <span class="k">if</span> <span class="o">(</span>get-hotfix -id <span class="nv">$id</span> -EA SilentlyContinue<span class="o">){</span>
+  <span class="k">if</span> <span class="o">(</span><span class="nb">get-hotfix</span> -id <span class="nv">$id</span> -EA SilentlyContinue<span class="o">){</span>
     <span class="k">break</span>
   <span class="o">}</span>
   <span class="k">else</span><span class="o">{</span>
@@ -154,9 +154,9 @@ The script I used to detect the hotfix is </p>
 </code></pre></div>
 <p>and this is how it&#39;s called from Packer:</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-  </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"powershell"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"environment_vars"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"HOTFIX_ID=KB3125574"</span><span class="p">,</span><span class="s2">"HOTFIX_DETECT_TRIES=240"</span><span class="p">],</span><span class="w">
-  </span><span class="nt">"script"</span><span class="p">:</span><span class="w"> </span><span class="s2">"script/detect-hotfix-install.ps1"</span><span class="w">
+  </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"powershell"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"environment_vars"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"HOTFIX_ID=KB3125574"</span><span class="p">,</span><span class="s2">"HOTFIX_DETECT_TRIES=240"</span><span class="p">],</span><span class="w">
+  </span><span class="s2">"script"</span><span class="p">:</span><span class="w"> </span><span class="s2">"script/detect-hotfix-install.ps1"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <h2>Groundhog Day: Chef</h2>
@@ -200,21 +200,21 @@ The script I used to detect the hotfix is </p>
 <span class="k">end</span>
 </code></pre></div>
 <p>The JSON with the attributes looks like:</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"msu_installers"</span><span class="err">:</span><span class="p">{</span><span class="w"> 
-  </span><span class="nt">"KB3020369"</span><span class="p">:{</span><span class="nt">"source"</span><span class="p">:</span><span class="s2">"URL"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"save_as"</span><span class="p">:</span><span class="s2">"Windows6.1-KB3020369-x64.msu"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"name"</span><span class="p">:</span><span class="s2">"KB3020369"</span><span class="w">
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"msu_installers"</span><span class="p">:{</span><span class="w"> 
+  </span><span class="s2">"KB3020369"</span><span class="p">:{</span><span class="s2">"source"</span><span class="p">:</span><span class="s2">"URL"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"save_as"</span><span class="p">:</span><span class="s2">"Windows6.1-KB3020369-x64.msu"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"KB3020369"</span><span class="w">
     </span><span class="p">},</span><span class="w">
-    </span><span class="nt">"KB3125574"</span><span class="p">:{</span><span class="nt">"source"</span><span class="p">:</span><span class="s2">"URL"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"save_as"</span><span class="p">:</span><span class="s2">"windows6.1-kb3125574-foo.msu"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"name"</span><span class="p">:</span><span class="s2">"KB3125574"</span><span class="w">
+    </span><span class="s2">"KB3125574"</span><span class="p">:{</span><span class="s2">"source"</span><span class="p">:</span><span class="s2">"URL"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"save_as"</span><span class="p">:</span><span class="s2">"windows6.1-kb3125574-foo.msu"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"KB3125574"</span><span class="w">
     </span><span class="p">},</span><span class="w">
-    </span><span class="nt">"KB3172605"</span><span class="p">:{</span><span class="nt">"source"</span><span class="p">:</span><span class="s2">"URL"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"save_as"</span><span class="p">:</span><span class="s2">"Windows6.1-KB3172605-x64.msu"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"name"</span><span class="p">:</span><span class="s2">"KB3172605"</span><span class="w">
+    </span><span class="s2">"KB3172605"</span><span class="p">:{</span><span class="s2">"source"</span><span class="p">:</span><span class="s2">"URL"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"save_as"</span><span class="p">:</span><span class="s2">"Windows6.1-KB3172605-x64.msu"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"KB3172605"</span><span class="w">
     </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="err">,</span><span class="w">
-</span><span class="s2">"msu_sequence"</span><span class="err">:</span><span class="p">[</span><span class="s2">"KB3020369"</span><span class="p">,</span><span class="s2">"KB3125574"</span><span class="p">,</span><span class="s2">"KB3172605"</span><span class="p">]</span><span class="w">
+</span><span class="p">},</span><span class="w">
+</span><span class="s2">"msu_sequence"</span><span class="p">:[</span><span class="s2">"KB3020369"</span><span class="p">,</span><span class="s2">"KB3125574"</span><span class="p">,</span><span class="s2">"KB3172605"</span><span class="p">]</span><span class="w">
 </span></code></pre></div>
 <p>To use this you will need the <a href="https://supermarket.chef.io/cookbooks/windev#readme">windev cookbook</a> and you have to also use the auto_chef recipe to handle reboots (if you use Chef without a Chef Server, like I do).</p>
 
