@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>Ruby on Windows: Chocolatey time</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>Ruby on Windows: Chocolatey time</h1>
+<p class="meta">12 Jun 2019</p>
+
+<div class="post">
+<p>I have been steadily increasing my use of chocolatey for installation of toolchains on Windows.</p>
+
+<p>There are still a few problems, e.g. not all packages allow setting an alternate installation directory etc., but these are problems we had with the original installers as well.</p>
+
+<p>There are also some version pinning issues with some packages that seem to originate on the way chocolatey provides URLs to updated packages. These lead to failures if the version is pinned and the package gets updated.</p>
+
+<h2>Ruby and chocolatey</h2>
+
+<p>Since the 2.4 version, the <a href="https://rubyinstaller.org/">RubyInstaller</a> has switched to using the newer msys2 toolchain for C extension compilation which complicated the process of automating installation via the MSI installer.</p>
+
+<p>Fortunately both msys2 and the newer RubyInstallaer are available as chocolatey packages.</p>
+
+<p>Unfortunately there are still some hiccups.</p>
+
+<p>You have to take care to place the msys2 path entry <em>before</em> the Git for Windows path entry.
+The git installer bundles a mingw version that will mess up gem installations if detected before msys2.</p>
+
+<p>Same goes for the ChefDK path entry, only this time with ruby: ChefDK bundles a ruby distro and gem installations will go array if it is found first in the path.</p>
+
+<h2>Chef and chocolatey</h2>
+
+<p>My current infrastructure-as-code solution for turning Windows into a development environment is based on <a href="https://www.chef.io/products/chef-infra/">Chef</a> and the <a href="https://supermarket.chef.io/cookbooks/windev/versions/0.8.4">windev cookbook</a> (full disclosure: windev is maintained by yours truly, so doh!).</p>
+
+<p>Chef provides a <a href="https://docs.chef.io/resource_chocolatey_package.html">chocolatey_package</a> resource and windev adds a configuration helper <em>choco_packages</em> for adding packages.</p>
+
+<p>The following snippet will configure windev to install ruby on a windows machine:</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"environment"</span><span class="p">:{</span><span class="w">
+  </span><span class="s2">"PATH"</span><span class="p">:</span><span class="s2">"c:</span><span class="se">\\</span><span class="s2">tools</span><span class="se">\\</span><span class="s2">ruby</span><span class="se">\\</span><span class="s2">bin;c:</span><span class="se">\\</span><span class="s2">tools</span><span class="se">\\</span><span class="s2">msys2;C:</span><span class="se">\\</span><span class="s2">Program Files</span><span class="se">\\</span><span class="s2">Git</span><span class="se">\\</span><span class="s2">bin;C:</span><span class="se">\\</span><span class="s2">ProgramData</span><span class="se">\\</span><span class="s2">chocolatey</span><span class="se">\\</span><span class="s2">bin;C:</span><span class="se">\\</span><span class="s2">Windows</span><span class="se">\\</span><span class="s2">system32;C:</span><span class="se">\\</span><span class="s2">Windows;C:</span><span class="se">\\</span><span class="s2">Windows</span><span class="se">\\</span><span class="s2">System32</span><span class="se">\\</span><span class="s2">Wbem;C:</span><span class="se">\\</span><span class="s2">Windows</span><span class="se">\\</span><span class="s2">System32</span><span class="se">\\</span><span class="s2">WindowsPowerShell</span><span class="se">\\</span><span class="s2">v1.0</span><span class="se">\\</span><span class="s2">;C:</span><span class="se">\\</span><span class="s2">opscode</span><span class="se">\\</span><span class="s2">chefdk</span><span class="se">\\</span><span class="s2">embedded</span><span class="se">\\</span><span class="s2">bin;"</span><span class="w">
+</span><span class="p">},</span><span class="w">
+</span><span class="s2">"choco_packages"</span><span class="p">:[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"ruby"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"version"</span><span class="p">:</span><span class="s2">"2.6.3.1"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"params"</span><span class="p">:</span><span class="s2">"/InstallDir:'C:</span><span class="se">\\</span><span class="s2">tools</span><span class="se">\\</span><span class="s2">ruby'"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"msys2"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"params"</span><span class="p">:</span><span class="s2">"/InstallDir:'C:</span><span class="se">\\</span><span class="s2">tools</span><span class="se">\\</span><span class="s2">msys2'"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">],</span><span class="w">
+</span><span class="s2">"run_list"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+  </span><span class="s2">"recipe[windev::environment]"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"recipe[windev::packages]"</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div>
+<p>Unfortunately, there is a bug in the interaction between Chef and chocolatey (in the choco_package resource), specific to the msys2 installation.</p>
+
+<p>The installation of msys2 will hang and fail with a timeout - though msys2 will have been correctly installed. Re-run Chef and everything continues normally.</p>
+
+<p>Kinda defeats the main purpose of using it with Chef, but we still get to document in code how the environment is set up.</p>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>
