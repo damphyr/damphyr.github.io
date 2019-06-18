@@ -7,6 +7,121 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Disaster-resistant git</title>
+        <description>&lt;p&gt;Over the years I have developed a very disaster-resistant git workflow:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Change to open branches (master, develop, releases etc.) is always via pull requests.&lt;/li&gt;
+&lt;li&gt;Force push is blocked on all open branches.&lt;/li&gt;
+&lt;li&gt;All changes happen in a branch, no matter how small.&lt;/li&gt;
+&lt;li&gt;Branch is always rebased onto its PR target, never merge.&lt;/li&gt;
+&lt;li&gt;Merge strategy is usually rebase and --no-ff.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;That last one is more a cosmetic preference: In projects with big teams and complex structures/systems it is easier to track the sequence of introduction of the changes via the merge nodes.
+For the rest of this post when you see &amp;#39;branch&amp;#39; it means a branch that will eventually be merged into another as oppised to an &amp;quot;open&amp;quot; branch like &lt;em&gt;master&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h2&gt;The problem is merging&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;There is a beast at the end of most branches and it is called Merge. It strikes fear in the hearts of all programmers and only a special few dare face it.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Its most powerful weapon, the razor sharp Merge Conflicts will shred your intellect to pieces in a single stroke, leaving you wandering aimlesssly in a sea of Code.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;The beast grows more powerful with Time. Enough Time passes and it will be invincible.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;It feeds on Code, give it enough and it will be invincible.&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2&gt;Dealing with merge conflicts&lt;/h2&gt;
+
+&lt;p&gt;The fear of merges and merge conflicts usually develops when someone attempts to merge a branch that contains too many changes and has been growing over a long time (from days to weeks, it depends on your team&amp;#39;s velocity - I once had to merge one that was almost a year old, in svn no less - true story, not fun).&lt;/p&gt;
+
+&lt;p&gt;When encountering a merge conflict, the human algorithm is as follows:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Have I changed the file?
+
+&lt;ul&gt;
+&lt;li&gt;Yes: I know how to resolve the conflict because I know what I wanted to do.&lt;/li&gt;
+&lt;li&gt;No: Take the other version.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;After finishing the merge, always check the resulting diff, since sometimes the automatic merge algorithm will produce changes that are logically faulty (i.e. you can get buggy code or non-sensical content that merges fine).&lt;/p&gt;
+
+&lt;p&gt;In a long-running branch with a lot of changes I simply do not know enough to resolve the conflict, either because multiple people are involved or because I have forgotten over time. Now I have to reconstruct the context while merging or quit.&lt;/p&gt;
+
+&lt;p&gt;Also, in a long chain of commits I really have no idea how to resolve a conflict in a commit in the middle of the chain - I have often had to resolve a conflict in a long commit chain that was reverted in a later commit.&lt;/p&gt;
+
+&lt;p&gt;Never mind checking the diff when it is 50 files and a couple of thousand LOCs.&lt;/p&gt;
+
+&lt;p&gt;This is reason number one against feature branches - too much, left for too long.&lt;/p&gt;
+
+&lt;p&gt;So there are guidelines:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Branches need to be short-lived&lt;/li&gt;
+&lt;li&gt;Keep the diff small&lt;/li&gt;
+&lt;li&gt;Keep the number of commits small to very small&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;As always, one-line guidelines require ellaboration.&lt;/p&gt;
+
+&lt;h2&gt;Branch lifetime&lt;/h2&gt;
+
+&lt;p&gt;Short-lived, when we define it in time, is unfortunately a very fuzzy term. You will find advice like &amp;quot;no more than a day&amp;quot; and other equally arbitrary terms.&lt;/p&gt;
+
+&lt;p&gt;This guideline is the one I see teams ignoring most often. And as long as the rest are followed, with little or no consequences if we want to be honest.&lt;/p&gt;
+
+&lt;p&gt;As long as you remember what the change is - the context and the goal as well - the branch is not old.&lt;/p&gt;
+
+&lt;p&gt;Time alone is not a good criterion. Measuring distance from your target branch in LOCs (the size of the diff) or number of commits is a better indicator of staleness and your chances of encountering the Merge Beast.&lt;/p&gt;
+
+&lt;h2&gt;Diff size&lt;/h2&gt;
+
+&lt;p&gt;IM(NSH)O this is the really critical factor. In order to satisfy the conflict resolution algorithm I need to know about the change. The bigger it is, the more difficult the task.&lt;/p&gt;
+
+&lt;p&gt;Another factor is senseless diff bloat like whitespace changes or stylistic changes. Treat them like a self-contained change. Do not mix them with logic changes. If you need to change the style, the identation size, tabs to spaces etc. then &lt;strong&gt;do it in a separate branch&lt;/strong&gt; and PR.&lt;/p&gt;
+
+&lt;p&gt;Better yet, auto-format on commit (a man can have whishes!).&lt;/p&gt;
+
+&lt;p&gt;In practice, keep the list of changed files to a minimum and the LOC size per file small. In other words, keep your PR diff view clean.&lt;/p&gt;
+
+&lt;h2&gt;Number of commits&lt;/h2&gt;
+
+&lt;p&gt;For a long time I was of the &amp;#39;small commits, discrete steps towards the solution&amp;#39; school. Each commit should do one thing and my commits are structured and commented in such a way as to present the reviewer with my path towards the solution.&lt;/p&gt;
+
+&lt;p&gt;This is a brilliant approach if you are creating a workshop or you are teaching.&lt;/p&gt;
+
+&lt;p&gt;In the real world we are interested in the solution. We&amp;#39;re a team of software developers, we have trust in our abilities to grasp small to medium globs of code. And in practice we use the pull request forms to do the work. So at work the unit of change is the pull request, not the commit.&lt;/p&gt;
+
+&lt;p&gt;The unspoken assumption is that I have broken my user stories down to manageable pieces and do not improvise a redesign while writing the code.
+Keep the number of commits low (single digit number), ideally bring it down to 1.&lt;/p&gt;
+
+&lt;p&gt;How many commits away you are from master is a good indicator of how stale your branch is. This is easily solved with a routine of regular rebasing. Regular as in &lt;em&gt;at least once a day&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;How many commits you have in your branch is a good indicator of the amount of trouble you will be when merging. And since rebasing is the same as merging in this aspect, how difficult your daily routine will be.&lt;/p&gt;
+
+&lt;p&gt;Setting &lt;a href=&quot;https://git-scm.com/docs/git-rerere&quot;&gt;rerere&lt;/a&gt; in the git configuration simplifies repeated rebases but it is a setting that has to be used with caution.&lt;/p&gt;
+
+&lt;h2&gt;Side notes&lt;/h2&gt;
+
+&lt;p&gt;There are some points that might be obvious to some:&lt;/p&gt;
+
+&lt;p&gt;Doing all changes in branches &lt;em&gt;localizes&lt;/em&gt; your conflict resolution algorithm to the branch. It provides a necessary restriction of context that removes &lt;strong&gt;a lot&lt;/strong&gt; of overhead. It is &lt;em&gt;your&lt;/em&gt; change you need to care about.&lt;/p&gt;
+
+&lt;p&gt;This means that branch constructs like the one used by git flow where &lt;em&gt;develop&lt;/em&gt; is merged into &lt;em&gt;master&lt;/em&gt; cannot be easily supported like this.&lt;/p&gt;
+
+&lt;p&gt;A PR workflow following the guidelines faithfully is like a discrete time simulation of trunk-based development with the steps being the merge nodes. The smaller the blocks (i.e. number of commits), the closer we are to trunk-based. Remove the --no-ff from the merge strategy and the distinction dissappears in the end result.&lt;/p&gt;
+
+&lt;p&gt;Larger changes (of which the most common type we call &amp;#39;features&amp;#39;) require conscious design.
+In my experience, teams fall prey to the Merge Beast because they lack ways to incrementally introduce changes or have been given user stories that are too vague or too big. This is not a git related subject, don&amp;#39;t blame the tool.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 18 Jun 2019 14:15:21 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2019/06/18/disaster-resistant-git</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2019/06/18/disaster-resistant-git</guid>
+      </item>
+    
+      <item>
         <title>Adventures in Azure DevOps: iOS secrets</title>
         <description>&lt;p&gt;This new-fangled (&lt;em&gt;sic&lt;/em&gt;) mobile app development thing, I tell you. I have been hearing stories, horror stories.&lt;/p&gt;
 
@@ -423,48 +538,6 @@ git submodule init
         <pubDate>Wed, 29 Nov 2017 14:14:21 +0100</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2017/11/29/gaudi-one-oh</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/11/29/gaudi-one-oh</guid>
-      </item>
-    
-      <item>
-        <title>Simple Cooking: Κολοκυθοτυρόπιτα της ξενιτιάς</title>
-        <description>&lt;p&gt;Ένα από τα πράγματα που μου λείπουν έντονα στην ξενιτιά είναι οι πίτες. &lt;/p&gt;
-
-&lt;p&gt;Η πίτα είναι δύσκολη στη μετάφραση στους Βορειοδυτικοευρωπαίους, μιας και pie είναι πιο κοντά σε τάρτα ή τριφτή, το pastry είναι πολύ γενικό, ενώ οι Γερμανοί απλώς δεν έχουν λέξη για το είδος (αν εξαιρέσεις το strudel, αλλά μετά πρέπει να τους εξηγείς ότι η γέμιση είναι πικάντικη και όχι γλυκιά - άσε που τα γλασάρουν όλα με ζάχαρη), ενώ το pita παραπέμπει στην κυπριακή, στην πίτα για το γύρο κλπ. Και πάλι φυσικά μας σώζουν οι Τούρκοι με το börek/burek μια και είναι το πλησιέστερο σε αυτό που ο Έλληνας ονομάζει πίτα, και άσε τους Κρητικούς να λένε μπουρέκι κάτι εντελώς άσχετο.&lt;/p&gt;
-
-&lt;p&gt;Εκεί που σηκώνω τα χέρια ψηλά είναι στη μετάφραση του &amp;quot;σφολιάτα&amp;quot;. Και το αστείο είναι ότι το έτοιμο φύλο που θα βρει κανείς στο σουπερμάρκετ στη Γερμανία (απλά Blätterteig -&amp;gt; &amp;quot;Φύλο&amp;quot;) είναι σφολιάτα.&lt;/p&gt;
-
-&lt;p&gt;Τέλως πάντων, οι φίλοι μου οι Τούρκοι στο θέμα πίτα είναι μια απογοήτευση και έχει να κάνει με τις συνταγές τους για το φύλο, δεν τους βγαίνει τραγανό με τίποτα.&lt;/p&gt;
-
-&lt;p&gt;Τι να κάνεις λοιπόν, θα κάτσεις να κάνεις πίτα. Άρχισα με τυρόπιτα (πως αλλιώς), περάσα στη σπανακόπιτα, έφτασε η ώρα της πρασόπιτας και εκεί κάπου άρχισα να κοιτάω και τι άλλο έχει τριγύρω. &lt;/p&gt;
-
-&lt;p&gt;Οκτώβρη μήνα εδώ στο Βορρά πορτοκαλίζει ο τόπος. Πλημμύρα στην κολοκύθα σε λέω. Βγαίνουμε τσάρκα στα χωράφια και μετά τις έχουμε στοιβαγμένες στο αποθηκάκι - στη μια γωνιά τα μήλα, στην άλλη οι κολοκύθες. Και τις σφάζουμε μία, μία. Αν δε μας τα χαλάσει το global warming, τρώμε κολοκύθα μέχρι το Φλεβάρη σε λέω (και έχω και πασατέμπο για όλη την προκριματική φάση του Τσαμπιονσλίγκι).&lt;/p&gt;
-
-&lt;p&gt;Η παρακάτω συνταγή μας βγήκε από έναν πειραματισμό (και τελικά, διαβάζοντας &lt;a href=&quot;/rumblings/2010/06/05/simple-cooking-chicken-inspiracin&quot;&gt;την άλλη συνταγή&lt;/a&gt;, &amp;quot;πειραματίζομαι&amp;quot; για μένα σημαίνει &amp;quot;βάλε κύμινο&amp;quot;), και έχει γίνει τρομερό σουξέ. &lt;/p&gt;
-
-&lt;p&gt;Μόνο που κανείς εδώ δε μπορεί να προφέρει το κολοκυθοτυρόπιτα.&lt;/p&gt;
-
-&lt;h3&gt;Υλικά&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;2 φύλα σφολιάτα.&lt;/li&gt;
-&lt;li&gt;1 αυγό&lt;/li&gt;
-&lt;li&gt;100 γραμμάρια φέτα&lt;/li&gt;
-&lt;li&gt;1 τέταρτο κολοκύθας&lt;/li&gt;
-&lt;li&gt;Κύμινο (τριμμένο)&lt;/li&gt;
-&lt;li&gt;Μαύρο πιπέρι&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3&gt;Παρασκευή&lt;/h3&gt;
-
-&lt;p&gt;Ξεφλουδίζουμε την κολοκύθα, την κόβουμε σε κομμάτια και τη βάζουμε να βράσει μέχρι να μαλακώσει πέρα για πέρα.&lt;/p&gt;
-
-&lt;p&gt;Εντωμεταξύ, λιώνουμε τη φέτα με ένα πιρούνι μαζί με το αυγό, το πιπέρι και το κύμινο. Όταν βράσει η κολοκύθα την αφήνουμε λίγο να κρυώσει, μη μας κόψει το αυγό και την αναμειγνύουμε κι αυτή μέσα στο υπόλοιπο μίγμα.&lt;/p&gt;
-
-&lt;p&gt;Απλώνουμε πάνω στο ένα φύλο, σκεπάζουμε με το άλλο φύλο, βάζουμε στο φούρνο στους 200 βαθμούς για 20 λεπτά.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 25 Nov 2017 11:16:43 +0100</pubDate>
-        <link>http://www.ampelofilosofies.gr/rumblings/2017/11/25/pumpkin-pie-ala-griega</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/rumblings/2017/11/25/pumpkin-pie-ala-griega</guid>
       </item>
     
   </channel>

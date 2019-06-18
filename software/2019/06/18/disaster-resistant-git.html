@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>Disaster-resistant git</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>Disaster-resistant git</h1>
+<p class="meta">18 Jun 2019</p>
+
+<div class="post">
+<p>Over the years I have developed a very disaster-resistant git workflow:</p>
+
+<ul>
+<li>Change to open branches (master, develop, releases etc.) is always via pull requests.</li>
+<li>Force push is blocked on all open branches.</li>
+<li>All changes happen in a branch, no matter how small.</li>
+<li>Branch is always rebased onto its PR target, never merge.</li>
+<li>Merge strategy is usually rebase and --no-ff.</li>
+</ul>
+
+<p>That last one is more a cosmetic preference: In projects with big teams and complex structures/systems it is easier to track the sequence of introduction of the changes via the merge nodes.
+For the rest of this post when you see &#39;branch&#39; it means a branch that will eventually be merged into another as oppised to an &quot;open&quot; branch like <em>master</em>.</p>
+
+<h2>The problem is merging</h2>
+
+<p><em>There is a beast at the end of most branches and it is called Merge. It strikes fear in the hearts of all programmers and only a special few dare face it.</em></p>
+
+<p><em>Its most powerful weapon, the razor sharp Merge Conflicts will shred your intellect to pieces in a single stroke, leaving you wandering aimlesssly in a sea of Code.</em></p>
+
+<p><em>The beast grows more powerful with Time. Enough Time passes and it will be invincible.</em></p>
+
+<p><em>It feeds on Code, give it enough and it will be invincible.</em></p>
+
+<h2>Dealing with merge conflicts</h2>
+
+<p>The fear of merges and merge conflicts usually develops when someone attempts to merge a branch that contains too many changes and has been growing over a long time (from days to weeks, it depends on your team&#39;s velocity - I once had to merge one that was almost a year old, in svn no less - true story, not fun).</p>
+
+<p>When encountering a merge conflict, the human algorithm is as follows:</p>
+
+<ul>
+<li>Have I changed the file?
+
+<ul>
+<li>Yes: I know how to resolve the conflict because I know what I wanted to do.</li>
+<li>No: Take the other version.</li>
+</ul></li>
+</ul>
+
+<p>After finishing the merge, always check the resulting diff, since sometimes the automatic merge algorithm will produce changes that are logically faulty (i.e. you can get buggy code or non-sensical content that merges fine).</p>
+
+<p>In a long-running branch with a lot of changes I simply do not know enough to resolve the conflict, either because multiple people are involved or because I have forgotten over time. Now I have to reconstruct the context while merging or quit.</p>
+
+<p>Also, in a long chain of commits I really have no idea how to resolve a conflict in a commit in the middle of the chain - I have often had to resolve a conflict in a long commit chain that was reverted in a later commit.</p>
+
+<p>Never mind checking the diff when it is 50 files and a couple of thousand LOCs.</p>
+
+<p>This is reason number one against feature branches - too much, left for too long.</p>
+
+<p>So there are guidelines:</p>
+
+<ul>
+<li>Branches need to be short-lived</li>
+<li>Keep the diff small</li>
+<li>Keep the number of commits small to very small</li>
+</ul>
+
+<p>As always, one-line guidelines require ellaboration.</p>
+
+<h2>Branch lifetime</h2>
+
+<p>Short-lived, when we define it in time, is unfortunately a very fuzzy term. You will find advice like &quot;no more than a day&quot; and other equally arbitrary terms.</p>
+
+<p>This guideline is the one I see teams ignoring most often. And as long as the rest are followed, with little or no consequences if we want to be honest.</p>
+
+<p>As long as you remember what the change is - the context and the goal as well - the branch is not old.</p>
+
+<p>Time alone is not a good criterion. Measuring distance from your target branch in LOCs (the size of the diff) or number of commits is a better indicator of staleness and your chances of encountering the Merge Beast.</p>
+
+<h2>Diff size</h2>
+
+<p>IM(NSH)O this is the really critical factor. In order to satisfy the conflict resolution algorithm I need to know about the change. The bigger it is, the more difficult the task.</p>
+
+<p>Another factor is senseless diff bloat like whitespace changes or stylistic changes. Treat them like a self-contained change. Do not mix them with logic changes. If you need to change the style, the identation size, tabs to spaces etc. then <strong>do it in a separate branch</strong> and PR.</p>
+
+<p>Better yet, auto-format on commit (a man can have whishes!).</p>
+
+<p>In practice, keep the list of changed files to a minimum and the LOC size per file small. In other words, keep your PR diff view clean.</p>
+
+<h2>Number of commits</h2>
+
+<p>For a long time I was of the &#39;small commits, discrete steps towards the solution&#39; school. Each commit should do one thing and my commits are structured and commented in such a way as to present the reviewer with my path towards the solution.</p>
+
+<p>This is a brilliant approach if you are creating a workshop or you are teaching.</p>
+
+<p>In the real world we are interested in the solution. We&#39;re a team of software developers, we have trust in our abilities to grasp small to medium globs of code. And in practice we use the pull request forms to do the work. So at work the unit of change is the pull request, not the commit.</p>
+
+<p>The unspoken assumption is that I have broken my user stories down to manageable pieces and do not improvise a redesign while writing the code.
+Keep the number of commits low (single digit number), ideally bring it down to 1.</p>
+
+<p>How many commits away you are from master is a good indicator of how stale your branch is. This is easily solved with a routine of regular rebasing. Regular as in <em>at least once a day</em>.</p>
+
+<p>How many commits you have in your branch is a good indicator of the amount of trouble you will be when merging. And since rebasing is the same as merging in this aspect, how difficult your daily routine will be.</p>
+
+<p>Setting <a href="https://git-scm.com/docs/git-rerere">rerere</a> in the git configuration simplifies repeated rebases but it is a setting that has to be used with caution.</p>
+
+<h2>Side notes</h2>
+
+<p>There are some points that might be obvious to some:</p>
+
+<p>Doing all changes in branches <em>localizes</em> your conflict resolution algorithm to the branch. It provides a necessary restriction of context that removes <strong>a lot</strong> of overhead. It is <em>your</em> change you need to care about.</p>
+
+<p>This means that branch constructs like the one used by git flow where <em>develop</em> is merged into <em>master</em> cannot be easily supported like this.</p>
+
+<p>A PR workflow following the guidelines faithfully is like a discrete time simulation of trunk-based development with the steps being the merge nodes. The smaller the blocks (i.e. number of commits), the closer we are to trunk-based. Remove the --no-ff from the merge strategy and the distinction dissappears in the end result.</p>
+
+<p>Larger changes (of which the most common type we call &#39;features&#39;) require conscious design.
+In my experience, teams fall prey to the Merge Beast because they lack ways to incrementally introduce changes or have been given user stories that are too vague or too big. This is not a git related subject, don&#39;t blame the tool.</p>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>
