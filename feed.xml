@@ -7,6 +7,63 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Adventures in Azure DevOps: I git too fast</title>
+        <description>&lt;p&gt;I like keeping the number of commits in my pull requests in the low single digits, preferably 1. For context see the post on my &lt;a href=&quot;/software/2019/06/18/disaster-resistant-git&quot;&gt;disaster resistant git workflow&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I used to do all the work, squashing the commits at the end of the work before merging my pull requests but recently I have switched to using &lt;code&gt;git commit --amend&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The reason for this is that while I have noticed that I rarely need to re-arrange my commits in logical groups when squashing (call it a benefit of experience - it certainly was not like this years ago), I make a lot of typing and syntax errors.&lt;/p&gt;
+
+&lt;p&gt;As a result my typical change originally looks like&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;c31e548 Some informed and wise comment on the change
+dfdfd15 typo
+d19f4f1 typo
+7122e4a typo fix
+a62803a syntax fix
+53b99b8 dammit
+c657575 why didn't this work?
+d8e72cf doh, PEBKAC
+5017515 what an idiot
+59c53d1 stupid semicolon
+db6aa1c I hate ...
+47d3dc7 AAAARGH
+4640d92 done
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Previously I would be kind and squash, but you could follow everything in the pull request notifications. &lt;code&gt;--amend&lt;/code&gt;allows me to appear infalible :D.&lt;/p&gt;
+
+&lt;p&gt;As an added optimization (remember, I usually do builds and CI and stuff like that - my code does not need the CI, it IS the CI) I recently added an alias to my collection:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git config alias.cowboy
+&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;git commit &lt;span class=&quot;nt&quot;&gt;--amend&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git push &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;As a measure of sparing me a few keystrokes it is great (remember, I typo &lt;strong&gt;a lot&lt;/strong&gt;). As a practice it is questionable, but see in which context it is used in the aforementioned git workflow post.&lt;/p&gt;
+
+&lt;p&gt;Funnily, in Azure Devops I get to trip myself up with this.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/git-too-fast.png&quot; alt=&quot;Checkout error&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Today I started with builds failing on checkout, which was wierd.&lt;/p&gt;
+
+&lt;p&gt;Looking closer it gets momentarily even wierder:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;fatal: reference is not a tree
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;What happened&lt;/h2&gt;
+
+&lt;p&gt;Basically my cowboy ways pulled the rug from under git&amp;#39;s feet.&lt;/p&gt;
+
+&lt;p&gt;What you see is a live demostration of the dangers of rewriting history in git.&lt;/p&gt;
+
+&lt;p&gt;The build is setup with a stage of 5 jobs but for the moment we only have a pool of 2 agents. So if I catch my typo fast enough and play the cowboy card the running build will try to get a SHA that does not exist anymore.&lt;/p&gt;
+
+&lt;p&gt;No harm done other than a negative skew on my successfull build percentage.&lt;/p&gt;
+
+&lt;p&gt;Everything is fine, we&amp;#39;re all professionals here.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 18 Jun 2019 16:15:21 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2019/06/18/azure-devops-git-too-fast</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2019/06/18/azure-devops-git-too-fast</guid>
+      </item>
+    
+      <item>
         <title>Disaster-resistant git</title>
         <description>&lt;p&gt;Over the years I have developed a very disaster-resistant git workflow:&lt;/p&gt;
 
@@ -489,55 +546,6 @@ git submodule init
         <pubDate>Mon, 28 May 2018 10:15:21 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2018/05/28/on-remote-working</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2018/05/28/on-remote-working</guid>
-      </item>
-    
-      <item>
-        <title>gaudi 1.0.0</title>
-        <description>&lt;p&gt;Four years ago, almost to the day (the first commit was on the 15th November 2013) I took the work of about a year and a half, spent a week cleaning it up and rewriting and then put it up on GitHub.&lt;/p&gt;
-
-&lt;p&gt;gaudi started as a build system for a very specific and opinionated way of building C: The code organized in small self-contained &amp;quot;units&amp;quot; we so conveniently/confusingly named components, all options concentrated in one place, everything text based and one very consistent user interface thanks to rake.&lt;/p&gt;
-
-&lt;p&gt;The intentions from the beginning were the clear mapping of an architecture (N layers and componetized) on the source directory structure, the single source of truth for configuration options, and the simplicity of rake in creating a consistent usage model. Boy did it prove powerful.&lt;/p&gt;
-
-&lt;p&gt;I spent the next couple of years building all-encompassing systems around systems on that simple basis. Consistent, repeatable, all knowing, all measuring build/test/deploy/release juggernauts across toolchains and platforms&lt;sup&gt;1/&lt;sup&gt;.&lt;/p&gt;
-
-&lt;p&gt;And then there were no more C/C++ projects. But there was a project with Java and some wierd XML compiler stuff and half a dozen other tools and also massive amounts of data shunted through Jenkins via shell scripts and everything had to go to the cloud.&lt;/p&gt;
-
-&lt;p&gt;And then another project with .NET, but also angular and grunt and gradle and msbuild and at first impression every other technology under the sun mixed in a cement mixer after being pounded by Mjölnir.&lt;/p&gt;
-
-&lt;p&gt;And then that client that was adamant that Ruby could not be used, and it had to be Python&lt;sup&gt;2&lt;/sup&gt;. &lt;/p&gt;
-
-&lt;p&gt;The same concepts, wildly different technologies, every case bordering on total chaos. It served as a focusing lens. And so we come to gaudi 1.0.0.&lt;/p&gt;
-
-&lt;p&gt;I am insanely proud of this gaudi release: It&amp;#39;s the first time in my career I ship something &lt;strong&gt;by removing 70% of the features and code and repackaging&lt;/strong&gt;. It is my love of deleting code made manifest :)&lt;/p&gt;
-
-&lt;p&gt;The code itself is not important. Copy it, port it, throw it away. I dare you to find a language/tool combo that is better suited to this task than Ruby/rake - I&amp;#39;ve tried them all: graddle, grunt, gulp, ant, cmake, make, nmake, dmake, maven, scons. The list is long. Only Elixir/mix comes close.&lt;/p&gt;
-
-&lt;p&gt;I&amp;#39;m old, and I like Ruby and this code has worked for over 5 years across all 1.9 and 2.x versions of Ruby. Still not the important part.&lt;/p&gt;
-
-&lt;p&gt;The important part was &lt;a href=&quot;https://github.com/damphyr/gaudi/blob/master/doc/BUILDSYSTEMS.md&quot;&gt;the distinction between build system and build management system&lt;/a&gt;, also discussed previously in &lt;a href=&quot;/software/2014/07/17/vars-build-rules&quot;&gt;VAR&amp;#39;s build rules&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;And the other one is the &lt;a href=&quot;https://github.com/damphyr/gaudi/blob/master/doc/ASPIRATIONS.md&quot;&gt;list of aspirations&lt;/a&gt;. Theory in bullet points if you will, but oh so important if you ever want to get a team on board.&lt;/p&gt;
-
-&lt;p&gt;There are more things that belong to this list, I just haven&amp;#39;t finished the distillation process. The core will not get any additional features apart from some self-documenting tasks. &lt;/p&gt;
-
-&lt;p&gt;What I think is possible is taking the idea behind gaudi-c (code substrate for an opinionated methodology) and applying it to the areas of responsibility of a build system with an eye toward building &lt;em&gt;systems&lt;/em&gt; as opposed to &lt;em&gt;technologies&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/BuildSystem.png&quot; alt=&quot;Areas of Responsibility&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;A &amp;quot;blue&amp;quot; module is almost too easy considering &lt;a href=&quot;https://github.com/damphyr/rutema&quot;&gt;rutema&lt;/a&gt; is based on a similar set of principles with a narrower application domain.&lt;/p&gt;
-
-&lt;p&gt;But in the end it is all glorified batch processing of command lines placed at various points of an acyclical dependency graph. So much fun!&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;p&gt;&lt;sup&gt;1&lt;/sup&gt; I had already worked myself up to the corner of &amp;quot;the automation guy&amp;quot; but this was the all-in. I can code in a dozen programming languages, have written bootloaders in C, web services in Java, .NET and Ruby, daemons for Linux, a persistency layer in Java, remote control software for locomotives but I am now &amp;quot;the build system&amp;quot; guy. Worse, I am the &amp;quot;devops guy&amp;quot;. But that is a rant for another time.&lt;/p&gt;
-
-&lt;p&gt;&lt;sup&gt;2&lt;/sup&gt;That hurt, not because of Ruby vs. Python, but because of rake vs. absolutely-nothing-approaching-usable.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 29 Nov 2017 14:14:21 +0100</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2017/11/29/gaudi-one-oh</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2017/11/29/gaudi-one-oh</guid>
       </item>
     
   </channel>
