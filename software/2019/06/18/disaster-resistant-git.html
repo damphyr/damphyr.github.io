@@ -46,15 +46,15 @@
 <p>Over the years I have developed a very disaster-resistant git workflow:</p>
 
 <ul>
-<li>Change to open branches (master, develop, releases etc.) is always via pull requests.</li>
+<li>Change to open-ended branches (master, develop, releases etc.) is always via pull requests.</li>
 <li>Force push is blocked on all open branches.</li>
 <li>All changes happen in a branch, no matter how small.</li>
-<li>Branch is always rebased onto its PR target, never merge.</li>
+<li>Branch is always rebased onto its PR target, never merged.</li>
 <li>Merge strategy is usually rebase and --no-ff.</li>
 </ul>
 
 <p>That last one is more a cosmetic preference: In projects with big teams and complex structures/systems it is easier to track the sequence of introduction of the changes via the merge nodes.
-For the rest of this post when you see &#39;branch&#39; it means a branch that will eventually be merged into another as oppised to an &quot;open&quot; branch like <em>master</em>.</p>
+For the rest of this post when you see &#39;branch&#39; it means a branch that will eventually be merged into another as opposed to an &quot;open-ended&quot; branch like <em>master</em>.</p>
 
 <h2>The problem is merging</h2>
 

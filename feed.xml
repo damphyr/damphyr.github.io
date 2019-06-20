@@ -68,15 +68,15 @@ db6aa1c I hate ...
         <description>&lt;p&gt;Over the years I have developed a very disaster-resistant git workflow:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Change to open branches (master, develop, releases etc.) is always via pull requests.&lt;/li&gt;
+&lt;li&gt;Change to open-ended branches (master, develop, releases etc.) is always via pull requests.&lt;/li&gt;
 &lt;li&gt;Force push is blocked on all open branches.&lt;/li&gt;
 &lt;li&gt;All changes happen in a branch, no matter how small.&lt;/li&gt;
-&lt;li&gt;Branch is always rebased onto its PR target, never merge.&lt;/li&gt;
+&lt;li&gt;Branch is always rebased onto its PR target, never merged.&lt;/li&gt;
 &lt;li&gt;Merge strategy is usually rebase and --no-ff.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;That last one is more a cosmetic preference: In projects with big teams and complex structures/systems it is easier to track the sequence of introduction of the changes via the merge nodes.
-For the rest of this post when you see &amp;#39;branch&amp;#39; it means a branch that will eventually be merged into another as oppised to an &amp;quot;open&amp;quot; branch like &lt;em&gt;master&lt;/em&gt;.&lt;/p&gt;
+For the rest of this post when you see &amp;#39;branch&amp;#39; it means a branch that will eventually be merged into another as opposed to an &amp;quot;open-ended&amp;quot; branch like &lt;em&gt;master&lt;/em&gt;.&lt;/p&gt;
 
 &lt;h2&gt;The problem is merging&lt;/h2&gt;
 
