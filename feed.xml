@@ -7,6 +7,33 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Published author...sort of</title>
+        <description>&lt;p&gt;In the past year a group of Zühlke coleagues led by &lt;a href=&quot;https://twitter.com/sypounentes&quot;&gt;Christian Abegg&lt;/a&gt;  and &lt;a href=&quot;https://twitter.com/peitor&quot;&gt;Peter Gfader&lt;/a&gt; put together a collection of articles about things we consider important with the aim of publishing them as a book.&lt;/p&gt;
+
+&lt;p&gt;That book is finally out!&lt;/p&gt;
+
+&lt;p&gt;The official blurb is&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;In «Machines – Code – People» readers learn about best practices, cultural philosophies, great ideas and practically proven concepts. In 50 short articles Zühlke engineers share what they are passionate about. You will find many useful tips from various areas of today’s tech industry. The range of topics covered includes the latest technical developments as well as collaboration topics and individual values and techniques.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;You can buy the dead tree version on &lt;a href=&quot;https://www.amazon.de/Machines-Code-People-engineers-passionate/dp/3748141181/ref=sr_1_1?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&amp;keywords=machines+code+people&amp;qid=1561359217&amp;s=gateway&amp;sr=8-1&quot;&gt;Amazon&lt;/a&gt;, you can browse it for free &lt;a href=&quot;https://zuehlke.github.io/machines-code-people/&quot;&gt;online&lt;/a&gt; or download one of the &lt;a href=&quot;https://zuehlke.github.io/machines-code-people/articles/preface.html&quot;&gt;e-book versions&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;I consider this a 70% step to crossing &amp;quot;be a published author&amp;quot; off the bucket list.&lt;/p&gt;
+
+&lt;p&gt;I am especially proud, not just because of my article in the book (it is an edited version of the &lt;a href=&quot;/software/2014/07/17/vars-build-rules&quot;&gt;build rules&lt;/a&gt; post in this blog) but because I came up with a title the rest of the company found cool.&lt;/p&gt;
+
+&lt;p&gt;Taken verbatim from our internal discussion when deciding on the title:&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;It alludes (admittedly over-simplified, but what do you expect from a title) to the course Zuehlke has taken over the 50 years of its history: From building machines and electronics, to adding software and processes (code), innovation and business consulting which is ultimately people.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;It also works as the three things we do best (if you put the people in the context of working with the machines and code ;) ).&lt;/em&gt;&lt;/p&gt;
+</description>
+        <pubDate>Wed, 26 Jun 2019 14:15:21 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2019/06/26/published-author</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2019/06/26/published-author</guid>
+      </item>
+    
+      <item>
         <title>Adventures in Azure DevOps: I git too fast</title>
         <description>&lt;p&gt;I like keeping the number of commits in my pull requests in the low single digits, preferably 1. For context see the post on my &lt;a href=&quot;/software/2019/06/18/disaster-resistant-git&quot;&gt;disaster resistant git workflow&lt;/a&gt;.&lt;/p&gt;
 
@@ -473,79 +500,6 @@ git submodule init
         <pubDate>Thu, 20 Sep 2018 10:15:21 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2018/09/20/on-laziness</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2018/09/20/on-laziness</guid>
-      </item>
-    
-      <item>
-        <title>On remote working</title>
-        <description>&lt;p&gt;&lt;img src=&quot;https://imgs.xkcd.com/comics/duty_calls.png&quot; alt=&quot;Duty calls&quot;&gt; &lt;/p&gt;
-
-&lt;p&gt;My little bubble of the internet has been showing me a lot more bombastic statements about remote working, of the type &amp;quot;it makes people a lot more effective&amp;quot;, &amp;quot;it is the way of the future&amp;quot;, &amp;quot;soon all will work from home in their pyjamas&amp;quot; etc.&lt;/p&gt;
-
-&lt;p&gt;There is enough noise that I felt I had to throw my hat into the ring :) &lt;/p&gt;
-
-&lt;h2&gt;In an office, far far away&lt;/h2&gt;
-
-&lt;p&gt;This remote working thing is not new. I submit to you a &lt;a href=&quot;http://www.wideteams.com/2012/06/27/podcast-38-vassilis-rizopoulos-of-zuhlke/&quot;&gt;Wideteams podcast interview&lt;/a&gt; by yours truly, from way back in 2012. I had been remote working for 8 years by then.&lt;/p&gt;
-
-&lt;p&gt;This post is not about how great remote working is (it is pretty great - sometimes). It is not about how to do it right (&lt;a href=&quot;https://avdi.codes/&quot;&gt;Avdi Grimm&amp;#39;s&lt;/a&gt; WideTeams podcast is choke full of good advice, even though the last episode is now 5 years back. Go check it out).&lt;/p&gt;
-
-&lt;p&gt;This is the antilogue, the reaction to the pendulum swinging to the opposite extreme end.&lt;/p&gt;
-
-&lt;p&gt;Btw., my summer office looks like this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/SummerOffice.jpg&quot; alt=&quot;Summer Office&quot;&gt;&lt;/p&gt;
-
-&lt;h2&gt;Context is everything&lt;/h2&gt;
-
-&lt;p&gt;I worked remotely for close to 12 years. In this context &amp;quot;remotely&amp;quot; means that my place of residence was in a different country and different timezone than my place of work.&lt;/p&gt;
-
-&lt;p&gt;Technically, I still work remotely. Here &amp;quot;remotely&amp;quot; means that I can choose to not go to the office on certain days and that in the summers I can maximize time spent by the sea by adding a couple of weeks of remote working to my regular holidays.&lt;/p&gt;
-
-&lt;p&gt;Also means that in projects (for the last 15 years) I have been part of a distributed team, whether I or others from the team were remote. Multiple cities, multiple offices, single team.&lt;/p&gt;
-
-&lt;h2&gt;Full remote is a special case&lt;/h2&gt;
-
-&lt;p&gt;I would argue that going full remote (working full time from home with no office and all contact through online avatars) is neither effective, nor healthy. &lt;/p&gt;
-
-&lt;p&gt;To be a star remote worker (let&amp;#39;s say software engineer, a job I know well) you need excellent communication skills, you need to separate your work and private life while they co-inhabit your space and time (have you ever tried to build a release while a toddler demands attention?) and you need reciprocate understanding of the difficulties distance introduces to human relationships (thick skin and a soft hand). All of this on top of your actual work subject. &lt;/p&gt;
-
-&lt;p&gt;Software engineers have it easy, communication skills are a required part of the job description ;P  (What?! They are not?! Well, they should be!)&lt;/p&gt;
-
-&lt;p&gt;I have met such people. They are precious few and a special kind of personality. Over the years, even they have moved out of the house - co-working spaces are a blessing in this regard. And the funny thing is, with these precious few, the most productive, inspiring and effective times were while we were co-located.&lt;/p&gt;
-
-&lt;h2&gt;Human, you (social) animal.&lt;/h2&gt;
-
-&lt;p&gt;The &amp;quot;we are social animals&amp;quot; platitude is especially appropriate in the case of remote working. The creative part of problem solving, the part that involves sketching on whiteboard/paper/napkin runs better when the people involved are in the same room. &lt;/p&gt;
-
-&lt;p&gt;The deciding factor is what in German is called &amp;quot;Gestik und Mimik&amp;quot;, the sum total of gestures, facial expressions, movement etc. None of our remote collaboration solutions is in a position to deliver the full set of signals we transmit when communicating.&lt;/p&gt;
-
-&lt;p&gt;So having the full palette of interactions available improves creative collaboration. This I believe is a conclusion that we can accept unchalenged ;). &lt;/p&gt;
-
-&lt;p&gt;A less discernible benefit of frequent personal contact is familiarity with said palette of signals: think of it as adding a voice to an email/message. This in turn (again a personal observation) facilitates later remote collaboration. Someone typing on a chat box is a stranger, impersonal and easy to dismiss. Also, a lot easier to misinterpret due to missing empathic signaling.&lt;/p&gt;
-
-&lt;p&gt;My personal experience is that at about the third week of &amp;quot;isolation&amp;quot; I start drifting. I either run out of clearly defined goals, lose touch with the team or lose focus because the immediate environment presents more pressing distractions. The time span feels inversely propotional to the size of the team - the bigger the team the faster one loses overview. At that point I need a get-together to reapply color and sound to avatars so to speak.&lt;/p&gt;
-
-&lt;h2&gt;The answer is: It depends&lt;/h2&gt;
-
-&lt;p&gt;Rules of thumb for when should you strive to get your team in one place:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;When the team is new, or you&amp;#39;re new to the team.&lt;/li&gt;
-&lt;li&gt;When you&amp;#39;re in the &amp;quot;how do we do this?&amp;quot;, instead of the &amp;quot;let&amp;#39;s do this&amp;quot; phase.&lt;/li&gt;
-&lt;li&gt;At regular intervals as a refresher.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I feel very comfortable with the hybrid remote solution: Have the team get together regularly, have flexibility and support in place for working from home.&lt;/p&gt;
-
-&lt;p&gt;It is not the unconditional recruiting silver bullet: &lt;/p&gt;
-
-&lt;p&gt;It requires relative short distances for all team members to accomodate regular meetings. You can&amp;#39;t do away with the office. You can&amp;#39;t reasonably hire from the other side of the globe etc.&lt;/p&gt;
-
-&lt;p&gt;But I find it is a good compromise between the inflexibility of on-premise teams and the isolation of working remotely.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 28 May 2018 10:15:21 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2018/05/28/on-remote-working</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2018/05/28/on-remote-working</guid>
       </item>
     
   </channel>
