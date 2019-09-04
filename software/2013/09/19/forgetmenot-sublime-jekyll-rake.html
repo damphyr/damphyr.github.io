@@ -60,12 +60,12 @@
 <p>And instead of creating a build system for jekyll I just created a rakefile that calls <em>jekyll build</em> and used the following as a build system</p>
 
 <figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-  </span><span class="s2">"env"</span><span class="p">:{</span><span class="w">
-      </span><span class="s2">"PATH"</span><span class="p">:</span><span class="s2">"${HOME}/.rvm/bin:${PATH}"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"LC_CTYPE"</span><span class="p">:</span><span class="s2">"UTF-8"</span><span class="w">
+  </span><span class="nl">"env"</span><span class="p">:{</span><span class="w">
+      </span><span class="nl">"PATH"</span><span class="p">:</span><span class="s2">"${HOME}/.rvm/bin:${PATH}"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"LC_CTYPE"</span><span class="p">:</span><span class="s2">"UTF-8"</span><span class="w">
   </span><span class="p">},</span><span class="w">
-  </span><span class="s2">"cmd"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"rake"</span><span class="p">],</span><span class="w">
-  </span><span class="s2">"file_regex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^(...*?):([0-9]*):?([0-9]*)"</span><span class="w">
+  </span><span class="nl">"cmd"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"rake"</span><span class="p">],</span><span class="w">
+  </span><span class="nl">"file_regex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^(...*?):([0-9]*):?([0-9]*)"</span><span class="w">
 </span><span class="p">}</span></code></pre></figure>
 
 <p>That <em>&quot;LC_CTYPE&quot;:&quot;UTF-8&quot;</em> is crucial, especially with the various greek, german and spanish UTF-8 characters loose on this blog. Jekyll chokes very fast (article number 3 to be exact) if it&#39;s not set.</p>
