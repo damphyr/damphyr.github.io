@@ -7,6 +7,37 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>ForgetMeNot: Pass values onwards in Azure Devops</title>
+        <description>&lt;p&gt;Azure Devops has this really cool feature, where you can use specially formated stdout strings to pass different commands.&lt;/p&gt;
+
+&lt;p&gt;They are called &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/devops/pipelines/scripts/logging-commands?view=azure-devops&amp;tabs=bash&quot;&gt;logging commands&lt;/a&gt; and by far the most useful of those is setvariable which allows us to set a variable in one task, that is then available as an environment variable in subsequent tasks:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;##vso[task.setvariable variable=testvar;]testvalue&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;A useful example for this:&lt;/p&gt;
+
+&lt;p&gt;Let us say we use &lt;a href=&quot;https://gitversion.net/docs/&quot;&gt;GitVersion&lt;/a&gt; to aleviate the headache of versioning and we put together a pipeline to publish a Nuget package.&lt;/p&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/dotnet-core-cli?view=azure-devops&quot;&gt;dotnet task&lt;/a&gt; in Azure Devops (as well as the &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/package/nuget?view=azure-devops#versioning-schemes&quot;&gt;nuget task&lt;/a&gt;) offers the byEnvVAr versioning scheme, which allows you to pass the desired version number in an environment variable.&lt;/p&gt;
+
+&lt;p&gt;Use you favourite scripting language to calculate the version number and a logging command, for example with bash&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;echo &quot;##vso[task.setvariable variable=THE_CORRECT_VERSION;]`GitVersion /output json /showvariable FullSemVer`&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and then pack the Nuget package without worrying about the version:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;task&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DotNetCoreCLI@2&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;inputs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;command&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;pack&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;packagesToPack&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;$(project)&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;arguments&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;--configuration&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;$(buildConfiguration)&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;versioningScheme&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;byEnvVar&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;versionEnvVar&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;THE_CORRECT_VERSION&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        <pubDate>Mon, 27 Jan 2020 13:15:21 +0100</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2020/01/27/forget-me-not-setvariable</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2020/01/27/forget-me-not-setvariable</guid>
+      </item>
+    
+      <item>
         <title>Published author...sort of</title>
         <description>&lt;p&gt;In the past year a group of Zühlke coleagues led by &lt;a href=&quot;https://twitter.com/sypounentes&quot;&gt;Christian Abegg&lt;/a&gt;  and &lt;a href=&quot;https://twitter.com/peitor&quot;&gt;Peter Gfader&lt;/a&gt; put together a collection of articles about things we consider important with the aim of publishing them as a book.&lt;/p&gt;
 
@@ -477,35 +508,6 @@ git submodule init
         <pubDate>Sun, 17 Mar 2019 11:15:21 +0100</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2019/03/17/forgetmenot-git-submodules</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2019/03/17/forgetmenot-git-submodules</guid>
-      </item>
-    
-      <item>
-        <title>On laziness</title>
-        <description>&lt;p&gt;I am a lazy person. Apparently this is not unusual, on the contrary &lt;a href=&quot;https://www.sciencedirect.com/science/article/pii/S0028393218303981&quot;&gt;recently published research&lt;/a&gt; indicates this is the default setting for humans.&lt;/p&gt;
-
-&lt;p&gt;I&amp;#39;m also a software developer, so according to Larry Wall I already posess one of the three great virtues (the other two being impatience and hubris) required for greatness. And I have to say my innate tendency to avoid work has helped immensely in shaping my career and success as a software developer.&lt;/p&gt;
-
-&lt;p&gt;The funny thing is, it took a lot of work. I am a lazy person with 20 years hard work behind him. Most of it is relabeling work as fun.&lt;/p&gt;
-
-&lt;p&gt;A small aside on language: In Greek, there are two words for work, &amp;quot;δουλειά&amp;quot; and &amp;quot;εργασία&amp;quot;. The first one shares the same root as the word for slavery, the second shares the root with the word for project (also the root that leads to English words like ergonomics). There is a clear distinction between work you &lt;em&gt;have&lt;/em&gt; to do (&amp;quot;δουλειά&amp;quot;) and work that contributes something (&amp;quot;έργο&amp;quot;).&lt;/p&gt;
-
-&lt;p&gt;So, with this in mind, as long as I work to contribute (&amp;quot;εργάζομαι&amp;quot;) instead of having to work (&amp;quot;δουλεύω&amp;quot;) all is good. Meaning that if the work is intellectually stimulating, presents an interesting problem to solve and is conducted in a friendly, appreciating and supportive environment, well, it does not feel like work.&lt;/p&gt;
-
-&lt;p&gt;So I find myself working hard and appreciating the benefits, but with a complete understanding for my 9 year old&amp;#39;s utter disinterest in doing homework.&lt;/p&gt;
-
-&lt;p&gt;The current approach of parental influence is to differentiate lazy into &amp;quot;smart lazy&amp;quot; and &amp;quot;dumb lazy&amp;quot; since &amp;quot;smart&amp;quot; is good and we like being &amp;quot;smart&amp;quot;, while &amp;quot;lazy&amp;quot; is not necessarily totally negative since grandma calls dad lazy all the time and grandma has absolute authority but we like dad :P.&lt;/p&gt;
-
-&lt;p&gt;Smart lazy is learning your maths tables by heart, dumb lazy is doing &amp;quot;6 times 5&amp;quot; by doing &amp;quot;5,10,15,20,25,30&amp;quot; every single time.&lt;/p&gt;
-
-&lt;p&gt;But the upfront cost of memorizing multiplication tables is something not easily accepted. &amp;quot;Avoid boring repetiteveness&amp;quot; is not an argument that has traction with either 9 year olds or management - both groups simply let others do the boring bits.&lt;/p&gt;
-
-&lt;p&gt;There&amp;#39;s some obvious parallels to software development and automation and tools and all this DevOps hooha. Most of the content on this blog is dedicated to figuring out how to let the computers do the repetitive boring stuff. What it leaves out is how often we have to do the boring, repetitive stuff because it just seems &amp;quot;easier&amp;quot; or &amp;quot;cheaper&amp;quot;.&lt;/p&gt;
-
-&lt;p&gt;Which leads us to the next chapter: &amp;quot;justifying upfront investment on the promise of future gains&amp;quot;. 9 year olds are an even tougher crowd than management on this subject. Send help.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 20 Sep 2018 10:15:21 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2018/09/20/on-laziness</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2018/09/20/on-laziness</guid>
       </item>
     
   </channel>

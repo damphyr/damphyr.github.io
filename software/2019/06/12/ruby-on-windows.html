@@ -69,25 +69,26 @@ The git installer bundles a mingw version that will mess up gem installations if
 <p>Chef provides a <a href="https://docs.chef.io/resource_chocolatey_package.html">chocolatey_package</a> resource and windev adds a configuration helper <em>choco_packages</em> for adding packages.</p>
 
 <p>The following snippet will configure windev to install ruby on a windows machine:</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"environment"</span><span class="p">:{</span><span class="w">
-  </span><span class="s2">"PATH"</span><span class="p">:</span><span class="s2">"c:</span><span class="se">\\</span><span class="s2">tools</span><span class="se">\\</span><span class="s2">ruby</span><span class="se">\\</span><span class="s2">bin;c:</span><span class="se">\\</span><span class="s2">tools</span><span class="se">\\</span><span class="s2">msys2;C:</span><span class="se">\\</span><span class="s2">Program Files</span><span class="se">\\</span><span class="s2">Git</span><span class="se">\\</span><span class="s2">bin;C:</span><span class="se">\\</span><span class="s2">ProgramData</span><span class="se">\\</span><span class="s2">chocolatey</span><span class="se">\\</span><span class="s2">bin;C:</span><span class="se">\\</span><span class="s2">Windows</span><span class="se">\\</span><span class="s2">system32;C:</span><span class="se">\\</span><span class="s2">Windows;C:</span><span class="se">\\</span><span class="s2">Windows</span><span class="se">\\</span><span class="s2">System32</span><span class="se">\\</span><span class="s2">Wbem;C:</span><span class="se">\\</span><span class="s2">Windows</span><span class="se">\\</span><span class="s2">System32</span><span class="se">\\</span><span class="s2">WindowsPowerShell</span><span class="se">\\</span><span class="s2">v1.0</span><span class="se">\\</span><span class="s2">;C:</span><span class="se">\\</span><span class="s2">opscode</span><span class="se">\\</span><span class="s2">chefdk</span><span class="se">\\</span><span class="s2">embedded</span><span class="se">\\</span><span class="s2">bin;"</span><span class="w">
-</span><span class="p">},</span><span class="w">
-</span><span class="s2">"choco_packages"</span><span class="p">:[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"ruby"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"version"</span><span class="p">:</span><span class="s2">"2.6.3.1"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"params"</span><span class="p">:</span><span class="s2">"/InstallDir:'C:</span><span class="se">\\</span><span class="s2">tools</span><span class="se">\\</span><span class="s2">ruby'"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"msys2"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"params"</span><span class="p">:</span><span class="s2">"/InstallDir:'C:</span><span class="se">\\</span><span class="s2">tools</span><span class="se">\\</span><span class="s2">msys2'"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">],</span><span class="w">
-</span><span class="s2">"run_list"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-  </span><span class="s2">"recipe[windev::environment]"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"recipe[windev::packages]"</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre></div>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="dl">"</span><span class="s2">environment</span><span class="dl">"</span><span class="p">:{</span>
+  <span class="dl">"</span><span class="s2">PATH</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">c:</span><span class="se">\\</span><span class="s2">tools</span><span class="se">\\</span><span class="s2">ruby</span><span class="se">\\</span><span class="s2">bin;c:</span><span class="se">\\</span><span class="s2">tools</span><span class="se">\\</span><span class="s2">msys2;C:</span><span class="se">\\</span><span class="s2">Program Files</span><span class="se">\\</span><span class="s2">Git</span><span class="se">\\</span><span class="s2">bin;C:</span><span class="se">\\</span><span class="s2">ProgramData</span><span class="se">\\</span><span class="s2">chocolatey</span><span class="se">\\</span><span class="s2">bin;C:</span><span class="se">\\</span><span class="s2">Windows</span><span class="se">\\</span><span class="s2">system32;C:</span><span class="se">\\</span><span class="s2">Windows;C:</span><span class="se">\\</span><span class="s2">Windows</span><span class="se">\\</span><span class="s2">System32</span><span class="se">\\</span><span class="s2">Wbem;C:</span><span class="se">\\</span><span class="s2">Windows</span><span class="se">\\</span><span class="s2">System32</span><span class="se">\\</span><span class="s2">WindowsPowerShell</span><span class="se">\\</span><span class="s2">v1.0</span><span class="se">\\</span><span class="s2">;C:</span><span class="se">\\</span><span class="s2">opscode</span><span class="se">\\</span><span class="s2">chefdk</span><span class="se">\\</span><span class="s2">embedded</span><span class="se">\\</span><span class="s2">bin;</span><span class="dl">"</span>
+<span class="p">},</span>
+<span class="dl">"</span><span class="s2">choco_packages</span><span class="dl">"</span><span class="p">:[</span>
+  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">ruby</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">version</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">2.6.3.1</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">params</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/InstallDir:'C:</span><span class="se">\\</span><span class="s2">tools</span><span class="se">\\</span><span class="s2">ruby'</span><span class="dl">"</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">msys2</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">params</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">/InstallDir:'C:</span><span class="se">\\</span><span class="s2">tools</span><span class="se">\\</span><span class="s2">msys2'</span><span class="dl">"</span>
+  <span class="p">}</span>
+<span class="p">],</span>
+<span class="dl">"</span><span class="s2">run_list</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+  <span class="dl">"</span><span class="s2">recipe[windev::environment]</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">recipe[windev::packages]</span><span class="dl">"</span>
+<span class="p">]</span></code></pre></figure>
+
 <p>Unfortunately, there is a bug in the interaction between Chef and chocolatey (in the choco_package resource), specific to the msys2 installation.</p>
 
 <p>The installation of msys2 will hang and fail with a timeout - though msys2 will have been correctly installed. Re-run Chef and everything continues normally.</p>
