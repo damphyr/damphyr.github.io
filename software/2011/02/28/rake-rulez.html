@@ -51,15 +51,12 @@ But first things first. </p>
 <p>This simply means that there is no way to dynamically add dependencies to a task from one of it&#39;s dependencies.</p>
 
 <p>To illustrate this consider the following rakefile
-<noscript><pre>400: Invalid request
-</pre></noscript><script src="https://gist.github.com/847273.js?file=rakefile"> </script></p>
+<noscript><pre>400: Invalid request</pre></noscript><script src="https://gist.github.com/847273.js?file=rakefile"> </script></p>
 
 <p>The output is 
-<noscript><pre>400: Invalid request
-</pre></noscript><script src="https://gist.github.com/847273.js?file=output"> </script>
+<noscript><pre>400: Invalid request</pre></noscript><script src="https://gist.github.com/847273.js?file=output"> </script>
 when, if the dependency tree was built dynamically, &#39;c&#39; should pop up before &#39;a&#39;:
-<noscript><pre>400: Invalid request
-</pre></noscript><script src="https://gist.github.com/847273.js?file=outut%20as%20it%20should%20be"> </script>
+<noscript><pre>400: Invalid request</pre></noscript><script src="https://gist.github.com/847273.js?file=outut%20as%20it%20should%20be"> </script>
 Why would you need this you will ask?</p>
 
 <p>I believe that a development environment should not impose structure but rather should evolve it&#39;s structure in tandem with the architecture of the system you are trying to build. Empirically it is a much more effective approach when the thought patterns formulated in the architecture are reflected in the structure of your workspace and the tools just support this. This is a variation of the &quot;convention vs. configuration&quot; mantra for when you are actually building something from scratch.</p>

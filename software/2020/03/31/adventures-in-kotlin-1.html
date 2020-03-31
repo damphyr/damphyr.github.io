@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>Tales of Teamcity: Adventures in Kotlin</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>Tales of Teamcity: Adventures in Kotlin</h1>
+<p class="meta">31 Mar 2020</p>
+
+<div class="post">
+<p>TeamCity is one CI system I haven&#39;t had a lot of contact until now. As will become evident, this has now changed.</p>
+
+<p>So, alongside a crash course in basic Kotlin, I now have to figure out how to get my brand of build automation working in TeamCity.</p>
+
+<h2>The gatekeeper</h2>
+
+<p>I have one criterion for accepting a build management system:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">Build specifications need to be storable in the repository
+</code></pre></div>
+<p>Let&#39;s explore if TeamCity makes it past the door and how far we can take it.</p>
+
+<h2>First contact</h2>
+
+<p>First contact is always a search along the lines of &quot;build DSL, Teamcity&quot;. I was already aware that TeamCity offers a DSL based on Kotlin and so we landed very fast on the <a href="https://blog.jetbrains.com/teamcity/2019/03/configuration-as-code-part-1-getting-started-with-kotlin-dsl/">blog series</a> describing these features.</p>
+
+<p>This gets TeamCity through the door. It&#39;s also a pretty cool taster for what Kotlin can do: the DSL looks clean and it looks like the web UI offers a way to get easily from clicked-together to code.</p>
+
+<p>I have studiously ignored all the IDEA bait in those posts. You should not need code completion to put a few pipelines together (narrator: he was mostly wrong).</p>
+
+<p>I have also skipped and jumped over the Maven references. Seriously, I have a pom allergy. It is probably going to bite me in the behind as soon as this system gets reasonably complicated and I am going to need tests, but it was all I could do to keep reading after my eyes brushed over that XML.</p>
+
+<h2>Reality check</h2>
+
+<p>OK, I&#39;m armed with Kotlin and I&#39;ve got a TeamCity instance and I&#39;ve got a project and I see that all the settings are version controlled. But they all go to this one repository somewhere beyond my reach.</p>
+
+<p>It turns out you need pretty wide-reaching access rights to be able to activate versioned settings. Luckily, it took about 10 seconds of pointed question asking and:</p>
+
+<p><img src="/images/AchievementUnlocked.png" alt="Achievement Unlocked"></p>
+
+<p>Seriously, I&#39;m framing this - it was my fastest 0-to-admin time ever!</p>
+
+<h2>Get off my master</h2>
+
+<p>Turning on versioning for project settings has one drawback: Every time you change something in the web UI, Teamcity will commit the changes in the designated repository. And it does it on master.</p>
+
+<p>Now, depending on the workflow you follow for your git usage this may be a good or a bad thing.</p>
+
+<p>First, lets agree that in principle, no changes should be done in the UI. Also, that if, by any chance any changes are done in the UI, whatever we have in the repository should overwrite them.</p>
+
+<p>This is rule of git acquisition number 23:</p>
+
+<p><code>The repository comes first</code></p>
+
+<p>So, when we set up versioning we set the appropriate option:</p>
+
+<p><img src="/images/tc_no_ui_changes.png" alt="No UI changes allowed"></p>
+
+<p>Now, the comment accompanying the option gives me hope that things have been done properly.</p>
+
+<p>The goal here is to have the build setup correspond to the state of the code base at the time of the commit you are building. The <a href="https://www.jetbrains.com/help/teamcity/storing-project-settings-in-version-control.html">docs</a> hit all the right notes for this setting. This remains to be tested.</p>
+
+<p>As outlined in <a href="/software/2019/06/18/disaster-resistant-git">disaster resistant git</a> I recommend using pull requests on the quest to emulate trunk-based development.</p>
+
+<p>This means that master is locked, changes are allowed only via pull request and there are merge checks that mandate a successfull build.</p>
+
+<p>In the TeamCity context such a setup guarantees that no changes in the UI will be accepted. But it will generate a whole bunch of errors for anyone making changes.</p>
+
+<p>It also makes it difficult to explore and experiment with options and see how they translate to DSL code. Doubly so, because not all options that change the settings offer a nice &#39;View DSL&#39; button - for example adding NuGet Feeds</p>
+
+<h2>Playground</h2>
+
+<p>Basically I have a playground repository with a scaffolded <a href="https://github.com/damphyr/gaudi">gaudi</a> that I can use to click things together. I think I already stumbled on a bug for a runner, so expect a post on community, support and bug reports.</p>
+
+<p>I&#39;ve already put a variant of the <a href="https://blog.jetbrains.com/teamcity/2019/04/configuration-as-code-part-3-creating-build-configurations-dynamically/">Configuration as Code, Part 3: Creating Build Configurations Dynamically</a> to good use and it has opened some interesting questions, so that will be the next post.</p>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

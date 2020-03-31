@@ -59,23 +59,19 @@
 
 <p>Isolating the problem does not actually help since these numbers fall significantly. For example the following test</p>
 
-<p><noscript><pre>400: Invalid request
-</pre></noscript><script src="https://gist.github.com/1133784.js?file=benchmark_couchrest.rb"> </script></p>
+<p><noscript><pre>400: Invalid request</pre></noscript><script src="https://gist.github.com/1133784.js?file=benchmark_couchrest.rb"> </script></p>
 
 <p>gives significantly reduced times:</p>
 
-<p><noscript><pre>400: Invalid request
-</pre></noscript><script src="https://gist.github.com/1133784.js?file=output%20Windows%207"> </script></p>
+<p><noscript><pre>400: Invalid request</pre></noscript><script src="https://gist.github.com/1133784.js?file=output%20Windows%207"> </script></p>
 
 <p>btw. the stock Snow Leopard Ruby was <strong>a lot</strong> faster with rubygems 1.5.0:</p>
 
-<p><noscript><pre>400: Invalid request
-</pre></noscript><script src="https://gist.github.com/1133784.js?file=output%20OS%20X,%20rubygems%201.5.0"> </script></p>
+<p><noscript><pre>400: Invalid request</pre></noscript><script src="https://gist.github.com/1133784.js?file=output%20OS%20X,%20rubygems%201.5.0"> </script></p>
 
 <p>but suffers with rubygems 1.8.7</p>
 
-<p><noscript><pre>400: Invalid request
-</pre></noscript><script src="https://gist.github.com/1133784.js?file=output%20OS%20X,%20rubygems%201.8.7"> </script></p>
+<p><noscript><pre>400: Invalid request</pre></noscript><script src="https://gist.github.com/1133784.js?file=output%20OS%20X,%20rubygems%201.8.7"> </script></p>
 
 <p>I will take a wild guess and assume side effects from the additional gems loaded increase loading times but I can only theorize.</p>
 

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+        <title>ForgetMeNot: Organized xUnit reports in Jenkins</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/css/syntax.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/main.css">
+        <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20077869-1']);
+  _gaq.push(['_setDomainName', 'ampelofilosofies.gr']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+    </head>
+    <body>
+
+        <div class="container">
+          <div class="site">
+            <div class="header">
+              <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+              <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra" href="/feed.xml">rss</a>
+              <br/>
+              <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+            </div>
+
+                <h1>ForgetMeNot: Organized xUnit reports in Jenkins</h1>
+<p class="meta">12 Mar 2020</p>
+
+<div class="post">
+<p>One of the hackiest formats under wide adoption is the JUnit report format.</p>
+
+<p>It is not really from JUnit, it&#39;s from Ant. It is not really documented anywhere - some people try to figure it out by reading the source (after looking for it first in the JUnit sources - lots of fun following the different StackOverflow threads on this).</p>
+
+<p>Given that there is no official schema or spec I am not surprised in the totally inconsistent behaviour of any tool claiming to read/write or understand the JUnit report format.</p>
+
+<p>There is one particular hero <a href="https://twitter.com/WindyRoadTech">@WindyRoadTech</a>, who created <a href="https://github.com/windyroad/JUnit-Schema">an XSD schema</a>. What I am about to do will fail the schema validation (at the time of writing).</p>
+
+<p>The problem with JUnit reports created by tools other than Ant is that the original implementation makes some assumptions.</p>
+
+<p>These are that you are basically running Java and that your code is organized in Java packages, i.e. it has a format of Package.Something.Whatever.Class.</p>
+
+<p>What Ant did was split the full class name of a testcase and add pieces of it as attributes to the <em>testsuite</em> and <em>testcase</em> elements of the report.</p>
+
+<p>Time goes by, and all kinds of tools start using this JUnit format - I blame Jenkins and the JUnit report plugin for introducing people to pretty colors they could show other people.</p>
+
+<p>More time went by, generations in Internet years. The JUnit plugin was too limited, so the xUnit plugin was born. This one could understand lots of report formats.</p>
+
+<p>But the way the report is organized did not change. xUnit shows tests grouped in packages.
+It figures out what to use as a package name by using the <em>classname</em> attribute of the <em>testsuite</em> elements</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;testsuite</span> <span class="na">name=</span><span class="s">"InterestingTests"</span> <span class="na">tests=</span><span class="s">"5"</span> <span class="na">failures=</span><span class="s">"0"</span> <span class="na">disabled=</span><span class="s">"0"</span> <span class="na">errors=</span><span class="s">"0"</span> <span class="na">time=</span><span class="s">"50.582"</span> <span class="na">timestamp=</span><span class="s">"2020-03-12T17:40:33"</span> <span class="na">classname=</span><span class="s">"Integration"</span><span class="nt">&gt;</span>
+</code></pre></div>
+<p>You would expect that all test cases within that element would be listed under that package. But no. Apparently the reporter parses the classname for <strong>each</strong> testcase and builds &quot;packages&quot; out of that.</p>
+
+<p>So if you have a bunch of let&#39;s say GTest tests and emit an XML report, all of your tests are going in the <em>Root</em> package, since, you know, no <em>Java</em> namespaces and one has to choose a default name (which GTest hard-codes).</p>
+
+<p>What is a build enginneer to do, but post-process that XML report so that his team gets nicely categorized tests. No need for fancy code, brute force it in Ruby:</p>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># Rewrites (in place) an XML report produced by gtest to add a classname to testsuites and</span>
+<span class="c1"># adapt the classnames to test cases.</span>
+<span class="c1"># so that they sort nicely when presented by the xUnit plugin in Jenkins</span>
+<span class="k">def</span> <span class="nf">classify_test_report</span><span class="p">(</span><span class="n">test_report</span><span class="p">,</span> <span class="n">test_class</span><span class="p">)</span>
+  <span class="n">content</span> <span class="o">=</span> <span class="no">File</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="n">test_report</span><span class="p">)</span>
+  <span class="n">xml</span> <span class="o">=</span> <span class="no">Nokogiri</span><span class="o">::</span><span class="no">XML</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+  <span class="n">suites</span> <span class="o">=</span> <span class="n">xml</span><span class="p">.</span><span class="nf">root</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="s2">"//testsuite"</span><span class="p">)</span>
+  <span class="n">testcases</span> <span class="o">=</span> <span class="n">xml</span><span class="p">.</span><span class="nf">root</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="s2">"//testcase"</span><span class="p">)</span>
+  <span class="n">testcases</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">entry</span><span class="o">|</span>
+    <span class="n">entry</span><span class="p">[</span><span class="s2">"classname"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="n">test_class</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="n">entry</span><span class="p">[</span><span class="s2">"classname"</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+  <span class="k">end</span>
+  <span class="n">suites</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">entry</span><span class="o">|</span>
+    <span class="n">entry</span><span class="p">[</span><span class="s2">"classname"</span><span class="p">]</span> <span class="o">=</span> <span class="n">test_class</span>
+  <span class="k">end</span>
+  <span class="n">write_file</span><span class="p">(</span><span class="n">test_report</span><span class="p">,</span> <span class="n">xml</span><span class="p">.</span><span class="nf">serialize</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">test_report</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>That <em>write</em>file_ comes from <a href="https://github.com/damphyr/gaudi">gaudi</a>, but, you know, it writes the file to disk.</p>
+
+  <p>
+    <span class='st_twitter_large' displayText='Tweet'></span>
+    <span class='st_googleplus_large' displayText='Google +'></span>
+    <span class='st_facebook_large' displayText='Facebook'></span>
+    <span class='st_pinterest_large' displayText='Pinterest'></span>
+  </p>
+</div>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "8c4832fc-e519-49a6-a3af-b1a7f333e6da", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+<div id="disqus_thread"></div>
+<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
+<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+            <div class="footer">
+              <div class="contact">
+                <p>
+                  Vassilis Rizopoulos<br />
+                  Itinerant software engineer<br />
+
+                </p>
+              </div>
+              <div class="contact">
+                <p>
+                  <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+                  <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /container -->
+
+    </body>
+</html>

@@ -7,6 +7,188 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Tales of Teamcity: Failures in Kotlin</title>
+        <description>&lt;p&gt;&lt;em&gt;This is part of a series of posts documenting my ongoing adventures in TeamCity, starting at &lt;a href=&quot;/software/2020/03/31/adventures-in-kotlin-1&quot;&gt;Tales of Teamcity: Adventures in Kotlin&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Kotlin is cool. I am a fool.&lt;/p&gt;
+
+&lt;p&gt;These two sentences are both true. The best aggro moment of the last three days was when I spent over two hours trying to figure out why the following script failed:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-kotlin&quot; data-lang=&quot;kotlin&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;jetbrains.buildServer.configs.kotlin.v2019_2.*&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;version&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;2019.2&quot;&lt;/span&gt;
+
+&lt;span class=&quot;nf&quot;&gt;project&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;description&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;TeamCity as Code&quot;&lt;/span&gt;
+
+  &lt;span class=&quot;nf&quot;&gt;buildType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Experiment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Experiment&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;BuildType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;experiment&quot;&lt;/span&gt;
+
+  &lt;span class=&quot;nf&quot;&gt;vcs&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nf&quot;&gt;root&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;DslContext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;settingsRoot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;nf&quot;&gt;steps&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nf&quot;&gt;script&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Docs&quot;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;scriptContent&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;rake doc:gaudi&quot;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I even went as far a posting an issue on the TeamCity support site. And then I went to bed, slept through the night, looked at the code again this morning and remembered I am writing code in a JVM language.&lt;/p&gt;
+
+&lt;p&gt;So I added&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-kotlin&quot; data-lang=&quot;kotlin&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;at the top.&lt;/p&gt;
+
+&lt;p&gt;Remember, I am a professional and I have been doing this for 25 years.&lt;/p&gt;
+
+&lt;p&gt;It helps that your TeamCity instance hosts the DSL reference at &lt;em&gt;app/dsl-documentation/index.html&lt;/em&gt;.
+It also helps to read said reference.&lt;/p&gt;
+
+&lt;p&gt;But mostly, it helps when you just go to bed and try again when you&amp;#39;re fresh.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;The response to my brain-dead-due-to-lack-of-sleep support request came as I was writing this. Response time less than 16 hours. I am liking this.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 31 Mar 2020 19:15:21 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2020/03/31/adventures-in-kotlin-2</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2020/03/31/adventures-in-kotlin-2</guid>
+      </item>
+    
+      <item>
+        <title>Tales of Teamcity: Adventures in Kotlin</title>
+        <description>&lt;p&gt;TeamCity is one CI system I haven&amp;#39;t had a lot of contact until now. As will become evident, this has now changed.&lt;/p&gt;
+
+&lt;p&gt;So, alongside a crash course in basic Kotlin, I now have to figure out how to get my brand of build automation working in TeamCity.&lt;/p&gt;
+
+&lt;h2&gt;The gatekeeper&lt;/h2&gt;
+
+&lt;p&gt;I have one criterion for accepting a build management system:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Build specifications need to be storable in the repository
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Let&amp;#39;s explore if TeamCity makes it past the door and how far we can take it.&lt;/p&gt;
+
+&lt;h2&gt;First contact&lt;/h2&gt;
+
+&lt;p&gt;First contact is always a search along the lines of &amp;quot;build DSL, Teamcity&amp;quot;. I was already aware that TeamCity offers a DSL based on Kotlin and so we landed very fast on the &lt;a href=&quot;https://blog.jetbrains.com/teamcity/2019/03/configuration-as-code-part-1-getting-started-with-kotlin-dsl/&quot;&gt;blog series&lt;/a&gt; describing these features.&lt;/p&gt;
+
+&lt;p&gt;This gets TeamCity through the door. It&amp;#39;s also a pretty cool taster for what Kotlin can do: the DSL looks clean and it looks like the web UI offers a way to get easily from clicked-together to code.&lt;/p&gt;
+
+&lt;p&gt;I have studiously ignored all the IDEA bait in those posts. You should not need code completion to put a few pipelines together (narrator: he was mostly wrong).&lt;/p&gt;
+
+&lt;p&gt;I have also skipped and jumped over the Maven references. Seriously, I have a pom allergy. It is probably going to bite me in the behind as soon as this system gets reasonably complicated and I am going to need tests, but it was all I could do to keep reading after my eyes brushed over that XML.&lt;/p&gt;
+
+&lt;h2&gt;Reality check&lt;/h2&gt;
+
+&lt;p&gt;OK, I&amp;#39;m armed with Kotlin and I&amp;#39;ve got a TeamCity instance and I&amp;#39;ve got a project and I see that all the settings are version controlled. But they all go to this one repository somewhere beyond my reach.&lt;/p&gt;
+
+&lt;p&gt;It turns out you need pretty wide-reaching access rights to be able to activate versioned settings. Luckily, it took about 10 seconds of pointed question asking and:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/AchievementUnlocked.png&quot; alt=&quot;Achievement Unlocked&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Seriously, I&amp;#39;m framing this - it was my fastest 0-to-admin time ever!&lt;/p&gt;
+
+&lt;h2&gt;Get off my master&lt;/h2&gt;
+
+&lt;p&gt;Turning on versioning for project settings has one drawback: Every time you change something in the web UI, Teamcity will commit the changes in the designated repository. And it does it on master.&lt;/p&gt;
+
+&lt;p&gt;Now, depending on the workflow you follow for your git usage this may be a good or a bad thing.&lt;/p&gt;
+
+&lt;p&gt;First, lets agree that in principle, no changes should be done in the UI. Also, that if, by any chance any changes are done in the UI, whatever we have in the repository should overwrite them.&lt;/p&gt;
+
+&lt;p&gt;This is rule of git acquisition number 23:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;The repository comes first&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;So, when we set up versioning we set the appropriate option:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/tc_no_ui_changes.png&quot; alt=&quot;No UI changes allowed&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Now, the comment accompanying the option gives me hope that things have been done properly.&lt;/p&gt;
+
+&lt;p&gt;The goal here is to have the build setup correspond to the state of the code base at the time of the commit you are building. The &lt;a href=&quot;https://www.jetbrains.com/help/teamcity/storing-project-settings-in-version-control.html&quot;&gt;docs&lt;/a&gt; hit all the right notes for this setting. This remains to be tested.&lt;/p&gt;
+
+&lt;p&gt;As outlined in &lt;a href=&quot;/software/2019/06/18/disaster-resistant-git&quot;&gt;disaster resistant git&lt;/a&gt; I recommend using pull requests on the quest to emulate trunk-based development.&lt;/p&gt;
+
+&lt;p&gt;This means that master is locked, changes are allowed only via pull request and there are merge checks that mandate a successfull build.&lt;/p&gt;
+
+&lt;p&gt;In the TeamCity context such a setup guarantees that no changes in the UI will be accepted. But it will generate a whole bunch of errors for anyone making changes.&lt;/p&gt;
+
+&lt;p&gt;It also makes it difficult to explore and experiment with options and see how they translate to DSL code. Doubly so, because not all options that change the settings offer a nice &amp;#39;View DSL&amp;#39; button - for example adding NuGet Feeds&lt;/p&gt;
+
+&lt;h2&gt;Playground&lt;/h2&gt;
+
+&lt;p&gt;Basically I have a playground repository with a scaffolded &lt;a href=&quot;https://github.com/damphyr/gaudi&quot;&gt;gaudi&lt;/a&gt; that I can use to click things together. I think I already stumbled on a bug for a runner, so expect a post on community, support and bug reports.&lt;/p&gt;
+
+&lt;p&gt;I&amp;#39;ve already put a variant of the &lt;a href=&quot;https://blog.jetbrains.com/teamcity/2019/04/configuration-as-code-part-3-creating-build-configurations-dynamically/&quot;&gt;Configuration as Code, Part 3: Creating Build Configurations Dynamically&lt;/a&gt; to good use and it has opened some interesting questions, so that will be the next post.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 31 Mar 2020 14:15:21 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2020/03/31/adventures-in-kotlin-1</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2020/03/31/adventures-in-kotlin-1</guid>
+      </item>
+    
+      <item>
+        <title>ForgetMeNot: Organized xUnit reports in Jenkins</title>
+        <description>&lt;p&gt;One of the hackiest formats under wide adoption is the JUnit report format.&lt;/p&gt;
+
+&lt;p&gt;It is not really from JUnit, it&amp;#39;s from Ant. It is not really documented anywhere - some people try to figure it out by reading the source (after looking for it first in the JUnit sources - lots of fun following the different StackOverflow threads on this).&lt;/p&gt;
+
+&lt;p&gt;Given that there is no official schema or spec I am not surprised in the totally inconsistent behaviour of any tool claiming to read/write or understand the JUnit report format.&lt;/p&gt;
+
+&lt;p&gt;There is one particular hero &lt;a href=&quot;https://twitter.com/WindyRoadTech&quot;&gt;@WindyRoadTech&lt;/a&gt;, who created &lt;a href=&quot;https://github.com/windyroad/JUnit-Schema&quot;&gt;an XSD schema&lt;/a&gt;. What I am about to do will fail the schema validation (at the time of writing).&lt;/p&gt;
+
+&lt;p&gt;The problem with JUnit reports created by tools other than Ant is that the original implementation makes some assumptions.&lt;/p&gt;
+
+&lt;p&gt;These are that you are basically running Java and that your code is organized in Java packages, i.e. it has a format of Package.Something.Whatever.Class.&lt;/p&gt;
+
+&lt;p&gt;What Ant did was split the full class name of a testcase and add pieces of it as attributes to the &lt;em&gt;testsuite&lt;/em&gt; and &lt;em&gt;testcase&lt;/em&gt; elements of the report.&lt;/p&gt;
+
+&lt;p&gt;Time goes by, and all kinds of tools start using this JUnit format - I blame Jenkins and the JUnit report plugin for introducing people to pretty colors they could show other people.&lt;/p&gt;
+
+&lt;p&gt;More time went by, generations in Internet years. The JUnit plugin was too limited, so the xUnit plugin was born. This one could understand lots of report formats.&lt;/p&gt;
+
+&lt;p&gt;But the way the report is organized did not change. xUnit shows tests grouped in packages.
+It figures out what to use as a package name by using the &lt;em&gt;classname&lt;/em&gt; attribute of the &lt;em&gt;testsuite&lt;/em&gt; elements&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;testsuite&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;InterestingTests&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;tests=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;5&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;failures=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;0&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;disabled=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;0&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;errors=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;0&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;time=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;50.582&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;timestamp=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;2020-03-12T17:40:33&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;classname=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Integration&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You would expect that all test cases within that element would be listed under that package. But no. Apparently the reporter parses the classname for &lt;strong&gt;each&lt;/strong&gt; testcase and builds &amp;quot;packages&amp;quot; out of that.&lt;/p&gt;
+
+&lt;p&gt;So if you have a bunch of let&amp;#39;s say GTest tests and emit an XML report, all of your tests are going in the &lt;em&gt;Root&lt;/em&gt; package, since, you know, no &lt;em&gt;Java&lt;/em&gt; namespaces and one has to choose a default name (which GTest hard-codes).&lt;/p&gt;
+
+&lt;p&gt;What is a build enginneer to do, but post-process that XML report so that his team gets nicely categorized tests. No need for fancy code, brute force it in Ruby:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Rewrites (in place) an XML report produced by gtest to add a classname to testsuites and&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# adapt the classnames to test cases.&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# so that they sort nicely when presented by the xUnit plugin in Jenkins&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;classify_test_report&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test_report&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test_class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test_report&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;xml&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Nokogiri&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;XML&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;suites&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;root&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;xpath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;//testsuite&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;testcases&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;root&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;xpath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;//testcase&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;testcases&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;entry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;entry&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;classname&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test_class&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;entry&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;classname&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;suites&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;entry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;entry&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;classname&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test_class&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;write_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test_report&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;serialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test_report&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;That &lt;em&gt;write&lt;/em&gt;file_ comes from &lt;a href=&quot;https://github.com/damphyr/gaudi&quot;&gt;gaudi&lt;/a&gt;, but, you know, it writes the file to disk.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 12 Mar 2020 13:15:21 +0100</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2020/03/12/forgetmenot-xunit-reports</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2020/03/12/forgetmenot-xunit-reports</guid>
+      </item>
+    
+      <item>
         <title>ForgetMeNot: Pass values onwards in Azure Devops</title>
         <description>&lt;p&gt;Azure Devops has this really cool feature, where you can use specially formated stdout strings to pass different commands.&lt;/p&gt;
 
@@ -16,7 +198,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;A useful example for this:&lt;/p&gt;
 
-&lt;p&gt;Let us say we use &lt;a href=&quot;https://gitversion.net/docs/&quot;&gt;GitVersion&lt;/a&gt; to aleviate the headache of versioning and we put together a pipeline to publish a Nuget package.&lt;/p&gt;
+&lt;p&gt;Let us say we use &lt;a href=&quot;https://gitversion.net/docs/&quot;&gt;GitVersion&lt;/a&gt; to alleviate the headache of versioning and we put together a pipeline to publish a Nuget package.&lt;/p&gt;
 
 &lt;p&gt;The &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/dotnet-core-cli?view=azure-devops&quot;&gt;dotnet task&lt;/a&gt; in Azure Devops (as well as the &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/package/nuget?view=azure-devops#versioning-schemes&quot;&gt;nuget task&lt;/a&gt;) offers the byEnvVAr versioning scheme, which allows you to pass the desired version number in an environment variable.&lt;/p&gt;
 
@@ -395,119 +577,6 @@ Visual Studio does not expose &lt;em&gt;IntermediateOutputPath&lt;/em&gt; in the
         <pubDate>Wed, 12 Jun 2019 14:15:21 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2019/06/12/dotnet-core-clean-builds</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2019/06/12/dotnet-core-clean-builds</guid>
-      </item>
-    
-      <item>
-        <title>Ruby on Windows: Chocolatey time</title>
-        <description>&lt;p&gt;I have been steadily increasing my use of chocolatey for installation of toolchains on Windows.&lt;/p&gt;
-
-&lt;p&gt;There are still a few problems, e.g. not all packages allow setting an alternate installation directory etc., but these are problems we had with the original installers as well.&lt;/p&gt;
-
-&lt;p&gt;There are also some version pinning issues with some packages that seem to originate on the way chocolatey provides URLs to updated packages. These lead to failures if the version is pinned and the package gets updated.&lt;/p&gt;
-
-&lt;h2&gt;Ruby and chocolatey&lt;/h2&gt;
-
-&lt;p&gt;Since the 2.4 version, the &lt;a href=&quot;https://rubyinstaller.org/&quot;&gt;RubyInstaller&lt;/a&gt; has switched to using the newer msys2 toolchain for C extension compilation which complicated the process of automating installation via the MSI installer.&lt;/p&gt;
-
-&lt;p&gt;Fortunately both msys2 and the newer RubyInstallaer are available as chocolatey packages.&lt;/p&gt;
-
-&lt;p&gt;Unfortunately there are still some hiccups.&lt;/p&gt;
-
-&lt;p&gt;You have to take care to place the msys2 path entry &lt;em&gt;before&lt;/em&gt; the Git for Windows path entry.
-The git installer bundles a mingw version that will mess up gem installations if detected before msys2.&lt;/p&gt;
-
-&lt;p&gt;Same goes for the ChefDK path entry, only this time with ruby: ChefDK bundles a ruby distro and gem installations will go array if it is found first in the path.&lt;/p&gt;
-
-&lt;h2&gt;Chef and chocolatey&lt;/h2&gt;
-
-&lt;p&gt;My current infrastructure-as-code solution for turning Windows into a development environment is based on &lt;a href=&quot;https://www.chef.io/products/chef-infra/&quot;&gt;Chef&lt;/a&gt; and the &lt;a href=&quot;https://supermarket.chef.io/cookbooks/windev/versions/0.8.4&quot;&gt;windev cookbook&lt;/a&gt; (full disclosure: windev is maintained by yours truly, so doh!).&lt;/p&gt;
-
-&lt;p&gt;Chef provides a &lt;a href=&quot;https://docs.chef.io/resource_chocolatey_package.html&quot;&gt;chocolatey_package&lt;/a&gt; resource and windev adds a configuration helper &lt;em&gt;choco_packages&lt;/em&gt; for adding packages.&lt;/p&gt;
-
-&lt;p&gt;The following snippet will configure windev to install ruby on a windows machine:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:{&lt;/span&gt;
-  &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;c:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;tools&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ruby&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;bin;c:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;tools&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;msys2;C:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Program Files&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Git&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;bin;C:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ProgramData&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;chocolatey&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;bin;C:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Windows&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;system32;C:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Windows;C:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Windows&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;System32&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Wbem;C:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Windows&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;System32&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;WindowsPowerShell&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;v1.0&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;;C:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;opscode&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;chefdk&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;embedded&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;bin;&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;choco_packages&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:[&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ruby&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;2.6.3.1&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/InstallDir:'C:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;tools&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ruby'&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;msys2&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/InstallDir:'C:&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;tools&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;msys2'&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
-&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;run_list&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
-  &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;recipe[windev::environment]&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;recipe[windev::packages]&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Unfortunately, there is a bug in the interaction between Chef and chocolatey (in the choco_package resource), specific to the msys2 installation.&lt;/p&gt;
-
-&lt;p&gt;The installation of msys2 will hang and fail with a timeout - though msys2 will have been correctly installed. Re-run Chef and everything continues normally.&lt;/p&gt;
-
-&lt;p&gt;Kinda defeats the main purpose of using it with Chef, but we still get to document in code how the environment is set up.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 12 Jun 2019 12:15:21 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2019/06/12/ruby-on-windows</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2019/06/12/ruby-on-windows</guid>
-      </item>
-    
-      <item>
-        <title>Adventures in Azure DevOps: It begins</title>
-        <description>&lt;p&gt;I&amp;#39;ve been doing work with Azure Devops lately and since there&amp;#39;s things to learn, there will be blog posts.&lt;/p&gt;
-
-&lt;p&gt;Now I am well known for my vitriolic views on Microsoft&amp;#39;s approach to ALM (Application Lifecycle Management) which were mainly represented in TFS, a behemoth that is now in its 5th (?) rebranding phase. Only this time it looks more like a reincarnation. It has been 13 years since they first gave it a go after all.&lt;/p&gt;
-
-&lt;h2&gt;First impressions&lt;/h2&gt;
-
-&lt;p&gt;The complexity is now mostly gone, hidden away. This is a good thing.
-You can still trace Microsoft&amp;#39;s need to satisfy enterprise policies and wierd gate-keeping bureaucracy, but these things are mostly hidden in security and access policy configuration pages. And the defaults are finally sane.&lt;/p&gt;
-
-&lt;p&gt;The mainly point-and-click GUI driven way of doing everything is still there and it is still offered as the &amp;quot;way to do things&amp;quot; but at least the docs make it obvious that there is a way to script &lt;em&gt;everything&lt;/em&gt; and that it is there from the beginning.&lt;/p&gt;
-
-&lt;p&gt;So, usable and dare I say, promising.&lt;/p&gt;
-
-&lt;h2&gt;Things to come&lt;/h2&gt;
-
-&lt;p&gt;There&amp;#39;s very little I will be able to say about issue tracking, the default Agile/Scrum issue tracker with the standard boards more than covers whatever requirements I have for maintaining a backlog. My job is to get automation up and running: builds, tests, packaging and deployment.&lt;/p&gt;
-
-&lt;p&gt;You will notice I avoid saying &amp;quot;DevOps&amp;quot; and CI. The first does not apply to me individually, but to my team, and the second is a byproduct of getting all the things right (i.e. if we get the automation right and we apply it to every change &lt;em&gt;then&lt;/em&gt; we will have CI)&lt;/p&gt;
-
-&lt;p&gt;On the other hand, expect a lot on pipelines and how they get implemented in Azure Devops.
-Getting a single build for a single tech up and running is ridiculously easy - the system analyzes your code and pretty much serves you the build jobs on a platter.&lt;/p&gt;
-
-&lt;p&gt;But I never have a single build or a system that uses a single tech, do I?&lt;/p&gt;
-</description>
-        <pubDate>Thu, 06 Jun 2019 12:15:21 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2019/06/06/azure-devops-beginning</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2019/06/06/azure-devops-beginning</guid>
-      </item>
-    
-      <item>
-        <title>ForgetMeNot: Git Submodules</title>
-        <description>&lt;p&gt;I&amp;#39;m more likely to choose a monorepo solution if possible and I generally dislike the submodule feature in git but as always there are valid use cases (e.g. think about building a platform instead of a system).&lt;/p&gt;
-
-&lt;p&gt;So I put git submodules to work and immediately started doing the same mistake again and again: typos in the directory name for the module.&lt;/p&gt;
-
-&lt;p&gt;Now, just changing the entries in the .gitmodules file is not enough to get the module out of the way, we also need to remove the repository index entries.&lt;/p&gt;
-
-&lt;p&gt;To cleanly remove a git submodule you need the following:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git submodule deinit module
-git &lt;span class=&quot;nb&quot;&gt;rm &lt;/span&gt;typoed_module_dir
-git commit &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Removed submodule module&quot;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; .git/modules/typoed_module_dir
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;You then add the submodule back (after you have checked the spelling this time) and obviously explicitly set the branch and the checkout directory so that you can verify everything is typed correctly.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git submodule add &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; master https://git.host/module.git CorrectlySpelledDir
-git submodule init
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
-        <pubDate>Sun, 17 Mar 2019 11:15:21 +0100</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2019/03/17/forgetmenot-git-submodules</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2019/03/17/forgetmenot-git-submodules</guid>
       </item>
     
   </channel>

@@ -47,19 +47,16 @@
 
 <p>I&#39;ve used this gist a couple of times now: </p>
 
-<p><noscript><pre>400: Invalid request
-</pre></noscript><script src="https://gist.github.com/847273.js?file=rakefile"> </script></p>
+<p><noscript><pre>400: Invalid request</pre></noscript><script src="https://gist.github.com/847273.js?file=rakefile"> </script></p>
 
 <p>I&#39;m pretty sure the first time I actually stumbled on this was <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/159167">sometime in 2005</a>.</p>
 
 <h3>Why?</h3>
 
 <p>The output from the rakefile above is 
-<noscript><pre>400: Invalid request
-</pre></noscript><script src="https://gist.github.com/847273.js?file=output"> </script>
+<noscript><pre>400: Invalid request</pre></noscript><script src="https://gist.github.com/847273.js?file=output"> </script>
 when, if the dependency tree was built dynamically, &#39;c&#39; should pop up before &#39;a&#39;:
-<noscript><pre>400: Invalid request
-</pre></noscript><script src="https://gist.github.com/847273.js?file=outut%20as%20it%20should%20be"> </script>
+<noscript><pre>400: Invalid request</pre></noscript><script src="https://gist.github.com/847273.js?file=outut%20as%20it%20should%20be"> </script>
 Why would you need this you will ask?</p>
 
 <p>Well, it helps to do things like <code>task :build =&gt; :determine_sources</code> instead of <code>task :build =&gt; determine_sources()</code> and avoid the performance hit of scanning for dependencies before you actually call the task.</p>
