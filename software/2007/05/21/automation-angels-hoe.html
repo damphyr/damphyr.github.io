@@ -46,20 +46,20 @@
 <p>Launching <a href="http://github.com/damphyr/patir">patir</a> has been a very enjoyable experience from a project management perspective.
 Apart from the fact that <a href="http://rubyforge.org">Rubyforge</a> has a cracking team of admins (Tom Copeland must be given a medal!) that responds with lightning speed and always friendly, there are all those little tools provided by the Ruby community that make working with Rubyforge a breeze.
 <a href="http://seattlerb.rubyforge.org/hoe/">Hoe</a> is one of those tools. It makes packaging, releasing and announcing your releases really easy. 
-You can get a crash intro into using Hoe from <a href="http://www.nimblecode.com/files/hoetalk.pdf">Jacob Harris&#39; presentation</a></p>
+You can get a crash intro into using Hoe from <a href="http://www.nimblecode.com/files/hoetalk.pdf">Jacob Harris’ presentation</a></p>
 
-<p>There are a few things though that one should have in mind and that are not covered (or are not that clear) in the Hoe documentation or Jacob&#39;s talk:
+<p>There are a few things though that one should have in mind and that are not covered (or are not that clear) in the Hoe documentation or Jacob’s talk:
 Hoe is added as a dependency to the gem you create.
-The reason behind this is that once you install the gem you can run the unit tests with 
+The reason behind this is that once you install the gem you can run the unit tests with</p>
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">gem check <span class="nt">-t</span> your_gem</code></pre></figure>
-. 
+<p>. 
 You can remove this dependency with:</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby">  <span class="n">hoe</span><span class="p">.</span><span class="nf">spec</span><span class="p">.</span><span class="nf">dependencies</span><span class="p">.</span><span class="nf">delete_if</span> <span class="p">{</span> <span class="o">|</span><span class="n">dep</span><span class="o">|</span> <span class="n">dep</span><span class="p">.</span><span class="nf">name</span> <span class="o">==</span> <span class="s2">"hoe"</span> <span class="p">}</span></code></pre></figure>
 
 <p>(courtesy of <a href="http://chneukirchen.org/">Christian Neukirchen</a>).</p>
 
-<p><a href="http://github.com/damphyr/rutema">rutema&#39;s</a> Hoe spec also shows how to add extra dependencies and other Gem specification elements (the <em>extra</em>deps_ and <em>spec</em>extras_ lines):</p>
+<p><a href="http://github.com/damphyr/rutema">rutema’s</a> Hoe spec also shows how to add extra dependencies and other Gem specification elements (the <em>extra_deps</em> and <em>spec_extras</em> lines):</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"> <span class="no">Hoe</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s1">'rutema'</span><span class="p">,</span> <span class="s2">"</span><span class="si">#{</span><span class="no">Rutema</span><span class="o">::</span><span class="no">VERSION_MAJOR</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="no">Rutema</span><span class="o">::</span><span class="no">VERSION_MINOR</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="nb">p</span><span class="o">|</span>
    <span class="nb">p</span><span class="p">.</span><span class="nf">rubyforge_name</span> <span class="o">=</span> <span class="s1">'patir'</span>
@@ -75,7 +75,7 @@ You can remove this dependency with:</p>
  <span class="k">end</span></code></pre></figure>
 
 <p>Hoe does make your life easier. 
-Just check how fast rutema&#39;s 0.2 bugfix release was released after the initial 0.1 release (for the lazy among you: find bug, fix bug, update documentation, release - all in one hour and fortyfive minutes)</p>
+Just check how fast rutema’s 0.2 bugfix release was released after the initial 0.1 release (for the lazy among you: find bug, fix bug, update documentation, release - all in one hour and fortyfive minutes)</p>
 
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>

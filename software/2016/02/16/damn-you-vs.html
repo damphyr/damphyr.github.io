@@ -43,7 +43,7 @@
 <p class="meta">16 Feb 2016</p>
 
 <div class="post">
-<p><em>I&#39;m not being lazy, the bloody piece of shite is compiling</em></p>
+<p><em>I’m not being lazy, the bloody piece of shite is compiling</em></p>
 
 <p>Today was a day of deep learning, which is to say that nothing, but absolutely nothing worked as it was supposed to and it took ages to figure out why.</p>
 
@@ -51,9 +51,9 @@
 
 <p>Adapting our CI was as simple as cloning the build job pipeline and telling git to check out a different branch. And that worked for about 2 builds at which point the first gate keeper that checks the integration of device and host PC started failing for the support builds.</p>
 
-<p>The error came from our host tools, which are written in C# and it provoked a big, loud &quot;WAT?&quot; as per the initial <a href="http://plasmasturm.org/log/6debug/">stages of debugging</a> since it was a &quot;I can&#39;t load type so-and-so in assembly so-and-so&quot; for a type that was definitely nowhere to be found in the sources.</p>
+<p>The error came from our host tools, which are written in C# and it provoked a big, loud “WAT?” as per the initial <a href="http://plasmasturm.org/log/6debug/">stages of debugging</a> since it was a “I can’t load type so-and-so in assembly so-and-so” for a type that was definitely nowhere to be found in the sources.</p>
 
-<p><img src="/images/wat.jpg" alt="wat?!?"></p>
+<p><img src="/images/wat.jpg" alt="wat?!?" /></p>
 
 <p>Here I have to diverge and explain that we are exposing part of the C# .NET funtionality over COM for use in Ruby scripts and for that reason in the test stages the system registers a couple of assemblies using regasm.</p>
 
@@ -63,9 +63,9 @@
 
 <p>Trust msbuild to find a way to work around this. So what happened?</p>
 
-<h2>Cause</h2>
+<h2 id="cause">Cause</h2>
 
-<p>The cuplrit is called <strong>IntermediateOutputPath</strong> and is a setting in Visual Studio project files that tells Visual Studio where to place the object files created by it&#39;s compiler before linking. It&#39;s that obj directory that pops up whenever you press F7.</p>
+<p>The cuplrit is called <strong>IntermediateOutputPath</strong> and is a setting in Visual Studio project files that tells Visual Studio where to place the object files created by it’s compiler before linking. It’s that obj directory that pops up whenever you press F7.</p>
 
 <p>There is no way to set this in the project properties as far as I know. You have to edit the .csproj file and add it, which is what we do (like I said <em>out-of-band</em> builds).</p>
 
@@ -75,27 +75,27 @@
 
 <p>And this happened in an indeterminate point in the past before we ever had multiple trunks.</p>
 
-<h2>Effect</h2>
+<h2 id="effect">Effect</h2>
 
 <p>Switch now to the main build server who in the alleged security of out-of-band builds attempts to build both trunks.</p>
 
-<p>Given a team that commits rapidly on the master branch clearing technical debt and sparingly on the support branch, you will very quickly reach the point where the sources on the support branch are by definition older than the corresponding object files in said &quot;temporary&quot; directory.</p>
+<p>Given a team that commits rapidly on the master branch clearing technical debt and sparingly on the support branch, you will very quickly reach the point where the sources on the support branch are by definition older than the corresponding object files in said “temporary” directory.</p>
 
-<p>But msbuild doesn&#39;t know that. It sees newer object files and hapilly goes &quot;I don&#39;t have to build this, hihi&quot; and links some random piece of code for you. And since you&#39;re an idiot and forgot to de-register the assembly before building any type mismatches are not reported by the linker. Hilarity ensues.</p>
+<p>But msbuild doesn’t know that. It sees newer object files and hapilly goes “I don’t have to build this, hihi” and links some random piece of code for you. And since you’re an idiot and forgot to de-register the assembly before building any type mismatches are not reported by the linker. Hilarity ensues.</p>
 
-<h2>Lessons learned</h2>
-
-<ul>
-<li>This is a fine example of the evils of shared state.</li>
-<li>Not one tool vendor has really thought about building things in parallel.</li>
-<li>Always do clean builds on your CI.
+<h2 id="lessons-learned">Lessons learned</h2>
 
 <ul>
-<li>Containers are nice, but...Windows.</li>
-</ul></li>
-<li>Never assume the tool knows better and never assume you cleaned up everything.</li>
-<li>Visual Studio is evil.</li>
-<li>There is always something you missed. Have multiple levels of testing.</li>
+  <li>This is a fine example of the evils of shared state.</li>
+  <li>Not one tool vendor has really thought about building things in parallel.</li>
+  <li>Always do clean builds on your CI.
+    <ul>
+      <li>Containers are nice, but…Windows.</li>
+    </ul>
+  </li>
+  <li>Never assume the tool knows better and never assume you cleaned up everything.</li>
+  <li>Visual Studio is evil.</li>
+  <li>There is always something you missed. Have multiple levels of testing.</li>
 </ul>
 
   <p>

@@ -47,12 +47,12 @@
 Not to be left out, I offered to contribute the code for the gem so I dived in and started looking at the code that goes in the gem.</p>
 
 <p>Webdriver (and selenium) are not pure Ruby projects, so their structure deviates from the convenient convention of the bin/ lib/ test/ directories. Code is organized by component (common, chrome, ie, firefox etc.) so the Ruby code lives in different directories.
-Now the two tools for gem generation that I know and have used (hoe and jeweler) live in a world of pure Ruby projects. Not only that, they live in a world where there is only one gem per project. </p>
+Now the two tools for gem generation that I know and have used (hoe and jeweler) live in a world of pure Ruby projects. Not only that, they live in a world where there is only one gem per project.</p>
 
 <p>Time to specify a couple of requirements. Projects like webdriver need a way to create multiple gems (in this case one gem per OS platform - windows, macosx, linux) from a directory structure that does not conform to the conventions used in Ruby projects.
-Additionally, whichever tool is used to create the gems needs to keep it&#39;s Rake tasks nicely namespaced (jeweler adds a rake task named &#39;build&#39;. In a project that has C or java code build has a well established and completely different meaning). </p>
+Additionally, whichever tool is used to create the gems needs to keep it’s Rake tasks nicely namespaced (jeweler adds a rake task named ‘build’. In a project that has C or java code build has a well established and completely different meaning).</p>
 
-<p>So I guess I have opened Aeolus&#39; sack and the winds are going to take me into code unknown. I am reluctant to start another tool (why rewrite code that interfaces with Gemcutter and Rubyforge when all I need is an extension) so I have contacted Josh Nichols (the creator of jeweler) to see if we can extend jeweler and cover these cases.</p>
+<p>So I guess I have opened Aeolus’ sack and the winds are going to take me into code unknown. I am reluctant to start another tool (why rewrite code that interfaces with Gemcutter and Rubyforge when all I need is an extension) so I have contacted Josh Nichols (the creator of jeweler) to see if we can extend jeweler and cover these cases.</p>
 
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>

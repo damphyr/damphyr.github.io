@@ -45,9 +45,9 @@
 <div class="post">
 <p><em>One more in the series of let-me-jot-this-down-cause-I-forget-easily articles</em></p>
 
-<p>In the blog&#39;s hiatus time I managed to switch from Textmate to SublimeText.</p>
+<p>In the blog’s hiatus time I managed to switch from Textmate to SublimeText.</p>
 
-<p>The reason for switching has to do with SublimeText&#39;s availability on all platforms I work with (namely I can get it to work on Windows). I&#39;ve come to really like this editor with it&#39;s simple JSON configuration and the lightning fast search facilities it offers. And I find increasingly annoying the need to switch outside the editor to perform tasks on the console.</p>
+<p>The reason for switching has to do with SublimeText’s availability on all platforms I work with (namely I can get it to work on Windows). I’ve come to really like this editor with it’s simple JSON configuration and the lightning fast search facilities it offers. And I find increasingly annoying the need to switch outside the editor to perform tasks on the console.</p>
 
 <p>Luckily SublimeText has a nice and simple (again JSON based) batch execution system (called a Build System). Instead of duplicating knowledge I myself have found somewhere else, go check <a href="http://addyosmani.com/blog/custom-sublime-text-build-systems-for-popular-tools-and-languages/">this article by Addy Osmani</a> which explains things very well.</p>
 
@@ -55,7 +55,7 @@
 
 <p>The first thing was to call jekyll build directly, which went south pretty fast since I use rvm. The default OS X Ruby installation has actually never been used on my current machine.</p>
 
-<p>Using Addy&#39;s article I figured out how to set the environment to set the rvm path. Now, instead of using <em>rvm-auto-ruby</em> I just set the rvm default to the ruby version I use for my personal projects. All other installations don&#39;t have the jekyll gem anyway.</p>
+<p>Using Addy’s article I figured out how to set the environment to set the rvm path. Now, instead of using <em>rvm-auto-ruby</em> I just set the rvm default to the ruby version I use for my personal projects. All other installations don’t have the jekyll gem anyway.</p>
 
 <p>And instead of creating a build system for jekyll I just created a rakefile that calls <em>jekyll build</em> and used the following as a build system</p>
 
@@ -68,7 +68,7 @@
   </span><span class="nl">"file_regex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^(...*?):([0-9]*):?([0-9]*)"</span><span class="w">
 </span><span class="p">}</span></code></pre></figure>
 
-<p>That <em>&quot;LC_CTYPE&quot;:&quot;UTF-8&quot;</em> is crucial, especially with the various greek, german and spanish UTF-8 characters loose on this blog. Jekyll chokes very fast (article number 3 to be exact) if it&#39;s not set.</p>
+<p>That <em>“LC_CTYPE”:”UTF-8”</em> is crucial, especially with the various greek, german and spanish UTF-8 characters loose on this blog. Jekyll chokes very fast (article number 3 to be exact) if it’s not set.</p>
 
 <p>The beauty of it is that the standard Ruby regex for errors still works and stacktraces are clickable and open the correct file within the editor. Sweet!</p>
 

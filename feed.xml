@@ -13,7 +13,8 @@
 &lt;p&gt;Kotlin is cool. I am a fool.&lt;/p&gt;
 
 &lt;p&gt;These two sentences are both true. The best aggro moment of the last three days was when I spent over two hours trying to figure out why the following script failed:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-kotlin&quot; data-lang=&quot;kotlin&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;jetbrains.buildServer.configs.kotlin.v2019_2.*&lt;/span&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;jetbrains.buildServer.configs.kotlin.v2019_2.*&lt;/span&gt;
 
 &lt;span class=&quot;n&quot;&gt;version&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;2019.2&quot;&lt;/span&gt;
 
@@ -37,12 +38,15 @@
     &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;p&gt;I even went as far a posting an issue on the TeamCity support site. And then I went to bed, slept through the night, looked at the code again this morning and remembered I am writing code in a JVM language.&lt;/p&gt;
 
 &lt;p&gt;So I added&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-kotlin&quot; data-lang=&quot;kotlin&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-kotlin highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;p&gt;at the top.&lt;/p&gt;
 
 &lt;p&gt;Remember, I am a professional and I have been doing this for 25 years.&lt;/p&gt;
@@ -50,10 +54,9 @@
 &lt;p&gt;It helps that your TeamCity instance hosts the DSL reference at &lt;em&gt;app/dsl-documentation/index.html&lt;/em&gt;.
 It also helps to read said reference.&lt;/p&gt;
 
-&lt;p&gt;But mostly, it helps when you just go to bed and try again when you&amp;#39;re fresh.&lt;/p&gt;
+&lt;p&gt;But mostly, it helps when you just go to bed and try again when you’re fresh.&lt;/p&gt;
 
-&lt;hr&gt;
-
+&lt;hr /&gt;
 &lt;p&gt;The response to my brain-dead-due-to-lack-of-sleep support request came as I was writing this. Response time less than 16 hours. I am liking this.&lt;/p&gt;
 </description>
         <pubDate>Tue, 31 Mar 2020 19:15:21 +0200</pubDate>
@@ -63,38 +66,40 @@ It also helps to read said reference.&lt;/p&gt;
     
       <item>
         <title>Tales of Teamcity: Adventures in Kotlin</title>
-        <description>&lt;p&gt;TeamCity is one CI system I haven&amp;#39;t had a lot of contact until now. As will become evident, this has now changed.&lt;/p&gt;
+        <description>&lt;p&gt;TeamCity is one CI system I haven’t had a lot of contact until now. As will become evident, this has now changed.&lt;/p&gt;
 
 &lt;p&gt;So, alongside a crash course in basic Kotlin, I now have to figure out how to get my brand of build automation working in TeamCity.&lt;/p&gt;
 
-&lt;h2&gt;The gatekeeper&lt;/h2&gt;
+&lt;h2 id=&quot;the-gatekeeper&quot;&gt;The gatekeeper&lt;/h2&gt;
 
 &lt;p&gt;I have one criterion for accepting a build management system:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Build specifications need to be storable in the repository
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Let&amp;#39;s explore if TeamCity makes it past the door and how far we can take it.&lt;/p&gt;
 
-&lt;h2&gt;First contact&lt;/h2&gt;
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Build job specifications have to be stored in the repository
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;First contact is always a search along the lines of &amp;quot;build DSL, Teamcity&amp;quot;. I was already aware that TeamCity offers a DSL based on Kotlin and so we landed very fast on the &lt;a href=&quot;https://blog.jetbrains.com/teamcity/2019/03/configuration-as-code-part-1-getting-started-with-kotlin-dsl/&quot;&gt;blog series&lt;/a&gt; describing these features.&lt;/p&gt;
+&lt;p&gt;Let’s explore if TeamCity makes it past the door and how far we can take it.&lt;/p&gt;
 
-&lt;p&gt;This gets TeamCity through the door. It&amp;#39;s also a pretty cool taster for what Kotlin can do: the DSL looks clean and it looks like the web UI offers a way to get easily from clicked-together to code.&lt;/p&gt;
+&lt;h2 id=&quot;first-contact&quot;&gt;First contact&lt;/h2&gt;
+
+&lt;p&gt;First contact is always a search along the lines of “build DSL, TeamCity”. I was already aware that TeamCity offers a DSL based on Kotlin and so we landed very fast on the &lt;a href=&quot;https://blog.jetbrains.com/teamcity/2019/03/configuration-as-code-part-1-getting-started-with-kotlin-dsl/&quot;&gt;blog series&lt;/a&gt; describing these features.&lt;/p&gt;
+
+&lt;p&gt;This gets TeamCity through the door. It’s also a pretty cool taster for what Kotlin can do: the DSL looks clean and it looks like the web UI offers a way to get easily from clicked-together to code.&lt;/p&gt;
 
 &lt;p&gt;I have studiously ignored all the IDEA bait in those posts. You should not need code completion to put a few pipelines together (narrator: he was mostly wrong).&lt;/p&gt;
 
 &lt;p&gt;I have also skipped and jumped over the Maven references. Seriously, I have a pom allergy. It is probably going to bite me in the behind as soon as this system gets reasonably complicated and I am going to need tests, but it was all I could do to keep reading after my eyes brushed over that XML.&lt;/p&gt;
 
-&lt;h2&gt;Reality check&lt;/h2&gt;
+&lt;h2 id=&quot;reality-check&quot;&gt;Reality check&lt;/h2&gt;
 
-&lt;p&gt;OK, I&amp;#39;m armed with Kotlin and I&amp;#39;ve got a TeamCity instance and I&amp;#39;ve got a project and I see that all the settings are version controlled. But they all go to this one repository somewhere beyond my reach.&lt;/p&gt;
+&lt;p&gt;OK, I’m armed with Kotlin and I’ve got a TeamCity instance and I’ve got a project and I see that all the settings are version controlled. But they all go to this one repository somewhere beyond my reach.&lt;/p&gt;
 
 &lt;p&gt;It turns out you need pretty wide-reaching access rights to be able to activate versioned settings. Luckily, it took about 10 seconds of pointed question asking and:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/AchievementUnlocked.png&quot; alt=&quot;Achievement Unlocked&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/AchievementUnlocked.png&quot; alt=&quot;Achievement Unlocked&quot; class=&quot;no-float&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Seriously, I&amp;#39;m framing this - it was my fastest 0-to-admin time ever!&lt;/p&gt;
+&lt;p&gt;Seriously, I’m framing this - it was my fastest 0-to-admin time ever!&lt;/p&gt;
 
-&lt;h2&gt;Get off my master&lt;/h2&gt;
+&lt;h2 id=&quot;get-off-my-master&quot;&gt;Get off my master&lt;/h2&gt;
 
 &lt;p&gt;Turning on versioning for project settings has one drawback: Every time you change something in the web UI, Teamcity will commit the changes in the designated repository. And it does it on master.&lt;/p&gt;
 
@@ -104,11 +109,11 @@ It also helps to read said reference.&lt;/p&gt;
 
 &lt;p&gt;This is rule of git acquisition number 23:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;The repository comes first&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;The repository comes first&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;So, when we set up versioning we set the appropriate option:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/tc_no_ui_changes.png&quot; alt=&quot;No UI changes allowed&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/tc_no_ui_changes.png&quot; alt=&quot;No UI changes allowed&quot; class=&quot;no-float&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Now, the comment accompanying the option gives me hope that things have been done properly.&lt;/p&gt;
 
@@ -120,13 +125,13 @@ It also helps to read said reference.&lt;/p&gt;
 
 &lt;p&gt;In the TeamCity context such a setup guarantees that no changes in the UI will be accepted. But it will generate a whole bunch of errors for anyone making changes.&lt;/p&gt;
 
-&lt;p&gt;It also makes it difficult to explore and experiment with options and see how they translate to DSL code. Doubly so, because not all options that change the settings offer a nice &amp;#39;View DSL&amp;#39; button - for example adding NuGet Feeds&lt;/p&gt;
+&lt;p&gt;It also makes it difficult to explore and experiment with options and see how they translate to DSL code. Doubly so, because not all options that change the settings offer a nice ‘View DSL’ button - for example adding NuGet Feeds&lt;/p&gt;
 
-&lt;h2&gt;Playground&lt;/h2&gt;
+&lt;h2 id=&quot;playground&quot;&gt;Playground&lt;/h2&gt;
 
 &lt;p&gt;Basically I have a playground repository with a scaffolded &lt;a href=&quot;https://github.com/damphyr/gaudi&quot;&gt;gaudi&lt;/a&gt; that I can use to click things together. I think I already stumbled on a bug for a runner, so expect a post on community, support and bug reports.&lt;/p&gt;
 
-&lt;p&gt;I&amp;#39;ve already put a variant of the &lt;a href=&quot;https://blog.jetbrains.com/teamcity/2019/04/configuration-as-code-part-3-creating-build-configurations-dynamically/&quot;&gt;Configuration as Code, Part 3: Creating Build Configurations Dynamically&lt;/a&gt; to good use and it has opened some interesting questions, so that will be the next post.&lt;/p&gt;
+&lt;p&gt;I’ve already put a variant of the &lt;a href=&quot;https://blog.jetbrains.com/teamcity/2019/04/configuration-as-code-part-3-creating-build-configurations-dynamically/&quot;&gt;Configuration as Code, Part 3: Creating Build Configurations Dynamically&lt;/a&gt; to good use and it has opened some interesting questions, so that will be the next post.&lt;/p&gt;
 </description>
         <pubDate>Tue, 31 Mar 2020 14:15:21 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2020/03/31/adventures-in-kotlin-1</link>
@@ -137,7 +142,7 @@ It also helps to read said reference.&lt;/p&gt;
         <title>ForgetMeNot: Organized xUnit reports in Jenkins</title>
         <description>&lt;p&gt;One of the hackiest formats under wide adoption is the JUnit report format.&lt;/p&gt;
 
-&lt;p&gt;It is not really from JUnit, it&amp;#39;s from Ant. It is not really documented anywhere - some people try to figure it out by reading the source (after looking for it first in the JUnit sources - lots of fun following the different StackOverflow threads on this).&lt;/p&gt;
+&lt;p&gt;It is not really from JUnit, it’s from Ant. It is not really documented anywhere - some people try to figure it out by reading the source (after looking for it first in the JUnit sources - lots of fun following the different StackOverflow threads on this).&lt;/p&gt;
 
 &lt;p&gt;Given that there is no official schema or spec I am not surprised in the totally inconsistent behaviour of any tool claiming to read/write or understand the JUnit report format.&lt;/p&gt;
 
@@ -155,14 +160,17 @@ It also helps to read said reference.&lt;/p&gt;
 
 &lt;p&gt;But the way the report is organized did not change. xUnit shows tests grouped in packages.
 It figures out what to use as a package name by using the &lt;em&gt;classname&lt;/em&gt; attribute of the &lt;em&gt;testsuite&lt;/em&gt; elements&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;testsuite&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;InterestingTests&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;tests=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;5&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;failures=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;0&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;disabled=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;0&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;errors=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;0&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;time=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;50.582&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;timestamp=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;2020-03-12T17:40:33&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;classname=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Integration&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;You would expect that all test cases within that element would be listed under that package. But no. Apparently the reporter parses the classname for &lt;strong&gt;each&lt;/strong&gt; testcase and builds &amp;quot;packages&amp;quot; out of that.&lt;/p&gt;
 
-&lt;p&gt;So if you have a bunch of let&amp;#39;s say GTest tests and emit an XML report, all of your tests are going in the &lt;em&gt;Root&lt;/em&gt; package, since, you know, no &lt;em&gt;Java&lt;/em&gt; namespaces and one has to choose a default name (which GTest hard-codes).&lt;/p&gt;
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;testsuite&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;InterestingTests&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;tests=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;5&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;failures=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;0&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;disabled=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;0&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;errors=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;0&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;time=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;50.582&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;timestamp=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;2020-03-12T17:40:33&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;classname=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Integration&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You would expect that all test cases within that element would be listed under that package. But no. Apparently the reporter parses the classname for &lt;strong&gt;each&lt;/strong&gt; testcase and builds “packages” out of that.&lt;/p&gt;
+
+&lt;p&gt;So if you have a bunch of let’s say GTest tests and emit an XML report, all of your tests are going in the &lt;em&gt;Root&lt;/em&gt; package, since, you know, no &lt;em&gt;Java&lt;/em&gt; namespaces and one has to choose a default name (which GTest hard-codes).&lt;/p&gt;
 
 &lt;p&gt;What is a build enginneer to do, but post-process that XML report so that his team gets nicely categorized tests. No need for fancy code, brute force it in Ruby:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Rewrites (in place) an XML report produced by gtest to add a classname to testsuites and&lt;/span&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Rewrites (in place) an XML report produced by gtest to add a classname to testsuites and&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;# adapt the classnames to test cases.&lt;/span&gt;
 &lt;span class=&quot;c1&quot;&gt;# so that they sort nicely when presented by the xUnit plugin in Jenkins&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;classify_test_report&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test_report&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test_class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
@@ -180,8 +188,9 @@ It figures out what to use as a package name by using the &lt;em&gt;classname&lt
   &lt;span class=&quot;n&quot;&gt;write_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test_report&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;serialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
   &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test_report&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;That &lt;em&gt;write&lt;/em&gt;file_ comes from &lt;a href=&quot;https://github.com/damphyr/gaudi&quot;&gt;gaudi&lt;/a&gt;, but, you know, it writes the file to disk.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;That &lt;em&gt;write_file&lt;/em&gt; comes from &lt;a href=&quot;https://github.com/damphyr/gaudi&quot;&gt;gaudi&lt;/a&gt;, but, you know, it writes the file to disk.&lt;/p&gt;
 </description>
         <pubDate>Thu, 12 Mar 2020 13:15:21 +0100</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2020/03/12/forgetmenot-xunit-reports</link>
@@ -192,10 +201,12 @@ It figures out what to use as a package name by using the &lt;em&gt;classname&lt
         <title>ForgetMeNot: Pass values onwards in Azure Devops</title>
         <description>&lt;p&gt;Azure Devops has this really cool feature, where you can use specially formated stdout strings to pass different commands.&lt;/p&gt;
 
-&lt;p&gt;They are called &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/devops/pipelines/scripts/logging-commands?view=azure-devops&amp;tabs=bash&quot;&gt;logging commands&lt;/a&gt; and by far the most useful of those is setvariable which allows us to set a variable in one task, that is then available as an environment variable in subsequent tasks:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+&lt;p&gt;They are called &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/devops/pipelines/scripts/logging-commands?view=azure-devops&amp;amp;tabs=bash&quot;&gt;logging commands&lt;/a&gt; and by far the most useful of those is setvariable which allows us to set a variable in one task, that is then available as an environment variable in subsequent tasks:&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;##vso[task.setvariable variable=testvar;]testvalue&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;p&gt;A useful example for this:&lt;/p&gt;
 
 &lt;p&gt;Let us say we use &lt;a href=&quot;https://gitversion.net/docs/&quot;&gt;GitVersion&lt;/a&gt; to alleviate the headache of versioning and we put together a pipeline to publish a Nuget package.&lt;/p&gt;
@@ -203,17 +214,21 @@ It figures out what to use as a package name by using the &lt;em&gt;classname&lt
 &lt;p&gt;The &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/dotnet-core-cli?view=azure-devops&quot;&gt;dotnet task&lt;/a&gt; in Azure Devops (as well as the &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/package/nuget?view=azure-devops#versioning-schemes&quot;&gt;nuget task&lt;/a&gt;) offers the byEnvVAr versioning scheme, which allows you to pass the desired version number in an environment variable.&lt;/p&gt;
 
 &lt;p&gt;Use you favourite scripting language to calculate the version number and a logging command, for example with bash&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;echo &quot;##vso[task.setvariable variable=THE_CORRECT_VERSION;]`GitVersion /output json /showvariable FullSemVer`&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;echo &quot;##vso[task.setvariable variable=THE_CORRECT_VERSION;]`GitVersion /output json /showvariable FullSemVer`&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;p&gt;and then pack the Nuget package without worrying about the version:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;task&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DotNetCoreCLI@2&lt;/span&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;task&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DotNetCoreCLI@2&lt;/span&gt;
   &lt;span class=&quot;na&quot;&gt;inputs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
     &lt;span class=&quot;na&quot;&gt;command&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;pack&lt;/span&gt;
     &lt;span class=&quot;na&quot;&gt;packagesToPack&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;$(project)&quot;&lt;/span&gt;
     &lt;span class=&quot;na&quot;&gt;arguments&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;--configuration&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;$(buildConfiguration)&quot;&lt;/span&gt;
     &lt;span class=&quot;na&quot;&gt;versioningScheme&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;byEnvVar&lt;/span&gt;
     &lt;span class=&quot;na&quot;&gt;versionEnvVar&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;THE_CORRECT_VERSION&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
         <pubDate>Mon, 27 Jan 2020 13:15:21 +0100</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2020/01/27/forget-me-not-setvariable</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2020/01/27/forget-me-not-setvariable</guid>
@@ -229,9 +244,9 @@ It figures out what to use as a package name by using the &lt;em&gt;classname&lt
 
 &lt;p&gt;&lt;em&gt;In «Machines – Code – People» readers learn about best practices, cultural philosophies, great ideas and practically proven concepts. In 50 short articles Zühlke engineers share what they are passionate about. You will find many useful tips from various areas of today’s tech industry. The range of topics covered includes the latest technical developments as well as collaboration topics and individual values and techniques.&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;You can buy the dead tree version on &lt;a href=&quot;https://www.amazon.de/Machines-Code-People-engineers-passionate/dp/3748141181/ref=sr_1_1?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&amp;keywords=machines+code+people&amp;qid=1561359217&amp;s=gateway&amp;sr=8-1&quot;&gt;Amazon&lt;/a&gt;, you can browse it for free &lt;a href=&quot;https://zuehlke.github.io/machines-code-people/&quot;&gt;online&lt;/a&gt; or download one of the &lt;a href=&quot;https://zuehlke.github.io/machines-code-people/articles/preface.html&quot;&gt;e-book versions&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;You can buy the dead tree version on &lt;a href=&quot;https://www.amazon.de/Machines-Code-People-engineers-passionate/dp/3748141181/ref=sr_1_1?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&amp;amp;keywords=machines+code+people&amp;amp;qid=1561359217&amp;amp;s=gateway&amp;amp;sr=8-1&quot;&gt;Amazon&lt;/a&gt;, you can browse it for free &lt;a href=&quot;https://zuehlke.github.io/machines-code-people/&quot;&gt;online&lt;/a&gt; or download one of the &lt;a href=&quot;https://zuehlke.github.io/machines-code-people/articles/preface.html&quot;&gt;e-book versions&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;I consider this a 70% step to crossing &amp;quot;be a published author&amp;quot; off the bucket list.&lt;/p&gt;
+&lt;p&gt;I consider this a 70% step to crossing “be a published author” off the bucket list.&lt;/p&gt;
 
 &lt;p&gt;I am especially proud, not just because of my article in the book (it is an edited version of the &lt;a href=&quot;/software/2014/07/17/vars-build-rules&quot;&gt;build rules&lt;/a&gt; post in this blog) but because I came up with a title the rest of the company found cool.&lt;/p&gt;
 
@@ -250,12 +265,13 @@ It figures out what to use as a package name by using the &lt;em&gt;classname&lt
         <title>Adventures in Azure DevOps: I git too fast</title>
         <description>&lt;p&gt;I like keeping the number of commits in my pull requests in the low single digits, preferably 1. For context see the post on my &lt;a href=&quot;/software/2019/06/18/disaster-resistant-git&quot;&gt;disaster resistant git workflow&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;I used to do all the work, squashing the commits at the end of the work before merging my pull requests but recently I have switched to using &lt;code&gt;git commit --amend&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;I used to do all the work, squashing the commits at the end of the work before merging my pull requests but recently I have switched to using &lt;code class=&quot;highlighter-rouge&quot;&gt;git commit --amend&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;The reason for this is that while I have noticed that I rarely need to re-arrange my commits in logical groups when squashing (call it a benefit of experience - it certainly was not like this years ago), I make a lot of typing and syntax errors.&lt;/p&gt;
 
 &lt;p&gt;As a result my typical change originally looks like&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;c31e548 Some informed and wise comment on the change
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;c31e548 Some informed and wise comment on the change
 dfdfd15 typo
 d19f4f1 typo
 7122e4a typo fix
@@ -268,27 +284,32 @@ d8e72cf doh, PEBKAC
 db6aa1c I hate ...
 47d3dc7 AAAARGH
 4640d92 done
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Previously I would be kind and squash, but you could follow everything in the pull request notifications. &lt;code&gt;--amend&lt;/code&gt;allows me to appear infalible :D.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Previously I would be kind and squash, but you could follow everything in the pull request notifications. &lt;code class=&quot;highlighter-rouge&quot;&gt;--amend&lt;/code&gt;allows me to appear infalible :D.&lt;/p&gt;
 
 &lt;p&gt;As an added optimization (remember, I usually do builds and CI and stuff like that - my code does not need the CI, it IS the CI) I recently added an alias to my collection:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git config alias.cowboy
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git config alias.cowboy
 &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;git commit &lt;span class=&quot;nt&quot;&gt;--amend&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git push &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;p&gt;As a measure of sparing me a few keystrokes it is great (remember, I typo &lt;strong&gt;a lot&lt;/strong&gt;). As a practice it is questionable, but see in which context it is used in the aforementioned git workflow post.&lt;/p&gt;
 
 &lt;p&gt;Funnily, in Azure Devops I get to trip myself up with this.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/git-too-fast.png&quot; alt=&quot;Checkout error&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/git-too-fast.png&quot; alt=&quot;Checkout error&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Today I started with builds failing on checkout, which was wierd.&lt;/p&gt;
 
 &lt;p&gt;Looking closer it gets momentarily even wierder:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;fatal: reference is not a tree
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2&gt;What happened&lt;/h2&gt;
 
-&lt;p&gt;Basically my cowboy ways pulled the rug from under git&amp;#39;s feet.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fatal: reference is not a tree
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;what-happened&quot;&gt;What happened&lt;/h2&gt;
+
+&lt;p&gt;Basically my cowboy ways pulled the rug from under git’s feet.&lt;/p&gt;
 
 &lt;p&gt;What you see is a live demostration of the dangers of rewriting history in git.&lt;/p&gt;
 
@@ -296,7 +317,7 @@ db6aa1c I hate ...
 
 &lt;p&gt;No harm done other than a negative skew on my successfull build percentage.&lt;/p&gt;
 
-&lt;p&gt;Everything is fine, we&amp;#39;re all professionals here.&lt;/p&gt;
+&lt;p&gt;Everything is fine, we’re all professionals here.&lt;/p&gt;
 </description>
         <pubDate>Tue, 18 Jun 2019 16:15:21 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2019/06/18/azure-devops-git-too-fast</link>
@@ -308,17 +329,17 @@ db6aa1c I hate ...
         <description>&lt;p&gt;Over the years I have developed a very disaster-resistant git workflow:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Change to open-ended branches (master, develop, releases etc.) is always via pull requests.&lt;/li&gt;
-&lt;li&gt;Force push is blocked on all open branches.&lt;/li&gt;
-&lt;li&gt;All changes happen in a branch, no matter how small.&lt;/li&gt;
-&lt;li&gt;Branch is always rebased onto its PR target, never merged.&lt;/li&gt;
-&lt;li&gt;Merge strategy is usually rebase and --no-ff.&lt;/li&gt;
+  &lt;li&gt;Change to open-ended branches (master, develop, releases etc.) is always via pull requests.&lt;/li&gt;
+  &lt;li&gt;Force push is blocked on all open branches.&lt;/li&gt;
+  &lt;li&gt;All changes happen in a branch, no matter how small.&lt;/li&gt;
+  &lt;li&gt;Branch is always rebased onto its PR target, never merged.&lt;/li&gt;
+  &lt;li&gt;Merge strategy is usually rebase and –no-ff.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;That last one is more a cosmetic preference: In projects with big teams and complex structures/systems it is easier to track the sequence of introduction of the changes via the merge nodes.
-For the rest of this post when you see &amp;#39;branch&amp;#39; it means a branch that will eventually be merged into another as opposed to an &amp;quot;open-ended&amp;quot; branch like &lt;em&gt;master&lt;/em&gt;.&lt;/p&gt;
+For the rest of this post when you see ‘branch’ it means a branch that will eventually be merged into another as opposed to an “open-ended” branch like &lt;em&gt;master&lt;/em&gt;.&lt;/p&gt;
 
-&lt;h2&gt;The problem is merging&lt;/h2&gt;
+&lt;h2 id=&quot;the-problem-is-merging&quot;&gt;The problem is merging&lt;/h2&gt;
 
 &lt;p&gt;&lt;em&gt;There is a beast at the end of most branches and it is called Merge. It strikes fear in the hearts of all programmers and only a special few dare face it.&lt;/em&gt;&lt;/p&gt;
 
@@ -328,19 +349,19 @@ For the rest of this post when you see &amp;#39;branch&amp;#39; it means a branc
 
 &lt;p&gt;&lt;em&gt;It feeds on Code, give it enough and it will be invincible.&lt;/em&gt;&lt;/p&gt;
 
-&lt;h2&gt;Dealing with merge conflicts&lt;/h2&gt;
+&lt;h2 id=&quot;dealing-with-merge-conflicts&quot;&gt;Dealing with merge conflicts&lt;/h2&gt;
 
-&lt;p&gt;The fear of merges and merge conflicts usually develops when someone attempts to merge a branch that contains too many changes and has been growing over a long time (from days to weeks, it depends on your team&amp;#39;s velocity - I once had to merge one that was almost a year old, in svn no less - true story, not fun).&lt;/p&gt;
+&lt;p&gt;The fear of merges and merge conflicts usually develops when someone attempts to merge a branch that contains too many changes and has been growing over a long time (from days to weeks, it depends on your team’s velocity - I once had to merge one that was almost a year old, in svn no less - true story, not fun).&lt;/p&gt;
 
 &lt;p&gt;When encountering a merge conflict, the human algorithm is as follows:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Have I changed the file?
-
-&lt;ul&gt;
-&lt;li&gt;Yes: I know how to resolve the conflict because I know what I wanted to do.&lt;/li&gt;
-&lt;li&gt;No: Take the other version.&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
+  &lt;li&gt;Have I changed the file?
+    &lt;ul&gt;
+      &lt;li&gt;Yes: I know how to resolve the conflict because I know what I wanted to do.&lt;/li&gt;
+      &lt;li&gt;No: Take the other version.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;After finishing the merge, always check the resulting diff, since sometimes the automatic merge algorithm will produce changes that are logically faulty (i.e. you can get buggy code or non-sensical content that merges fine).&lt;/p&gt;
@@ -356,16 +377,16 @@ For the rest of this post when you see &amp;#39;branch&amp;#39; it means a branc
 &lt;p&gt;So there are guidelines:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Branches need to be short-lived&lt;/li&gt;
-&lt;li&gt;Keep the diff small&lt;/li&gt;
-&lt;li&gt;Keep the number of commits small to very small&lt;/li&gt;
+  &lt;li&gt;Branches need to be short-lived&lt;/li&gt;
+  &lt;li&gt;Keep the diff small&lt;/li&gt;
+  &lt;li&gt;Keep the number of commits small to very small&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;As always, one-line guidelines require ellaboration.&lt;/p&gt;
 
-&lt;h2&gt;Branch lifetime&lt;/h2&gt;
+&lt;h2 id=&quot;branch-lifetime&quot;&gt;Branch lifetime&lt;/h2&gt;
 
-&lt;p&gt;Short-lived, when we define it in time, is unfortunately a very fuzzy term. You will find advice like &amp;quot;no more than a day&amp;quot; and other equally arbitrary terms.&lt;/p&gt;
+&lt;p&gt;Short-lived, when we define it in time, is unfortunately a very fuzzy term. You will find advice like “no more than a day” and other equally arbitrary terms.&lt;/p&gt;
 
 &lt;p&gt;This guideline is the one I see teams ignoring most often. And as long as the rest are followed, with little or no consequences if we want to be honest.&lt;/p&gt;
 
@@ -373,7 +394,7 @@ For the rest of this post when you see &amp;#39;branch&amp;#39; it means a branc
 
 &lt;p&gt;Time alone is not a good criterion. Measuring distance from your target branch in LOCs (the size of the diff) or number of commits is a better indicator of staleness and your chances of encountering the Merge Beast.&lt;/p&gt;
 
-&lt;h2&gt;Diff size&lt;/h2&gt;
+&lt;h2 id=&quot;diff-size&quot;&gt;Diff size&lt;/h2&gt;
 
 &lt;p&gt;IM(NSH)O this is the really critical factor. In order to satisfy the conflict resolution algorithm I need to know about the change. The bigger it is, the more difficult the task.&lt;/p&gt;
 
@@ -383,13 +404,13 @@ For the rest of this post when you see &amp;#39;branch&amp;#39; it means a branc
 
 &lt;p&gt;In practice, keep the list of changed files to a minimum and the LOC size per file small. In other words, keep your PR diff view clean.&lt;/p&gt;
 
-&lt;h2&gt;Number of commits&lt;/h2&gt;
+&lt;h2 id=&quot;number-of-commits&quot;&gt;Number of commits&lt;/h2&gt;
 
-&lt;p&gt;For a long time I was of the &amp;#39;small commits, discrete steps towards the solution&amp;#39; school. Each commit should do one thing and my commits are structured and commented in such a way as to present the reviewer with my path towards the solution.&lt;/p&gt;
+&lt;p&gt;For a long time I was of the ‘small commits, discrete steps towards the solution’ school. Each commit should do one thing and my commits are structured and commented in such a way as to present the reviewer with my path towards the solution.&lt;/p&gt;
 
 &lt;p&gt;This is a brilliant approach if you are creating a workshop or you are teaching.&lt;/p&gt;
 
-&lt;p&gt;In the real world we are interested in the solution. We&amp;#39;re a team of software developers, we have trust in our abilities to grasp small to medium globs of code. And in practice we use the pull request forms to do the work. So at work the unit of change is the pull request, not the commit.&lt;/p&gt;
+&lt;p&gt;In the real world we are interested in the solution. We’re a team of software developers, we have trust in our abilities to grasp small to medium globs of code. And in practice we use the pull request forms to do the work. So at work the unit of change is the pull request, not the commit.&lt;/p&gt;
 
 &lt;p&gt;The unspoken assumption is that I have broken my user stories down to manageable pieces and do not improvise a redesign while writing the code.
 Keep the number of commits low (single digit number), ideally bring it down to 1.&lt;/p&gt;
@@ -400,7 +421,7 @@ Keep the number of commits low (single digit number), ideally bring it down to 1
 
 &lt;p&gt;Setting &lt;a href=&quot;https://git-scm.com/docs/git-rerere&quot;&gt;rerere&lt;/a&gt; in the git configuration simplifies repeated rebases but it is a setting that has to be used with caution.&lt;/p&gt;
 
-&lt;h2&gt;Side notes&lt;/h2&gt;
+&lt;h2 id=&quot;side-notes&quot;&gt;Side notes&lt;/h2&gt;
 
 &lt;p&gt;There are some points that might be obvious to some:&lt;/p&gt;
 
@@ -408,10 +429,10 @@ Keep the number of commits low (single digit number), ideally bring it down to 1
 
 &lt;p&gt;This means that branch constructs like the one used by git flow where &lt;em&gt;develop&lt;/em&gt; is merged into &lt;em&gt;master&lt;/em&gt; cannot be easily supported like this.&lt;/p&gt;
 
-&lt;p&gt;A PR workflow following the guidelines faithfully is like a discrete time simulation of trunk-based development with the steps being the merge nodes. The smaller the blocks (i.e. number of commits), the closer we are to trunk-based. Remove the --no-ff from the merge strategy and the distinction dissappears in the end result.&lt;/p&gt;
+&lt;p&gt;A PR workflow following the guidelines faithfully is like a discrete time simulation of trunk-based development with the steps being the merge nodes. The smaller the blocks (i.e. number of commits), the closer we are to trunk-based. Remove the –no-ff from the merge strategy and the distinction dissappears in the end result.&lt;/p&gt;
 
-&lt;p&gt;Larger changes (of which the most common type we call &amp;#39;features&amp;#39;) require conscious design.
-In my experience, teams fall prey to the Merge Beast because they lack ways to incrementally introduce changes or have been given user stories that are too vague or too big. This is not a git related subject, don&amp;#39;t blame the tool.&lt;/p&gt;
+&lt;p&gt;Larger changes (of which the most common type we call ‘features’) require conscious design.
+In my experience, teams fall prey to the Merge Beast because they lack ways to incrementally introduce changes or have been given user stories that are too vague or too big. This is not a git related subject, don’t blame the tool.&lt;/p&gt;
 </description>
         <pubDate>Tue, 18 Jun 2019 14:15:21 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2019/06/18/disaster-resistant-git</link>
@@ -422,13 +443,13 @@ In my experience, teams fall prey to the Merge Beast because they lack ways to i
         <title>Adventures in Azure DevOps: iOS secrets</title>
         <description>&lt;p&gt;This new-fangled (&lt;em&gt;sic&lt;/em&gt;) mobile app development thing, I tell you. I have been hearing stories, horror stories.&lt;/p&gt;
 
-&lt;p&gt;For example, the &amp;quot;certificates for iOS applications&amp;quot; story. Pure horror. Grey hair overnight, stuff of nightmares.&lt;/p&gt;
+&lt;p&gt;For example, the “certificates for iOS applications” story. Pure horror. Grey hair overnight, stuff of nightmares.&lt;/p&gt;
 
 &lt;p&gt;And then they tell you you have to build these things in the cloud, on disposable VMs.&lt;/p&gt;
 
 &lt;p&gt;I have a rule when setting up projects for teams that aspire to the DevOps tag:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;Just the repository&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Just the repository&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;I should be able, with just the contents of the repository, to reconstruct the project, inclusive of development environment, production setup and released artifacts.&lt;/p&gt;
 
@@ -444,9 +465,9 @@ In my experience, teams fall prey to the Merge Beast because they lack ways to i
 
 &lt;p&gt;This is based on the &lt;a href=&quot;https://docs.microsoft.com/en-gb/azure/devops/pipelines/library/secure-files?view=azure-devops&quot;&gt;secure files&lt;/a&gt; facility, which allows us to store secrets separately from the repos and use them in pipelines.&lt;/p&gt;
 
-&lt;h2&gt;No exceptions to the rule&lt;/h2&gt;
+&lt;h2 id=&quot;no-exceptions-to-the-rule&quot;&gt;No exceptions to the rule&lt;/h2&gt;
 
-&lt;p&gt;Back to &lt;code&gt;Just the repository&lt;/code&gt;, just because I do not really like exceptions, especially exceptions that have a tendency to run amok.&lt;/p&gt;
+&lt;p&gt;Back to &lt;code class=&quot;highlighter-rouge&quot;&gt;Just the repository&lt;/code&gt;, just because I do not really like exceptions, especially exceptions that have a tendency to run amok.&lt;/p&gt;
 
 &lt;p&gt;Secrets are such an exception. You can get a lot of them: SSL certificates, signing certificates, SSH keys, Apple provisioning profiles, Android Keystore etc. A modern development environment catering to the cloud is useless without them.&lt;/p&gt;
 
@@ -454,13 +475,13 @@ In my experience, teams fall prey to the Merge Beast because they lack ways to i
 
 &lt;p&gt;The concept goes like this:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;All secrets are kept in a KeePass database file, which is commited in the repo.&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;All secrets are kept in a KeePass database file, which is commited in the repo.&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;Whether you script secret retrieval from the KeePass DB to add it to Azure Devops (or whichever secret management service/tool you use), or just document their existence and prefered management solution I leave to you, dear reader.&lt;/p&gt;
 
 &lt;p&gt;That leaves us with one secret (the password/key to the KeePass database) to transmit over alternate channels.&lt;/p&gt;
 
-&lt;h2&gt;Staying flexible&lt;/h2&gt;
+&lt;h2 id=&quot;staying-flexible&quot;&gt;Staying flexible&lt;/h2&gt;
 
 &lt;p&gt;The KeePass DB  approach also allows us to handle using the secrets locally with a bit of clever scripting.&lt;/p&gt;
 
@@ -479,15 +500,17 @@ In my experience, teams fall prey to the Merge Beast because they lack ways to i
         <title>Multiplatform build adventures: Xamarin</title>
         <description>&lt;p&gt;Now that I can have everything &lt;a href=&quot;/software/2019/06/12/dotnet-core-clean-builds&quot;&gt;out-of-band&lt;/a&gt; I like the dotnet core tooling a bit more.&lt;/p&gt;
 
-&lt;p&gt;But it looks like we&amp;#39;re not there for everything yet - funny in a way, since now, even though in this project everything is Microsoft, I still have to integrate differrent toolchains.&lt;/p&gt;
+&lt;p&gt;But it looks like we’re not there for everything yet - funny in a way, since now, even though in this project everything is Microsoft, I still have to integrate differrent toolchains.&lt;/p&gt;
 
-&lt;p&gt;So, the newest problem on the block: Xamarin Android projects cannot be restored with &lt;code&gt;dotnet restore&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;So, the newest problem on the block: Xamarin Android projects cannot be restored with &lt;code class=&quot;highlighter-rouge&quot;&gt;dotnet restore&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;The &lt;a href=&quot;https://github.com/dotnet/project-system/issues/2498&quot;&gt;relevant bug entry&lt;/a&gt; is at the time of writing still open and &lt;em&gt;not&lt;/em&gt; adressed in VS2019.&lt;/p&gt;
 
 &lt;p&gt;So, we fall back to msbuild with&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-cmd&quot; data-lang=&quot;cmd&quot;&gt;msbuild /t:restore AndroidApp.csproj
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+
+&lt;pre&gt;&lt;code class=&quot;language-cmd&quot;&gt;msbuild /t:restore AndroidApp.csproj
+&lt;/code&gt;&lt;/pre&gt;
+</description>
         <pubDate>Thu, 13 Jun 2019 14:15:21 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2019/06/13/xamarin-dotnet</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2019/06/13/xamarin-dotnet</guid>
@@ -496,83 +519,90 @@ In my experience, teams fall prey to the Merge Beast because they lack ways to i
       <item>
         <title>Out-of-band DotNet core</title>
         <description>&lt;p&gt;&lt;em&gt;This entry was edited again on 2019-09-04 and updated so that no more project file entries are necessary&lt;/em&gt;.
-I am a proponent of &amp;quot;out-of-band&amp;quot; builds. This simply means that any and all files generated by the build process should not under any circumstances be found next to sources.&lt;/p&gt;
+I am a proponent of “out-of-band” builds. This simply means that any and all files generated by the build process should not under any circumstances be found next to sources.&lt;/p&gt;
 
-&lt;p&gt;The simplest check for this is doing a &lt;code&gt;git status&lt;/code&gt; after building and seeing no untracked files, provided your .gitignore is (almost) empty.&lt;/p&gt;
+&lt;p&gt;The simplest check for this is doing a &lt;code class=&quot;highlighter-rouge&quot;&gt;git status&lt;/code&gt; after building and seeing no untracked files, provided your .gitignore is (almost) empty.&lt;/p&gt;
 
 &lt;p&gt;Correspondingly I find long .gitignore files simply annoying and an indication of sloppy development practices.&lt;/p&gt;
 
 &lt;p&gt;This is a long saga, there are &lt;a href=&quot;/software/2016/02/16/damn-you-vs&quot;&gt;rant entries&lt;/a&gt; in this blog from way back in 2016.&lt;/p&gt;
 
-&lt;p&gt;Visual Studio was my greatest adversary in the quest for clean workspaces...until DotNet core came out.&lt;/p&gt;
+&lt;p&gt;Visual Studio was my greatest adversary in the quest for clean workspaces…until DotNet core came out.&lt;/p&gt;
 
-&lt;p&gt;Previously in the saga we figured out how to get the intermediate &lt;em&gt;compilation&lt;/em&gt; results out of the way by setting &lt;code&gt;&amp;lt;IntermediateOutputPath&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Previously in the saga we figured out how to get the intermediate &lt;em&gt;compilation&lt;/em&gt; results out of the way by setting &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;IntermediateOutputPath&amp;gt;&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;But dotnet does not respect this property. It uses instead &lt;code&gt;&amp;lt;BaseIntermediateOutputPath&amp;gt;&lt;/code&gt;. Things like nuget specs and package assets (properties and tasks for nuget packages etc.) will land in this directory.&lt;/p&gt;
+&lt;p&gt;But dotnet does not respect this property. It uses instead &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;BaseIntermediateOutputPath&amp;gt;&lt;/code&gt;. Things like nuget specs and package assets (properties and tasks for nuget packages etc.) will land in this directory.&lt;/p&gt;
 
-&lt;p&gt;OK, you say, I&amp;#39;ll set that in the project file and be done. And then you spent a couple of hours trying to figure out why the setting is not respected.&lt;/p&gt;
+&lt;p&gt;OK, you say, I’ll set that in the project file and be done. And then you spent a couple of hours trying to figure out why the setting is not respected.&lt;/p&gt;
 
 &lt;p&gt;It all has to do with the way msbuild defines properties and figuring out which property to use and when it is defined.&lt;/p&gt;
 
-&lt;p&gt;See, in the drive to have everything &amp;quot;just work&amp;quot; when you create a dotnet core project in Visual Studio the project element will have a magic &lt;em&gt;Sdk&lt;/em&gt; attribute:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;Project&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;Sdk=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Microsoft.NET.Sdk&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;p&gt;See, in the drive to have everything “just work” when you create a dotnet core project in Visual Studio the project element will have a magic &lt;em&gt;Sdk&lt;/em&gt; attribute:&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;Project&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;Sdk=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Microsoft.NET.Sdk&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;/Project&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;p&gt;This, very slyly, instructs msbuild to import a whole bunch of property and task files. No need for you to know all the dirty details, innit?&lt;/p&gt;
 
 &lt;p&gt;And if you try to override it late, you will get a nice warning&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;nf&quot;&gt;C:\Program&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Files\dotnet\sdk\2.2.300\Microsoft.Common.CurrentVersion.targets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;813&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;warning&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;MSB3539:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nf&quot;&gt;C:\Program&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Files\dotnet\sdk\2.2.300\Microsoft.Common.CurrentVersion.targets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;813&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;warning&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;MSB3539:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;The&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;the&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;property&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;BaseIntermediateOutputPath&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;was&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;modified&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;after&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;it&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;was&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;used&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;by&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;MSBuild&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;which&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;can&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;lead&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unexpected&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;results.&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Tools&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;such&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;as&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;NuGet&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;will&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;outputs&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;the&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;specified&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;by&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;the&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;MSBuildProjectExtensionsPath&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;instead.&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;To&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;property&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;you&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;must&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;do&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;so&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;before&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Microsoft.Common.props&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;is&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;imported&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;example&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;by&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;using&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Directory.Build.props.&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;code&gt;Directory.Build.props&lt;/code&gt; is one of those &amp;quot;magic&amp;quot; files. It is loaded very early and you can set these properties there. It will get picked up if it is there and msbuild will search far and wide for it (it will go up the directory tree and then look in a few places more).&lt;/p&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h2&gt;Not that simple&lt;/h2&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Directory.Build.props&lt;/code&gt; is one of those “magic” files. It is loaded very early and you can set these properties there. It will get picked up if it is there and msbuild will search far and wide for it (it will go up the directory tree and then look in a few places more).&lt;/p&gt;
 
-&lt;p&gt;Timing is everything it seems. There are things you cannot put in &lt;code&gt;Directory.Build.props&lt;/code&gt;. For example, the &lt;em&gt;AssemblyName&lt;/em&gt; property is not set yet when the file is processed, so we cannot really set &lt;em&gt;OutputPath&lt;/em&gt; and &lt;em&gt;IntermediateOutputPath&lt;/em&gt; to safely differentiate compilation artifacts.&lt;/p&gt;
+&lt;h2 id=&quot;not-that-simple&quot;&gt;Not that simple&lt;/h2&gt;
 
-&lt;p&gt;The one thing we learned the hard way: Always add &lt;code&gt;$(Configuration)&lt;/code&gt;somewhere in the path otherwise you will get very wierd results (as in &amp;quot;honey, I linked the wrong binaries&amp;quot;).&lt;/p&gt;
+&lt;p&gt;Timing is everything it seems. There are things you cannot put in &lt;code class=&quot;highlighter-rouge&quot;&gt;Directory.Build.props&lt;/code&gt;. For example, the &lt;em&gt;AssemblyName&lt;/em&gt; property is not set yet when the file is processed, so we cannot really set &lt;em&gt;OutputPath&lt;/em&gt; and &lt;em&gt;IntermediateOutputPath&lt;/em&gt; to safely differentiate compilation artifacts.&lt;/p&gt;
 
-&lt;p&gt;To be able to use property values that are set later, use &lt;code&gt;Directory.Build.targets&lt;/code&gt; which is read after msbuild has loaded its task files.&lt;/p&gt;
+&lt;p&gt;The one thing we learned the hard way: Always add &lt;code class=&quot;highlighter-rouge&quot;&gt;$(Configuration)&lt;/code&gt;somewhere in the path otherwise you will get very wierd results (as in “honey, I linked the wrong binaries”).&lt;/p&gt;
+
+&lt;p&gt;To be able to use property values that are set later, use &lt;code class=&quot;highlighter-rouge&quot;&gt;Directory.Build.targets&lt;/code&gt; which is read after msbuild has loaded its task files.&lt;/p&gt;
 
 &lt;p&gt;So we split the difference&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;Directory.Build.props&lt;/code&gt; is very basic, as follows:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;Project&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;xmlns=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;PropertyGroup&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;BaseOutputPath&amp;gt;&lt;/span&gt;$(MSBuildThisFileDirectory)\..\..\out\build\$(MSBuildProjectName)\&lt;span class=&quot;nt&quot;&gt;&amp;lt;/BaseOutputPath&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;BaseIntermediateOutputPath&amp;gt;&lt;/span&gt;$(BaseOutputPath)\obj&lt;span class=&quot;nt&quot;&gt;&amp;lt;/BaseIntermediateOutputPath&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/PropertyGroup&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/Project&amp;gt;&lt;/span&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Directory.Build.props&lt;/code&gt; is very basic, as follows:&lt;/p&gt;
 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;pre&gt;&lt;code class=&quot;language-`xml&quot;&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&amp;gt;
+&amp;lt;Project xmlns=&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot;&amp;gt;
+  &amp;lt;PropertyGroup&amp;gt;
+    &amp;lt;BaseOutputPath&amp;gt;$(MSBuildThisFileDirectory)\..\..\out\build\$(MSBuildProjectName)\&amp;lt;/BaseOutputPath&amp;gt;
+    &amp;lt;BaseIntermediateOutputPath&amp;gt;$(BaseOutputPath)\obj&amp;lt;/BaseIntermediateOutputPath&amp;gt;
+  &amp;lt;/PropertyGroup&amp;gt;
+&amp;lt;/Project&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Notice the use of &lt;em&gt;MSBuildThisFileDirectory&lt;/em&gt; in the base path, that allows us to define the path relative to the property file.&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;Directory.Build.targets&lt;/code&gt; is where we set project and configuration specific paths:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&amp;gt;&lt;/span&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Directory.Build.targets&lt;/code&gt; is where we set project and configuration specific paths:&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;Project&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;xmlns=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
   &lt;span class=&quot;nt&quot;&gt;&amp;lt;PropertyGroup&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;nt&quot;&gt;&amp;lt;OutputPath&amp;gt;&lt;/span&gt;$(BaseOutputPath)\$(AssemblyName)\bin\$(Configuration)&lt;span class=&quot;nt&quot;&gt;&amp;lt;/OutputPath&amp;gt;&lt;/span&gt;
     &lt;span class=&quot;nt&quot;&gt;&amp;lt;IntermediateOutputPath&amp;gt;&lt;/span&gt;$(BaseIntermediateOutputPath)$(AssemblyName)\obj\$(Configuration)&lt;span class=&quot;nt&quot;&gt;&amp;lt;/IntermediateOutputPath&amp;gt;&lt;/span&gt;
   &lt;span class=&quot;nt&quot;&gt;&amp;lt;/PropertyGroup&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;/Project&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;And we&amp;#39;re done. There is though one catch, especially if you have a lot of .NET framework projects that do not make use of the SDK simplifications.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;You need to remove any &lt;em&gt;OutputPath&lt;/em&gt; definitions in conditional entries (usually the &lt;em&gt;Condition=&amp;quot;&amp;#39;$(Configuration)|$(Platform)&amp;#39;==&amp;#39;Debug|AnyCPU&amp;#39;&amp;quot;&lt;/em&gt; and &lt;em&gt;Condition=&amp;quot;&amp;#39;$(Configuration)|$(Platform)&amp;#39;==&amp;#39;Release|AnyCPU&amp;#39;&amp;quot;&lt;/em&gt; entries.
+&lt;p&gt;And we’re done. There is though one catch, especially if you have a lot of .NET framework projects that do not make use of the SDK simplifications.&lt;/p&gt;
+
+&lt;p&gt;You need to remove any &lt;em&gt;OutputPath&lt;/em&gt; definitions in conditional entries (usually the &lt;em&gt;Condition=”’$(Configuration)|$(Platform)’==’Debug|AnyCPU’”&lt;/em&gt; and &lt;em&gt;Condition=”’$(Configuration)|$(Platform)’==’Release|AnyCPU’”&lt;/em&gt; entries.
 Visual Studio does not expose &lt;em&gt;IntermediateOutputPath&lt;/em&gt; in the GUI so you will not see an entry unless you add it.&lt;/p&gt;
 
 &lt;p&gt;You also need to be aware that when editing properties in Visual Studio the values are changed in the project files, which will overrided any entries in the Directory.Build files.&lt;/p&gt;
 
-&lt;h2&gt;Out of band builds ftw!&lt;/h2&gt;
+&lt;h2 id=&quot;out-of-band-builds-ftw&quot;&gt;Out of band builds ftw!&lt;/h2&gt;
 
-&lt;p&gt;&lt;code&gt;out/&lt;/code&gt; should be the only entry in .gitignore.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;out/&lt;/code&gt; should be the only entry in .gitignore.&lt;/p&gt;
 
-&lt;p&gt;This setup will force msbuild, dotnet and VS to at least compile everything in &lt;code&gt;out/build&lt;/code&gt; and stop littering the workspace.&lt;/p&gt;
+&lt;p&gt;This setup will force msbuild, dotnet and VS to at least compile everything in &lt;code class=&quot;highlighter-rouge&quot;&gt;out/build&lt;/code&gt; and stop littering the workspace.&lt;/p&gt;
 </description>
         <pubDate>Wed, 12 Jun 2019 14:15:21 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2019/06/12/dotnet-core-clean-builds</link>

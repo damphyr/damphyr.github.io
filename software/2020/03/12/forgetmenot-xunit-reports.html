@@ -45,7 +45,7 @@
 <div class="post">
 <p>One of the hackiest formats under wide adoption is the JUnit report format.</p>
 
-<p>It is not really from JUnit, it&#39;s from Ant. It is not really documented anywhere - some people try to figure it out by reading the source (after looking for it first in the JUnit sources - lots of fun following the different StackOverflow threads on this).</p>
+<p>It is not really from JUnit, it’s from Ant. It is not really documented anywhere - some people try to figure it out by reading the source (after looking for it first in the JUnit sources - lots of fun following the different StackOverflow threads on this).</p>
 
 <p>Given that there is no official schema or spec I am not surprised in the totally inconsistent behaviour of any tool claiming to read/write or understand the JUnit report format.</p>
 
@@ -63,14 +63,17 @@
 
 <p>But the way the report is organized did not change. xUnit shows tests grouped in packages.
 It figures out what to use as a package name by using the <em>classname</em> attribute of the <em>testsuite</em> elements</p>
-<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;testsuite</span> <span class="na">name=</span><span class="s">"InterestingTests"</span> <span class="na">tests=</span><span class="s">"5"</span> <span class="na">failures=</span><span class="s">"0"</span> <span class="na">disabled=</span><span class="s">"0"</span> <span class="na">errors=</span><span class="s">"0"</span> <span class="na">time=</span><span class="s">"50.582"</span> <span class="na">timestamp=</span><span class="s">"2020-03-12T17:40:33"</span> <span class="na">classname=</span><span class="s">"Integration"</span><span class="nt">&gt;</span>
-</code></pre></div>
-<p>You would expect that all test cases within that element would be listed under that package. But no. Apparently the reporter parses the classname for <strong>each</strong> testcase and builds &quot;packages&quot; out of that.</p>
 
-<p>So if you have a bunch of let&#39;s say GTest tests and emit an XML report, all of your tests are going in the <em>Root</em> package, since, you know, no <em>Java</em> namespaces and one has to choose a default name (which GTest hard-codes).</p>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;testsuite</span> <span class="na">name=</span><span class="s">"InterestingTests"</span> <span class="na">tests=</span><span class="s">"5"</span> <span class="na">failures=</span><span class="s">"0"</span> <span class="na">disabled=</span><span class="s">"0"</span> <span class="na">errors=</span><span class="s">"0"</span> <span class="na">time=</span><span class="s">"50.582"</span> <span class="na">timestamp=</span><span class="s">"2020-03-12T17:40:33"</span> <span class="na">classname=</span><span class="s">"Integration"</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+
+<p>You would expect that all test cases within that element would be listed under that package. But no. Apparently the reporter parses the classname for <strong>each</strong> testcase and builds “packages” out of that.</p>
+
+<p>So if you have a bunch of let’s say GTest tests and emit an XML report, all of your tests are going in the <em>Root</em> package, since, you know, no <em>Java</em> namespaces and one has to choose a default name (which GTest hard-codes).</p>
 
 <p>What is a build enginneer to do, but post-process that XML report so that his team gets nicely categorized tests. No need for fancy code, brute force it in Ruby:</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1"># Rewrites (in place) an XML report produced by gtest to add a classname to testsuites and</span>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Rewrites (in place) an XML report produced by gtest to add a classname to testsuites and</span>
 <span class="c1"># adapt the classnames to test cases.</span>
 <span class="c1"># so that they sort nicely when presented by the xUnit plugin in Jenkins</span>
 <span class="k">def</span> <span class="nf">classify_test_report</span><span class="p">(</span><span class="n">test_report</span><span class="p">,</span> <span class="n">test_class</span><span class="p">)</span>
@@ -88,8 +91,9 @@ It figures out what to use as a package name by using the <em>classname</em> att
   <span class="n">write_file</span><span class="p">(</span><span class="n">test_report</span><span class="p">,</span> <span class="n">xml</span><span class="p">.</span><span class="nf">serialize</span><span class="p">)</span>
   <span class="k">return</span> <span class="n">test_report</span>
 <span class="k">end</span>
-</code></pre></div>
-<p>That <em>write</em>file_ comes from <a href="https://github.com/damphyr/gaudi">gaudi</a>, but, you know, it writes the file to disk.</p>
+</code></pre></div></div>
+
+<p>That <em>write_file</em> comes from <a href="https://github.com/damphyr/gaudi">gaudi</a>, but, you know, it writes the file to disk.</p>
 
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>

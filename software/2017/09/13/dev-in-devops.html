@@ -47,7 +47,7 @@
 
 <p>Back from the annual Zühlke Camp and some conversations keep bouncing around in my head.</p>
 
-<p>It has been about 5 years now that we started using Chef to drive infrastructure-as-code into our projects. The incentive that led to this is documented in a post back in <a href="/software/2011/02/04/managing-your-development-environment">February &#39;11</a>. Seems I have spent 5 years melting silver to make bullets.</p>
+<p>It has been about 5 years now that we started using Chef to drive infrastructure-as-code into our projects. The incentive that led to this is documented in a post back in <a href="/software/2011/02/04/managing-your-development-environment">February ‘11</a>. Seems I have spent 5 years melting silver to make bullets.</p>
 
 <p>For a company like <a href="http://www.zuehlke.com">Zühlke</a> the use of provisioning tools like Chef might not be apparent from the start: It does not operate a data center, does not do traditional Ops<sup>1</sup> and does not deal with a large scale of server instances per project.</p>
 
@@ -55,35 +55,35 @@
 
 <p>What does that have to do with DevOps?</p>
 
-<h2>You now have two problems</h2>
+<h2 id="you-now-have-two-problems">You now have two problems</h2>
 
 <p>Any software engineering team of significant size (arbitrarily defined as 5+ people) faces two problems:</p>
 
-<h3>Problem Number One: It works for me</h3>
+<h3 id="problem-number-one-it-works-for-me">Problem Number One: It works for me</h3>
 
-<p><img src="/images/spot-the-difference.jpg" alt="spot the difference"> You can&#39;t build the software, but your colleague next to you cannot reproduce the problem. You are reduced to playing &quot;Spot The Difference&quot; to figure out what is wrong.</p>
+<p><img src="/images/spot-the-difference.jpg" alt="spot the difference" /> You can’t build the software, but your colleague next to you cannot reproduce the problem. You are reduced to playing “Spot The Difference” to figure out what is wrong.</p>
 
 <p>Few things are more frustrating than inconsistencies across your development infrastructure. It costs a lot of time and consequently money but it also has a severe psychological impact: <em>You can never be sure<sup>3</sup> if a green build really means there were no errors</em>.</p>
 
-<h3>Problem Number Two: Newbie Blues</h3>
+<h3 id="problem-number-two-newbie-blues">Problem Number Two: Newbie Blues</h3>
 
-<p>You hire me to write code and I spent a week installing software, fiddling with settings and most importantly consume time of your already stressed developers because the installation guide the trainee wrote three years ago in Word is outdated and only the people working know exactly what is going on and how it fits together. </p>
+<p>You hire me to write code and I spent a week installing software, fiddling with settings and most importantly consume time of your already stressed developers because the installation guide the trainee wrote three years ago in Word is outdated and only the people working know exactly what is going on and how it fits together.</p>
 
-<p>Worse yet, there is only one guy who knows all the details and he&#39;s on holiday (true story).</p>
+<p>Worse yet, there is only one guy who knows all the details and he’s on holiday (true story).</p>
 
-<h2>Strategic advantage</h2>
+<h2 id="strategic-advantage">Strategic advantage</h2>
 
 <p>A technology consultant firm like <a href="http://www.zuhelke.com">Zühlke</a> might not operate servers on scale, but it does engineering teams on scale, so the above mentioned problems become hurdles and the solution a strategic advantage in ensuring a high quality, high standards environment in the shortest time possible: The team hits the ground running.</p>
 
-<h2>Automation is codified expertise</h2>
+<h2 id="automation-is-codified-expertise">Automation is codified expertise</h2>
 
-<p>I don&#39;t remember coining the phrase but it has been attributed to me probably because I keep repeating it.</p>
+<p>I don’t remember coining the phrase but it has been attributed to me probably because I keep repeating it.</p>
 
 <p>In a lot of ways automating is scaling your experts: Specific practices and solutions, especially in building and testing software systems can be automated, which means the computer takes over the boring, repetitive work.</p>
 
-<h2>Silver(ish) bullet</h2>
+<h2 id="silverish-bullet">Silver(ish) bullet</h2>
 
-<p>Both problems mentioned above are solved treating infrastructure as code and development environments as infrastructure: </p>
+<p>Both problems mentioned above are solved treating infrastructure as code and development environments as infrastructure:</p>
 
 <p>Consistency reduces discrepancies leading to faster defect localization. Automation accelerates onboarding.</p>
 
@@ -91,11 +91,11 @@
 
 <p>Maintenance and documentation, the bane of every software. We are surprised by how much work is required - <strong>every single time, for every piece of software we use</strong>.</p>
 
-<h2>The irony of doing</h2>
+<h2 id="the-irony-of-doing">The irony of doing</h2>
 
 <p>I complained loudly (at camp) that I spent a lot more time explaining things instead of doing what I used to do: explore bleeding edge technologies and learn new stuff.</p>
 
-<p>A colleague reposted with &quot;you&#39;re getting old mate, we have to get all that knowledge out of your head before you turn senile&quot;. Apart from the old part (sic!) his statement reflects a perfect irony: the more you do, the more you find yourself having to set aside time to explain what you did, <em>ending up doing less</em>.</p>
+<p>A colleague reposted with “you’re getting old mate, we have to get all that knowledge out of your head before you turn senile”. Apart from the old part (sic!) his statement reflects a perfect irony: the more you do, the more you find yourself having to set aside time to explain what you did, <em>ending up doing less</em>.</p>
 
 <p>This post started as a highly technical tour of Chef usage for provisioning development environments. It turns out you get that out of the way in a couple of paragraphs.</p>
 
@@ -106,27 +106,26 @@
 <p>And this leads us back to what I consider DevOps to be all about<sup>4</sup>:</p>
 
 <ul>
-<li>Holistic system thinking</li>
-<li>No silos between disciplines</li>
-<li>Short/fast feedback loops</li>
-<li>High degree of automation</li>
+  <li>Holistic system thinking</li>
+  <li>No silos between disciplines</li>
+  <li>Short/fast feedback loops</li>
+  <li>High degree of automation</li>
 </ul>
 
 <p>Do you know what it actually means? It means we want higly motivated, educated people that have an interest in what they do and want to learn about every aspect of it. And we want these people to work together as a team, complementing each other in their tasks, learning all the way.</p>
 
 <p>Mutual respect, appreciation, reasonable hours, good pay and interesting problems. Software development is mostly about people.</p>
 
-<p>You didn&#39;t expect that, did you?</p>
+<p>You didn’t expect that, did you?</p>
 
-<hr>
-
-<p><sup>1</sup> Not quite true - basically Zühlke does not manage a data center but Ops are part of the portfolio of services offered. </p>
+<hr />
+<p><sup>1</sup> Not quite true - basically Zühlke does not manage a data center but Ops are part of the portfolio of services offered.</p>
 
 <p><sup>2</sup> Marketing will hound me to the end of my days for that sentence. <a href="http://www.zuhelke.com">Zühlke</a> of course does more things. Great teams of great engineers building great software is my favourite though.</p>
 
 <p><sup>3</sup> Well, you can never be absolutely sure, that is a given - we are talking software development after all. But you should be <em>reasonably</em> sure.</p>
 
-<p><sup>4</sup>See what I did there? I used a hyped up marketing term to get you hooked and kept airily going on about abstracty this and thats vaguely within the broad marketing blanket of the term. At least I&#39;m nice enough to give you a definition at the end.</p>
+<p><sup>4</sup>See what I did there? I used a hyped up marketing term to get you hooked and kept airily going on about abstracty this and thats vaguely within the broad marketing blanket of the term. At least I’m nice enough to give you a definition at the end.</p>
 
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>

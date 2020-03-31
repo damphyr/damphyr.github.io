@@ -49,7 +49,7 @@
 
 <p>There are also some version pinning issues with some packages that seem to originate on the way chocolatey provides URLs to updated packages. These lead to failures if the version is pinned and the package gets updated.</p>
 
-<h2>Ruby and chocolatey</h2>
+<h2 id="ruby-and-chocolatey">Ruby and chocolatey</h2>
 
 <p>Since the 2.4 version, the <a href="https://rubyinstaller.org/">RubyInstaller</a> has switched to using the newer msys2 toolchain for C extension compilation which complicated the process of automating installation via the MSI installer.</p>
 
@@ -62,7 +62,7 @@ The git installer bundles a mingw version that will mess up gem installations if
 
 <p>Same goes for the ChefDK path entry, only this time with ruby: ChefDK bundles a ruby distro and gem installations will go array if it is found first in the path.</p>
 
-<h2>Chef and chocolatey</h2>
+<h2 id="chef-and-chocolatey">Chef and chocolatey</h2>
 
 <p>My current infrastructure-as-code solution for turning Windows into a development environment is based on <a href="https://www.chef.io/products/chef-infra/">Chef</a> and the <a href="https://supermarket.chef.io/cookbooks/windev/versions/0.8.4">windev cookbook</a> (full disclosure: windev is maintained by yours truly, so doh!).</p>
 

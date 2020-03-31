@@ -43,19 +43,22 @@
 <p class="meta">19 Sep 2017</p>
 
 <div class="post">
-<p>With the new <a href="/software/2017/09/09/handling-pull-requests/">multibranch PR jobs</a> we&#39;ve noticed that some jobs for closed PRs were kept although we are very strict with cleaning up after the jobs (a legacy of an unwieldy and bloated repo).</p>
+<p>With the new <a href="/software/2017/09/09/handling-pull-requests/">multibranch PR jobs</a> we’ve noticed that some jobs for closed PRs were kept although we are very strict with cleaning up after the jobs (a legacy of an unwieldy and bloated repo).</p>
 
 <p>The multibranch scan log claimed that jobs were still running and therefore the PR jobs could not be deleted. This was indeed the case. Although no process was running and Jenkins had been restarted a couple of times, there was seemingly no way of getting rid of these zombies.</p>
 
-<p>Open the script console (from the &#39;Manage Jenkins&#39; page) and type </p>
-<div class="highlight"><pre><code class="language-" data-lang="">Jenkins.instance.getItemByFullName("JobName").getBuildByNumber(JobNumber)
+<p>Open the script console (from the ‘Manage Jenkins’ page) and type</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Jenkins.instance.getItemByFullName("JobName").getBuildByNumber(JobNumber)
 .finish(hudson.model.Result.ABORTED, new java.io.IOException("Aborting build"));
-</code></pre></div>
+</code></pre></div></div>
+
 <p>replacing JobName with the name of your job and JobNumber with the number of the build job you want to terminate.</p>
 
 <p>And that is how you kill the Jenkins zombies.</p>
 
-<p>I&#39;ve obviously googled that...</p>
+<p>I’ve obviously googled that…</p>
+
 
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>

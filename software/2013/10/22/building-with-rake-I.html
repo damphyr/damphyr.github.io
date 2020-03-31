@@ -43,58 +43,57 @@
 <p class="meta">22 Oct 2013</p>
 
 <div class="post">
-<h2>Introduction</h2>
-
-<p>This is the introduction to a series of articles I&#39;ve been meaning to write for a while now. I&#39;ve been working with Ruby for the last 12 years now and I&#39;ve never done Rails or - the occasional Sinatra app aside - web applications.</p>
+<p>##Introduction
+This is the introduction to a series of articles I’ve been meaning to write for a while now. I’ve been working with Ruby for the last 12 years now and I’ve never done Rails or - the occasional Sinatra app aside - web applications.</p>
 
 <p>So this series will serve as an example of what you can do with Ruby away from Rails and also help me clarify and organise my own knowledge. Code samples will go up on GitHub.</p>
 
-<p>So let&#39;s start by creating a build system from scratch. To simplify the subject but still keep things interesting we will create a build system for a project in C that runs on the RX63N (just because I have one lying around)</p>
+<p>So let’s start by creating a build system from scratch. To simplify the subject but still keep things interesting we will create a build system for a project in C that runs on the RX63N (just because I have one lying around)</p>
 
-<h2>The RX63N</h2>
+<p>##The RX63N</p>
 
-<p><img src="/images/rx63n.jpg" alt="RX63N evaluation board"></p>
+<p><img src="/images/rx63n.jpg" alt="RX63N evaluation board" /></p>
 
-<p>This is a nifty little evaluation board for the <a href="http://www.glyn.de/Produkte/Mikrocontroller/RENESAS/RX63N-SUPPORT-Videos">RX63N 32bit CPU by Renesas</a>(link is in German). The RX63N has ethernet and USB capabilities baked in, as well as a whole host of other &quot;embedded&quot; stuff. For the acronym, soup you can look up SPI, Single-Wire, GPIO, PWM, EXTAL etc. </p>
+<p>This is a nifty little evaluation board for the <a href="http://www.glyn.de/Produkte/Mikrocontroller/RENESAS/RX63N-SUPPORT-Videos">RX63N 32bit CPU by Renesas</a>(link is in German). The RX63N has ethernet and USB capabilities baked in, as well as a whole host of other “embedded” stuff. For the acronym, soup you can look up SPI, Single-Wire, GPIO, PWM, EXTAL etc.</p>
 
-<p>I won&#39;t really go into the guts of this little system because I won&#39;t get to talk about Ruby at all. The idea is to take one of the example applications offered by Renesas and built it without the provided IDE while also talking about structuring C code and moving away from make&#39;s legacy (I can hear the cries: &quot;HERETIC! INFIDEL!&quot;&quot;)</p>
+<p>I won’t really go into the guts of this little system because I won’t get to talk about Ruby at all. The idea is to take one of the example applications offered by Renesas and built it without the provided IDE while also talking about structuring C code and moving away from make’s legacy (I can hear the cries: “HERETIC! INFIDEL!””)</p>
 
 <p>Moving away from make means we need a replacement for it, a DSL for building systems that can equal and surpass the capabilities offered by the most cryptical of build tools. Enter rake</p>
 
-<h2>Rake</h2>
+<p>##Rake</p>
 
-<p>Rake is an equivalent of make written in Ruby and well known to Rubyists. It&#39;s used every day to run tests, perform database migrations etc.  It&#39;s &quot;task management&quot; software, but let&#39;s not confuse it with a TODO list app. At it&#39;s core it&#39;s dependency resolution software.</p>
+<p>Rake is an equivalent of make written in Ruby and well known to Rubyists. It’s used every day to run tests, perform database migrations etc.  It’s “task management” software, but let’s not confuse it with a TODO list app. At it’s core it’s dependency resolution software.</p>
 
-<p>At this point I will skip the introduction to rake and it&#39;s capabilities (which I had written and I removed because it turned into another two articles) and assume you know the basics (read <a href="http://martinfowler.com/articles/rake.html">Martin Fowler&#39;s article</a> from way back in &#39;05 and the <a href="http://rake.rubyforge.org/">documentation</a> to get up to speed)</p>
+<p>At this point I will skip the introduction to rake and it’s capabilities (which I had written and I removed because it turned into another two articles) and assume you know the basics (read <a href="http://martinfowler.com/articles/rake.html">Martin Fowler’s article</a> from way back in ‘05 and the <a href="http://rake.rubyforge.org/">documentation</a> to get up to speed)</p>
 
-<p>Rake&#39;s strong point is that it is a simple DSL on top of Ruby and that apart from the few primitives it defines everything else in your Rakefile (i.e. the equivalent to a Makefile) is Ruby code.</p>
+<p>Rake’s strong point is that it is a simple DSL on top of Ruby and that apart from the few primitives it defines everything else in your Rakefile (i.e. the equivalent to a Makefile) is Ruby code.</p>
 
-<p>I cannot even begin to describe what a difference this makes when trying to build stuff. Instead hopefully I will demostrate it over a long series of articles that are going to incrementally compose part of a complex system. </p>
+<p>I cannot even begin to describe what a difference this makes when trying to build stuff. Instead hopefully I will demostrate it over a long series of articles that are going to incrementally compose part of a complex system.</p>
 
-<p>The original &quot;build system&quot; whose structure and concepts are the basis for these articles is ~8K lines of Ruby. It turns out the term &quot;build system&quot; is not accurate anymore. &quot;Total Development Environment Control&quot; is a much more appropriate term. It has spawned a few articles in it&#39;s day, mainly concerning Ruby performance under Windows and rake trivia.</p>
-
-<ul>
-<li><a href="/software/2011/05/10/ruby-performance-what-a-difference-the-compiler-makes">Ruby Performance: What a difference the compiler makes</a></li>
-<li><a href="/software/2011/05/20/rake-performance-sh-im-working">rake performance: sh...I&#39;m working</a></li>
-<li><a href="/software/2011/06/08/rake-performance-check-the-mirror">rake performance: check the mirror</a></li>
-<li><a href="/software/2011/08/09/script-performance">Script performance</a></li>
-<li><a href="/software/2012/01/13/rake-dynamic-prerequisites">rake dynamic prerequisites</a></li>
-<li><a href="/software/2012/04/24/ruby-performance-improvements-on-windows">Ruby performance improvements on Windows</a></li>
-</ul>
-
-<p>The time has come to extract the core of this system, the part that actually builds C applications and see how it holds up after three &quot;incarnations&quot;.</p>
-
-<p>So in the next few posts, while we run the RX63N through it&#39;s paces, we&#39;ll go through:</p>
+<p>The original “build system” whose structure and concepts are the basis for these articles is ~8K lines of Ruby. It turns out the term “build system” is not accurate anymore. “Total Development Environment Control” is a much more appropriate term. It has spawned a few articles in it’s day, mainly concerning Ruby performance under Windows and rake trivia.</p>
 
 <ul>
-<li>Building C code with rake</li>
-<li>DRY Build Systems in rake and managing the Ruby code base.</li>
-<li>A structure for component-based embedded C systems</li>
-<li>Managing cross-platform compilation and multi-platform C code bases</li>
-<li>Getting free of the IDE while still being able to debug</li>
+  <li><a href="/software/2011/05/10/ruby-performance-what-a-difference-the-compiler-makes">Ruby Performance: What a difference the compiler makes</a></li>
+  <li><a href="/software/2011/05/20/rake-performance-sh-im-working">rake performance: sh…I’m working</a></li>
+  <li><a href="/software/2011/06/08/rake-performance-check-the-mirror">rake performance: check the mirror</a></li>
+  <li><a href="/software/2011/08/09/script-performance">Script performance</a></li>
+  <li><a href="/software/2012/01/13/rake-dynamic-prerequisites">rake dynamic prerequisites</a></li>
+  <li><a href="/software/2012/04/24/ruby-performance-improvements-on-windows">Ruby performance improvements on Windows</a></li>
 </ul>
 
-<p>And to make matters more interesting I&#39;ll do it on Windows but make sure it runs on Linux as well so that we can have as direct a comparison as possible. To that effect, instead of using the Renesas provided (and quite expensive) toolchain I&#39;m going to use the <a href="http://www.kpitgnutools.com/index.php">KPIT GNU toolchain</a></p>
+<p>The time has come to extract the core of this system, the part that actually builds C applications and see how it holds up after three “incarnations”.</p>
+
+<p>So in the next few posts, while we run the RX63N through it’s paces, we’ll go through:</p>
+
+<ul>
+  <li>Building C code with rake</li>
+  <li>DRY Build Systems in rake and managing the Ruby code base.</li>
+  <li>A structure for component-based embedded C systems</li>
+  <li>Managing cross-platform compilation and multi-platform C code bases</li>
+  <li>Getting free of the IDE while still being able to debug</li>
+</ul>
+
+<p>And to make matters more interesting I’ll do it on Windows but make sure it runs on Linux as well so that we can have as direct a comparison as possible. To that effect, instead of using the Renesas provided (and quite expensive) toolchain I’m going to use the <a href="http://www.kpitgnutools.com/index.php">KPIT GNU toolchain</a></p>
 
 <p>Now all I need is a nifty name for the series!</p>
 

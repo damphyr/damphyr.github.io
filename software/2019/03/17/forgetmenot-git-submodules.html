@@ -43,22 +43,26 @@
 <p class="meta">17 Mar 2019</p>
 
 <div class="post">
-<p>I&#39;m more likely to choose a monorepo solution if possible and I generally dislike the submodule feature in git but as always there are valid use cases (e.g. think about building a platform instead of a system).</p>
+<p>I’m more likely to choose a monorepo solution if possible and I generally dislike the submodule feature in git but as always there are valid use cases (e.g. think about building a platform instead of a system).</p>
 
 <p>So I put git submodules to work and immediately started doing the same mistake again and again: typos in the directory name for the module.</p>
 
 <p>Now, just changing the entries in the .gitmodules file is not enough to get the module out of the way, we also need to remove the repository index entries.</p>
 
 <p>To cleanly remove a git submodule you need the following:</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">git submodule deinit module
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git submodule deinit module
 git <span class="nb">rm </span>typoed_module_dir
 git commit <span class="nt">-m</span> <span class="s2">"Removed submodule module"</span>
 <span class="nb">rm</span> <span class="nt">-rf</span> .git/modules/typoed_module_dir
-</code></pre></div>
+</code></pre></div></div>
+
 <p>You then add the submodule back (after you have checked the spelling this time) and obviously explicitly set the branch and the checkout directory so that you can verify everything is typed correctly.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">git submodule add <span class="nt">-b</span> master https://git.host/module.git CorrectlySpelledDir
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git submodule add <span class="nt">-b</span> master https://git.host/module.git CorrectlySpelledDir
 git submodule init
-</code></pre></div>
+</code></pre></div></div>
+
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>
     <span class='st_googleplus_large' displayText='Google +'></span>

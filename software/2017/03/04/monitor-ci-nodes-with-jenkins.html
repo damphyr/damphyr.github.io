@@ -51,18 +51,19 @@
 
 <p>The work never stops and we needed a health monitor for the nodes something quick, so we cobbled something together using the Jenkins Job &amp; Pipeline DSLs.</p>
 
-<h2>What you need</h2>
+<h2 id="what-you-need">What you need</h2>
 
 <p>Jenkins 2.x with the build-monitor-plugin plugin.</p>
 
-<h2>All of the nodes.</h2>
+<h2 id="all-of-the-nodes">All of the nodes.</h2>
 
-<p>We have fixed CI nodes - none of that dynamic mumbo-jumbo with Docker or AWS. The reason is simple: </p>
+<p>We have fixed CI nodes - none of that dynamic mumbo-jumbo with Docker or AWS. The reason is simple:</p>
 
 <p>We need Windows and we build embedded software and test on target.</p>
 
 <p>We just ask Jenkins to tell us how many nodes are registered and then create one job for each node, naming the job after the node:</p>
-<div class="highlight"><pre><code class="language-groovy" data-lang="groovy"><span class="kt">def</span> <span class="n">content</span> <span class="o">=</span> <span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="err">'</span><span class="nl">http:</span><span class="c1">//localhost:8080/computer/api/xml?</span>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">def</span> <span class="n">content</span> <span class="o">=</span> <span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="err">'</span><span class="nl">http:</span><span class="c1">//localhost:8080/computer/api/xml?</span>
 <span class="n">wrapper</span><span class="o">=</span><span class="n">slaves</span><span class="o">&amp;</span><span class="n">xpath</span><span class="o">=</span><span class="c1">//computer/displayName').getText()</span>
 <span class="kt">def</span> <span class="n">build_nodes</span> <span class="o">=</span> <span class="k">new</span> <span class="n">groovy</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">XmlSlurper</span><span class="o">().</span><span class="na">parseText</span><span class="o">(</span><span class="n">content</span><span class="o">)</span>
 
@@ -72,13 +73,15 @@
     <span class="c1">//the job definition - skipped for clarity, see below</span>
   <span class="o">}</span>
 <span class="o">}</span>
-</code></pre></div>
+</code></pre></div></div>
+
 <p>I tried to use the Jenkins API (the hudson.model.* and jenkins.model.*) but quickly gave up because of major Groovy-Java dissonance and totally uninformative messages.</p>
 
-<p>So the code above queries the HTTP API - this would be more complicated if we had authentication turned on, but we don&#39;t ;).</p>
+<p>So the code above queries the HTTP API - this would be more complicated if we had authentication turned on, but we don’t ;).</p>
 
 <p>The job definition is simple: Run every 3 minutes and take the node name as a parameter. It is also totally generic, pulling the pipeline definition off our repo.</p>
-<div class="highlight"><pre><code class="language-groovy" data-lang="groovy"><span class="n">pipelineJob</span><span class="o">(</span><span class="n">nodeName</span><span class="o">)</span>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pipelineJob</span><span class="o">(</span><span class="n">nodeName</span><span class="o">)</span>
 <span class="o">{</span>
   <span class="n">description</span> <span class="err">"</span><span class="n">Monitors</span> <span class="n">$</span><span class="o">{</span><span class="n">nodeName</span><span class="o">}.</span>
   <span class="n">Failure</span> <span class="n">signifies</span> <span class="n">the</span> <span class="n">node</span> <span class="n">is</span> <span class="n">offline</span><span class="o">,</span> <span class="n">abort</span> <span class="n">status</span> <span class="n">that</span> <span class="n">it</span> 
@@ -98,9 +101,11 @@
       <span class="n">script</span><span class="o">(</span><span class="n">readFileFromWorkspace</span><span class="o">(</span><span class="s1">'jenkins/pipelines/monitor.groovy'</span><span class="o">))</span>
     <span class="o">}</span>
   <span class="o">}</span>
-</code></pre></div>
+</code></pre></div></div>
+
 <p>The only reason we instantiated one job for every node is for display purposes, which brings us to the view definition</p>
-<div class="highlight"><pre><code class="language-groovy" data-lang="groovy"><span class="n">buildMonitorView</span><span class="o">(</span><span class="s1">'CI Health'</span><span class="o">)</span> <span class="o">{</span>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">buildMonitorView</span><span class="o">(</span><span class="s1">'CI Health'</span><span class="o">)</span> <span class="o">{</span>
   <span class="n">description</span><span class="o">(</span><span class="s1">'CI infrastructure status'</span><span class="o">)</span>
   <span class="kt">def</span> <span class="n">content</span> <span class="o">=</span> <span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="err">'</span><span class="nl">http:</span><span class="c1">//localhost:8080/computer/api/xml?</span>
   <span class="n">wrapper</span><span class="o">=</span><span class="n">slaves</span><span class="o">&amp;</span><span class="n">xpath</span><span class="o">=</span><span class="c1">//computer/displayName').getText()</span>
@@ -112,12 +117,13 @@
       <span class="n">name</span><span class="o">(</span><span class="n">nodeName</span><span class="o">)</span>
     <span class="o">}</span>
 <span class="o">}</span>
-</code></pre></div>
+</code></pre></div></div>
+
 <p>The code above gives us a nice monitor view:</p>
 
-<p><img src="/images/ci_health.png" alt="CI Health Monitor"></p>
+<p><img src="/images/ci_health.png" alt="CI Health Monitor" /></p>
 
-<h2>The interesting parts</h2>
+<h2 id="the-interesting-parts">The interesting parts</h2>
 
 <p>We ended up doing quite a few things in this job.</p>
 
@@ -126,7 +132,8 @@
 <p>That last stage is the tricky part because it needs to be really, really fast, otherwise we run the risk of blocking executors while the team is working.</p>
 
 <p>The pipeline looks like this:</p>
-<div class="highlight"><pre><code class="language-groovy" data-lang="groovy"><span class="n">env</span><span class="o">.</span><span class="na">STATION</span><span class="o">=</span><span class="n">STATION</span>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">env</span><span class="o">.</span><span class="na">STATION</span><span class="o">=</span><span class="n">STATION</span>
 <span class="nd">@NonCPS</span>
 <span class="kt">def</span> <span class="nf">freeSpaceCheck</span><span class="o">(</span><span class="n">monitorData</span><span class="o">)</span>
 <span class="o">{</span>
@@ -178,8 +185,9 @@
     <span class="o">}</span>
   <span class="o">}</span>
 <span class="o">}</span>
-</code></pre></div>
-<p>We subvert the meaning of the job stati a bit (as documented in the description of the job). This is so that we can adhere to &quot;green means relax, yellow means work is coming your way, red means drop everything else and fix it&quot;.</p>
+</code></pre></div></div>
+
+<p>We subvert the meaning of the job stati a bit (as documented in the description of the job). This is so that we can adhere to “green means relax, yellow means work is coming your way, red means drop everything else and fix it”.</p>
 
 <p>We also use the build display name to hint at the reason for the status.</p>
 

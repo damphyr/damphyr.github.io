@@ -47,24 +47,26 @@
 
 <p>This consequently means that I can measure performance between two known states and I only have to look at the difference between states to figure out what went wrong.</p>
 
-<p>Well, in theory. Microsoft and the Microsoft Updates keep pulling the carpet under your feet. </p>
+<p>Well, in theory. Microsoft and the Microsoft Updates keep pulling the carpet under your feet.</p>
 
-<p>In this case, one of the patch Tuesdays in February introduced KB 2952664 which adds the &quot;Microsoft Compatibility Appraiser&quot; to ostensibly ease transition to Windows 10. Unfortunately that drives up CPU usage and brings computers (and much worse, VMs) to their knees. </p>
+<p>In this case, one of the patch Tuesdays in February introduced KB 2952664 which adds the “Microsoft Compatibility Appraiser” to ostensibly ease transition to Windows 10. Unfortunately that drives up CPU usage and brings computers (and much worse, VMs) to their knees.</p>
 
 <p>The whole process is a collection of tasks running regularly, whether a user is logged on or not and more importantly whether you opt-in for the MS customer experience program or not.</p>
 
-<p>It&#39;s all <a href="http://www.infoworld.com/article/2911609/operating-systems/kb-2952664-compatibility-update-for-win7-triggers-unexpected-daily-telemetry-run-may-be-snooping.html">very fishy</a>.</p>
+<p>It’s all <a href="http://www.infoworld.com/article/2911609/operating-systems/kb-2952664-compatibility-update-for-win7-triggers-unexpected-daily-telemetry-run-may-be-snooping.html">very fishy</a>.</p>
 
 <p>Turns out VMWare has a <a href="https://pubs.vmware.com/view-51/index.jsp?topic=%2Fcom.vmware.view.administration.doc%2FGUID-BE82165B-13BC-4FD9-A9CF-FBEF6343D98A.html">knowledge base article</a> for the tasks that need to be excised.</p>
 
 <p>The following commandlines solve (or at least appear to solve) the problem:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">schtasks /Delete /F /TN "\Microsoft\Windows\Application Experience\AitAgent"
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>schtasks /Delete /F /TN "\Microsoft\Windows\Application Experience\AitAgent"
 schtasks /Delete /F /TN "\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser "
 schtasks /Delete /F /TN "\Microsoft\Windows\Application Experience\ProgramDataUpdater"
 schtasks /Delete /F /TN "\Microsoft\Windows\Customer Experience Improvement Program\Consolidator"
 schtasks /Delete /F /TN "\Microsoft\Windows\Customer Experience Improvement Program\KernelCEIPTask"
 schtasks /Delete /F /TN "\Microsoft\Windows\Customer Experience Improvement Program\Use CEIP"
-</code></pre></div>
+</code></pre></div></div>
+
 <p>These will go into a new <a href="https://github.com/Zuehlke/cookbook-windev">windev</a> recipe for sure.</p>
 
   <p>

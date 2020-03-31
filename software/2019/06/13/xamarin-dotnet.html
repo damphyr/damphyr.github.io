@@ -45,15 +45,17 @@
 <div class="post">
 <p>Now that I can have everything <a href="/software/2019/06/12/dotnet-core-clean-builds">out-of-band</a> I like the dotnet core tooling a bit more.</p>
 
-<p>But it looks like we&#39;re not there for everything yet - funny in a way, since now, even though in this project everything is Microsoft, I still have to integrate differrent toolchains.</p>
+<p>But it looks like we’re not there for everything yet - funny in a way, since now, even though in this project everything is Microsoft, I still have to integrate differrent toolchains.</p>
 
-<p>So, the newest problem on the block: Xamarin Android projects cannot be restored with <code>dotnet restore</code>.</p>
+<p>So, the newest problem on the block: Xamarin Android projects cannot be restored with <code class="highlighter-rouge">dotnet restore</code>.</p>
 
 <p>The <a href="https://github.com/dotnet/project-system/issues/2498">relevant bug entry</a> is at the time of writing still open and <em>not</em> adressed in VS2019.</p>
 
 <p>So, we fall back to msbuild with</p>
-<div class="highlight"><pre><code class="language-cmd" data-lang="cmd">msbuild /t:restore AndroidApp.csproj
-</code></pre></div>
+
+<pre><code class="language-cmd">msbuild /t:restore AndroidApp.csproj
+</code></pre>
+
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>
     <span class='st_googleplus_large' displayText='Google +'></span>

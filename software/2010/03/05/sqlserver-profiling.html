@@ -43,18 +43,18 @@
 <p class="meta">05 Mar 2010</p>
 
 <div class="post">
-<p>I&#39;ve been trying to track down a deadlock problem that has been plaguing our system for quite a while now.
-To this end we&#39;ve run a trace on the production server (on the events to track and how to analyze them read &quot;this&quot;:http://www.simple-talk.com/sql/learn-sql-server/how-to-track-down-deadlocks-using-sql-server-2005-profiler/ ). Unfortunately, I ended up with 386 trace files.
-Loading them in SQLProfiler is a sure path to RSI. Thankfully google is your friend and can find everything in MS&#39;s knowledge base :).
-This &quot;article&quot;:http://support.microsoft.com/kb/270599 describes how to programmatically load trace files into trace tables. It&#39;s for SQLServer 2000, but the relevant SQL still works on SQLServer 2008.</p>
+<p>I’ve been trying to track down a deadlock problem that has been plaguing our system for quite a while now.
+To this end we’ve run a trace on the production server (on the events to track and how to analyze them read “this”:http://www.simple-talk.com/sql/learn-sql-server/how-to-track-down-deadlocks-using-sql-server-2005-profiler/ ). Unfortunately, I ended up with 386 trace files.
+Loading them in SQLProfiler is a sure path to RSI. Thankfully google is your friend and can find everything in MS’s knowledge base :).
+This “article”:http://support.microsoft.com/kb/270599 describes how to programmatically load trace files into trace tables. It’s for SQLServer 2000, but the relevant SQL still works on SQLServer 2008.</p>
 
-<p>In short, I created a new database (Traces) and run the following query:
+<p>In short, I created a new database (Traces) and run the following query:</p>
 <pre>
 USE Traces
 GO
-SELECT * INTO trace<em>table FROM ::fn</em>trace<em>gettable(&#39;c:\trace</em>file.trc&#39;,default)
+SELECT * INTO trace_table FROM ::fn_trace_gettable('c:\trace_file.trc',default)
 </pre>
-This will create the file trace_table and load <em>all</em> the trace files (that&#39;s what the default in the function call does).
+<p>This will create the file trace_table and load <em>all</em> the trace files (that’s what the default in the function call does).
 It took quite a while, but at the end it was a lot better than hitting enter 386 times in SQLProfiler (and that every time I tried to filter events)</p>
 
   <p>

@@ -43,13 +43,13 @@
 <p class="meta">25 Jun 2010</p>
 
 <div class="post">
-<p>I have been looking for a way to capture web pages as images from the command line and/or programmatically. </p>
+<p>I have been looking for a way to capture web pages as images from the command line and/or programmatically.</p>
 
-<p>There doesn&#39;t seem to be the &quot;easy&quot; way so this merits a note to self.</p>
+<p>There doesn’t seem to be the “easy” way so this merits a note to self.</p>
 
-<h3>The command-line-utility-you-can-wrap-in-a-system()-call way</h3>
+<h3 id="the-command-line-utility-you-can-wrap-in-a-system-call-way">The command-line-utility-you-can-wrap-in-a-system()-call way</h3>
 
-<p>There are a few command line utilities, but they are not fully cross-platform: </p>
+<p>There are a few command line utilities, but they are not fully cross-platform:</p>
 
 <p><a href="http://cutycapt.sourceforge.net/">CutyCapt</a> works on Windows and Linux. It uses the WebKit engine.</p>
 
@@ -57,11 +57,11 @@
 
 <p><a href="http://www.paulhammond.org/webkit2png/">webkit2png</a> will fill your OS X needs</p>
 
-<h3>The write-some-code-in-Ruby way</h3>
+<h3 id="the-write-some-code-in-ruby-way">The write-some-code-in-Ruby way</h3>
 
-<p>Get <a href="http://seleniumhq.org/projects/remote-control/">selenium-rc</a>,install the proxy and use the page snapshot functionality. If only you didn&#39;t have to use the damn selenium proxy this would have been perfect.</p>
+<p>Get <a href="http://seleniumhq.org/projects/remote-control/">selenium-rc</a>,install the proxy and use the page snapshot functionality. If only you didn’t have to use the damn selenium proxy this would have been perfect.</p>
 
-<p>There is <a href="http://rubyforge.org/projects/selenium/">Selenium</a> gem which bundles selenium-rc and adds a CLI wrapper to start and stop the proxy server but it hasn&#39;t been updated since July 2008 which makes the bundled selenium-rc version suspect.</p>
+<p>There is <a href="http://rubyforge.org/projects/selenium/">Selenium</a> gem which bundles selenium-rc and adds a CLI wrapper to start and stop the proxy server but it hasn’t been updated since July 2008 which makes the bundled selenium-rc version suspect.</p>
 
 <p>The start/stop functionality is also implemented as blocking calls which a bit of a bother.</p>
 

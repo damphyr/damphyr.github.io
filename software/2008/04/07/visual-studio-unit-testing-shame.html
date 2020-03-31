@@ -43,17 +43,17 @@
 <p class="meta">07 Apr 2008</p>
 
 <div class="post">
-<p>I&#39;m a big fan of unit testing as a bootstrap for running code in complicated systems.</p>
+<p>I’m a big fan of unit testing as a bootstrap for running code in complicated systems.</p>
 
 <p>Having a unit test framework allows you to run code that would otherwise require complicated deployment.</p>
 
-<p>It&#39;s also a good exercise in finding out just how much of the system you&#39;re pulling along - how much configuration you have to do, how many dependencies you need to satisfy.</p>
+<p>It’s also a good exercise in finding out just how much of the system you’re pulling along - how much configuration you have to do, how many dependencies you need to satisfy.</p>
 
 <p>I usually end up using the framework for tests that would not qualify as unit tests: Tests start at the bottom and build up incrementally.</p>
 
 <p>Ideally from unit to system tests you get a pyramid: Lots of very fast unit tests at the base covering a lot of ground. Composite tests higher up test your integration. The higher you go, the more complicated your infrastructure gets, but the number of tests should decrease based on the confidence that the simple <em>fast</em> tests give you.</p>
 
-<p>And speed is where Visual Studio falls down, breaks it&#39;s neck and asks you to pay the bill.</p>
+<p>And speed is where Visual Studio falls down, breaks it’s neck and asks you to pay the bill.</p>
 
 <p>I have a 1 GB RAM VM running Windows XP with Visual Studio 2008. A single unit test, for a single method takes between 11 and 18 seconds to complete.</p>
 

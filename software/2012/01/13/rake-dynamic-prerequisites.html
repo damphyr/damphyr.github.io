@@ -43,23 +43,27 @@
 <p class="meta">13 Jan 2012</p>
 
 <div class="post">
-<p>There&#39;s a behaviour in rake I keep stumbling on. It&#39;s the inability to dynamically add prerequisite tasks on a task from one of it&#39;s prerequisites.</p>
+<p>There’s a behaviour in rake I keep stumbling on. It’s the inability to dynamically add prerequisite tasks on a task from one of it’s prerequisites.</p>
 
-<p>I&#39;ve used this gist a couple of times now: </p>
+<p>I’ve used this gist a couple of times now:</p>
 
-<p><noscript><pre>400: Invalid request</pre></noscript><script src="https://gist.github.com/847273.js?file=rakefile"> </script></p>
+<noscript><pre>400: Invalid request</pre></noscript>
+<script src="https://gist.github.com/847273.js?file=rakefile"> </script>
 
-<p>I&#39;m pretty sure the first time I actually stumbled on this was <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/159167">sometime in 2005</a>.</p>
+<p>I’m pretty sure the first time I actually stumbled on this was <a href="http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/159167">sometime in 2005</a>.</p>
 
-<h3>Why?</h3>
+<h3 id="why">Why?</h3>
+<p>The output from the rakefile above is</p>
+<noscript><pre>400: Invalid request</pre></noscript>
+<script src="https://gist.github.com/847273.js?file=output"> </script>
 
-<p>The output from the rakefile above is 
-<noscript><pre>400: Invalid request</pre></noscript><script src="https://gist.github.com/847273.js?file=output"> </script>
-when, if the dependency tree was built dynamically, &#39;c&#39; should pop up before &#39;a&#39;:
-<noscript><pre>400: Invalid request</pre></noscript><script src="https://gist.github.com/847273.js?file=outut%20as%20it%20should%20be"> </script>
-Why would you need this you will ask?</p>
+<p>when, if the dependency tree was built dynamically, ‘c’ should pop up before ‘a’:</p>
+<noscript><pre>400: Invalid request</pre></noscript>
+<script src="https://gist.github.com/847273.js?file=outut%20as%20it%20should%20be"> </script>
 
-<p>Well, it helps to do things like <code>task :build =&gt; :determine_sources</code> instead of <code>task :build =&gt; determine_sources()</code> and avoid the performance hit of scanning for dependencies before you actually call the task.</p>
+<p>Why would you need this you will ask?</p>
+
+<p>Well, it helps to do things like <code class="highlighter-rouge">task :build =&gt; :determine_sources</code> instead of <code class="highlighter-rouge">task :build =&gt; determine_sources()</code> and avoid the performance hit of scanning for dependencies before you actually call the task.</p>
 
 <p>This improves rake responsiveness which has a positive effect on team moral (no kidding, this is important!)</p>
 
@@ -67,21 +71,19 @@ Why would you need this you will ask?</p>
 
 <p>Case in point: Currently our rakefile builds a C system with a changing number of small applications. Manually adding tasks for every new application costs too much so it is done automatically. Because no dynamic prerequisites are allowed, the method that creates the tasks also needs to scan the source and determine the complete dependency tree for every app task.</p>
 
-<p>This adds unnecessary delays in rake&#39;s startup. As we usually only call one build task we only need to calculate the dependencies for that one task (this is actually done but with a whole bunch of code that essentially controls task creation based on the task called and it is fragile and prevents us from calling multiple tasks in the same command line - basically it&#39;s a hack)</p>
+<p>This adds unnecessary delays in rake’s startup. As we usually only call one build task we only need to calculate the dependencies for that one task (this is actually done but with a whole bunch of code that essentially controls task creation based on the task called and it is fragile and prevents us from calling multiple tasks in the same command line - basically it’s a hack)</p>
 
-<h3>Put your money...</h3>
-
+<h3 id="put-your-money">Put your money…</h3>
 <p>The <a href="https://github.com/damphyr/rake/commit/609ca3b434a7ff6689ca476a9ee5d7d22437042a">patch</a> is actually trivial, a two line change in lib/rake/task.rb in the invoke_prerequisites method<sup>1</sup>.</p>
 
-<h3>Where&#39;s the catch?</h3>
+<h3 id="wheres-the-catch">Where’s the catch?</h3>
 
 <p>Well, this actually only works if a prereq is changing the prerequisite list it is a member of. Anything else is dependent on the sequence the tasks appear in the prerequisites list and has unexpected results.</p>
 
-<p>There&#39;s also the slight delay introduced by iterating over the prerequisites again, but this barely registers compared with the actual task invocation times.</p>
+<p>There’s also the slight delay introduced by iterating over the prerequisites again, but this barely registers compared with the actual task invocation times.</p>
 
-<hr>
-
-<p><sup>1</sup> And yet it took me almost 7 years to fix. Talk about procrastination...</p>
+<hr />
+<p><sup>1</sup> And yet it took me almost 7 years to fix. Talk about procrastination…</p>
 
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>

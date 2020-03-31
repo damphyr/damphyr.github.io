@@ -45,33 +45,37 @@
 <div class="post">
 <p>It took me a disproportionate amount of time and significant reserves of google foo to figure this out, so it merits documentation.</p>
 
-<h2>The Problem</h2>
+<h2 id="the-problem">The Problem</h2>
 
 <p>I use a setup that involves creating all jobs via JobDSL definitions and have several jobs leveraging the PipelineDSL.</p>
 
 <p>It was unclear how to tell the git which repo to poll, which credentials to use etc.</p>
 
-<p>Just a warning: none of the options to the scm trigger in JobDSL work for a pipeline job. </p>
+<p>Just a warning: none of the options to the scm trigger in JobDSL work for a pipeline job.</p>
 
 <p>You just define a plain, dumb scm poll in the frequency you require, for example:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">triggers {
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>triggers {
   scm 'H(3) * * * 1-5'
 }
-</code></pre></div>
-<h2>What works?</h2>
+</code></pre></div></div>
+
+<h2 id="what-works">What works?</h2>
 
 <p>The rest of information is passed to git in the Pipeline definition.</p>
-<div class="highlight"><pre><code class="language-" data-lang="">node(){
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>node(){
   git changelog: true, credentialsId: 'bla-bla-bla', poll: true, url: 'https://url.to.repo', branch: brnch  
 }
-</code></pre></div>
-<p>The critical part here is setting <em>poll</em> to <strong>true</strong>. The job will trigger, enter the pipeline and then setup polling for any future job invocations. I tend to set <em>changelog</em> to <strong>true</strong> as well, because if we&#39;re going to pay the penalty (see further down) we might as well get as much as possible out of it.</p>
+</code></pre></div></div>
 
-<h2>Handicap</h2>
+<p>The critical part here is setting <em>poll</em> to <strong>true</strong>. The job will trigger, enter the pipeline and then setup polling for any future job invocations. I tend to set <em>changelog</em> to <strong>true</strong> as well, because if we’re going to pay the penalty (see further down) we might as well get as much as possible out of it.</p>
+
+<h2 id="handicap">Handicap</h2>
 
 <p>I find this approach problematic, since it requires us to have a workspace (so we need a node() context in the pipeline) and we need to clone the repo.</p>
 
-<p>In my case this is exarcebated by bad repository care practices (lots of binary data commited makes the repo way to large relative to it&#39;s content). Also, I tend to structure pipelines with simple jobs (things like Build Module, Test Module, Package &amp; Publish) that are then strung together as a pipeline and the composite jobs usually do not need a workspace. So this cloning is really pure overhead.</p>
+<p>In my case this is exarcebated by bad repository care practices (lots of binary data commited makes the repo way to large relative to it’s content). Also, I tend to structure pipelines with simple jobs (things like Build Module, Test Module, Package &amp; Publish) that are then strung together as a pipeline and the composite jobs usually do not need a workspace. So this cloning is really pure overhead.</p>
 
 <p>If anyone knows how to get polling working without requiring a full clone, please have a go at the comments.</p>
 

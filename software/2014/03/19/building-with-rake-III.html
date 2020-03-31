@@ -47,7 +47,7 @@
 
 <p>In <a href="/software/2014/03/15/building-with-rake-II">part one</a> we laid the ground work and ended up with a 32bit CentOS 6.5 installation in a virtual machine configured for control via vagrant.</p>
 
-<p>With the groundwork laid it is time for the provisioning part. The main reason for creating a vagrant base box was because I have never before worked with CentOS, or the KPIT toolchain, so naturally I tend to make mistakes. Sometimes I&#39;ll just blunder so bad that the only way to get back to a viable state is to start from the beginning. With the vagrant base box this whole process is as follows:</p>
+<p>With the groundwork laid it is time for the provisioning part. The main reason for creating a vagrant base box was because I have never before worked with CentOS, or the KPIT toolchain, so naturally I tend to make mistakes. Sometimes I’ll just blunder so bad that the only way to get back to a viable state is to start from the beginning. With the vagrant base box this whole process is as follows:</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">vagrant up 
 vagrant ssh
@@ -57,39 +57,38 @@ vagrant ssh
 </span>vagrant halt
 vagrant destroy <span class="c">#rinse</span>
 <span class="c">#repeat</span></code></pre></figure>
- 
 
 <p>Anything that works ends up in the provisioning script</p>
 
-<h2>Provisioning</h2>
+<h2 id="provisioning">Provisioning</h2>
 
-<p><img src="/images/tools.jpg" alt="tools"> Provisioning is the act of installing and configuring software on a computer. </p>
+<p><img src="/images/tools.jpg" alt="tools" /> Provisioning is the act of installing and configuring software on a computer.</p>
 
-<p>Ideally it would be all software, operating system included, so we could plug in a machine and it would start and auto-magically become a fully functional computer without human intervention. And then we would name it SkySomething and it would form a network with it&#39;s siblings which consequently would be SkyNe...omg, I am working towards the destruction of the human race!</p>
+<p>Ideally it would be all software, operating system included, so we could plug in a machine and it would start and auto-magically become a fully functional computer without human intervention. And then we would name it SkySomething and it would form a network with it’s siblings which consequently would be SkyNe…omg, I am working towards the destruction of the human race!</p>
 
-<p>Back to the present, we generally pick a basis configuration for the OS (ergo the base box) and then automate everything else. Full grown provisioning tools like Chef, Puppet and Ansible will allow you to keep large numbers of machines working and also let you use the collective expertise of several thousand IT administrators. I&#39;m just using a shell script and I&#39;m going to embed it in the <a href="https://github.com/damphyr/embedded-C-rake/blob/master/Vagrantfile">Vagrantfile</a>. So there...</p>
+<p>Back to the present, we generally pick a basis configuration for the OS (ergo the base box) and then automate everything else. Full grown provisioning tools like Chef, Puppet and Ansible will allow you to keep large numbers of machines working and also let you use the collective expertise of several thousand IT administrators. I’m just using a shell script and I’m going to embed it in the <a href="https://github.com/damphyr/embedded-C-rake/blob/master/Vagrantfile">Vagrantfile</a>. So there…</p>
 
-<p>To (finally) start building our C code we will need Ruby (you still remember this whole thing is &quot;Building with Rake&quot; I hope) and the <a href="http://www.kpitgnutools.com/latestToolchain.php">KPIT RX toolchain</a> .</p>
+<p>To (finally) start building our C code we will need Ruby (you still remember this whole thing is “Building with Rake” I hope) and the <a href="http://www.kpitgnutools.com/latestToolchain.php">KPIT RX toolchain</a> .</p>
 
-<h2>HowTo</h2>
+<h2 id="howto">HowTo</h2>
 
 <ul>
-<li>Clone the <a href="https://github.com/damphyr/embedded-C-rake/">git repository</a> acompanying this blog post series.</li>
-<li>Download the <a href="http://www.kpitgnutools.com/latestToolchain.php">RPM</a> for the elf-rx tools from KPIT and place it in the setup/ directory</li>
-<li>vagrant up</li>
+  <li>Clone the <a href="https://github.com/damphyr/embedded-C-rake/">git repository</a> acompanying this blog post series.</li>
+  <li>Download the <a href="http://www.kpitgnutools.com/latestToolchain.php">RPM</a> for the elf-rx tools from KPIT and place it in the setup/ directory</li>
+  <li>vagrant up</li>
 </ul>
 
-<p>The repository has <a href="https://github.com/damphyr/embedded-C-rake/tree/master/setup">more detailed instructions</a> with all the ifs and buts for those who don&#39;t want to follow convention. </p>
+<p>The repository has <a href="https://github.com/damphyr/embedded-C-rake/tree/master/setup">more detailed instructions</a> with all the ifs and buts for those who don’t want to follow convention.</p>
 
-<p>Once &#39;vagrant up&#39; is finished, log in the VM with &#39;vagrant ssh&#39; and you&#39;re set to work. </p>
+<p>Once ‘vagrant up’ is finished, log in the VM with ‘vagrant ssh’ and you’re set to work.</p>
 
-<h2>Practical stuff</h2>
+<h2 id="practical-stuff">Practical stuff</h2>
 
 <p>Package managers all across *ix distributions are a mess. Specifically for Ruby the versions available are usually about a month away from end-of-life or at best a couple of years behind the current stable.</p>
 
 <p>Even more specific, yum lists a 1.8.7 version that is long dead and consigned to the history books. So installation from source it is. For the purposes of this experiment this is more than adequate. And to make matters more interesting, lets get the latest and greatest at the time of writing, 2.1.1.</p>
 
-<p>The provisioning &quot;script&quot; is:</p>
+<p>The provisioning “script” is:</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">yum <span class="nt">-y</span> <span class="nb">install </span>zlib zlib-devel
 yum <span class="nt">-y</span> <span class="nb">install </span>openssl-devel
@@ -107,29 +106,29 @@ echo </span>Setting up environment
 <span class="nb">chmod </span>544 /home/vagrant/.bash_profile
 rpm <span class="nt">--install</span> /home/vagrant/host_share/setup/gnurx_v14.01_elf-1-1.i386.rpm</code></pre></figure>
 
-<p>I mean, really, this thing has no error handling, nothing. It&#39;s a shambles masquerading as a script. But hey, it mostly works</p>
+<p>I mean, really, this thing has no error handling, nothing. It’s a shambles masquerading as a script. But hey, it mostly works</p>
 
 <p>This script will evolve as we add gems, things go wrong, versions change etc. That is OK. More than OK, it is desired. This is the single source for our development environment.</p>
 
-<h2>Other tricks</h2>
+<h2 id="other-tricks">Other tricks</h2>
 
-<p>You will notice there is a setup/bash_profile file and in the provisioning script it is used as the .bash_profile for the vagrant user. This is part of a method I use very often when creating development environments under *ix systems. </p>
+<p>You will notice there is a setup/bash_profile file and in the provisioning script it is used as the .bash_profile for the vagrant user. This is part of a method I use very often when creating development environments under *ix systems.</p>
 
-<p>Instead of creating elaborate scripts that add users, services, environment variables etc. recreate the filesystem structure for the system under version control and save only the differences to the base installation. </p>
+<p>Instead of creating elaborate scripts that add users, services, environment variables etc. recreate the filesystem structure for the system under version control and save only the differences to the base installation.</p>
 
-<p>To update the system just copy everything over.  Any scripting can be done in your working environment. </p>
+<p>To update the system just copy everything over.  Any scripting can be done in your working environment.</p>
 
 <p>This is especially useful when your target is a constrained system that lacks most development tools but it has a lot of other advantages as well. To list a few:</p>
 
 <p>Search across all administered systems from the comfort of your workstation, versioned changes and instant reset to a known state with a simple copy action.</p>
 
-<h2>Afterthoughts</h2>
+<h2 id="afterthoughts">Afterthoughts</h2>
 
 <p>For any other project the toolchain RPM and the Ruby tarfile would be in the repository and the provisioning script would start by installing git and then pulling the repository in the VM. This project will live on the bleeding edge :P !</p>
 
-<p>It&#39;s not unusual for embedded projects to have support lifecycles of 5 years or more. Can you remember which CentOS version was state-of-the-art 7 years ago? Can you guarantee that 6.5 will be available in seven years time? The longer a project will be supported for, the more of it&#39;s environment should be in the repository. </p>
+<p>It’s not unusual for embedded projects to have support lifecycles of 5 years or more. Can you remember which CentOS version was state-of-the-art 7 years ago? Can you guarantee that 6.5 will be available in seven years time? The longer a project will be supported for, the more of it’s environment should be in the repository.</p>
 
-<p><img src="/images/the_dream.png" alt="that&#39;s the dream">  The goal is to be able to recreate the development environment at any point in time with just a copy of HEAD at hand.</p>
+<p><img src="/images/the_dream.png" alt="that's the dream" />  The goal is to be able to recreate the development environment at any point in time with just a copy of HEAD at hand.</p>
 
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>

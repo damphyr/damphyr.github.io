@@ -43,37 +43,37 @@
 <p class="meta">13 Nov 2009</p>
 
 <div class="post">
-<p>It was inevitable that <a href="http://github.com/damphyr/rutema">rutema</a> would one day have to use a different database than sqlite3. </p>
+<p>It was inevitable that <a href="http://github.com/damphyr/rutema">rutema</a> would one day have to use a different database than sqlite3.</p>
 
 <p>To do that I needed a testbed therefore I chose mySQL.</p>
 
-<p>This is a &quot;forget-me-not&quot; for the way to a local mySQL installation on Snow Leopard.</p>
+<p>This is a “forget-me-not” for the way to a local mySQL installation on Snow Leopard.</p>
 
 <p>Instead of going with the prepackaged .dmg I chose to install mySQL using MacPorts. This was pretty straightforward and went without a hitch.</p>
 
-<p>The mysql executables end up in /opt/local/bin, and they are all suffixed with a &#39;5&#39;. The actual binaries are all under /opt/local/lib/mysql5/ (no suffix there).</p>
+<p>The mysql executables end up in /opt/local/bin, and they are all suffixed with a ‘5’. The actual binaries are all under /opt/local/lib/mysql5/ (no suffix there).</p>
 
-<p>After compilation succeeds you need to do the following:
- * Create the system tables</p>
+<p>After compilation succeeds you need to do the following:</p>
+<ul>
+  <li>Create the system tables</li>
+</ul>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">sudo</span> /opt/local/bin/mysql_install_db5 <span class="nt">--user</span><span class="o">=</span>_mysql</code></pre></figure>
 
 <ul>
-<li>Start the server </li>
+  <li>Start the server</li>
 </ul>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">sudo</span> /opt/local/bin/mysqld_safe5 <span class="nt">--user</span><span class="o">=</span>_mysql &amp;</code></pre></figure>
-<div class="highlight"><pre><code class="language-" data-lang="">The _mysql user is already present on Mac OS X 10.6
-</code></pre></div>
-<ul>
-<li>Change the root user password</li>
-</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The _mysql user is already present on Mac OS X 10.6  * Change the root user password
+</code></pre></div></div>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">/opt/local/bin/mysqladmin5 <span class="nt">-u</span> root password <span class="s1">'pass'</span></code></pre></figure>
 
-<p>In order to setup privileges, you enter the mysql command shell as root(
+<p>In order to setup privileges, you enter the mysql command shell as root(</p>
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">/opt/local/bin/mysql5 <span class="nt">-u</span> root <span class="nt">-p</span></code></pre></figure>
-) and setup your database and users. The rutema setup looks something like</p>
+<p>) and setup your database and users. The rutema setup looks something like</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">create database rutema<span class="p">;</span></code></pre></figure>
 

@@ -43,29 +43,29 @@
 <p class="meta">20 Jun 2010</p>
 
 <div class="post">
-<p>A friend called me about 10 days ago. &quot;V, I can&#39;t access my external disk, Windows won&#39;t see it. It lights up and all but I can&#39;t find my data&quot;. Now, there&#39;s a couple of reasons something like this might happen and none of them is good. The standard answer is &quot;format the disk&quot; followed closely by &quot;you should have had backups&quot; with the occasional &quot;you got backups? Good&quot;. I&#39;ve gotten pretty unemotional about delivering such news...</p>
+<p>A friend called me about 10 days ago. “V, I can’t access my external disk, Windows won’t see it. It lights up and all but I can’t find my data”. Now, there’s a couple of reasons something like this might happen and none of them is good. The standard answer is “format the disk” followed closely by “you should have had backups” with the occasional “you got backups? Good”. I’ve gotten pretty unemotional about delivering such news…</p>
 
-<p>But in this case I just couldn&#39;t dismiss it without trying. It was a quarter of a terabyte of photos and movies of <em>our</em> kids, family and friends, with no other copy available. The sentimental value alone...</p>
+<p>But in this case I just couldn’t dismiss it without trying. It was a quarter of a terabyte of photos and movies of <em>our</em> kids, family and friends, with no other copy available. The sentimental value alone…</p>
 
-<p>Now, the disk was spinning up and registering as unformated with the proper capacity so the worst case scenario of stuck heads and scratched plates was fortunately not in play. It being a new disk it was also well inside it&#39;s MTBF which left us with software error. A quick check revealed that the NTFS partition table decided to take a vacation to places unknown. Verdict: The data is there, but no-one knows exactly where.</p>
+<p>Now, the disk was spinning up and registering as unformated with the proper capacity so the worst case scenario of stuck heads and scratched plates was fortunately not in play. It being a new disk it was also well inside it’s MTBF which left us with software error. A quick check revealed that the NTFS partition table decided to take a vacation to places unknown. Verdict: The data is there, but no-one knows exactly where.</p>
 
-<p>There&#39;s a whole bunch of recover-your-deleted-files apps for windows out there, some of which I have used from time to time to salvage my own disks. None has proven satisfactory (one reason I have triple backups of my data). It didn&#39;t look like they would work this time, the geometry numbers for the disk where all wrong (I&#39;m not sure but that suggests malaware rather than windows idiocy - somebody correct me).</p>
+<p>There’s a whole bunch of recover-your-deleted-files apps for windows out there, some of which I have used from time to time to salvage my own disks. None has proven satisfactory (one reason I have triple backups of my data). It didn’t look like they would work this time, the geometry numbers for the disk where all wrong (I’m not sure but that suggests malaware rather than windows idiocy - somebody correct me).</p>
 
 <p>Then Google turned up <a href="http://www.cgsecurity.org/wiki/TestDisk">TestDisk</a>. Quoting from the site:</p>
 
-<p>&quot;TestDisk is a <em>powerful</em> free data recovery software! It was primarily designed to help <em>recover lost partitions</em> and/or <em>make non-booting disks bootable again</em> <em>when</em> these symptoms are caused by <em>faulty software</em>, certain types of <em>viruses</em> or human <em>error</em> (such as accidentally deleting a Partition Table). Partition table recovery using TestDisk is really easy.&quot;</p>
+<p>“TestDisk is a <em>powerful</em> free data recovery software! It was primarily designed to help <em>recover lost partitions</em> and/or <em>make non-booting disks bootable again</em> <em>when</em> these symptoms are caused by <em>faulty software</em>, certain types of <em>viruses</em> or human <em>error</em> (such as accidentally deleting a Partition Table). Partition table recovery using TestDisk is really easy.”</p>
 
-<p>Now, TestDisk is cool,super hero open source software. It does what it says on the tin with all the caveats that dealing with the myriad file systems out there entails and it runs on every platform you would need it on. But it didn&#39;t work.</p>
+<p>Now, TestDisk is cool,super hero open source software. It does what it says on the tin with all the caveats that dealing with the myriad file systems out there entails and it runs on every platform you would need it on. But it didn’t work.</p>
 
-<p>Like I said, the geometry data reported by the disk were all skewed and I couldn&#39;t find the data-sheet to type in the proper ones. I didn&#39;t really take the time to be honest &#39;cause TestDisk has a sibling, named PhotoRec.</p>
+<p>Like I said, the geometry data reported by the disk were all skewed and I couldn’t find the data-sheet to type in the proper ones. I didn’t really take the time to be honest ‘cause TestDisk has a sibling, named PhotoRec.</p>
 
-<p>&quot;PhotoRec is file data recovery software designed to recover lost files including video, documents and archives from hard disks, CD-ROMs, and lost pictures (thus the Photo Recovery name) from digital camera memory. PhotoRec ignores the file system and goes after the underlying data, so it will still work even if your media&#39;s file system has been severely damaged or reformatted.&quot; </p>
+<p>“PhotoRec is file data recovery software designed to recover lost files including video, documents and archives from hard disks, CD-ROMs, and lost pictures (thus the Photo Recovery name) from digital camera memory. PhotoRec ignores the file system and goes after the underlying data, so it will still work even if your media’s file system has been severely damaged or reformatted.”</p>
 
-<p>Now, PhotoRec is name<em>your</em>children<em>after</em>the_developer, freaking awesome open source software. Plug the disk in, plug a second one to copy whatever PhotoRec finds, start PhotoRec and go away for a weekend (it <em>is</em> a 1TB disk we&#39;re talking about). When you come back it will have scraped every last byte off the bad disk.</p>
+<p>Now, PhotoRec is name_your_children_after_the_developer, freaking awesome open source software. Plug the disk in, plug a second one to copy whatever PhotoRec finds, start PhotoRec and go away for a weekend (it <em>is</em> a 1TB disk we’re talking about). When you come back it will have scraped every last byte off the bad disk.</p>
 
 <p>Both tools are the work of Christophe Grenier, and I unequivocally, enthusiastically urge you to <a href="http://www.cgsecurity.org/wiki/Donation">donate</a> so that he can keep up the amazing work.</p>
 
-<p>As for my mate? He breathed a deep, deep sigh of relief and went out and bought another disk for backups. I guess he will be more conscientious from now on...</p>
+<p>As for my mate? He breathed a deep, deep sigh of relief and went out and bought another disk for backups. I guess he will be more conscientious from now on…</p>
 
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>

@@ -43,11 +43,11 @@
 <p class="meta">11 Aug 2011</p>
 
 <div class="post">
-<p>I&#39;ve spent a large part of my professional career helping build software for systems that had to adhere to one standard of safety or other. From remote controlled locomotives to <a href="http://www.accu-chek-mobile.de/">blood sugar measuring handhelds</a>.</p>
+<p>I’ve spent a large part of my professional career helping build software for systems that had to adhere to one standard of safety or other. From remote controlled locomotives to <a href="http://www.accu-chek-mobile.de/">blood sugar measuring handhelds</a>.</p>
 
-<p>I&#39;ve even read the <a href="http://en.wikipedia.org/wiki/DO-178B">DO-178B</a>. As a hacker I find these standards stifling and extremely inconvenient. They lag behind modern programming techniques by what amounts to geological ages in computing and set very strict rules on the form and function of your code. They also bind you to paper-heavy processes that are uniquely unqualified in handling any kind of change.</p>
+<p>I’ve even read the <a href="http://en.wikipedia.org/wiki/DO-178B">DO-178B</a>. As a hacker I find these standards stifling and extremely inconvenient. They lag behind modern programming techniques by what amounts to geological ages in computing and set very strict rules on the form and function of your code. They also bind you to paper-heavy processes that are uniquely unqualified in handling any kind of change.</p>
 
-<p>The infamous MISRA C rules have been hounding me for years and I have been present in countless debates about which rule to turn off and which to keep. The pressure to work around these rules is immense and if I am brutally honest there is no software out there that complies 100% with the highest safety standards. I consider the aforementioned DO-178B - in Europe known as ED-12B - as the strictest but I haven&#39;t seen the standards required for nuclear reactors.</p>
+<p>The infamous MISRA C rules have been hounding me for years and I have been present in countless debates about which rule to turn off and which to keep. The pressure to work around these rules is immense and if I am brutally honest there is no software out there that complies 100% with the highest safety standards. I consider the aforementioned DO-178B - in Europe known as ED-12B - as the strictest but I haven’t seen the standards required for nuclear reactors.</p>
 
 <p>I used to rant against all the standards. Hot on top of the wave of dynamic languages, short development cycles and agile practices I wanted to have all the shiny new toys and find cool ways to do stuff. Cool, dynamic, clever.</p>
 
@@ -57,17 +57,17 @@
 
 <p>And one thing I remain adamant about is that being certified for a safety standard does not make your software safe.</p>
 
-<p>But wait, I&#39;m talking about <strong>production</strong> code.You know, the stuff that is flashed onto the silicon, that beeps and blinks, reads sensors and switches relays and stuff. To write that you need a text editor. Then you get your compiler, assembler and linker, string them together and create your application.
+<p>But wait, I’m talking about <strong>production</strong> code.You know, the stuff that is flashed onto the silicon, that beeps and blinks, reads sensors and switches relays and stuff. To write that you need a text editor. Then you get your compiler, assembler and linker, string them together and create your application.
 Put all of these together into a glorified text editor called an IDE and you have the state of a development environment in the embedded world: A whole bunch of word documents and an IDE. While I like to believe that this is by no means as dominant as it was 10 years ago, it is not gone either.</p>
 
-<p>If you leave it at that then you spent most of your time doing reviews and filling Word documents with specifications (requirements/test/delivery/functional/safety/risk - take your pick). Documents that are very likely write-only. Didn&#39;t I say it was boring?</p>
+<p>If you leave it at that then you spent most of your time doing reviews and filling Word documents with specifications (requirements/test/delivery/functional/safety/risk - take your pick). Documents that are very likely write-only. Didn’t I say it was boring?</p>
 
 <p>I hate typing inane prose into a document nobody will ever read. I hate binary blobs I cannot diff to figure out what has changed. I hate syncing my repository and downloading megabytes of bits that only take up space. And above all I hate duplicating effort. I really*2 hate it.</p>
 
-<p>On the other hand when that 60-ton locomotive first rolled down the tracks guided by a few bytes transmitted over the air I was glad for the mountain of protocol specifications and test plans and test protocols and checklists that &quot;proved&quot; everything was proper. 
+<p>On the other hand when that 60-ton locomotive first rolled down the tracks guided by a few bytes transmitted over the air I was glad for the mountain of protocol specifications and test plans and test protocols and checklists that “proved” everything was proper. 
 I was confident. After all I had every requirement covered, I had simulated everything in the protocol specification and thrown in some extra tests for good measure.</p>
 
-<p>That the train drivers escorting me in the locomotive threatened to tie me on the front of the engine while we conducted braking tests made me sweat a little bit. They laughed. The system crashed 6 times in the first hour that first day. The one thing that worked was the transition to the safe state which for the locomotive meant &quot;lock the brakes and stay put&quot;. So, I was right to sweat but I would have survived being tied to the front of the engine.</p>
+<p>That the train drivers escorting me in the locomotive threatened to tie me on the front of the engine while we conducted braking tests made me sweat a little bit. They laughed. The system crashed 6 times in the first hour that first day. The one thing that worked was the transition to the safe state which for the locomotive meant “lock the brakes and stay put”. So, I was right to sweat but I would have survived being tied to the front of the engine.</p>
 
 <p>By the end of that day I was ranting and raving at the absolute waste of effort required to maintain all that paperwork. So much time when I could have thought of cruel and unusual punishments for my code. So much time I could have spent devising and running tests.</p>
 
@@ -78,11 +78,11 @@ I was confident. After all I had every requirement covered, I had simulated ever
 <p>And I went back and took a long hard look at that glorified text editor ecosystem. What can we do to reduce the boring, repetitive, duplicate work?
 Model driven development, unit testing, continuous integration, executable requirements, simulators, automated regression testing, code coverage, static code analysis, performance and stress testing, document generation. All of it is supposed to give us more time to do the <em>actual</em> work.</p>
 
-<p>Generating documentation was actually the first goal: How out of all the living, changing, actively developed code parts could we get the static, dead, unchanging documentation. So I looked into it, and a door opened into a whole world, a world without restrictions<sup>1</sup>. </p>
+<p>Generating documentation was actually the first goal: How out of all the living, changing, actively developed code parts could we get the static, dead, unchanging documentation. So I looked into it, and a door opened into a whole world, a world without restrictions<sup>1</sup>.</p>
 
-<p>I mentioned in <a href="/software/2011/02/04/managing-your-development-environment/">&quot;Managing your development environment?&quot;</a> that the modern software development environment is as intricate and intelligent as the production software it produces. </p>
+<p>I mentioned in <a href="/software/2011/02/04/managing-your-development-environment/">“Managing your development environment?”</a> that the modern software development environment is as intricate and intelligent as the production software it produces.</p>
 
-<p>In an embedded software system that follows safety guidelines the &quot;backstage&quot; is where the interesting stuff is. </p>
+<p>In an embedded software system that follows safety guidelines the “backstage” is where the interesting stuff is.</p>
 
 <p>You want your build to run faster? You have to apply the same monitoring/profiling concepts and methods you read about web applications.</p>
 
@@ -90,9 +90,8 @@ Model driven development, unit testing, continuous integration, executable requi
 
 <p>Best of all, you get to work with current technologies which is the whole point.</p>
 
-<hr>
-
-<p><sup>1</sup> The oxymoron of using error-prone software to prove that software is error-free has not escaped the people that write safety standards. You do have to validate your infrastructure code but the restrictions are not as bad and usually you have to do the same things you would do for a &quot;regular&quot; high availability service.</p>
+<hr />
+<p><sup>1</sup> The oxymoron of using error-prone software to prove that software is error-free has not escaped the people that write safety standards. You do have to validate your infrastructure code but the restrictions are not as bad and usually you have to do the same things you would do for a “regular” high availability service.</p>
 
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>

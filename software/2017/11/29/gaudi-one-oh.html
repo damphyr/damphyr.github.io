@@ -45,43 +45,43 @@
 <div class="post">
 <p>Four years ago, almost to the day (the first commit was on the 15th November 2013) I took the work of about a year and a half, spent a week cleaning it up and rewriting and then put it up on GitHub.</p>
 
-<p>gaudi started as a build system for a very specific and opinionated way of building C: The code organized in small self-contained &quot;units&quot; we so conveniently/confusingly named components, all options concentrated in one place, everything text based and one very consistent user interface thanks to rake.</p>
+<p>gaudi started as a build system for a very specific and opinionated way of building C: The code organized in small self-contained “units” we so conveniently/confusingly named components, all options concentrated in one place, everything text based and one very consistent user interface thanks to rake.</p>
 
 <p>The intentions from the beginning were the clear mapping of an architecture (N layers and componetized) on the source directory structure, the single source of truth for configuration options, and the simplicity of rake in creating a consistent usage model. Boy did it prove powerful.</p>
 
-<p>I spent the next couple of years building all-encompassing systems around systems on that simple basis. Consistent, repeatable, all knowing, all measuring build/test/deploy/release juggernauts across toolchains and platforms<sup>1/<sup>.</p>
+<p>I spent the next couple of years building all-encompassing systems around systems on that simple basis. Consistent, repeatable, all knowing, all measuring build/test/deploy/release juggernauts across toolchains and platforms<sup>1/<sup>.</sup></sup></p>
 
 <p>And then there were no more C/C++ projects. But there was a project with Java and some wierd XML compiler stuff and half a dozen other tools and also massive amounts of data shunted through Jenkins via shell scripts and everything had to go to the cloud.</p>
 
 <p>And then another project with .NET, but also angular and grunt and gradle and msbuild and at first impression every other technology under the sun mixed in a cement mixer after being pounded by Mjölnir.</p>
 
-<p>And then that client that was adamant that Ruby could not be used, and it had to be Python<sup>2</sup>. </p>
+<p>And then that client that was adamant that Ruby could not be used, and it had to be Python<sup>2</sup>.</p>
 
 <p>The same concepts, wildly different technologies, every case bordering on total chaos. It served as a focusing lens. And so we come to gaudi 1.0.0.</p>
 
-<p>I am insanely proud of this gaudi release: It&#39;s the first time in my career I ship something <strong>by removing 70% of the features and code and repackaging</strong>. It is my love of deleting code made manifest :)</p>
+<p>I am insanely proud of this gaudi release: It’s the first time in my career I ship something <strong>by removing 70% of the features and code and repackaging</strong>. It is my love of deleting code made manifest :)</p>
 
-<p>The code itself is not important. Copy it, port it, throw it away. I dare you to find a language/tool combo that is better suited to this task than Ruby/rake - I&#39;ve tried them all: graddle, grunt, gulp, ant, cmake, make, nmake, dmake, maven, scons. The list is long. Only Elixir/mix comes close.</p>
+<p>The code itself is not important. Copy it, port it, throw it away. I dare you to find a language/tool combo that is better suited to this task than Ruby/rake - I’ve tried them all: graddle, grunt, gulp, ant, cmake, make, nmake, dmake, maven, scons. The list is long. Only Elixir/mix comes close.</p>
 
-<p>I&#39;m old, and I like Ruby and this code has worked for over 5 years across all 1.9 and 2.x versions of Ruby. Still not the important part.</p>
+<p>I’m old, and I like Ruby and this code has worked for over 5 years across all 1.9 and 2.x versions of Ruby. Still not the important part.</p>
 
-<p>The important part was <a href="https://github.com/damphyr/gaudi/blob/master/doc/BUILDSYSTEMS.md">the distinction between build system and build management system</a>, also discussed previously in <a href="/software/2014/07/17/vars-build-rules">VAR&#39;s build rules</a></p>
+<p>The important part was <a href="https://github.com/damphyr/gaudi/blob/master/doc/BUILDSYSTEMS.md">the distinction between build system and build management system</a>, also discussed previously in <a href="/software/2014/07/17/vars-build-rules">VAR’s build rules</a></p>
 
 <p>And the other one is the <a href="https://github.com/damphyr/gaudi/blob/master/doc/ASPIRATIONS.md">list of aspirations</a>. Theory in bullet points if you will, but oh so important if you ever want to get a team on board.</p>
 
-<p>There are more things that belong to this list, I just haven&#39;t finished the distillation process. The core will not get any additional features apart from some self-documenting tasks. </p>
+<p>There are more things that belong to this list, I just haven’t finished the distillation process. The core will not get any additional features apart from some self-documenting tasks.</p>
 
 <p>What I think is possible is taking the idea behind gaudi-c (code substrate for an opinionated methodology) and applying it to the areas of responsibility of a build system with an eye toward building <em>systems</em> as opposed to <em>technologies</em>.</p>
 
-<p><img src="/images/BuildSystem.png" alt="Areas of Responsibility"></p>
+<p><img src="/images/BuildSystem.png" alt="Areas of Responsibility" /></p>
 
-<p>A &quot;blue&quot; module is almost too easy considering <a href="https://github.com/damphyr/rutema">rutema</a> is based on a similar set of principles with a narrower application domain.</p>
+<p>A “blue” module is almost too easy considering <a href="https://github.com/damphyr/rutema">rutema</a> is based on a similar set of principles with a narrower application domain.</p>
 
 <p>But in the end it is all glorified batch processing of command lines placed at various points of an acyclical dependency graph. So much fun!</p>
 
-<hr>
+<hr />
 
-<p><sup>1</sup> I had already worked myself up to the corner of &quot;the automation guy&quot; but this was the all-in. I can code in a dozen programming languages, have written bootloaders in C, web services in Java, .NET and Ruby, daemons for Linux, a persistency layer in Java, remote control software for locomotives but I am now &quot;the build system&quot; guy. Worse, I am the &quot;devops guy&quot;. But that is a rant for another time.</p>
+<p><sup>1</sup> I had already worked myself up to the corner of “the automation guy” but this was the all-in. I can code in a dozen programming languages, have written bootloaders in C, web services in Java, .NET and Ruby, daemons for Linux, a persistency layer in Java, remote control software for locomotives but I am now “the build system” guy. Worse, I am the “devops guy”. But that is a rant for another time.</p>
 
 <p><sup>2</sup>That hurt, not because of Ruby vs. Python, but because of rake vs. absolutely-nothing-approaching-usable.</p>
 

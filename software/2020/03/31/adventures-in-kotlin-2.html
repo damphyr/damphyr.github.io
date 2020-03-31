@@ -48,7 +48,8 @@
 <p>Kotlin is cool. I am a fool.</p>
 
 <p>These two sentences are both true. The best aggro moment of the last three days was when I spent over two hours trying to figure out why the following script failed:</p>
-<div class="highlight"><pre><code class="language-kotlin" data-lang="kotlin"><span class="k">import</span> <span class="nn">jetbrains.buildServer.configs.kotlin.v2019_2.*</span>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">jetbrains.buildServer.configs.kotlin.v2019_2.*</span>
 
 <span class="n">version</span> <span class="p">=</span> <span class="s">"2019.2"</span>
 
@@ -72,12 +73,15 @@
     <span class="p">}</span>
   <span class="p">}</span>
 <span class="p">})</span>
-</code></pre></div>
+</code></pre></div></div>
+
 <p>I even went as far a posting an issue on the TeamCity support site. And then I went to bed, slept through the night, looked at the code again this morning and remembered I am writing code in a JVM language.</p>
 
 <p>So I added</p>
-<div class="highlight"><pre><code class="language-kotlin" data-lang="kotlin"><span class="k">import</span> <span class="nn">jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script</span>
-</code></pre></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script</span>
+</code></pre></div></div>
+
 <p>at the top.</p>
 
 <p>Remember, I am a professional and I have been doing this for 25 years.</p>
@@ -85,10 +89,9 @@
 <p>It helps that your TeamCity instance hosts the DSL reference at <em>app/dsl-documentation/index.html</em>.
 It also helps to read said reference.</p>
 
-<p>But mostly, it helps when you just go to bed and try again when you&#39;re fresh.</p>
+<p>But mostly, it helps when you just go to bed and try again when you’re fresh.</p>
 
-<hr>
-
+<hr />
 <p>The response to my brain-dead-due-to-lack-of-sleep support request came as I was writing this. Response time less than 16 hours. I am liking this.</p>
 
   <p>

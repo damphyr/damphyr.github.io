@@ -43,7 +43,7 @@
 <p class="meta">19 Oct 2013</p>
 
 <div class="post">
-<p>The yak shaving expedition continues...</p>
+<p>The yak shaving expedition continues…</p>
 
 <p><a href="/software/2013/10/18/qnx-vagrant">Previously</a> I set out to create a base box for QNX and naively expected to do a <em>vagrant up</em> and have everything work. HA!</p>
 
@@ -51,13 +51,13 @@
 
 <p>So I entered the magical world of vagrant <a href="http://docs.vagrantup.com/v2/plugins/development-basics.html">plugins</a> and specifically <a href="http://docs.vagrantup.com/v2/plugins/guests.html">guest</a> and <a href="http://docs.vagrantup.com/v2/plugins/guest-capabilities.html">guest capability</a> plugins</p>
 
-<p>Let me start by saying that the vagrant API is beautifuly done. Simple, flexible and cleanly coded. The only downside, which is a result of this flexibility, is that you won&#39;t ever get an exhaustive reference. You have to dive into the code!</p>
+<p>Let me start by saying that the vagrant API is beautifuly done. Simple, flexible and cleanly coded. The only downside, which is a result of this flexibility, is that you won’t ever get an exhaustive reference. You have to dive into the code!</p>
 
 <p>Now, to build a guest plugin there are four things that need to be defined:</p>
 
-<h2>Guest</h2>
+<h2 id="guest">Guest</h2>
 
-<p>The guest plugin needs it&#39;s name and one method, detect? and looks like this</p>
+<p>The guest plugin needs it’s name and one method, detect? and looks like this</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s2">"vagrant"</span>
 
@@ -71,30 +71,30 @@
   <span class="k">end</span>
 <span class="k">end</span></code></pre></figure>
 
-<p>We did say that QNX is BSD-like, didn&#39;t we?</p>
+<p>We did say that QNX is BSD-like, didn’t we?</p>
 
-<h2>Guest capabilities</h2>
+<p>##Guest capabilities</p>
 
 <p>With a bit of trial and error I figured out the minimum amount of capabilities that a guest plugin must have to survive booting and shutting down.</p>
 
-<p>These are </p>
+<p>These are</p>
 
 <ul>
-<li><a href="https://github.com/damphyr/vagrant-qnx/blob/master/vagrant-guest-qnx/lib/qnx/vagrant/cap/configure_networks.rb">configure_networks</a></li>
-<li><a href="https://github.com/damphyr/vagrant-qnx/blob/master/vagrant-guest-qnx/lib/qnx/vagrant/cap/halt.rb">halt</a> </li>
+  <li><a href="https://github.com/damphyr/vagrant-qnx/blob/master/vagrant-guest-qnx/lib/qnx/vagrant/cap/configure_networks.rb">configure_networks</a></li>
+  <li><a href="https://github.com/damphyr/vagrant-qnx/blob/master/vagrant-guest-qnx/lib/qnx/vagrant/cap/halt.rb">halt</a></li>
 </ul>
 
 <p>I added <a href="https://github.com/damphyr/vagrant-qnx/blob/master/vagrant-guest-qnx/lib/qnx/vagrant/cap/change_hostname.rb">change_hostname</a> just because it was easy.</p>
 
-<p>Instead of listing here the implementation code and make this post miles long with copy-paste-able information why don&#39;t you head on to <a href="http://https://github.com/damphyr/vagrant-qnx/tree/master/vagrant-guest-qnx">github</a> and browse at leisure?</p>
+<p>Instead of listing here the implementation code and make this post miles long with copy-paste-able information why don’t you head on to <a href="http://https://github.com/damphyr/vagrant-qnx/tree/master/vagrant-guest-qnx">github</a> and browse at leisure?</p>
 
-<h2>What took you so long?</h2>
+<h2 id="what-took-you-so-long">What took you so long?</h2>
 
 <p>So a few things that I had to get right for this plugin to work.</p>
 
-<h3>Gem structure</h3>
+<h3 id="gem-structure">Gem structure</h3>
 
-<p>I&#39;m not really sure, but a file named exactly like your plugin (in this case vagrant-guest-qnx.rb) at the top of your gem&#39;s structure seems to be what vagrant expects. Didn&#39;t actually see it documented anywhere but I browsed several 3rd party plugins and copied the structure from vagrant-berkshelf.</p>
+<p>I’m not really sure, but a file named exactly like your plugin (in this case vagrant-guest-qnx.rb) at the top of your gem’s structure seems to be what vagrant expects. Didn’t actually see it documented anywhere but I browsed several 3rd party plugins and copied the structure from vagrant-berkshelf.</p>
 
 <p>I lifted the handy loader guard there as well:</p>
 
@@ -104,29 +104,27 @@
  <span class="k">raise</span> <span class="s1">'The Vagrant Guest QNX plugin must be run within vagrant'</span>
 <span class="k">end</span></code></pre></figure>
 
-<p>So this code won&#39;t give you ugly stacktraces by chance.</p>
+<p>So this code won’t give you ugly stacktraces by chance.</p>
 
-<h3>The shell</h3>
+<h3 id="the-shell">The shell</h3>
 
-<p>This actually cost quite a bit of time. Vagrant generally has awesome logging, very detailed, but in this case it kept exiting with &quot;no error message&quot; so I had to dig in and use the magical powers of sprinkled puts. Turns out all machine.communicate.execute calls were returning exit status 126.</p>
+<p>This actually cost quite a bit of time. Vagrant generally has awesome logging, very detailed, but in this case it kept exiting with “no error message” so I had to dig in and use the magical powers of sprinkled puts. Turns out all machine.communicate.execute calls were returning exit status 126.</p>
 
-<p>Now for all you youngsters out there, 126 and 127 are usually shell code for &quot;bloody hell, I can&#39;t find what you want me to run&quot;. And as it turns out, when communicating over ssh vagrant defaults to running everything with bash.</p>
+<p>Now for all you youngsters out there, 126 and 127 are usually shell code for “bloody hell, I can’t find what you want me to run”. And as it turns out, when communicating over ssh vagrant defaults to running everything with bash.</p>
 
-<p>Unfortunately bash is not available on stock QNX which uses ksh and links it to /bin/sh. So we need </p>
+<p>Unfortunately bash is not available on stock QNX which uses ksh and links it to /bin/sh. So we need</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">config</span><span class="p">.</span><span class="nf">ssh</span><span class="p">.</span><span class="nf">shell</span> <span class="o">=</span> <span class="s2">"sh"</span></code></pre></figure>
 
 <p>in the Vagrantfile.</p>
-
-<h3>Shared folders</h3>
-
-<p>There are no VMWare Tools or Guest Additions for QNX. I don&#39;t expect there will ever be. Yet Vagrant tries to establish a share between host and the VM and (in by now typical fashion) ends up hanging forever. So one more addition to the Vagrantfile is needed</p>
+<h3 id="shared-folders">Shared folders</h3>
+<p>There are no VMWare Tools or Guest Additions for QNX. I don’t expect there will ever be. Yet Vagrant tries to establish a share between host and the VM and (in by now typical fashion) ends up hanging forever. So one more addition to the Vagrantfile is needed</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">config</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">synced_folder</span> <span class="s2">"."</span><span class="p">,</span> <span class="s2">"/vagrant"</span><span class="p">,</span> <span class="ss">:disabled</span> <span class="o">=&gt;</span> <span class="kp">true</span></code></pre></figure>
 
-<p>And that&#39;s it!</p>
+<p>And that’s it!</p>
 
-<h2>Tadaaa!</h2>
+<p>##Tadaaa!</p>
 
 <p>This is the bare minimum Vagrantfile needed to operate the base box you created by faithfully following <a href="software/2013/10/18/qnx-vagrant">my instructions</a></p>
 
@@ -140,7 +138,7 @@
   <span class="n">config</span><span class="p">.</span><span class="nf">vm</span><span class="p">.</span><span class="nf">synced_folder</span> <span class="s2">"."</span><span class="p">,</span> <span class="s2">"/vagrant"</span><span class="p">,</span> <span class="ss">:disabled</span> <span class="o">=&gt;</span> <span class="kp">true</span>
 <span class="k">end</span></code></pre></figure>
 
-<p>You will need to install the vagrant-guest-qnx plugin (yes, it&#39;s up on rubygems)</p>
+<p>You will need to install the vagrant-guest-qnx plugin (yes, it’s up on rubygems)</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">vagrant plugin <span class="nb">install </span>vagrant-guest-qnx</code></pre></figure>
 

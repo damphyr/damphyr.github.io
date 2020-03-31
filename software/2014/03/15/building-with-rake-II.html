@@ -47,53 +47,53 @@
 
 <p>And while the series is about building C systems with Rake there is a lot of preparation work to be done before we can actually run the first file through the compiler.</p>
 
-<h2>Setting up the environment</h2>
+<p>##Setting up the environment</p>
 
 <p>Actually setting up the environment, installing the editor, the IDE, the compiler toolchain and making sure they are accessible from the terminal or the IDE etc. is a task most developers do not consciously consider. As a consequence we tend to underestimate the amount of work required to do it right and the actual cost of getting it wrong.</p>
 
-<p>Oh, and this is dangerous ground. Editor wars, OS wars, the death-through-infrastructure syndrome and a zillion other reasons why it&#39;s not going to work.</p>
+<p>Oh, and this is dangerous ground. Editor wars, OS wars, the death-through-infrastructure syndrome and a zillion other reasons why it’s not going to work.</p>
 
-<p>This is a very important step in every project, I can&#39;t stress this enough. Consistency in the development environment is the single most important point when working with embedded software. Consider that apart from the usual software errors you have to deal with new, untested or flaky hardware. Just check the picture of a  &quot;smoke tested&quot; board, cuplrit of a failed long running test. </p>
+<p>This is a very important step in every project, I can’t stress this enough. Consistency in the development environment is the single most important point when working with embedded software. Consider that apart from the usual software errors you have to deal with new, untested or flaky hardware. Just check the picture of a  “smoke tested” board, cuplrit of a failed long running test.</p>
 
-<p><img src="/images/smoke_test.png" alt="smoke test"> </p>
+<p><img src="/images/smoke_test.png" alt="smoke test" /></p>
 
-<p>And new electronics are ALWAYS a potential source of errors. Come to think of it, you can take &#39;potential&#39; out of that sentence and it would still be true.</p>
+<p>And new electronics are ALWAYS a potential source of errors. Come to think of it, you can take ‘potential’ out of that sentence and it would still be true.</p>
 
 <p>The difficulty of locating the cause for a bug increases exponentially with every source of errors. So we need as few error sources as possible. As a first step we establish a consistent development environment so that we can exclude differences between workstations as a culprit.</p>
 
-<p>As a bonus, no developer can use &#39;it works for me&#39; as a cop out when something breaks.</p>
+<p>As a bonus, no developer can use ‘it works for me’ as a cop out when something breaks.</p>
 
-<p>Take care not to misunderstand &#39;consistent&#39; for &#39;limited&#39;. With provisioning tools like Chef, Puppet or Ansible there is very little reason why you can&#39;t satisfy every developer&#39;s wishes when it comes to editor, IDE or any other productivity tool.</p>
+<p>Take care not to misunderstand ‘consistent’ for ‘limited’. With provisioning tools like Chef, Puppet or Ansible there is very little reason why you can’t satisfy every developer’s wishes when it comes to editor, IDE or any other productivity tool.</p>
 
 <p>And yes, all of this is also true on Windows. Painful, but true.</p>
 
-<h2>Practical matters</h2>
+<h2 id="practical-matters">Practical matters</h2>
 
-<p>What we&#39;re going to need is <a href="https://www.virtualbox.org/">VirtualBox</a>, <a href="http://www.vagrantup.com/">vagrant</a>, a CentOS basebox and optionally a git repository containing a bunch of <a href="http://www.opscode.com/chef/">Chef</a> recipes.</p>
+<p>What we’re going to need is <a href="https://www.virtualbox.org/">VirtualBox</a>, <a href="http://www.vagrantup.com/">vagrant</a>, a CentOS basebox and optionally a git repository containing a bunch of <a href="http://www.opscode.com/chef/">Chef</a> recipes.</p>
 
 <p>With these ingredients in the end we will cook up a VM that will be our development environment with the RX63N board.</p>
 
 <p>The CentOS choice is dictated by the fact that the <a href="http://www.kpitgnutools.com/latestToolchain.php">KPIT toolchain</a> comes packaged in RPM format. It also has to be the 32bit version, since KPIT does not come compiled for a x64 Linux flavour.</p>
 
-<p>The base box proved to be problematic as <a href="http://www.vagrantbox.es/">http://www.vagrantbox.es/</a> lists only one recent CentOS box as 32bit but the base box is actually 64bit. Well, creating base boxes is easy. There&#39;s <a href="https://github.com/okfn/ckan/wiki/How-to-Create-a-CentOS-Vagrant-Base-Box">blog posts</a> about it.</p>
+<p>The base box proved to be problematic as <a href="http://www.vagrantbox.es/">http://www.vagrantbox.es/</a> lists only one recent CentOS box as 32bit but the base box is actually 64bit. Well, creating base boxes is easy. There’s <a href="https://github.com/okfn/ckan/wiki/How-to-Create-a-CentOS-Vagrant-Base-Box">blog posts</a> about it.</p>
 
-<p>Originally I wrote &quot;there&#39;s more interesting things to talk about&quot;. But it seems that once more the combination of versions needed for the task requires some digging and further work. So, following the instructions on the provided link I proceeded to create a 32 bit CentOS 6.5 base box for vagrant. The set of instructions is <a href="https://github.com/damphyr/embedded-C-rake/blob/master/setup/CentOSBaseBox.md">up on GitHub</a></p>
+<p>Originally I wrote “there’s more interesting things to talk about”. But it seems that once more the combination of versions needed for the task requires some digging and further work. So, following the instructions on the provided link I proceeded to create a 32 bit CentOS 6.5 base box for vagrant. The set of instructions is <a href="https://github.com/damphyr/embedded-C-rake/blob/master/setup/CentOSBaseBox.md">up on GitHub</a></p>
 
-<h2>Hints &amp; Tips for the decrepit mind</h2>
+<h2 id="hints--tips-for-the-decrepit-mind">Hints &amp; Tips for the decrepit mind</h2>
 
-<p>If you&#39;re like me you&#39;ll need to be reminded that on vagrant base boxes the root password is &#39;vagrant&#39;.</p>
+<p>If you’re like me you’ll need to be reminded that on vagrant base boxes the root password is ‘vagrant’.</p>
 
-<h2>VM at hand</h2>
+<h2 id="vm-at-hand">VM at hand</h2>
 
-<p>There are a few things to do that for convenience&#39;s sake I will skip since this is a personal sandbox project.</p>
+<p>There are a few things to do that for convenience’s sake I will skip since this is a personal sandbox project.</p>
 
 <p>There should be a project user (or depending on how far you want to take it, one account per team member). Things like repository access, SSH keys etc. need to be setup. For convenience everything will be done with the vagrant user.</p>
 
-<p>Also, to keep software updates under control, there should be a chef/puppet/ansible installation and the contents of the VM should be managed as source. Since this is a one man team environment and there&#39;s only really two software packages to install we will skip the overhead for now.</p>
+<p>Also, to keep software updates under control, there should be a chef/puppet/ansible installation and the contents of the VM should be managed as source. Since this is a one man team environment and there’s only really two software packages to install we will skip the overhead for now.</p>
 
-<p>It should be noted though that between the time I started putting this environment together and now (which is about 5 months) there have been 4 new vagrant versions, a major CentOS update, 3 KPIT toolchain updates (one major version), a new Ruby version and uncountable gem updates. At the rate I&#39;m writing I will be forced to add Chef recipes just to be able to keep the environment current.</p>
+<p>It should be noted though that between the time I started putting this environment together and now (which is about 5 months) there have been 4 new vagrant versions, a major CentOS update, 3 KPIT toolchain updates (one major version), a new Ruby version and uncountable gem updates. At the rate I’m writing I will be forced to add Chef recipes just to be able to keep the environment current.</p>
 
-<p>In the next installment we&#39;ll setup the toolchain and the RX63N board and figure out how to call everything from rake.</p>
+<p>In the next installment we’ll setup the toolchain and the RX63N board and figure out how to call everything from rake.</p>
 
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>

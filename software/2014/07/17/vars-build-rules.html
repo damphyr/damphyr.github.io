@@ -47,7 +47,7 @@
 
 <p>During the conversation the rules described in this post came out of the woodwork.</p>
 
-<h2>Distinctions, distinctions</h2>
+<h2 id="distinctions-distinctions">Distinctions, distinctions</h2>
 
 <p>Before we get into the rules we need to distinguish between a build system and a build management system.</p>
 
@@ -57,69 +57,71 @@
 
 <p>A build system is highly project specific, it is affected by toolchains, project conventions and generally can only run on a specially configured host (i.e. development environment).</p>
 
-<p>A build management system can run everywhere so long as it can start the build system on the appropriate host. The specificity of a build management system is limited to the number of version control systems it supports. Although theoretically it doesn&#39;t have to provide version control support it is a given that such support will be provided in the minimum feature set.</p>
+<p>A build management system can run everywhere so long as it can start the build system on the appropriate host. The specificity of a build management system is limited to the number of version control systems it supports. Although theoretically it doesn’t have to provide version control support it is a given that such support will be provided in the minimum feature set.</p>
 
 <p>Jenkins, TeamCity, TravisCI, BuildBot are build management systems.</p>
 
 <p>TFS tries to do both at once, mixes them up, confuses the terminology and generally does a bang up job of completely screwing things up.</p>
 
-<h2>VAR&#39;s Build Rules</h2>
+<h2 id="vars-build-rules">VAR’s Build Rules</h2>
 
 <p>(var is my username at work)</p>
 
-<h3>1. I am the build server</h3>
+<h3 id="1-i-am-the-build-server">1. I am the build server</h3>
 
-<p>Rule #1 requires that the build server follows the exact same steps as any other developer. </p>
+<p>Rule #1 requires that the build server follows the exact same steps as any other developer.</p>
 
 <p>Expressed the other way around: Every developer has to be able to recreate locally the complete build process without deviations given the development environment and the correct version of the source tree.</p>
 
-<h3>2. When the build server says no, it means no!</h3>
+<h3 id="2-when-the-build-server-says-no-it-means-no">2. When the build server says no, it means no!</h3>
 
-<p>Rule #2 says that if a build server says a build is broken, then the build is broken. Drop everything and read the logs. </p>
+<p>Rule #2 says that if a build server says a build is broken, then the build is broken. Drop everything and read the logs.</p>
 
-<p>There is no &quot;it works for me&quot;, your build server is Judge Dredd: judge, juror and executioner.</p>
+<p>There is no “it works for me”, your build server is Judge Dredd: judge, juror and executioner.</p>
 
 <p>You can only adhere to this rule if you followed Rule #1</p>
 
-<h3>3. IDEs are the enemy AKA F5 is not a build process</h3>
+<h3 id="3-ides-are-the-enemy-aka-f5-is-not-a-build-process">3. IDEs are the enemy AKA F5 is not a build process</h3>
 
-<p>Which means that if you drive your development process from an IDE there is no way you can adhere to the Build Rules. </p>
+<p>Which means that if you drive your development process from an IDE there is no way you can adhere to the Build Rules.</p>
 
 <p>This rule has major complications on the development environment, ties directly into the subject of allowing your developers to use whatever tools they feel comfortable with and adherence to it is actively sabotaged by Visual Studio.</p>
 
 <p>My current approach to this problem is laid out in <a href="/software/2014/07/03/gaudi-versus-the-dreaded-ide">Gaudi vs. the dreaded IDE</a></p>
 
-<h2>Adhering to the rules</h2>
+<h2 id="adhering-to-the-rules">Adhering to the rules</h2>
 
 <p>To create a system that adheres to rules #1 &amp; #2 you have to think like a Lego builder: Lots of small, specialized tasks that do one thing can be used to compose more complex processes etc.</p>
 
 <p>As an example a <em>release</em> task instead of doing everything in one big implementation will depend on the build tasks for each of the libraries and applications and the tasks that run the tests etc. Using the syntax of rake in a contrived example one would do</p>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">task</span> <span class="ss">:release</span> <span class="o">=&gt;</span><span class="p">[</span><span class="ss">:"test:all"</span><span class="p">]</span>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">task</span> <span class="ss">:release</span> <span class="o">=&gt;</span><span class="p">[</span><span class="ss">:"test:all"</span><span class="p">]</span>
 
 <span class="n">task</span> <span class="ss">:"test:all"</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="ss">:"test:foo"</span><span class="p">,</span> <span class="ss">:"test:bar"</span><span class="p">]</span>
 
 <span class="n">task</span> <span class="ss">:"test:foo"</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="ss">:"build:foo"</span><span class="p">]</span>
 <span class="o">...</span>
-</code></pre></div>
+</code></pre></div></div>
+
 <p>Now a developer will probably use the component tasks a lot more than the composite :release task and we will certainly have a build job on the server that only does releases.</p>
 
 <p>This is a necessity since the system needs to satisfy different usage  patterns: the build server uses composite tasks that implement complete workflows while the developer usex component tasks with surgical precision in the interest of speed and effectiveness.</p>
 
-<p>From the perspective of the build system engineer this approach is self-evident for the same reason it&#39;s evident when building applications: Small chunks of code are easier to manage, test, reuse and understand.</p>
+<p>From the perspective of the build system engineer this approach is self-evident for the same reason it’s evident when building applications: Small chunks of code are easier to manage, test, reuse and understand.</p>
 
-<p>It&#39;s also one of the reasons why make, ant and the msbuild XML syntax suck big time as general task description languages but that is a subject that requires a whole other post.</p>
+<p>It’s also one of the reasons why make, ant and the msbuild XML syntax suck big time as general task description languages but that is a subject that requires a whole other post.</p>
 
 <p>All of this segways nicely into the final rule:</p>
 
-<h3>4. Your (build) infrastructure is a software development project</h3>
+<h3 id="4-your-build-infrastructure-is-a-software-development-project">4. Your (build) infrastructure is a software development project</h3>
 
 <p><a href="/software/2011/02/04/managing-your-development-environment">This post has already been written</a></p>
 
-<p>Rule #4 means you need tests and CI and a plan. To make matters worse your users are some of the most obnoxious, impatient and down right pedantic users on the face of the planet. They want everything perfect, robust, simple and fast and they want it yesterday. You better be dogfooding by this point...</p>
+<p>Rule #4 means you need tests and CI and a plan. To make matters worse your users are some of the most obnoxious, impatient and down right pedantic users on the face of the planet. They want everything perfect, robust, simple and fast and they want it yesterday. You better be dogfooding by this point…</p>
 
-<hr>
-
+<hr />
 <p><sup>1</sup> I work at <a href="http://www.zuehlke.com">Zühlke</a> where I have the luck to interact with brilliant engineers. Not just software engineers either.</p>
+
 
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>

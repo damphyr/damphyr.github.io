@@ -45,19 +45,19 @@
 <div class="post">
 <p>New project, old problems.</p>
 
-<p>Getting familiar with the 3.0 version of Capistrano (the guys deserve praise for adopting the Rake DSL) and immediately I stumbled on the old &quot;SSH passwordless logins won&#39;t work on Windows&quot; problem.  </p>
+<p>Getting familiar with the 3.0 version of Capistrano (the guys deserve praise for adopting the Rake DSL) and immediately I stumbled on the old “SSH passwordless logins won’t work on Windows” problem.</p>
 
-<p>It&#39;s a myth, but you have to fumble a bit till it can work. Did this 4 or 5 years ago (and it was slightly more work) and had to do it again this week, so here&#39;s a forgetmenot on how to get Capistrano 3.x to use SSH keys for passwordless login on Windows7.</p>
+<p>It’s a myth, but you have to fumble a bit till it can work. Did this 4 or 5 years ago (and it was slightly more work) and had to do it again this week, so here’s a forgetmenot on how to get Capistrano 3.x to use SSH keys for passwordless login on Windows7.</p>
 
-<h3>Generate your keys</h3>
+<h3 id="generate-your-keys">Generate your keys</h3>
 
-<p>No reason to go through it (which saves me like half a dozen steps from this list), but if you&#39;re on Windows and you use puttygen please note that you will need to export the keys in OpenSSH format and copy the <em>exported</em> public key in the authorized_keys file on the server side.</p>
+<p>No reason to go through it (which saves me like half a dozen steps from this list), but if you’re on Windows and you use puttygen please note that you will need to export the keys in OpenSSH format and copy the <em>exported</em> public key in the authorized_keys file on the server side.</p>
 
-<h3>Copy the OpenSSH format key in C:\Users\your_username\.ssh</h3>
+<p>###Copy the OpenSSH format key in C:\Users\your_username\.ssh</p>
 
-<p>Now, in the *ix world keys and configuration are expected in ~/.ssh by default. Where you keep them on Windows doesn&#39;t really matter, the  C:\Users\your_username\.ssh is just for conceptual consistency.</p>
+<p>Now, in the *ix world keys and configuration are expected in ~/.ssh by default. Where you keep them on Windows doesn’t really matter, the  C:\Users\your_username\.ssh is just for conceptual consistency.</p>
 
-<h3>Tell Capistrano where to find the keys</h3>
+<p>###Tell Capistrano where to find the keys</p>
 
 <p>The default value for key location in Capistrano is the *ixy one (doh!) so on Windows you need to go the extra mile.</p>
 
@@ -69,7 +69,7 @@
 
 <p>do substitute key.id_rsa with whatever filename your keys are stored in plz ;)</p>
 
-<p>Also depending on the server setup there might be a :forward_agent option there or not, but if you&#39;re doing :forward_agent magic with the server you don&#39;t need me to tell you how to setup your ssh options.</p>
+<p>Also depending on the server setup there might be a :forward_agent option there or not, but if you’re doing :forward_agent magic with the server you don’t need me to tell you how to setup your ssh options.</p>
 
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>

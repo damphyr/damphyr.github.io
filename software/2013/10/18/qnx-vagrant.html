@@ -43,33 +43,32 @@
 <p class="meta">18 Oct 2013</p>
 
 <div class="post">
-<p><em>If you don&#39;t know what QNX is don&#39;t be scared, but if you don&#39;t know what vagrant is this post is probably not for you :) </em></p>
+<p><em>If you don’t know what QNX is don’t be scared, but if you don’t know what vagrant is this post is probably not for you :) </em></p>
 
-<p>Most of my career I have lamented not being able to use the best and most exciting tools because they just won&#39;t work for whatever I have to get running at the time.</p>
+<p>Most of my career I have lamented not being able to use the best and most exciting tools because they just won’t work for whatever I have to get running at the time.</p>
 
 <p>Working with Windows you learn very fast to not expect much comfort, or support, or sane functioning command line interfaces for that matter. But I love edge cases, they represent a chalenge.</p>
 
 <p>So for the past week or so I have been putting together a setup for QNX Neutrino 6.5 machines.</p>
 
-<p><a href="http://www.qnx.com/products/neutrino-rtos/neutrino-rtos.html">QNX Neutrino</a> is a real time operating system offered by QNX Software Systems which apparently belongs to RIM now. It&#39;s a nifty microkernel RTOS, very Unix-like, more BSD than Linux in some ways and you can add all kinds of open source goodies to it.</p>
+<p><a href="http://www.qnx.com/products/neutrino-rtos/neutrino-rtos.html">QNX Neutrino</a> is a real time operating system offered by QNX Software Systems which apparently belongs to RIM now. It’s a nifty microkernel RTOS, very Unix-like, more BSD than Linux in some ways and you can add all kinds of open source goodies to it.</p>
 
-<p>QNX is also very kind and offers a VMWare VM with the latest version of the OS. For the task at hand that was a godsend. So I made a few copies and started experimenting with the setup until it was done. </p>
+<p>QNX is also very kind and offers a VMWare VM with the latest version of the OS. For the task at hand that was a godsend. So I made a few copies and started experimenting with the setup until it was done.</p>
 
 <p>And then the yak shaving started.</p>
 
-<p>See, every time I made a mistake I just deleted the VM, made another copy from the QNX master and continued the work. Sounds familiar? </p>
+<p>See, every time I made a mistake I just deleted the VM, made another copy from the QNX master and continued the work. Sounds familiar?</p>
 
-<p>It&#39;s more or less the vagrant work flow: Define your VM, do <em>vagrant up</em> to start it, do the work with <em>vagrant ssh</em> and when you&#39;re finished <em>vagrant halt</em> or <em>vagrant destroy</em> if you went too far. The idea was to use a shell provisioning setup and easily test the setup scripts.</p>
+<p>It’s more or less the vagrant work flow: Define your VM, do <em>vagrant up</em> to start it, do the work with <em>vagrant ssh</em> and when you’re finished <em>vagrant halt</em> or <em>vagrant destroy</em> if you went too far. The idea was to use a shell provisioning setup and easily test the setup scripts.</p>
 
-<p>How hard can it be to build a vagrant basebox for QNX? Considering it&#39;s 23:00 and I started this at around 19:00 I would not say it&#39;s easy.</p>
+<p>How hard can it be to build a vagrant basebox for QNX? Considering it’s 23:00 and I started this at around 19:00 I would not say it’s easy.</p>
 
-<h2>Creating the basebox</h2>
-
-<p>The QNX VM came in VMWare format, I have a VM Workstation license and there is a (commercial) vagrant plugin for VMWare which I promptly acquired. I did not want to go through the trouble of converting the QNX VM from VMWare to VirtualBox just in case the yak became a yak herd. </p>
+<p>##Creating the basebox
+The QNX VM came in VMWare format, I have a VM Workstation license and there is a (commercial) vagrant plugin for VMWare which I promptly acquired. I did not want to go through the trouble of converting the QNX VM from VMWare to VirtualBox just in case the yak became a yak herd.</p>
 
 <p>Before we package the whole thing there are a few things that need to be done on the QNX VM to allow vagrant to work with it. Everything listed is run as root.</p>
 
-<h3>Setup sshd</h3>
+<p>###Setup sshd</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#! /bin/sh</span>
 
@@ -84,34 +83,31 @@ ssh-keygen <span class="nt">-t</span> dsa <span class="nt">-f</span> /etc/ssh/ss
 
 <p>Also, edit /etc/rc.d/rc.local and add the line <em>/usr/sbin/sshd&amp;</em> at the end so that sshd starts when the machine reboots.</p>
 
-<h3>Setup the vagrant user</h3>
-
-<p>I really dislike this because I have not found a way to automate it further. You need to go through the passwd questions manually.</p>
+<p>###Setup the vagrant user
+I really dislike this because I have not found a way to automate it further. You need to go through the passwd questions manually.</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#! /bin/sh</span>
 <span class="c">#Accept default values and use vagrant as the password</span>
 passwd vagrant</code></pre></figure>
 
-<p>After this you need to add &#39;users:x:100:&#39; at the end of /etc/group</p>
+<p>After this you need to add ‘users:x:100:’ at the end of /etc/group</p>
 
-<h3>Passwordless ssh access</h3>
-
-<p>Get the <a href="https://github.com/mitchellh/vagrant/blob/master/keys/vagrant.pub">vagrant insecure public key</a> and copy it into /home/vagrant/.ssh/authorized_keys. Then to make sure do the following</p>
+<p>###Passwordless ssh access
+Get the <a href="https://github.com/mitchellh/vagrant/blob/master/keys/vagrant.pub">vagrant insecure public key</a> and copy it into /home/vagrant/.ssh/authorized_keys. Then to make sure do the following</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">chown</span> <span class="nt">-R</span> vagrant:users /home/vagrant/.ssh
 <span class="nb">chmod</span> <span class="nt">-R</span> 700 /home/vagrant/.ssh</code></pre></figure>
 
 <p>If the permissions are not set corretly openSSH will not login succesfully (and you will not know why!)</p>
 
-<h3>Actually create the base box</h3>
-
-<p>The basebox format is actually very basic: Whatever VM files your provider requires to start the VM plus a metadata.json file with the following content:</p>
+<p>###Actually create the base box
+The basebox format is actually very basic: Whatever VM files your provider requires to start the VM plus a metadata.json file with the following content:</p>
 
 <figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
   </span><span class="err">provider:</span><span class="w"> </span><span class="s2">"vmware_workstation"</span><span class="w">
 </span><span class="p">}</span></code></pre></figure>
 
-<p>Values that are valid at the time of writing are &quot;vmware<em>workstation&quot;, &quot;vmware</em>fusion&quot; and &quot;virtualbox&quot;.</p>
+<p>Values that are valid at the time of writing are “vmware_workstation”, “vmware_fusion” and “virtualbox”.</p>
 
 <p>For VMWare VMs the following should do the trick when run in the VMs directory.</p>
 
@@ -119,9 +115,8 @@ passwd vagrant</code></pre></figure>
 
 <p>(add the .json file yourself :) )</p>
 
-<h2>Enter Vagrant</h2>
-
-<p>So we do the <em>vagrant init</em> and edit the Vagrantfile</p>
+<p>##Enter Vagrant
+So we do the <em>vagrant init</em> and edit the Vagrantfile</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="no">VAGRANTFILE_API_VERSION</span><span class="o">+</span><span class="s2">"2"</span>
 
@@ -134,15 +129,15 @@ passwd vagrant</code></pre></figure>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">vagrant up <span class="nt">--provider</span> vmware_workstation</code></pre></figure>
 
-<p>Now, if you did not setup ssh correctly then vagrant is going to hang with &quot;Waiting for VM to boot. This can take a few minutes&quot;. This can be easily ascertained if you set the environment variable VAGRANT_LOG=debug and watch how vagrant repeatedly tries to connect and fails miserably never giving up. Go back and set those permissions...</p>
+<p>Now, if you did not setup ssh correctly then vagrant is going to hang with “Waiting for VM to boot. This can take a few minutes”. This can be easily ascertained if you set the environment variable VAGRANT_LOG=debug and watch how vagrant repeatedly tries to connect and fails miserably never giving up. Go back and set those permissions…</p>
 
-<p>If you have setup ssh correctly then you&#39;re going to get a &quot;The guest operating system of the machine could not be detected!&quot;. So much for Unix-like. </p>
+<p>If you have setup ssh correctly then you’re going to get a “The guest operating system of the machine could not be detected!”. So much for Unix-like.</p>
 
 <p>Fun fact: If ssh is not correctly setup and <em>vagrant up</em> hangs, then you can control-C and then try <em>vagrant halt</em>. After an inordinate amount of time the VM is going to  shutdown. If ssh does work then <em>vagrant halt</em> will die horribly complaining that it cannot recognise the OS.</p>
 
-<p>Which means that there&#39;s going to be a continuation to this adventure, where we dwell into the creation of a vagrant guest plugin. This yak is not yet completely shaved.</p>
+<p>Which means that there’s going to be a continuation to this adventure, where we dwell into the creation of a vagrant guest plugin. This yak is not yet completely shaved.</p>
 
-<p><em>There&#39;s a <a href="/software/2013/10/18/vagrant-guest-qnx">follow up post</a> with the QNX guest plugin</em> </p>
+<p><em>There’s a <a href="/software/2013/10/18/vagrant-guest-qnx">follow up post</a> with the QNX guest plugin</em></p>
 
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>

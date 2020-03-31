@@ -43,13 +43,13 @@
 <p class="meta">04 Dec 2013</p>
 
 <div class="post">
-<p>I&#39;m busy with a paid-for-by-an-actual-client system based on the Renesas RX630 so the RX63N adventure has been tabled for a while.</p>
+<p>I’m busy with a paid-for-by-an-actual-client system based on the Renesas RX630 so the RX63N adventure has been tabled for a while.</p>
 
 <p>Still I stumbled on a little Ruby weirdness today that I have to take down just in case.</p>
 
-<p>So when handling paths, doing a File.join(&quot;/foo/foo&quot;,&quot;../../bar&quot;) should give /bar back. </p>
+<p>So when handling paths, doing a File.join(“/foo/foo”,”../../bar”) should give /bar back.</p>
 
-<p>If by some twist of luck there&#39;s a space before those first two dots though, the results are quite unexpected:</p>
+<p>If by some twist of luck there’s a space before those first two dots though, the results are quite unexpected:</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="mf">2.0</span><span class="o">.</span><span class="mi">0</span><span class="n">p195</span> <span class="p">:</span><span class="mo">00</span><span class="mi">8</span> <span class="o">&gt;</span> <span class="no">File</span><span class="p">.</span><span class="nf">expand_path</span><span class="p">(</span><span class="no">File</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s1">'/foo/foo'</span><span class="p">,</span><span class="s2">" ../../bar"</span><span class="p">))</span>
  <span class="o">=&gt;</span> <span class="s2">"/foo/foo/bar"</span>
@@ -62,7 +62,7 @@
 <span class="mf">2.0</span><span class="o">.</span><span class="mi">0</span><span class="n">p195</span> <span class="p">:</span><span class="mo">011</span> <span class="o">&gt;</span> <span class="no">File</span><span class="p">.</span><span class="nf">expand_path</span><span class="p">(</span><span class="no">File</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s1">'/foo'</span><span class="p">,</span><span class="s2">" ../../bar"</span><span class="p">))</span>
  <span class="o">=&gt;</span> <span class="s2">"/foo/bar"</span></code></pre></figure>
 
-<p>Also, this only happens when there are two sets of dots (&quot;../../&quot;). When there is only one then the sneaky whitespace is easier to detect:</p>
+<p>Also, this only happens when there are two sets of dots (“../../”). When there is only one then the sneaky whitespace is easier to detect:</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="mf">2.0</span><span class="o">.</span><span class="mi">0</span><span class="n">p195</span> <span class="p">:</span><span class="mo">012</span> <span class="o">&gt;</span> <span class="no">File</span><span class="p">.</span><span class="nf">expand_path</span><span class="p">(</span><span class="no">File</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s1">'/foo'</span><span class="p">,</span><span class="s2">" ../bar"</span><span class="p">))</span>
  <span class="o">=&gt;</span> <span class="s2">"/foo/ ../bar"</span></code></pre></figure>

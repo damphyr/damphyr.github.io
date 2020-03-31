@@ -43,27 +43,32 @@
 <p class="meta">28 Feb 2011</p>
 
 <div class="post">
-<p>The original title for this post was &quot;The problem with Rake&quot;. The issue still exists but I have learned enough to mitigate it&#39;s effect.
-But first things first. </p>
+<p>The original title for this post was “The problem with Rake”. The issue still exists but I have learned enough to mitigate it’s effect.
+But first things first.</p>
 
 <p>The original problem is that Rake will not re-evaluate the dependencies of a task after one of the dependencies executes.</p>
 
-<p>This simply means that there is no way to dynamically add dependencies to a task from one of it&#39;s dependencies.</p>
+<p>This simply means that there is no way to dynamically add dependencies to a task from one of it’s dependencies.</p>
 
-<p>To illustrate this consider the following rakefile
-<noscript><pre>400: Invalid request</pre></noscript><script src="https://gist.github.com/847273.js?file=rakefile"> </script></p>
+<p>To illustrate this consider the following rakefile</p>
+<noscript><pre>400: Invalid request</pre></noscript>
+<script src="https://gist.github.com/847273.js?file=rakefile"> </script>
 
-<p>The output is 
-<noscript><pre>400: Invalid request</pre></noscript><script src="https://gist.github.com/847273.js?file=output"> </script>
-when, if the dependency tree was built dynamically, &#39;c&#39; should pop up before &#39;a&#39;:
-<noscript><pre>400: Invalid request</pre></noscript><script src="https://gist.github.com/847273.js?file=outut%20as%20it%20should%20be"> </script>
-Why would you need this you will ask?</p>
+<p>The output is</p>
+<noscript><pre>400: Invalid request</pre></noscript>
+<script src="https://gist.github.com/847273.js?file=output"> </script>
 
-<p>I believe that a development environment should not impose structure but rather should evolve it&#39;s structure in tandem with the architecture of the system you are trying to build. Empirically it is a much more effective approach when the thought patterns formulated in the architecture are reflected in the structure of your workspace and the tools just support this. This is a variation of the &quot;convention vs. configuration&quot; mantra for when you are actually building something from scratch.</p>
+<p>when, if the dependency tree was built dynamically, ‘c’ should pop up before ‘a’:</p>
+<noscript><pre>400: Invalid request</pre></noscript>
+<script src="https://gist.github.com/847273.js?file=outut%20as%20it%20should%20be"> </script>
+
+<p>Why would you need this you will ask?</p>
+
+<p>I believe that a development environment should not impose structure but rather should evolve it’s structure in tandem with the architecture of the system you are trying to build. Empirically it is a much more effective approach when the thought patterns formulated in the architecture are reflected in the structure of your workspace and the tools just support this. This is a variation of the “convention vs. configuration” mantra for when you are actually building something from scratch.</p>
 
 <p>So in a layered, component based C application I would like to write a single method that compiles a component and then have a task that creates as many tasks as there are components, associate them with the sources and be done with it.</p>
 
-<p>Unfortunately, since Rake locks the dependencies when the task is executed, the obvious solution was to create the tasks while Rake instantiates it&#39;s application.</p>
+<p>Unfortunately, since Rake locks the dependencies when the task is executed, the obvious solution was to create the tasks while Rake instantiates it’s application.</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">create_tasks</span>
   <span class="n">task</span> <span class="ss">:compile</span> <span class="o">=&gt;</span> <span class="n">find_components</span>
@@ -77,15 +82,15 @@ Why would you need this you will ask?</p>
 
 <p>Some of the fault lies actually with the approach: I approached the problem from the source side, trying to determine which sources belong to a component and creating a task for each component, which essentially forces us to create every task and then the dependency chains. The more components, e.g. code, the longer this procedure takes.</p>
 
-<p>Coupled with the fact that this happens &quot;on load&quot;, this adds a perceptible delay in task invocation for an added psychological effect of slowness.</p>
+<p>Coupled with the fact that this happens “on load”, this adds a perceptible delay in task invocation for an added psychological effect of slowness.</p>
 
 <p>The solution was to change tack and approach the problem from the results side: Each component corresponds to a library, an artifact of the build process. It is trivial to determine which libraries are needed for each program/task and from there determine which components we have to build.</p>
 
-<p>So we want to build an application that depends on libraries. These are file tasks </p>
+<p>So we want to build an application that depends on libraries. These are file tasks</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">file</span> <span class="s2">"app.exe"</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s2">"1.lib"</span><span class="p">,</span><span class="s2">"2.lib"</span><span class="p">]</span></code></pre></figure>
 
-<p>We still have to construct the application file task &quot;on load&quot; and associate it with the library file tasks and then associate the library file tasks with the source files but the scope is drastically reduced and performance is not affected (meaning the time to define the task dependencies is negligible compared with the compilation time of a single component).</p>
+<p>We still have to construct the application file task “on load” and associate it with the library file tasks and then associate the library file tasks with the source files but the scope is drastically reduced and performance is not affected (meaning the time to define the task dependencies is negligible compared with the compilation time of a single component).</p>
 
 <p>Now compilation can be expressed with rules</p>
 
@@ -103,7 +108,7 @@ Why would you need this you will ask?</p>
  <span class="n">build_the_library</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="s1">'target'</span><span class="p">)</span>
 <span class="k">end</span></code></pre></figure>
 
-<p>For all of this to work it goes hand in hand with naming conventions and a rather strict directory structure. It&#39;s a balance between explicit rules expressed in code and implicit rules expressed in the conventions used that gives us a lot of flexibility - but this is a subject for a later post.</p>
+<p>For all of this to work it goes hand in hand with naming conventions and a rather strict directory structure. It’s a balance between explicit rules expressed in code and implicit rules expressed in the conventions used that gives us a lot of flexibility - but this is a subject for a later post.</p>
 
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>

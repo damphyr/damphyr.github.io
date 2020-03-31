@@ -45,13 +45,13 @@
 <div class="post">
 <p>Very often I find myself needing to install a certain set of gems without access to rubygems.org or sometimes without any network access.</p>
 
-<p><a href="http://bundler.io/">Bundler</a> allows you perform bundle install from a cache. All you need to do is put all your gems in a vendor/cache directory where your Gemfile is and bundler will look in there if you call it with --local:</p>
+<p><a href="http://bundler.io/">Bundler</a> allows you perform bundle install from a cache. All you need to do is put all your gems in a vendor/cache directory where your Gemfile is and bundler will look in there if you call it with –local:</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">bundle <span class="nb">install</span> <span class="nt">--local</span></code></pre></figure>
 
 <p>The really neat trick is that bundler will always update the cache if the vendor/cache directory is present. So doing a simple <em>bundle install</em> with an empty vendor/cache will net you an up-to-date cache you can take with you offline.</p>
 
-<p>My typical use case for this is to use a Gemfile to describe my system&#39;s gems (in really complicated cases there might be a couple of Gemfiles), add the vendor/cache directory, perform bundle install and commit everything but the Gemfile.lock file. </p>
+<p>My typical use case for this is to use a Gemfile to describe my system’s gems (in really complicated cases there might be a couple of Gemfiles), add the vendor/cache directory, perform bundle install and commit everything but the Gemfile.lock file.</p>
 
 <p>In the developer VM then the environment:update task will perform a local bundle install. This way we have easy and consistent gem updates across the whole team.</p>
 

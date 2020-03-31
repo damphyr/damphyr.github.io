@@ -142,6 +142,10 @@ ul.posts span {
 p img { margin-right: 1em;
   float:left;}
 
+.no-float {
+  margin-right: 1em;
+  float: none;
+}
 /*****************************************************************************/
 /*
 /* Posts

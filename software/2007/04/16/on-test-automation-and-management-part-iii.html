@@ -44,12 +44,11 @@
 
 <div class="post">
 <h3>Automatic and manual tests</h3>
-
 <p>Whether we like it or not, some tests will not be automated.</p>
 
 <p>Instead of separating manual from automatic test specifications - the latter in a well specified machine readable format, the former in specification documents - let all tests be specified in the machine readable form (as talked about <a href="/software/2007/04/15/on-test-automation-and-management-part-ii/">here</a>).</p>
 
-<p>Scenarios for manual tests can be thought as checklists, where the tester is prompted by the tool to perform an action and record it&#39;s result. In 99% of the cases a question answered with a yes/no suffices to evaluate test success.</p>
+<p>Scenarios for manual tests can be thought as checklists, where the tester is prompted by the tool to perform an action and record it’s result. In 99% of the cases a question answered with a yes/no suffices to evaluate test success.</p>
 
 <p>In our contrived example (first talked about <a href="/software/2007/04/13/on-test-automation-and-management-part-i">here</a>), say that a test asks for a measurement using an oscilloscope, and that it has been deemed impractical (or too expensive) to have a programmable oscilloscope. Instead, a snapshot of the expected curve is taken and the tester should perform the measurement and make sure it matches. It could go something like:</p>
 
@@ -59,19 +58,18 @@
   <span class="nt">&lt;yesno&gt;</span>Does the measurement match the expected result?<span class="nt">&lt;/yesno&gt;</span>
 <span class="nt">&lt;/scenario&gt;</span></code></pre></figure>
 
-<p>The advantages of such an approach is that the tester focuses only on the relevant test action that cannot be automated. The rest (test preparation etc.) is done automatically by the tool. The tool also takes care of validating the tester&#39;s input, logging etc. This consistency reduces the possibility of errors.</p>
+<p>The advantages of such an approach is that the tester focuses only on the relevant test action that cannot be automated. The rest (test preparation etc.) is done automatically by the tool. The tool also takes care of validating the tester’s input, logging etc. This consistency reduces the possibility of errors.</p>
 
 <p>Ofcourse it also simplifies management of test specifications using the same facilities used for automated tests.</p>
 
 <h3>Test management, test execution</h3>
-
 <p>Up to now we have been discussing the need for machine readable test specifications with a sample idea using XML and including manual as well as automated tests.</p>
 
 <p>So there is a pile of test specifications in the desired format. From these specifications information can be extracted to:</p>
 
 <ul>
-<li>Create overview documents and lists with information <em>about</em> the test cases (test management)</li>
-<li>Execute tests and store the results (test execution)</li>
+  <li>Create overview documents and lists with information <em>about</em> the test cases (test management)</li>
+  <li>Execute tests and store the results (test execution)</li>
 </ul>
 
 <p>The core problem is the existence (or lack of) a system that automates <em>test execution</em> in the sense that it integrates various tools that automate tests. Something like this would be very useful in a CI environment.</p>

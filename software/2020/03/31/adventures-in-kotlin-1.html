@@ -43,38 +43,40 @@
 <p class="meta">31 Mar 2020</p>
 
 <div class="post">
-<p>TeamCity is one CI system I haven&#39;t had a lot of contact until now. As will become evident, this has now changed.</p>
+<p>TeamCity is one CI system I haven’t had a lot of contact until now. As will become evident, this has now changed.</p>
 
 <p>So, alongside a crash course in basic Kotlin, I now have to figure out how to get my brand of build automation working in TeamCity.</p>
 
-<h2>The gatekeeper</h2>
+<h2 id="the-gatekeeper">The gatekeeper</h2>
 
 <p>I have one criterion for accepting a build management system:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">Build specifications need to be storable in the repository
-</code></pre></div>
-<p>Let&#39;s explore if TeamCity makes it past the door and how far we can take it.</p>
 
-<h2>First contact</h2>
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Build job specifications have to be stored in the repository
+</code></pre></div></div>
 
-<p>First contact is always a search along the lines of &quot;build DSL, Teamcity&quot;. I was already aware that TeamCity offers a DSL based on Kotlin and so we landed very fast on the <a href="https://blog.jetbrains.com/teamcity/2019/03/configuration-as-code-part-1-getting-started-with-kotlin-dsl/">blog series</a> describing these features.</p>
+<p>Let’s explore if TeamCity makes it past the door and how far we can take it.</p>
 
-<p>This gets TeamCity through the door. It&#39;s also a pretty cool taster for what Kotlin can do: the DSL looks clean and it looks like the web UI offers a way to get easily from clicked-together to code.</p>
+<h2 id="first-contact">First contact</h2>
+
+<p>First contact is always a search along the lines of “build DSL, TeamCity”. I was already aware that TeamCity offers a DSL based on Kotlin and so we landed very fast on the <a href="https://blog.jetbrains.com/teamcity/2019/03/configuration-as-code-part-1-getting-started-with-kotlin-dsl/">blog series</a> describing these features.</p>
+
+<p>This gets TeamCity through the door. It’s also a pretty cool taster for what Kotlin can do: the DSL looks clean and it looks like the web UI offers a way to get easily from clicked-together to code.</p>
 
 <p>I have studiously ignored all the IDEA bait in those posts. You should not need code completion to put a few pipelines together (narrator: he was mostly wrong).</p>
 
 <p>I have also skipped and jumped over the Maven references. Seriously, I have a pom allergy. It is probably going to bite me in the behind as soon as this system gets reasonably complicated and I am going to need tests, but it was all I could do to keep reading after my eyes brushed over that XML.</p>
 
-<h2>Reality check</h2>
+<h2 id="reality-check">Reality check</h2>
 
-<p>OK, I&#39;m armed with Kotlin and I&#39;ve got a TeamCity instance and I&#39;ve got a project and I see that all the settings are version controlled. But they all go to this one repository somewhere beyond my reach.</p>
+<p>OK, I’m armed with Kotlin and I’ve got a TeamCity instance and I’ve got a project and I see that all the settings are version controlled. But they all go to this one repository somewhere beyond my reach.</p>
 
 <p>It turns out you need pretty wide-reaching access rights to be able to activate versioned settings. Luckily, it took about 10 seconds of pointed question asking and:</p>
 
-<p><img src="/images/AchievementUnlocked.png" alt="Achievement Unlocked"></p>
+<p><img src="/images/AchievementUnlocked.png" alt="Achievement Unlocked" class="no-float" /></p>
 
-<p>Seriously, I&#39;m framing this - it was my fastest 0-to-admin time ever!</p>
+<p>Seriously, I’m framing this - it was my fastest 0-to-admin time ever!</p>
 
-<h2>Get off my master</h2>
+<h2 id="get-off-my-master">Get off my master</h2>
 
 <p>Turning on versioning for project settings has one drawback: Every time you change something in the web UI, Teamcity will commit the changes in the designated repository. And it does it on master.</p>
 
@@ -84,11 +86,11 @@
 
 <p>This is rule of git acquisition number 23:</p>
 
-<p><code>The repository comes first</code></p>
+<p><code class="highlighter-rouge">The repository comes first</code></p>
 
 <p>So, when we set up versioning we set the appropriate option:</p>
 
-<p><img src="/images/tc_no_ui_changes.png" alt="No UI changes allowed"></p>
+<p><img src="/images/tc_no_ui_changes.png" alt="No UI changes allowed" class="no-float" /></p>
 
 <p>Now, the comment accompanying the option gives me hope that things have been done properly.</p>
 
@@ -100,13 +102,13 @@
 
 <p>In the TeamCity context such a setup guarantees that no changes in the UI will be accepted. But it will generate a whole bunch of errors for anyone making changes.</p>
 
-<p>It also makes it difficult to explore and experiment with options and see how they translate to DSL code. Doubly so, because not all options that change the settings offer a nice &#39;View DSL&#39; button - for example adding NuGet Feeds</p>
+<p>It also makes it difficult to explore and experiment with options and see how they translate to DSL code. Doubly so, because not all options that change the settings offer a nice ‘View DSL’ button - for example adding NuGet Feeds</p>
 
-<h2>Playground</h2>
+<h2 id="playground">Playground</h2>
 
 <p>Basically I have a playground repository with a scaffolded <a href="https://github.com/damphyr/gaudi">gaudi</a> that I can use to click things together. I think I already stumbled on a bug for a runner, so expect a post on community, support and bug reports.</p>
 
-<p>I&#39;ve already put a variant of the <a href="https://blog.jetbrains.com/teamcity/2019/04/configuration-as-code-part-3-creating-build-configurations-dynamically/">Configuration as Code, Part 3: Creating Build Configurations Dynamically</a> to good use and it has opened some interesting questions, so that will be the next post.</p>
+<p>I’ve already put a variant of the <a href="https://blog.jetbrains.com/teamcity/2019/04/configuration-as-code-part-3-creating-build-configurations-dynamically/">Configuration as Code, Part 3: Creating Build Configurations Dynamically</a> to good use and it has opened some interesting questions, so that will be the next post.</p>
 
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>

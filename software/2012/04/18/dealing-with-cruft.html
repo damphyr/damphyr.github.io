@@ -43,13 +43,13 @@
 <p class="meta">18 Apr 2012</p>
 
 <div class="post">
-<p>Working to enhance a software team&#39;s productivity is a never ending task with a very vague goal. </p>
+<p>Working to enhance a software team’s productivity is a never ending task with a very vague goal.</p>
 
-<p>It looks very bad on any burndown chart, task-based productivity report or velocity factor if you look at it on an individual basis. </p>
+<p>It looks very bad on any burndown chart, task-based productivity report or velocity factor if you look at it on an individual basis.</p>
 
-<p>Jon Udell <a href="http://blog.jonudell.net/2012/01/09/another-way-to-think-about-geeks-and-repetitive-tasks/">posted an article</a> with a sane viewpoint on the geek vs. others automation meme and I found the closing comment describes very nicely (part of) the role of a &quot;productivity engineer&quot;<sup>1</sup>:</p>
+<p>Jon Udell <a href="http://blog.jonudell.net/2012/01/09/another-way-to-think-about-geeks-and-repetitive-tasks/">posted an article</a> with a sane viewpoint on the geek vs. others automation meme and I found the closing comment describes very nicely (part of) the role of a “productivity engineer”<sup>1</sup>:</p>
 
-<p>&quot;<em>In this view of the world, tasks that involve data manipulation (as so many modern chores do) are undertaken by teams. There is an infinite supply of manual chores. Everybody tackles them. Ideally there is one member of the team I call the toolsmith. Working shoulder to shoulder with the team, the toolsmith spots an opportunity to automate some piece of the work, writes some code, deploys it, observes how it gets used (or doesn’t get used), assesses its impact (or lack of impact), and then iterates on the code. Meanwhile the toolsmith keeps working alongside the team, chipping away at the never-ending and always-evolving list of manual chores, looking for more opportunities to automate, and exploiting them in an incremental and collaborative way.</em>&quot;</p>
+<p>“<em>In this view of the world, tasks that involve data manipulation (as so many modern chores do) are undertaken by teams. There is an infinite supply of manual chores. Everybody tackles them. Ideally there is one member of the team I call the toolsmith. Working shoulder to shoulder with the team, the toolsmith spots an opportunity to automate some piece of the work, writes some code, deploys it, observes how it gets used (or doesn’t get used), assesses its impact (or lack of impact), and then iterates on the code. Meanwhile the toolsmith keeps working alongside the team, chipping away at the never-ending and always-evolving list of manual chores, looking for more opportunities to automate, and exploiting them in an incremental and collaborative way.</em>”</p>
 
 <p>There comes a point where the collection of automation utilities becomes cumbersome. Since currently I am deep in build systems and rake I see the same effect in the number of tasks that become available as we add automation steps and combinations of steps targeted at different workflows within our project (i.e. flashing the target when developing, debugging or testing).</p>
 
@@ -58,48 +58,41 @@ In other cases things are superseded by newer functionality or the developers ad
 
 <p>In my own mind the system code just grows old. It can grow old with me - which just means I can read the code without retching and it will continue to work as wished - or grow old without me, in which case it becomes a grumpy, needy old man with a grudge and a cane to hit me with whenever I want to change something.</p>
 
-<p>So how do you grow old in health and good spirits? You need exercise, regular checkups and some preventive medicine.</p>
+<p>So how do you grow old in health and good spirits? You need exercise, regular checkups and some preventive medicine.
+###As an example…
+Imagine a large build system built with rake. Something to the tune of ~8K lines of Ruby, with a lot of tasks controlling every aspect of software development from compiling and linking to document generation, documentation, release mechanics, metrics collection and automated testing.</p>
 
-<h3>As an example...</h3>
+<p>Although not the traditional software example, such a system exhibits a compressed timeline of the code lifecycle especially where the build up of cruft and the speed with which parts of the code become obsolete are concerned so it serves really well for this article. And no it’s not just because that’s all I have been doing lately and I have nothing more interesting to talk about<sup>2</sup>.</p>
 
-<p>Imagine a large build system built with rake. Something to the tune of ~8K lines of Ruby, with a lot of tasks controlling every aspect of software development from compiling and linking to document generation, documentation, release mechanics, metrics collection and automated testing.</p>
-
-<p>Although not the traditional software example, such a system exhibits a compressed timeline of the code lifecycle especially where the build up of cruft and the speed with which parts of the code become obsolete are concerned so it serves really well for this article. And no it&#39;s not just because that&#39;s all I have been doing lately and I have nothing more interesting to talk about<sup>2</sup>.</p>
-
-<h3>Exercise</h3>
-
-<p>Code that does not run grows old really fast. The easiest way to keep up is to have tests. Without them large chunks of code fall into obscurity, things start breaking in tasks of &quot;secondary importance&quot; (i.e. documentation generation vs. system build). </p>
+<p>###Exercise
+Code that does not run grows old really fast. The easiest way to keep up is to have tests. Without them large chunks of code fall into obscurity, things start breaking in tasks of “secondary importance” (i.e. documentation generation vs. system build).</p>
 
 <p>100% test coverage is an ultimately useless effort but you do need enough so that most of your code gets exercised and you have to test all of the entry points to the system.</p>
 
-<h3>Regular checkups</h3>
-
-<p>So you have collected all this code but do you actually need it? </p>
+<p>###Regular checkups
+So you have collected all this code but do you actually need it?</p>
 
 <p>Collect usage metrics - which tasks are called, how often etc. There is a misconception that this needs to be done automatically and it sure is an efficient way but going around and interviewing your users/developers also works. It depends on your system.</p>
 
 <p>Sometimes interviewing actually works better as you discover or point out new ways of doing things. Actual human communication goes a long way towards assuring that your software actually does what your users want it to do, which I guess is the whole point behind agile methodologies.</p>
 
-<p>Visualization techniques are also very useful in uncovering forgotten corners, complex dependencies or optimization opportunities. Having a graph of tasks and dependencies works much better than staring at several pages of code. Then you can go around, paper in hand, and literally point and ask &quot;do you actually use this?&quot;<sup>3</sup></p>
+<p>Visualization techniques are also very useful in uncovering forgotten corners, complex dependencies or optimization opportunities. Having a graph of tasks and dependencies works much better than staring at several pages of code. Then you can go around, paper in hand, and literally point and ask “do you actually use this?”<sup>3</sup></p>
 
-<h3>Preventive medicine</h3>
-
-<p>Sometimes your checkups will uncover things that have been left to rot. The only way to deal with them is to take a scalpel to them.</p>
+<p>###Preventive medicine
+Sometimes your checkups will uncover things that have been left to rot. The only way to deal with them is to take a scalpel to them.</p>
 
 <p><em>Do not be afraid to throw away code!</em></p>
 
 <p>Armed with the information your checkups provide, together with the tests, you should be confident enough to trim down the fat and keep that old code lean and healthy.</p>
 
-<h3>Nothing new under the sun</h3>
+<p>###Nothing new under the sun
+When expressing a metaphor on caring about and for your code I realize belatedly that I’m not saying anything about software development that has not been included in iterative, test driven - agile if you want - development practices.</p>
 
-<p>When expressing a metaphor on caring about and for your code I realize belatedly that I&#39;m not saying anything about software development that has not been included in iterative, test driven - agile if you want - development practices. </p>
+<p>But I’m talking about automation and development infrastructure, tools and scripts! The quick and dirty hacks you throw together so that you can then get on with the real work.</p>
 
-<p>But I&#39;m talking about automation and development infrastructure, tools and scripts! The quick and dirty hacks you throw together so that you can then get on with the real work. </p>
+<p>You’re going to have a <em>very</em> grumpy old man if you don’t treat your development environment as it should be treated: just like another <a href="/software/2011/02/04/managing-your-development-environment/">software project</a></p>
 
-<p>You&#39;re going to have a <em>very</em> grumpy old man if you don&#39;t treat your development environment as it should be treated: just like another <a href="/software/2011/02/04/managing-your-development-environment/">software project</a></p>
-
-<hr>
-
+<hr />
 <p><sup>1</sup>I really hate the term. I wish I could find something that sounds cooler and conveys the role of a software engineer that enables his/her team to work faster, with greater efficiency and less hassle, bringing enjoyment into the workplace. Productivity engineer just conjures the image of a suited consultant gaming the numbers. Toolsmith is too narrow a term as you tend to work on process as much as tools.</p>
 
 <p><sup>2</sup>And I take offence at even the suggestion that such a system is not interesting/cutting edge/insert-cool-term-here.</p>

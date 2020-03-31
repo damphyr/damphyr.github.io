@@ -51,13 +51,13 @@
 
 <p>I chewed at the problem for several days and lots of different angles. At the moment the easiest solution seems to be to disable security for the duration of the setup. Fortunately with a bit of Nokogiri magic this is not a difficult problem.</p>
 
-<h2>How to turn off security</h2>
+<h2 id="how-to-turn-off-security">How to turn off security</h2>
 
-<p>Find the Jenkins <em>config.xml</em>, set the value of <code>useSecurity</code> to false.</p>
+<p>Find the Jenkins <em>config.xml</em>, set the value of <code class="highlighter-rouge">useSecurity</code> to false.</p>
 
-<p>Contrary to <a href="https://wiki.jenkins-ci.org/display/JENKINS/Disable+security">the Jenkins wiki</a> advice, you don&#39;t really have to remove the <code>authorizationStrategy</code> and <code>securityRealm</code> elements. Leaving them be actually makes restoring the original state easier.</p>
+<p>Contrary to <a href="https://wiki.jenkins-ci.org/display/JENKINS/Disable+security">the Jenkins wiki</a> advice, you don’t really have to remove the <code class="highlighter-rouge">authorizationStrategy</code> and <code class="highlighter-rouge">securityRealm</code> elements. Leaving them be actually makes restoring the original state easier.</p>
 
-<p>You can save the following to a file (let&#39;s say <code>security.rb</code>) and drop it in the libraries/ directory of your cookbook.</p>
+<p>You can save the following to a file (let’s say <code class="highlighter-rouge">security.rb</code>) and drop it in the libraries/ directory of your cookbook.</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s2">"nokogiri"</span>
 
@@ -92,9 +92,9 @@
   <span class="n">action</span> <span class="ss">:run</span>
 <span class="k">end</span></code></pre></figure>
 
-<p>The nice thing about this approach is that once we&#39;re done with Jenkins we can reactivate security (just replace the <code>:off</code> with <code>:on</code> in the recipe code) and we&#39;re back to the initial state.</p>
+<p>The nice thing about this approach is that once we’re done with Jenkins we can reactivate security (just replace the <code class="highlighter-rouge">:off</code> with <code class="highlighter-rouge">:on</code> in the recipe code) and we’re back to the initial state.</p>
 
-<h2>Pitfalls</h2>
+<h2 id="pitfalls">Pitfalls</h2>
 
 <p>You will need to block and wait for Jenkins to boot up before including this. For a way to do this you can check <a href="https://github.com/Zuehlke/cookbooks-jenkins-simple-app">cookbooks-jenkins-simple-app</a></p>
 

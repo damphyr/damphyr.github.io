@@ -43,18 +43,18 @@
 <p class="meta">30 Jul 2014</p>
 
 <div class="post">
-<p>I&#39;ve been running <a href="http://www.sublimetext.com/3">SublimeText v3</a> with the <a href="https://github.com/misfo/Shell-Turtlestein">Shell-Turtlestein</a> plugin for a while now.</p>
+<p>I’ve been running <a href="http://www.sublimetext.com/3">SublimeText v3</a> with the <a href="https://github.com/misfo/Shell-Turtlestein">Shell-Turtlestein</a> plugin for a while now.</p>
 
-<p>There&#39;s rarely a need to switch out of the editor window anymore and I&#39;m feeling more emacsy than ever.</p>
+<p>There’s rarely a need to switch out of the editor window anymore and I’m feeling more emacsy than ever.</p>
 
 <p>I use the same setup on all platforms (Windows, OS X and Linux) and all it takes to configure is a couple or JSON files in the correct locations.</p>
 
-<p>Shell-Turtlestein uses the same technique that the SublimeText build systems use to parse errors from the output of a command and this involves regular expressions (que moan). </p>
+<p>Shell-Turtlestein uses the same technique that the SublimeText build systems use to parse errors from the output of a command and this involves regular expressions (que moan).</p>
 
 <p>I also mostly run rake and drive minitest unit tests so there is a couple of cases where I would like to jump to the line an error indicates:
 When a test assertion fails and when an exception occurs.</p>
 
-<p>The following entry in the Shell-Turtlestein settings file will allow the use of F4 to jump to the error line in these two cases on windows (for *ix OSes there&#39;s plenty of examples out there)</p>
+<p>The following entry in the Shell-Turtlestein settings file will allow the use of F4 to jump to the error line in these two cases on windows (for *ix OSes there’s plenty of examples out there)</p>
 
 <figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="nl">"exec_args"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nl">"file_regex"</span><span class="p">:</span><span class="s2">"^</span><span class="se">\\</span><span class="s2">s*</span><span class="se">\\</span><span class="s2">w*</span><span class="se">\\</span><span class="s2">(*</span><span class="se">\\</span><span class="s2">w*</span><span class="se">\\</span><span class="s2">)*</span><span class="se">\\</span><span class="s2">s*</span><span class="se">\\</span><span class="s2">[*(</span><span class="se">\\</span><span class="s2">w+:</span><span class="se">\\</span><span class="s2">/.+</span><span class="se">\\</span><span class="s2">.*</span><span class="se">\\</span><span class="s2">w*):([0-9]+)</span><span class="se">\\</span><span class="s2">]*:()(.*)"</span><span class="p">}</span></code></pre></figure>
 

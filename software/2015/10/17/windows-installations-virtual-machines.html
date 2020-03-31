@@ -43,37 +43,37 @@
 <p class="meta">17 Oct 2015</p>
 
 <div class="post">
-<p><em>This post was originally written in July 2014 and then lounged in the dusty, dark recesses of my disk because... Windows. The hindsight of a whole year of using the Packer/Vagrant/Chef workflow led to minor updates, which speaks for the applicability of the approach</em></p>
+<p><em>This post was originally written in July 2014 and then lounged in the dusty, dark recesses of my disk because… Windows. The hindsight of a whole year of using the Packer/Vagrant/Chef workflow led to minor updates, which speaks for the applicability of the approach</em></p>
 
 <p>Automating Windows installations is hard!</p>
 
-<p>Maybe hard is not the right word. &#39;Unecessarily complicated&#39;, &#39;obfuscated&#39;, &#39;frustrating&#39; come to mind<sup>1</sup>. Sometimes, for certain, not so stelarly engineered solutions the word &#39;impossible&#39; creeps around the corner.</p>
+<p>Maybe hard is not the right word. ‘Unecessarily complicated’, ‘obfuscated’, ‘frustrating’ come to mind<sup>1</sup>. Sometimes, for certain, not so stelarly engineered solutions the word ‘impossible’ creeps around the corner.</p>
 
-<p>And yet things have never been better for anyone trying to solve the riddle. All the tools are there and while looking at the *ix solutions you wish for a lot of things (like a decent shell, or no registry, or a standardized way for installer parameters, or a package repository or...you get my drift) &#39;impossible&#39; has had to hide in some really obscure corners.</p>
+<p>And yet things have never been better for anyone trying to solve the riddle. All the tools are there and while looking at the *ix solutions you wish for a lot of things (like a decent shell, or no registry, or a standardized way for installer parameters, or a package repository or…you get my drift) ‘impossible’ has had to hide in some really obscure corners.</p>
 
-<h2>Installation drudgery</h2>
+<h2 id="installation-drudgery">Installation drudgery</h2>
 
-<p>I can&#39;t even begin to estimate the times I have installed Windows from scratch. It became tedious very, very fast but there was no release in sight for a long time.</p>
+<p>I can’t even begin to estimate the times I have installed Windows from scratch. It became tedious very, very fast but there was no release in sight for a long time.</p>
 
 <p>With the advent of desktop virtualization and laptops that can accomodate a couple of Windows VMs running concurrently I follow the practice of keeping one pristine Windows installation<sup>2</sup> at hand and a bootstrap package of command files that install the latest <a href="http://chefdk.com">ChefDK</a>, an SVN client and git for Windows.</p>
 
 <p>The workflow as it stands:</p>
 
 <ol>
-<li>Copy the VM</li>
-<li>Boot the VM and perform any outstanding updates (this includes Windows and the virtualization tools &amp; drivers)</li>
-<li>Copy the bootstrap package over and run the command file</li>
-<li>Checkout/clone the repository with all my Windows recipes</li>
-<li>Run Chef to provision the VM</li>
+  <li>Copy the VM</li>
+  <li>Boot the VM and perform any outstanding updates (this includes Windows and the virtualization tools &amp; drivers)</li>
+  <li>Copy the bootstrap package over and run the command file</li>
+  <li>Checkout/clone the repository with all my Windows recipes</li>
+  <li>Run Chef to provision the VM</li>
 </ol>
 
-<h2>Not enough (?)</h2>
+<h2 id="not-enough-">Not enough (?)</h2>
 
 <p>VMs are bulky. With a dynamically growing disk a vanilla Windows VM ways in at about 20GB. Add to that the software for toolchains etc. and it grows very large indeed (my current C/C++ embedded environment weights in at 50GB).</p>
 
-<p>You can&#39;t expect everyone to download it every time it changes so the case for immutable infrastructure when creating development environments is not very strong. Also, developers tend to have a lot of half-finished and ongoing work on disk which means you can&#39;t really throw away the VM when updating, you have to do an incremental update for user friendliness sake.</p>
+<p>You can’t expect everyone to download it every time it changes so the case for immutable infrastructure when creating development environments is not very strong. Also, developers tend to have a lot of half-finished and ongoing work on disk which means you can’t really throw away the VM when updating, you have to do an incremental update for user friendliness sake.</p>
 
-<p>A properly configured Windows base box is smaller (about 5GB) and we can skip the time it takes to create it from an .iso, because, well, we don&#39;t do it very often.</p>
+<p>A properly configured Windows base box is smaller (about 5GB) and we can skip the time it takes to create it from an .iso, because, well, we don’t do it very often.</p>
 
 <p>Create the base box using <a href="http://www.packer.io">Packer</a>, add a Vagrantfile to the repository and host the base box in a known location and we have the capability to recreate the development environment.</p>
 
@@ -86,16 +86,15 @@
 <p>So the workflow becomes</p>
 
 <ol>
-<li>vagrant up</li>
-<li>Run Chef to provision the VM</li>
-<li>Go back to 2. when necessary</li>
+  <li>vagrant up</li>
+  <li>Run Chef to provision the VM</li>
+  <li>Go back to 2. when necessary</li>
 </ol>
 
-<p>We still haven&#39;t solved the performance problem. It takes a long time to start a VM and the traditional desktop hypervisors hog a lot of resources. Docker is not a viable solution because Windows, so we have a case of serious OS envy.</p>
+<p>We still haven’t solved the performance problem. It takes a long time to start a VM and the traditional desktop hypervisors hog a lot of resources. Docker is not a viable solution because Windows, so we have a case of serious OS envy.</p>
 
-<hr>
-
-<p><sup>1</sup> After years of deliberation I am convinced that the Windows Registry is among the top 5 of  engineering solutions that on hindsight revealed themselves as colossal PITA mistakes. It may even occupy the top spot, but then, I&#39;m biased.</p>
+<hr />
+<p><sup>1</sup> After years of deliberation I am convinced that the Windows Registry is among the top 5 of  engineering solutions that on hindsight revealed themselves as colossal PITA mistakes. It may even occupy the top spot, but then, I’m biased.</p>
 
 <p><sup>2</sup> Meaning just a vanilla installation with no additional software other than the latest Microsoft patches.</p>
 

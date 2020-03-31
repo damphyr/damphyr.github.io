@@ -45,26 +45,29 @@
 <div class="post">
 <p>Took me awhile to figure this out. One more thing for the list of things that Jenkins makes unnecessarily complex.</p>
 
-<h2>The Problem</h2>
+<h2 id="the-problem">The Problem</h2>
 
 <p>We have a pipeline job that starts a handful of other jobs - call them subjobs -  and we want to aggregate the test results of the subjobs in our pipeline.</p>
 
-<h2>The required list of extra plugins you need</h2>
+<h2 id="the-required-list-of-extra-plugins-you-need">The required list of extra plugins you need</h2>
 
 <p>To get this done I had to add the <a href="https://wiki.jenkins-ci.org/display/JENKINS/Copy+Artifact+Plugin">copyartifact plugin</a></p>
 
 <p>You will also need one of JUnit/NUnit/xUnit depending on what your reports look like.</p>
 
-<h2>How to do it</h2>
+<h2 id="how-to-do-it">How to do it</h2>
 
-<p>Use archiveArtifact in the subjob to archive the test results. Somehting like </p>
-<div class="highlight"><pre><code class="language-" data-lang="">archiveArtifacts artifacts: 'results\\*.xml', fingerprint: true
-</code></pre></div>
-<p>Then in the job you do the aggregation make sure to keep the references to the subjobs. </p>
+<p>Use archiveArtifact in the subjob to archive the test results. Somehting like</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>archiveArtifacts artifacts: 'results\\*.xml', fingerprint: true
+</code></pre></div></div>
+
+<p>Then in the job you do the aggregation make sure to keep the references to the subjobs.</p>
 
 <p>From the reference we then get the 
 build number for each of the test jobs which we need in order to find the correct artifacts to copy.</p>
-<div class="highlight"><pre><code class="language-" data-lang="">def test_jobs=[:]
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def test_jobs=[:]
 def subjobs=[:] 
 for(int i = 0; i &lt; test_suites.size(); i++){ 
   def instanceNumber=i  
@@ -74,13 +77,15 @@ for(int i = 0; i &lt; test_suites.size(); i++){
   }
 }
 parallel subjobs 
-</code></pre></div>
-<p>Another tricky thing that has to do with how Groovy scopes things: </p>
+</code></pre></div></div>
 
-<p>If <code>i</code> is not assigned to a variable within the closure then you will only get one job in the subjobs map.</p>
+<p>Another tricky thing that has to do with how Groovy scopes things:</p>
+
+<p>If <code class="highlighter-rouge">i</code> is not assigned to a variable within the closure then you will only get one job in the subjobs map.</p>
 
 <p>Then, once the subjobs are finished we pick a node to have a workspace and grab the test reports.</p>
-<div class="highlight"><pre><code class="language-" data-lang="">node(){
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>node(){
   for(int i = 0; i &lt; test_jobs.size(); i++){
     selector = [$class: 'SpecificBuildSelector', 
                 buildNumber: "${test_jobs[i]}"]
@@ -90,8 +95,9 @@ parallel subjobs
   }
   //Your test results plugin here
 }
-</code></pre></div>
-<p>That selector trick I found in the <a href="https://github.com/jenkinsci/blueocean-acceptance-test/blob/master/Jenkinsfile#L103">blueocean sources</a> (don&#39;t even ask me how I arrived there)</p>
+</code></pre></div></div>
+
+<p>That selector trick I found in the <a href="https://github.com/jenkinsci/blueocean-acceptance-test/blob/master/Jenkinsfile#L103">blueocean sources</a> (don’t even ask me how I arrived there)</p>
 
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>

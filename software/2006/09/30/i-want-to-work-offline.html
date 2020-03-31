@@ -43,23 +43,23 @@
 <p class="meta">30 Sep 2006</p>
 
 <div class="post">
-<p>I work online. If I can&#39;t get on the network I can&#39;t work, cannot synchronize my repositories, cannot read email, check the issues/tasks/defects left for me to clear up etc.</p>
+<p>I work online. If I can’t get on the network I can’t work, cannot synchronize my repositories, cannot read email, check the issues/tasks/defects left for me to clear up etc.</p>
 
-<p>But I also work away from the office, behind firewalls that do not let me do VPN, on the train without any network connection etc. As far as code is concerned, there is no problem. Most source control systems will allow you to work offline and synchronise changes after you come back online. What about all the other collaboration tools though? </p>
+<p>But I also work away from the office, behind firewalls that do not let me do VPN, on the train without any network connection etc. As far as code is concerned, there is no problem. Most source control systems will allow you to work offline and synchronise changes after you come back online. What about all the other collaboration tools though?</p>
 
-<p>We use wikis a lot, it&#39;s a very handy tool to develop documentation for a project and keeping it up-to-date without much effort. There&#39;s a lot of knowledge in the project wiki, knowledge that is not available when you are offline.</p>
+<p>We use wikis a lot, it’s a very handy tool to develop documentation for a project and keeping it up-to-date without much effort. There’s a lot of knowledge in the project wiki, knowledge that is not available when you are offline.</p>
 
 <p>We also use Trac as an issue tracking system. Same problem there: The tickets are not available offline.</p>
 
-<p>This has been a major hurdle in the adoption of the wiki and the issue tracking system by my team. There&#39;s a lot of travelling involved, a lot of coordination meetings with the client, time where the people are essentially &quot;offline&quot; in the sense that they do not have access to the corporate network. </p>
+<p>This has been a major hurdle in the adoption of the wiki and the issue tracking system by my team. There’s a lot of travelling involved, a lot of coordination meetings with the client, time where the people are essentially “offline” in the sense that they do not have access to the corporate network.</p>
 
 <p>Which means that issues raised during a meeting will not immediately be recorded in Trac.</p>
 
-<p>Which means that solutions for problems that are described by the developer team in wiki are not available to the project manager when in a meeting. </p>
+<p>Which means that solutions for problems that are described by the developer team in wiki are not available to the project manager when in a meeting.</p>
 
 <p>Both problems either generate more work (wiki documentation has to become Word documents and changes must be then manually recorded), or lead to the disuse of the tool (meeting protocols become todo lists with issues that are never entered in Trac etc.)</p>
 
-<p>I want an offline-capable wiki and issue tracking tool. And by saying offline-capable I mean a tool that will allow someone to make local changes that can be then synchronised with the &quot;master&quot; server.</p>
+<p>I want an offline-capable wiki and issue tracking tool. And by saying offline-capable I mean a tool that will allow someone to make local changes that can be then synchronised with the “master” server.</p>
 
 <p>So I have a complete copy of the project wiki in my drive and can, i.e. in the meeting, read but also edit pages. When I get back to the corporate intranet, I use my nifty tool and enter the changes in the master wiki also updating my local copy with any changes done in my absence.</p>
 
@@ -78,17 +78,17 @@ Essentially I want a perfect replica of the wiki and issue tracking system runni
 
 <p>Getting the local changes online means commiting the changes made in the working copy.</p>
 
-<p>There are problems, especially using this scheme for issues, where one wants to have numbers for the tickets and conflicts can arise very easily. A workaround would be to assign temporary ids locally, which then get resolved on commiting (i.e. a pre-commit hook script can do this). Also keeping the master always updated can create situations where a user sees the &quot;somebody changed the page&quot; more often.</p>
+<p>There are problems, especially using this scheme for issues, where one wants to have numbers for the tickets and conflicts can arise very easily. A workaround would be to assign temporary ids locally, which then get resolved on commiting (i.e. a pre-commit hook script can do this). Also keeping the master always updated can create situations where a user sees the “somebody changed the page” more often.</p>
 
-<p>A challenge is to set this up so that it requires the minimum intervention by the user. </p>
+<p>A challenge is to set this up so that it requires the minimum intervention by the user.</p>
 
 <p>It needs  to be easy to setup. Ideally just a check out of the working copy from the server should give you a ready working replica.</p>
 
-<p>Commiting should be a one step process in the no conflict case and also callable from the replica&#39;s application instance. It would be something like update/resolve possible conflicts/commit.</p>
+<p>Commiting should be a one step process in the no conflict case and also callable from the replica’s application instance. It would be something like update/resolve possible conflicts/commit.</p>
 
 <p>Also commit logs should be generated automatically from the content of the edited page.</p>
 
-<p>Another challenge is the design of the repository. For a wiki going back to the format used by the original Qwiki (each page a text file) would be the easiest way. </p>
+<p>Another challenge is the design of the repository. For a wiki going back to the format used by the original Qwiki (each page a text file) would be the easiest way.</p>
 
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>

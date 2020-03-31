@@ -45,12 +45,13 @@
 <div class="post">
 <p>I like keeping the number of commits in my pull requests in the low single digits, preferably 1. For context see the post on my <a href="/software/2019/06/18/disaster-resistant-git">disaster resistant git workflow</a>.</p>
 
-<p>I used to do all the work, squashing the commits at the end of the work before merging my pull requests but recently I have switched to using <code>git commit --amend</code>.</p>
+<p>I used to do all the work, squashing the commits at the end of the work before merging my pull requests but recently I have switched to using <code class="highlighter-rouge">git commit --amend</code>.</p>
 
 <p>The reason for this is that while I have noticed that I rarely need to re-arrange my commits in logical groups when squashing (call it a benefit of experience - it certainly was not like this years ago), I make a lot of typing and syntax errors.</p>
 
 <p>As a result my typical change originally looks like</p>
-<div class="highlight"><pre><code class="language-" data-lang="">c31e548 Some informed and wise comment on the change
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>c31e548 Some informed and wise comment on the change
 dfdfd15 typo
 d19f4f1 typo
 7122e4a typo fix
@@ -63,27 +64,32 @@ d8e72cf doh, PEBKAC
 db6aa1c I hate ...
 47d3dc7 AAAARGH
 4640d92 done
-</code></pre></div>
-<p>Previously I would be kind and squash, but you could follow everything in the pull request notifications. <code>--amend</code>allows me to appear infalible :D.</p>
+</code></pre></div></div>
+
+<p>Previously I would be kind and squash, but you could follow everything in the pull request notifications. <code class="highlighter-rouge">--amend</code>allows me to appear infalible :D.</p>
 
 <p>As an added optimization (remember, I usually do builds and CI and stuff like that - my code does not need the CI, it IS the CI) I recently added an alias to my collection:</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git config alias.cowboy
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>git config alias.cowboy
 <span class="o">!</span>git commit <span class="nt">--amend</span> <span class="o">&amp;&amp;</span> git push <span class="nt">-f</span>
-</code></pre></div>
+</code></pre></div></div>
+
 <p>As a measure of sparing me a few keystrokes it is great (remember, I typo <strong>a lot</strong>). As a practice it is questionable, but see in which context it is used in the aforementioned git workflow post.</p>
 
 <p>Funnily, in Azure Devops I get to trip myself up with this.</p>
 
-<p><img src="/images/git-too-fast.png" alt="Checkout error"></p>
+<p><img src="/images/git-too-fast.png" alt="Checkout error" /></p>
 
 <p>Today I started with builds failing on checkout, which was wierd.</p>
 
 <p>Looking closer it gets momentarily even wierder:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">fatal: reference is not a tree
-</code></pre></div>
-<h2>What happened</h2>
 
-<p>Basically my cowboy ways pulled the rug from under git&#39;s feet.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fatal: reference is not a tree
+</code></pre></div></div>
+
+<h2 id="what-happened">What happened</h2>
+
+<p>Basically my cowboy ways pulled the rug from under git’s feet.</p>
 
 <p>What you see is a live demostration of the dangers of rewriting history in git.</p>
 
@@ -91,7 +97,7 @@ db6aa1c I hate ...
 
 <p>No harm done other than a negative skew on my successfull build percentage.</p>
 
-<p>Everything is fine, we&#39;re all professionals here.</p>
+<p>Everything is fine, we’re all professionals here.</p>
 
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>

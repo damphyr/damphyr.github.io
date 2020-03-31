@@ -50,10 +50,9 @@
 <p>That left me with generating VS project and solution files programmatically using Ruby.
 I started by creating a single C library project and a single executable project and added the files from our source control, made sure I could compile and link and then took the resulting .vcproj and .sln files and created ERB templates.</p>
 
-<p>Half a day later the code to fill in the templates was complete and I could generate a bunch of project files and a solution. The only problem? It didn&#39;t work!</p>
+<p>Half a day later the code to fill in the templates was complete and I could generate a bunch of project files and a solution. The only problem? It didn’t work!</p>
 
-<h3>The tale of the aberrant separator</h3>
-
+<h3 id="the-tale-of-the-aberrant-separator">The tale of the aberrant separator</h3>
 <p>Compilation in the library projects worked, but the linker could no locate the .obj files. 
 See if you can spot the error. The following works:</p>
 
@@ -73,7 +72,7 @@ See if you can spot the error. The following works:</p>
 
 <p>After a lot of fiddling with the generation code, even more Google searches and reading, progress equaled exactly 0.</p>
 
-<p>Turns out, VS parses the relative paths of the files in the project and attempts to extract the basename (the last element of the full pathname). When the paths are defined with &#39;/&#39; as a separator, VS can find the files, open them in the editor and compile them, but it cannot determine the correct basename so it passes the complete relative pathname (with an .obj extension) as a parameter to the linker. Kaboom!</p>
+<p>Turns out, VS parses the relative paths of the files in the project and attempts to extract the basename (the last element of the full pathname). When the paths are defined with ‘/’ as a separator, VS can find the files, open them in the editor and compile them, but it cannot determine the correct basename so it passes the complete relative pathname (with an .obj extension) as a parameter to the linker. Kaboom!</p>
 
 <p>This type of inconsistent software behaviour consumes something like 70% of my time.</p>
 
@@ -81,9 +80,7 @@ See if you can spot the error. The following works:</p>
 
 <p>That took care of the individual projects and allowed project dependencies but there was one more annoying effect:
 F6 (or ctrl-B) did not work.</p>
-
-<h3>The tale of the upward leaning letters</h3>
-
+<h3 id="the-tale-of-the-upward-leaning-letters">The tale of the upward leaning letters</h3>
 <p>The .sln file is a prime example of a fascination with GUIDs that has gone a bit too far.
 The section that defines which projects to include when building a solution looks like this:</p>
 
@@ -99,32 +96,31 @@ EndGlobalSection</code></pre></figure>
   {FDD7A441-7A54-4EAD-B8D9-4F23C2AD89B7}.Debug|Win32.Build.0 = Debug|Win32
 EndGlobalSection</code></pre></figure>
 
-<p>Yep, it doens&#39;t matter if the GUIDs match perfectly and the project files are loaded normally. The only way the build configuration is loaded correctly is if the letters in the GUIDs are upper case. Nowhere else in the .sln file is that necessary.</p>
+<p>Yep, it doens’t matter if the GUIDs match perfectly and the project files are loaded normally. The only way the build configuration is loaded correctly is if the letters in the GUIDs are upper case. Nowhere else in the .sln file is that necessary.</p>
 
 <p>To make matters worse Visual Studio will silently remove all Build.0 entries it cannot match to projects and rewrite the .sln on exit.</p>
-
-<h3>The tale of explicit object destinations</h3>
-
+<h3 id="the-tale-of-explicit-object-destinations">The tale of explicit object destinations</h3>
 <p>One more possible stumbling block when generating Visual C/C++ projects is the definition of the object file name.
 The compiler settings translate to:</p>
 
 <figure class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;Tool</span> <span class="na">Name=</span><span class="s">"VCCLCompilerTool"</span> <span class="na">Optimization=</span><span class="s">"0"</span> <span class="na">MinimalRebuild=</span><span class="s">"true"</span> 
             <span class="na">BasicRuntimeChecks=</span><span class="s">"3"</span> <span class="na">RuntimeLibrary=</span><span class="s">"3"</span>  <span class="na">ObjectFile=</span><span class="s">"$(IntDir)/OBJS/"</span><span class="nt">/&gt;</span></code></pre></figure>
 
-<p>That trailing &#39;/&#39; in the value of ObjectFile is important. If you leave it out the compiler uses the same .obj name for every .c file and you end up with the binary for a single C file as your library.</p>
+<p>That trailing ‘/’ in the value of ObjectFile is important. If you leave it out the compiler uses the same .obj name for every .c file and you end up with the binary for a single C file as your library.</p>
 
 <p>Those were the three biggest time wasters while trying to figure out how to create Visual Studio solutions programmatically. For those of you considering this exercise on your own keep the command line reference for the <a href="http://msdn.microsoft.com/en-us/library/19z1t1wy%28v=VS.90%29.aspx">compiler</a>, the <a href="http://msdn.microsoft.com/en-us/library/y0zzbyt4%28v=VS.90%29.aspx">linker</a> and <a href="http://msdn.microsoft.com/en-us/library/7ykb2k5f%28v=VS.90%29.aspx">librarian</a> handy and skim once the <a href="http://msdn.microsoft.com/en-us/library/2208a1f2%28v=VS.90%29.aspx">XML Schema</a> for VC project files.</p>
 
-<p>And probably the most important tip is to figure out how the various options translate from Visual Studio dialogs into command line arguments for the compiler and the linker. 
-<hr/>
-<sup>1</sup> 
-Visual Studio is considered among the IDE best of breed and the one and only choice really when dealing with .NET managed code or Windows APIs. It&#39;s also a beast, in parts slow (adding references or starting unit tests anyone?), in parts unwieldy, memory hungry and with really crappy source control integration (even with TFS).</p>
+<p>And probably the most important tip is to figure out how the various options translate from Visual Studio dialogs into command line arguments for the compiler and the linker.</p>
+<hr />
 
-<p>Granted, each VS version improves on these painful issues and the move to managed code for the suite will prove a boon. Also since I haven&#39;t yet put 2010 into production use I can&#39;t really pass judgment on how far the improvements have come.</p>
+<p><sup>1</sup> 
+Visual Studio is considered among the IDE best of breed and the one and only choice really when dealing with .NET managed code or Windows APIs. It’s also a beast, in parts slow (adding references or starting unit tests anyone?), in parts unwieldy, memory hungry and with really crappy source control integration (even with TFS).</p>
 
-<p>I am not a friend of IDEs (my commenting on Eclipse runs along the same lines - I&#39;ve just <del>suffered</del> worked longer with VS) and I will go a long way to avoid adding one to my workflow. Mostly due to the difficulties one meets when trying to marry continuous integration and TDD with IDE workflows and the absolute nightmare of handling a multi-languange, multi-platform project. </p>
+<p>Granted, each VS version improves on these painful issues and the move to managed code for the suite will prove a boon. Also since I haven’t yet put 2010 into production use I can’t really pass judgment on how far the improvements have come.</p>
 
-<p>Some things cannot be avoided though and when working in a team as the tools/test/automation geek you can&#39;t really come out and say &quot;Visual Studio is out of the question because I don&#39;t like it&quot;. If they are good professionals they&#39;ll just throw the killer argument in the fray: &quot;but how are we going to debug the code?&quot;, otherwise you will have a religious flame-war in your hands.</p>
+<p>I am not a friend of IDEs (my commenting on Eclipse runs along the same lines - I’ve just <del>suffered</del> worked longer with VS) and I will go a long way to avoid adding one to my workflow. Mostly due to the difficulties one meets when trying to marry continuous integration and TDD with IDE workflows and the absolute nightmare of handling a multi-languange, multi-platform project.</p>
+
+<p>Some things cannot be avoided though and when working in a team as the tools/test/automation geek you can’t really come out and say “Visual Studio is out of the question because I don’t like it”. If they are good professionals they’ll just throw the killer argument in the fray: “but how are we going to debug the code?”, otherwise you will have a religious flame-war in your hands.</p>
 
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>

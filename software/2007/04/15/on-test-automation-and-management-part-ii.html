@@ -47,7 +47,7 @@
 
 <p>The test is successful when all steps are successful, or it fails when as much as one step fails.</p>
 
-<p>In it&#39;s simplest form a test consists of a single step, a script or a call to an application that runs a(nother) script.</p>
+<p>In it’s simplest form a test consists of a single step, a script or a call to an application that runs a(nother) script.</p>
 
 <p>A test specification would contain a description of the test, pre- and post-conditions together with the steps required for execution plus information about the requirements leading to this test.</p>
 
@@ -68,16 +68,18 @@
   <span class="nt">&lt;/scenario&gt;</span>
 <span class="nt">&lt;/specification&gt;</span></code></pre></figure>
 
-<p>Parsing these specifications allows for:
-* Execution of the scenario elements.
-* Generation of overview documents.
-* Generation of reports for each execution.</p>
+<p>Parsing these specifications allows for:</p>
+<ul>
+  <li>Execution of the scenario elements.</li>
+  <li>Generation of overview documents.</li>
+  <li>Generation of reports for each execution.</li>
+</ul>
 
 <p>To do all of the above, lets separate the three major blocks of functionality and add a <em>manager</em> to handle coordination:</p>
 
-<p><img src="/images/tm.png" alt="manager"></p>
+<p><img src="/images/tm.png" alt="manager" /></p>
 
-<p>The above XML will <em>not</em> work for every project. Things like units, test groups, attributes that define types, test conditions etc. are universally...different.
+<p>The above XML will <em>not</em> work for every project. Things like units, test groups, attributes that define types, test conditions etc. are universally…different.
 Establishing a format that satisfies the requirements of all projects is an effort that will lead to a too complex, all-knowing and nothing-achieving behemoth. In short it would be futile.</p>
 
 <p>What can be done is define a set of conventions and boundaries within which such specifications can be managed.</p>
@@ -97,7 +99,7 @@ Using as basis the contrived example project from <a href="/software/2007/04/13/
 <span class="nt">&lt;/scenario&gt;</span> </code></pre></figure>
 
 <p>Additionally in many cases the specification itself will have to contain more information (i.e. requirement tracing).
-In a <a href="/software/2007/04/16/on-test-automation-and-management-part-iii/">later installment</a> I will present a solution that provides enough flexibility for the adaptation of the parser without exponentially increasing it&#39;s complexity.</p>
+In a <a href="/software/2007/04/16/on-test-automation-and-management-part-iii/">later installment</a> I will present a solution that provides enough flexibility for the adaptation of the parser without exponentially increasing it’s complexity.</p>
 
   <p>
     <span class='st_twitter_large' displayText='Tweet'></span>
