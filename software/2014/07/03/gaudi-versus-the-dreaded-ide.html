@@ -88,16 +88,16 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-    <span class="nt">&lt;</span><span class="err">%=</span><span class="na">source_list</span><span class="err">.</span><span class="na">join</span><span class="err">("</span> <span class="err">\\\</span><span class="na">n</span>    <span class="err">")%</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;</span><span class="err">%=</span><span class="na">source_list.join</span><span class="err">("</span> <span class="err">\\\</span><span class="na">n</span>    <span class="err">")%</span><span class="nt">&gt;</span>
 
 HEADERS += \
-    <span class="nt">&lt;</span><span class="err">%=</span><span class="na">header_list</span><span class="err">.</span><span class="na">join</span><span class="err">("</span> <span class="err">\\\</span><span class="na">n</span>    <span class="err">")%</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;</span><span class="err">%=</span><span class="na">header_list.join</span><span class="err">("</span> <span class="err">\\\</span><span class="na">n</span>    <span class="err">")%</span><span class="nt">&gt;</span>
 
 OTHER_FILES += \
-    <span class="nt">&lt;</span><span class="err">%=</span><span class="na">other_list</span><span class="err">.</span><span class="na">join</span><span class="err">("</span> <span class="err">\\\</span><span class="na">n</span>    <span class="err">")%</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;</span><span class="err">%=</span><span class="na">other_list.join</span><span class="err">("</span> <span class="err">\\\</span><span class="na">n</span>    <span class="err">")%</span><span class="nt">&gt;</span>
 
 INCLUDEPATH += \
-    <span class="nt">&lt;</span><span class="err">%=</span><span class="na">include_path_list</span><span class="err">.</span><span class="na">join</span><span class="err">("</span> <span class="err">\\\</span><span class="na">n</span>    <span class="err">")%</span><span class="nt">&gt;</span></code></pre></figure>
+    <span class="nt">&lt;</span><span class="err">%=</span><span class="na">include_path_list.join</span><span class="err">("</span> <span class="err">\\\</span><span class="na">n</span>    <span class="err">")%</span><span class="nt">&gt;</span></code></pre></figure>
 
 <p>Here we show only the relevant part from the prj.user.pro.template<sup>3</sup> with the custom build system settings</p>
 

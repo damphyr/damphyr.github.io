@@ -135,23 +135,23 @@ The script I used to detect the hotfix is</p>
 </span><span class="c">#and goes in a loop until it shows up or the counter runs out</span><span class="w">
 
 </span><span class="nv">$id</span><span class="o">=</span><span class="nv">$</span><span class="nn">env</span><span class="p">:</span><span class="nv">HOTFIX_ID</span><span class="w">
-</span><span class="nv">$max_tries</span><span class="o">=</span><span class="p">[</span><span class="kt">Int32</span><span class="p">]</span><span class="nv">$</span><span class="nn">env</span><span class="p">:</span><span class="nv">HOTFIX_DETECT_TRIES</span><span class="w">
+</span><span class="nv">$max_tries</span><span class="o">=</span><span class="p">[</span><span class="n">Int32</span><span class="p">]</span><span class="nv">$</span><span class="nn">env</span><span class="p">:</span><span class="nv">HOTFIX_DETECT_TRIES</span><span class="w">
 </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$max_tries</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="mi">0</span><span class="p">){</span><span class="w">
   </span><span class="nv">$max_tries</span><span class="o">=</span><span class="mi">90</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span><span class="nv">$counter</span><span class="o">=</span><span class="mi">0</span><span class="w">
 </span><span class="kr">while</span><span class="p">(</span><span class="nv">$counter</span><span class="w"> </span><span class="o">-lt</span><span class="w"> </span><span class="nv">$max_tries</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
-  </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nf">get-hotfix</span><span class="w"> </span><span class="nt">-id</span><span class="w"> </span><span class="nv">$id</span><span class="w"> </span><span class="nt">-EA</span><span class="w"> </span><span class="nx">SilentlyContinue</span><span class="p">){</span><span class="w">
+  </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="n">get-hotfix</span><span class="w"> </span><span class="nt">-id</span><span class="w"> </span><span class="nv">$id</span><span class="w"> </span><span class="nt">-EA</span><span class="w"> </span><span class="nx">SilentlyContinue</span><span class="p">){</span><span class="w">
   	</span><span class="kr">break</span><span class="w">
   </span><span class="p">}</span><span class="w">
   </span><span class="kr">else</span><span class="p">{</span><span class="w">
   	</span><span class="nv">$counter</span><span class="o">+=</span><span class="mi">1</span><span class="w">
-    </span><span class="nf">Start-Sleep</span><span class="w"> </span><span class="nx">5</span><span class="w">
+    </span><span class="n">Start-Sleep</span><span class="w"> </span><span class="nx">5</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w"> 
 </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$counter</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="nv">$max_tries</span><span class="p">)</span><span class="w">
 </span><span class="p">{</span><span class="w">
-	</span><span class="nf">echo</span><span class="w"> </span><span class="s2">"Timed out waiting for </span><span class="nv">$id</span><span class="s2"> - tried </span><span class="nv">$counter</span><span class="s2"> times"</span><span class="w">
+	</span><span class="n">echo</span><span class="w"> </span><span class="s2">"Timed out waiting for </span><span class="nv">$id</span><span class="s2"> - tried </span><span class="nv">$counter</span><span class="s2"> times"</span><span class="w">
 	</span><span class="kr">exit</span><span class="w"> </span><span class="mi">1</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></div>
