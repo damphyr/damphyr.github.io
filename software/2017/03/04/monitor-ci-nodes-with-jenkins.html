@@ -31,8 +31,7 @@
       <h1>Monitor CI nodes with Jenkins</h1>
 <p class="meta">04 Mar 2017</p>
 
-<div class="post">
-  <p>My team and I have had a dreadful couple of weeks.</p>
+<div class="post"><p>My team and I have had a dreadful couple of weeks.</p>
 
 <p>Network issues, license issues, Windows issues, compiler issues, flip-floping test results etc., all of them piled one on top of the other and driving us nuts. With some of these issues we have to live with and compromise (I have a rant, a crazed, raving mad rant about companies forcing you to generate development licenses <em>every week</em>).</p>
 
@@ -183,12 +182,28 @@
 <p>Those @nonCPS methods are there so that Jenkins does not have a fit trying to serialize the XmlSlurper.</p>
 
 <p>It would have been less code and a lot more readable if I had managed to talk to the Java API, but wierdness happened and the HTTP API does the work.</p>
-
 </div>
 <div id="disqus_thread"></div>
-<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
-<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+<script>
+  var disqus_config = function () {
+    this.page.url = "/software/2017/03/04/monitor-ci-nodes-with-jenkins";
+    this.page.identifier = "/software/2017/03/04/monitor-ci-nodes-with-jenkins";
+  };
+  (function () {
+    var d = document,
+      s = d.createElement("script");
+    s.src = "https://ampelofilosofies.disqus.com/embed.js";
+    s.setAttribute("data-timestamp", +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript
+  >Please enable JavaScript to view the
+  <a href="https://disqus.com/?ref_noscript"
+    >comments powered by Disqus.</a
+  ></noscript
+>
+
 
       <div class="footer">
         <div class="contact">

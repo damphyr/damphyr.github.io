@@ -31,8 +31,7 @@
       <h1>Tales of Teamcity: Adventures in Kotlin</h1>
 <p class="meta">31 Mar 2020</p>
 
-<div class="post">
-  <p>TeamCity is one CI system I haven’t had a lot of contact until now. As will become evident, this has now changed.</p>
+<div class="post"><p>TeamCity is one CI system I haven’t had a lot of contact until now. As will become evident, this has now changed.</p>
 
 <p>So, alongside a crash course in basic Kotlin, I now have to figure out how to get my brand of build automation working in TeamCity.</p>
 
@@ -98,12 +97,28 @@
 <p>Basically I have a playground repository with a scaffolded <a href="https://github.com/damphyr/gaudi">gaudi</a> that I can use to click things together. I think I already stumbled on a bug for a runner, so expect a post on community, support and bug reports.</p>
 
 <p>I’ve already put a variant of the <a href="https://blog.jetbrains.com/teamcity/2019/04/configuration-as-code-part-3-creating-build-configurations-dynamically/">Configuration as Code, Part 3: Creating Build Configurations Dynamically</a> to good use and it has opened some interesting questions, so that will be the next post.</p>
-
 </div>
 <div id="disqus_thread"></div>
-<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
-<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+<script>
+  var disqus_config = function () {
+    this.page.url = "/software/2020/03/31/adventures-in-kotlin-1";
+    this.page.identifier = "/software/2020/03/31/adventures-in-kotlin-1";
+  };
+  (function () {
+    var d = document,
+      s = d.createElement("script");
+    s.src = "https://ampelofilosofies.disqus.com/embed.js";
+    s.setAttribute("data-timestamp", +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript
+  >Please enable JavaScript to view the
+  <a href="https://disqus.com/?ref_noscript"
+    >comments powered by Disqus.</a
+  ></noscript
+>
+
 
       <div class="footer">
         <div class="contact">

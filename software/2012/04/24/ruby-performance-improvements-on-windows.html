@@ -31,8 +31,7 @@
       <h1>Ruby performance improvements on Windows</h1>
 <p class="meta">24 Apr 2012</p>
 
-<div class="post">
-  <p>Thanks to <a href="http://twitter.com/#!/luislavena">@luislavena</a> I got wind of the <a href="https://groups.google.com/forum/?fromgroups#!topic/thecodeshop/WVA4N2lJoM4">1.9.3 TCS experimental build</a>. The promise of faster File operations under Windows was too good to pass up.</p>
+<div class="post"><p>Thanks to <a href="http://twitter.com/#!/luislavena">@luislavena</a> I got wind of the <a href="https://groups.google.com/forum/?fromgroups#!topic/thecodeshop/WVA4N2lJoM4">1.9.3 TCS experimental build</a>. The promise of faster File operations under Windows was too good to pass up.</p>
 
 <p>My by now legendary ( ;) ) build system (see <a href="/2011/08/09/script-performance/">here</a>, <a href="/software/2011/06/08/rake-performance-check-the-mirror/">here</a>, <a href="/software/2011/05/20/rake-performance-sh-im-working/">here</a> and <a href="/software/2011/05/10/ruby-performance-what-a-difference-the-compiler-makes/">here</a> in reverse chronological order) is ideal as a realistic benchmark: It’s a production system that relies heavily on File operations, reading, writing files and manipulating paths by the thousands. On Windows!</p>
 
@@ -64,12 +63,28 @@ This percentage is skewed by the long running builds that are unfortunately affe
 <strong>If you ‘re still on 1.9.2 then you should switch to 1.9.3</strong>. Performance is improved across the board.</p>
 
 <p>I won’t yet jump on the TCS bandwagon because of the performance lag in the long tasks but I think that the fenix patch should be merged into Ruby main, the numbers are simply so much better.</p>
-
 </div>
 <div id="disqus_thread"></div>
-<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
-<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+<script>
+  var disqus_config = function () {
+    this.page.url = "/software/2012/04/24/ruby-performance-improvements-on-windows";
+    this.page.identifier = "/software/2012/04/24/ruby-performance-improvements-on-windows";
+  };
+  (function () {
+    var d = document,
+      s = d.createElement("script");
+    s.src = "https://ampelofilosofies.disqus.com/embed.js";
+    s.setAttribute("data-timestamp", +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript
+  >Please enable JavaScript to view the
+  <a href="https://disqus.com/?ref_noscript"
+    >comments powered by Disqus.</a
+  ></noscript
+>
+
 
       <div class="footer">
         <div class="contact">

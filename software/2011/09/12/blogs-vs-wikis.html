@@ -31,8 +31,7 @@
       <h1>Blogs vs Wikis</h1>
 <p class="meta">12 Sep 2011</p>
 
-<div class="post">
-  <p>###A little bit of background
+<div class="post"><p>###A little bit of background
 I’ve worked with a lot of teams over the years both on-site with customers and in-house with independent teams and one of the constants was the need for a persistent knowledge archive.</p>
 
 <p>“persistent knowledge archive” is just a pompous term for a repository where the team can easily maintain draft documentation, document decisions that affect development and also maintain documentation that is not actually part of the product, like how to use the testing rig, how to setup the development environment etc.</p>
@@ -104,12 +103,28 @@ I find that blogs make a better communication medium for medium to long term per
 <p><sup>1</sup> “introduce” is another pompous term that means I ran around extolling the virtues of a tool until my significantly more intelligent colleagues get tired of hearing the noise and start using it just to shut me up.</p>
 
 <p><sup>2</sup> I initially was myself baffled by this since collective code ownership is something we strive for in our projects until I noticed that no matter how many developers can understand and change the code the developer who originally was tasked with creating a feature was always referred to as “the guy who wrote it”.</p>
-
 </div>
 <div id="disqus_thread"></div>
-<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
-<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+<script>
+  var disqus_config = function () {
+    this.page.url = "/software/2011/09/12/blogs-vs-wikis";
+    this.page.identifier = "/software/2011/09/12/blogs-vs-wikis";
+  };
+  (function () {
+    var d = document,
+      s = d.createElement("script");
+    s.src = "https://ampelofilosofies.disqus.com/embed.js";
+    s.setAttribute("data-timestamp", +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript
+  >Please enable JavaScript to view the
+  <a href="https://disqus.com/?ref_noscript"
+    >comments powered by Disqus.</a
+  ></noscript
+>
+
 
       <div class="footer">
         <div class="contact">

@@ -31,8 +31,7 @@
       <h1>Visual Studio Unit Testing Shame</h1>
 <p class="meta">07 Apr 2008</p>
 
-<div class="post">
-  <p>I’m a big fan of unit testing as a bootstrap for running code in complicated systems.</p>
+<div class="post"><p>I’m a big fan of unit testing as a bootstrap for running code in complicated systems.</p>
 
 <p>Having a unit test framework allows you to run code that would otherwise require complicated deployment.</p>
 
@@ -55,12 +54,28 @@
 <p>This kind of performance completely defeats the purpose of unit testing: people will just not build any tests if it takes so long to get them running, your technical debt increases and you find yourself with software that will not run.</p>
 
 <p>Microsoft really needs to address this point.</p>
-
 </div>
 <div id="disqus_thread"></div>
-<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
-<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+<script>
+  var disqus_config = function () {
+    this.page.url = "/software/2008/04/07/visual-studio-unit-testing-shame";
+    this.page.identifier = "/software/2008/04/07/visual-studio-unit-testing-shame";
+  };
+  (function () {
+    var d = document,
+      s = d.createElement("script");
+    s.src = "https://ampelofilosofies.disqus.com/embed.js";
+    s.setAttribute("data-timestamp", +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript
+  >Please enable JavaScript to view the
+  <a href="https://disqus.com/?ref_noscript"
+    >comments powered by Disqus.</a
+  ></noscript
+>
+
 
       <div class="footer">
         <div class="contact">

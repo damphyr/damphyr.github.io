@@ -31,8 +31,7 @@
       <h1>Poor man's test parallelism</h1>
 <p class="meta">03 Jan 2012</p>
 
-<div class="post">
-  <p>###Problematic luxury
+<div class="post"><p>###Problematic luxury
 Recently in our current project we ran up against a luxury problem: The number of our tests has grown so much that it became unfeasible to let them run on a per-commit basis.</p>
 
 <p>There are also so called ‘long running’ tests that test processes with a standard duration of several minutes<sup>1</sup>. We actually want to run all tests on all builds but we were faced with a few hurdles.</p>
@@ -97,12 +96,28 @@ We have a whole bunch of rplex clients now but nowhere near the maintenance over
 <p><sup>5</sup> Oh Windows! Thou art the bane of my developer life!</p>
 
 <p><sup>6</sup> While in theory you would not want to leave any build untested when development is in full swing and you get 5 or 10 patches in the space of 5 minutes - just because somebody was careless - you only care about the last one.</p>
-
 </div>
 <div id="disqus_thread"></div>
-<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
-<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+<script>
+  var disqus_config = function () {
+    this.page.url = "/software/2012/01/03/poor-mans-test-parallelism";
+    this.page.identifier = "/software/2012/01/03/poor-mans-test-parallelism";
+  };
+  (function () {
+    var d = document,
+      s = d.createElement("script");
+    s.src = "https://ampelofilosofies.disqus.com/embed.js";
+    s.setAttribute("data-timestamp", +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript
+  >Please enable JavaScript to view the
+  <a href="https://disqus.com/?ref_noscript"
+    >comments powered by Disqus.</a
+  ></noscript
+>
+
 
       <div class="footer">
         <div class="contact">

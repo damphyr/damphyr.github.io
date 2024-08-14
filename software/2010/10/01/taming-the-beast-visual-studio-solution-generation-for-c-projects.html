@@ -31,8 +31,7 @@
       <h1>Taming the beast: Visual Studio solution generation for C projects!</h1>
 <p class="meta">01 Oct 2010</p>
 
-<div class="post">
-  <p>My current project - an embedded affair with C code and a whole universe of tools in C, Java, C#, Ruby and in-house DSLs - needs VS support<sup>1</sup>. So I rolled up my sleeves and proceeded to find a way to generate a Visual Studio solution containing all our production C code, our unit tests, any mock components and the target simulator.</p>
+<div class="post"><p>My current project - an embedded affair with C code and a whole universe of tools in C, Java, C#, Ruby and in-house DSLs - needs VS support<sup>1</sup>. So I rolled up my sleeves and proceeded to find a way to generate a Visual Studio solution containing all our production C code, our unit tests, any mock components and the target simulator.</p>
 
 <p>Originally the fastest way seemed to use <a href="http://www.cmake.org/">CMake</a> but that meant maintaining another build tool next to the current rake build system. We considered generating the requisite files from rake and then running CMake which would let us maintain one set of build configurations/scripts etc. but such a solution is too much of <a href="http://en.wikipedia.org/wiki/Rube_Goldberg">Rube Goldberg</a> and introduces all kinds of failure points.</p>
 
@@ -110,12 +109,28 @@ Visual Studio is considered among the IDE best of breed and the one and only cho
 <p>I am not a friend of IDEs (my commenting on Eclipse runs along the same lines - I’ve just <del>suffered</del> worked longer with VS) and I will go a long way to avoid adding one to my workflow. Mostly due to the difficulties one meets when trying to marry continuous integration and TDD with IDE workflows and the absolute nightmare of handling a multi-languange, multi-platform project.</p>
 
 <p>Some things cannot be avoided though and when working in a team as the tools/test/automation geek you can’t really come out and say “Visual Studio is out of the question because I don’t like it”. If they are good professionals they’ll just throw the killer argument in the fray: “but how are we going to debug the code?”, otherwise you will have a religious flame-war in your hands.</p>
-
 </div>
 <div id="disqus_thread"></div>
-<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
-<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+<script>
+  var disqus_config = function () {
+    this.page.url = "/software/2010/10/01/taming-the-beast-visual-studio-solution-generation-for-c-projects";
+    this.page.identifier = "/software/2010/10/01/taming-the-beast-visual-studio-solution-generation-for-c-projects";
+  };
+  (function () {
+    var d = document,
+      s = d.createElement("script");
+    s.src = "https://ampelofilosofies.disqus.com/embed.js";
+    s.setAttribute("data-timestamp", +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript
+  >Please enable JavaScript to view the
+  <a href="https://disqus.com/?ref_noscript"
+    >comments powered by Disqus.</a
+  ></noscript
+>
+
 
       <div class="footer">
         <div class="contact">

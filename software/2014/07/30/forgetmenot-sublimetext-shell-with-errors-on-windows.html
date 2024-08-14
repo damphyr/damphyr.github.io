@@ -31,8 +31,7 @@
       <h1>ForgetMeNot: SublimeText shell with errors on Windows</h1>
 <p class="meta">30 Jul 2014</p>
 
-<div class="post">
-  <p>I’ve been running <a href="http://www.sublimetext.com/3">SublimeText v3</a> with the <a href="https://github.com/misfo/Shell-Turtlestein">Shell-Turtlestein</a> plugin for a while now.</p>
+<div class="post"><p>I’ve been running <a href="http://www.sublimetext.com/3">SublimeText v3</a> with the <a href="https://github.com/misfo/Shell-Turtlestein">Shell-Turtlestein</a> plugin for a while now.</p>
 
 <p>There’s rarely a need to switch out of the editor window anymore and I’m feeling more emacsy than ever.</p>
 
@@ -46,12 +45,28 @@ When a test assertion fails and when an exception occurs.</p>
 <p>The following entry in the Shell-Turtlestein settings file will allow the use of F4 to jump to the error line in these two cases on windows (for *ix OSes there’s plenty of examples out there)</p>
 
 <figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="nl">"exec_args"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nl">"file_regex"</span><span class="p">:</span><span class="s2">"^</span><span class="se">\\</span><span class="s2">s*</span><span class="se">\\</span><span class="s2">w*</span><span class="se">\\</span><span class="s2">(*</span><span class="se">\\</span><span class="s2">w*</span><span class="se">\\</span><span class="s2">)*</span><span class="se">\\</span><span class="s2">s*</span><span class="se">\\</span><span class="s2">[*(</span><span class="se">\\</span><span class="s2">w+:</span><span class="se">\\</span><span class="s2">/.+</span><span class="se">\\</span><span class="s2">.*</span><span class="se">\\</span><span class="s2">w*):([0-9]+)</span><span class="se">\\</span><span class="s2">]*:()(.*)"</span><span class="p">}</span></code></pre></figure>
-
 </div>
 <div id="disqus_thread"></div>
-<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
-<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+<script>
+  var disqus_config = function () {
+    this.page.url = "/software/2014/07/30/forgetmenot-sublimetext-shell-with-errors-on-windows";
+    this.page.identifier = "/software/2014/07/30/forgetmenot-sublimetext-shell-with-errors-on-windows";
+  };
+  (function () {
+    var d = document,
+      s = d.createElement("script");
+    s.src = "https://ampelofilosofies.disqus.com/embed.js";
+    s.setAttribute("data-timestamp", +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript
+  >Please enable JavaScript to view the
+  <a href="https://disqus.com/?ref_noscript"
+    >comments powered by Disqus.</a
+  ></noscript
+>
+
 
       <div class="footer">
         <div class="contact">

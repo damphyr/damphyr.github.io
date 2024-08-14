@@ -31,8 +31,7 @@
       <h1>Building with rake: Provisions</h1>
 <p class="meta">19 Mar 2014</p>
 
-<div class="post">
-  <p>This is the third article in the series and it is part two of the setup saga. the whole thing starts <a href="/software/2013/10/22/building-with-rake-I">here</a>.</p>
+<div class="post"><p>This is the third article in the series and it is part two of the setup saga. the whole thing starts <a href="/software/2013/10/22/building-with-rake-I">here</a>.</p>
 
 <p>In <a href="/software/2014/03/15/building-with-rake-II">part one</a> we laid the ground work and ended up with a 32bit CentOS 6.5 installation in a virtual machine configured for control via vagrant.</p>
 
@@ -118,12 +117,28 @@ rpm <span class="nt">--install</span> /home/vagrant/host_share/setup/gnurx_v14.0
 <p>It’s not unusual for embedded projects to have support lifecycles of 5 years or more. Can you remember which CentOS version was state-of-the-art 7 years ago? Can you guarantee that 6.5 will be available in seven years time? The longer a project will be supported for, the more of it’s environment should be in the repository.</p>
 
 <p><img src="/images/the_dream.png" alt="that's the dream" />  The goal is to be able to recreate the development environment at any point in time with just a copy of HEAD at hand.</p>
-
 </div>
 <div id="disqus_thread"></div>
-<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
-<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+<script>
+  var disqus_config = function () {
+    this.page.url = "/software/2014/03/19/building-with-rake-III";
+    this.page.identifier = "/software/2014/03/19/building-with-rake-III";
+  };
+  (function () {
+    var d = document,
+      s = d.createElement("script");
+    s.src = "https://ampelofilosofies.disqus.com/embed.js";
+    s.setAttribute("data-timestamp", +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript
+  >Please enable JavaScript to view the
+  <a href="https://disqus.com/?ref_noscript"
+    >comments powered by Disqus.</a
+  ></noscript
+>
+
 
       <div class="footer">
         <div class="contact">

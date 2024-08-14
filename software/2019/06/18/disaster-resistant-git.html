@@ -31,8 +31,7 @@
       <h1>Disaster-resistant git</h1>
 <p class="meta">18 Jun 2019</p>
 
-<div class="post">
-  <p>Over the years I have developed a very disaster-resistant git workflow:</p>
+<div class="post"><p>Over the years I have developed a very disaster-resistant git workflow:</p>
 
 <ul>
   <li>Change to open-ended branches (master, develop, releases etc.) is always via pull requests.</li>
@@ -139,12 +138,28 @@ Keep the number of commits low (single digit number), ideally bring it down to 1
 
 <p>Larger changes (of which the most common type we call ‘features’) require conscious design.
 In my experience, teams fall prey to the Merge Beast because they lack ways to incrementally introduce changes or have been given user stories that are too vague or too big. This is not a git related subject, don’t blame the tool.</p>
-
 </div>
 <div id="disqus_thread"></div>
-<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
-<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+<script>
+  var disqus_config = function () {
+    this.page.url = "/software/2019/06/18/disaster-resistant-git";
+    this.page.identifier = "/software/2019/06/18/disaster-resistant-git";
+  };
+  (function () {
+    var d = document,
+      s = d.createElement("script");
+    s.src = "https://ampelofilosofies.disqus.com/embed.js";
+    s.setAttribute("data-timestamp", +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript
+  >Please enable JavaScript to view the
+  <a href="https://disqus.com/?ref_noscript"
+    >comments powered by Disqus.</a
+  ></noscript
+>
+
 
       <div class="footer">
         <div class="contact">

@@ -31,8 +31,7 @@
       <h1>(Un)locking files in Mac OS X</h1>
 <p class="meta">04 Jun 2007</p>
 
-<div class="post">
-  <p>I stumbled on a feature of Mac OS that probably dates from the days of OS 9 and that has caused me a few problems: file locking.
+<div class="post"><p>I stumbled on a feature of Mac OS that probably dates from the days of OS 9 and that has caused me a few problems: file locking.
 File locking is nothing more than a flag (uchg) set on the file.</p>
 
 <p>Flags are like the MSDOS/Windows attributes. According to man, the following flags are possible:</p>
@@ -72,12 +71,28 @@ Back to the terminal then. It would be absurd if there was no way to do it on th
 <p>To recursively unlock files</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash">chflags <span class="nt">-R</span> nouchg <span class="o">[</span>files]</code></pre></figure>
-
 </div>
 <div id="disqus_thread"></div>
-<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
-<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+<script>
+  var disqus_config = function () {
+    this.page.url = "/software/2007/06/04/unlocking-files-in-mac-os-x";
+    this.page.identifier = "/software/2007/06/04/unlocking-files-in-mac-os-x";
+  };
+  (function () {
+    var d = document,
+      s = d.createElement("script");
+    s.src = "https://ampelofilosofies.disqus.com/embed.js";
+    s.setAttribute("data-timestamp", +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript
+  >Please enable JavaScript to view the
+  <a href="https://disqus.com/?ref_noscript"
+    >comments powered by Disqus.</a
+  ></noscript
+>
+
 
       <div class="footer">
         <div class="contact">

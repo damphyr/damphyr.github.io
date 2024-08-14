@@ -31,8 +31,7 @@
       <h1>ForgetMeNot: Pass values onwards in Azure Devops</h1>
 <p class="meta">27 Jan 2020</p>
 
-<div class="post">
-  <p>Azure Devops has this really cool feature, where you can use specially formated stdout strings to pass different commands.</p>
+<div class="post"><p>Azure Devops has this really cool feature, where you can use specially formated stdout strings to pass different commands.</p>
 
 <p>They are called <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/scripts/logging-commands?view=azure-devops&amp;tabs=bash">logging commands</a> and by far the most useful of those is setvariable which allows us to set a variable in one task, that is then available as an environment variable in subsequent tasks:</p>
 
@@ -61,12 +60,28 @@
     <span class="na">versioningScheme</span><span class="pi">:</span> <span class="s">byEnvVar</span>
     <span class="na">versionEnvVar</span><span class="pi">:</span> <span class="s">THE_CORRECT_VERSION</span>
 </code></pre></div></div>
-
 </div>
 <div id="disqus_thread"></div>
-<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
-<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+<script>
+  var disqus_config = function () {
+    this.page.url = "/software/2020/01/27/forget-me-not-setvariable";
+    this.page.identifier = "/software/2020/01/27/forget-me-not-setvariable";
+  };
+  (function () {
+    var d = document,
+      s = d.createElement("script");
+    s.src = "https://ampelofilosofies.disqus.com/embed.js";
+    s.setAttribute("data-timestamp", +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript
+  >Please enable JavaScript to view the
+  <a href="https://disqus.com/?ref_noscript"
+    >comments powered by Disqus.</a
+  ></noscript
+>
+
 
       <div class="footer">
         <div class="contact">

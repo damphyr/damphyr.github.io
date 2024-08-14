@@ -31,8 +31,7 @@
       <h1>Multiplatform build adventures: Xamarin</h1>
 <p class="meta">13 Jun 2019</p>
 
-<div class="post">
-  <p>Now that I can have everything <a href="/software/2019/06/12/dotnet-core-clean-builds">out-of-band</a> I like the dotnet core tooling a bit more.</p>
+<div class="post"><p>Now that I can have everything <a href="/software/2019/06/12/dotnet-core-clean-builds">out-of-band</a> I like the dotnet core tooling a bit more.</p>
 
 <p>But it looks like we’re not there for everything yet - funny in a way, since now, even though in this project everything is Microsoft, I still have to integrate differrent toolchains.</p>
 
@@ -44,12 +43,28 @@
 
 <pre><code class="language-cmd">msbuild /t:restore AndroidApp.csproj
 </code></pre>
-
 </div>
 <div id="disqus_thread"></div>
-<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
-<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+<script>
+  var disqus_config = function () {
+    this.page.url = "/software/2019/06/13/xamarin-dotnet";
+    this.page.identifier = "/software/2019/06/13/xamarin-dotnet";
+  };
+  (function () {
+    var d = document,
+      s = d.createElement("script");
+    s.src = "https://ampelofilosofies.disqus.com/embed.js";
+    s.setAttribute("data-timestamp", +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript
+  >Please enable JavaScript to view the
+  <a href="https://disqus.com/?ref_noscript"
+    >comments powered by Disqus.</a
+  ></noscript
+>
+
 
       <div class="footer">
         <div class="contact">

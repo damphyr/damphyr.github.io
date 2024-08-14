@@ -31,8 +31,7 @@
       <h1>Script performance</h1>
 <p class="meta">09 Aug 2011</p>
 
-<div class="post">
-  <p>Code performance has two aspects: the actual performance measured hard seconds and the perceived performance AKA the responsiveness of the application.</p>
+<div class="post"><p>Code performance has two aspects: the actual performance measured hard seconds and the perceived performance AKA the responsiveness of the application.</p>
 
 <p>When scripting, which for the purposes of this post I define as writing code that is executed once in the command line and then exits, a crucial metric is the startup time: the time it takes to load your script and start processing.</p>
 
@@ -71,12 +70,28 @@
 <p>The current workaround consists of removing the require statements from the top of the files and adding them in the tasks where the gems are actually used. This shaves about 6.5 seconds from our startup times and improves rake responsiveness significantly but has the drawback of peppering require statements all over the place. I’m extremely interested in figuring out a better way to do this and also why the current rubygems version performs so bad.</p>
 
 <p>Now to go back and refactor <a href="https://github.com/damphyr/rutema">rutema</a> so that active_record is not loaded unless needed…</p>
-
 </div>
 <div id="disqus_thread"></div>
-<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
-<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+<script>
+  var disqus_config = function () {
+    this.page.url = "/software/2011/08/09/script-performance";
+    this.page.identifier = "/software/2011/08/09/script-performance";
+  };
+  (function () {
+    var d = document,
+      s = d.createElement("script");
+    s.src = "https://ampelofilosofies.disqus.com/embed.js";
+    s.setAttribute("data-timestamp", +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript
+  >Please enable JavaScript to view the
+  <a href="https://disqus.com/?ref_noscript"
+    >comments powered by Disqus.</a
+  ></noscript
+>
+
 
       <div class="footer">
         <div class="contact">

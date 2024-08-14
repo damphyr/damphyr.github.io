@@ -31,8 +31,7 @@
       <h1>ForgetMeNot: Git Submodules</h1>
 <p class="meta">17 Mar 2019</p>
 
-<div class="post">
-  <p>I’m more likely to choose a monorepo solution if possible and I generally dislike the submodule feature in git but as always there are valid use cases (e.g. think about building a platform instead of a system).</p>
+<div class="post"><p>I’m more likely to choose a monorepo solution if possible and I generally dislike the submodule feature in git but as always there are valid use cases (e.g. think about building a platform instead of a system).</p>
 
 <p>So I put git submodules to work and immediately started doing the same mistake again and again: typos in the directory name for the module.</p>
 
@@ -51,12 +50,28 @@ git commit <span class="nt">-m</span> <span class="s2">"Removed submodule module
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git submodule add <span class="nt">-b</span> master https://git.host/module.git CorrectlySpelledDir
 git submodule init
 </code></pre></div></div>
-
 </div>
 <div id="disqus_thread"></div>
-<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
-<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+<script>
+  var disqus_config = function () {
+    this.page.url = "/software/2019/03/17/forgetmenot-git-submodules";
+    this.page.identifier = "/software/2019/03/17/forgetmenot-git-submodules";
+  };
+  (function () {
+    var d = document,
+      s = d.createElement("script");
+    s.src = "https://ampelofilosofies.disqus.com/embed.js";
+    s.setAttribute("data-timestamp", +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript
+  >Please enable JavaScript to view the
+  <a href="https://disqus.com/?ref_noscript"
+    >comments powered by Disqus.</a
+  ></noscript
+>
+
 
       <div class="footer">
         <div class="contact">

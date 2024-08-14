@@ -31,8 +31,7 @@
       <h1>Workaround for Jenkins CLI authentication</h1>
 <p class="meta">30 May 2016</p>
 
-<div class="post">
-  <p>Been trying to get Jenkins to do various nifty things automatically and it turns out it is possible, only the new 2.x series has authentication turned on by default and we somehow need to authenticate jenkins-cli to be able to do anything.</p>
+<div class="post"><p>Been trying to get Jenkins to do various nifty things automatically and it turns out it is possible, only the new 2.x series has authentication turned on by default and we somehow need to authenticate jenkins-cli to be able to do anything.</p>
 
 <p>This creates a chicken-or-egg problem, since we need jenkins-cli to create the credentials that will enable jenkins-cli to login in the first place. At least if we use the jenkins cookbook or until Jnekins gets a proper HTTP API for these things.</p>
 
@@ -86,12 +85,28 @@
 <h2 id="pitfalls">Pitfalls</h2>
 
 <p>You will need to block and wait for Jenkins to boot up before including this. For a way to do this you can check <a href="https://github.com/Zuehlke/cookbooks-jenkins-simple-app">cookbooks-jenkins-simple-app</a></p>
-
 </div>
 <div id="disqus_thread"></div>
-<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
-<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+<script>
+  var disqus_config = function () {
+    this.page.url = "/software/2016/05/30/jenkins-cli-authentication";
+    this.page.identifier = "/software/2016/05/30/jenkins-cli-authentication";
+  };
+  (function () {
+    var d = document,
+      s = d.createElement("script");
+    s.src = "https://ampelofilosofies.disqus.com/embed.js";
+    s.setAttribute("data-timestamp", +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript
+  >Please enable JavaScript to view the
+  <a href="https://disqus.com/?ref_noscript"
+    >comments powered by Disqus.</a
+  ></noscript
+>
+
 
       <div class="footer">
         <div class="contact">

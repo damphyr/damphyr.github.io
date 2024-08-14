@@ -31,8 +31,7 @@
       <h1>I want to work offline!</h1>
 <p class="meta">30 Sep 2006</p>
 
-<div class="post">
-  <p>I work online. If I can’t get on the network I can’t work, cannot synchronize my repositories, cannot read email, check the issues/tasks/defects left for me to clear up etc.</p>
+<div class="post"><p>I work online. If I can’t get on the network I can’t work, cannot synchronize my repositories, cannot read email, check the issues/tasks/defects left for me to clear up etc.</p>
 
 <p>But I also work away from the office, behind firewalls that do not let me do VPN, on the train without any network connection etc. As far as code is concerned, there is no problem. Most source control systems will allow you to work offline and synchronise changes after you come back online. What about all the other collaboration tools though?</p>
 
@@ -78,12 +77,28 @@ Essentially I want a perfect replica of the wiki and issue tracking system runni
 <p>Also commit logs should be generated automatically from the content of the edited page.</p>
 
 <p>Another challenge is the design of the repository. For a wiki going back to the format used by the original Qwiki (each page a text file) would be the easiest way.</p>
-
 </div>
 <div id="disqus_thread"></div>
-<script type="text/javascript" src="http://disqus.com/forums/ampelofilosofies/embed.js"></script>
-<noscript><a href="http://ampelofilosofies.disqus.com/?url=ref">View the discussion thread.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+<script>
+  var disqus_config = function () {
+    this.page.url = "/software/2006/09/30/i-want-to-work-offline";
+    this.page.identifier = "/software/2006/09/30/i-want-to-work-offline";
+  };
+  (function () {
+    var d = document,
+      s = d.createElement("script");
+    s.src = "https://ampelofilosofies.disqus.com/embed.js";
+    s.setAttribute("data-timestamp", +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript
+  >Please enable JavaScript to view the
+  <a href="https://disqus.com/?ref_noscript"
+    >comments powered by Disqus.</a
+  ></noscript
+>
+
 
       <div class="footer">
         <div class="contact">
