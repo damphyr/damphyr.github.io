@@ -7,6 +7,84 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Autonomy in software development teams</title>
+        <description>&lt;p&gt;The subject is autonomy within a software development team, or rather the consequences of interpreting a very broad and vague term such as the single word “autonomy” in very different ways depending on where you come from, how experienced you are or what suits you.&lt;/p&gt;
+
+&lt;p&gt;My first reaction once I got the idea of writing this down was to go back through the sources, my own influences over the years and the research that buttressed my own vocal support of autonomy. To hunt down the origin of the use of words like agency and self-determination. The borrowed metaphors from psychology and social sciences selectively interwoven within the discipline of software development. To present the research and quote the papers.&lt;/p&gt;
+
+&lt;p&gt;But I can’t really be bothered because the accumulated experience taps me on the shoulder and says “nah, that’s all theory. In practice none of this ever holds 100% true and every team you’ve been on has been a unique blend”.&lt;/p&gt;
+
+&lt;p&gt;So, f* it, I’ll just write what I have experienced and hope my years in this job have enriched my sample enough to bear statistical significance without really believing it will.&lt;/p&gt;
+
+&lt;h2 id=&quot;observation-1-humans-are-lazy&quot;&gt;Observation #1: Humans are lazy&lt;/h2&gt;
+
+&lt;p&gt;Probably by design, something about the way our brains process signals and the fact that it takes so much energy to actually run that brain of ours.&lt;/p&gt;
+
+&lt;p&gt;The observation is that people automatically fall back in their comfort zones. They also underperform if they find themselves outside their comfort zone for prolonged periods of time.&lt;/p&gt;
+
+&lt;p&gt;Remaining outside your comfort zone requires effort. The fact that it will eventually expand your comfort zone is irrelevant to the point. We reserve the expenditure of energy for things we care about.&lt;/p&gt;
+
+&lt;h2 id=&quot;observation-2-diversity-is-brilliant-but-expensive&quot;&gt;Observation #2: Diversity is brilliant but expensive&lt;/h2&gt;
+
+&lt;p&gt;Expensive in terms of effort and mental and psychological energy expenditure. Dealing with differences and alternate, often times opposing points of view, is outside most people’s comfort zone.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion-1&quot;&gt;Conclusion #1&lt;/h2&gt;
+
+&lt;p&gt;Putting the first two observations together results in something along the lines of “putting a diverse team together requires a significant amount of initial effort and will only work if the team is able to establish a comfort zone inclusive of it’s diversity”.&lt;/p&gt;
+
+&lt;p&gt;Consequently it is no surprise to me that most teams tend to homogenize over time: we pick the people that share our comfort zone or with which we have already developed a comfort zone.&lt;/p&gt;
+
+&lt;p&gt;There is a very interesting side-observation to this: The prevalent work mode for software developers in the past two decades has been the frequent switch of employer.
+This on first consideration would appear as a good thing as it repeatedly forces people to operate in a new team environment. It can be argued that this is a good thing as in theory it continually expands the pool of people and personalities you come into contact with.
+My own opinion is that this is a logical fallacy. Given our inherent laziness and the investment of effort required in maintaining diversity, temporality is an incentive for the opposite.
+In plain words: if you’re not going to stick around long enough and you are less productive when outside your comfort zone, it makes sense to homogenize and select for less effort required.&lt;/p&gt;
+
+&lt;h2 id=&quot;observation-3-projects-depend-on-individuals&quot;&gt;Observation #3: Projects depend on individuals&lt;/h2&gt;
+
+&lt;p&gt;There is never a team where all individuals contribute equally. Depending on the size of a team we are looking for a number between one and a low single digit number of people who are invested in achieving the team’s goal.&lt;/p&gt;
+
+&lt;p&gt;In some cases it is very difficult to get people to bother at all, especially in the beginning.&lt;/p&gt;
+
+&lt;p&gt;These individuals, the ones who care about the stated goal, are the drivers.
+The ones, who are here to do the job and get paid, well, they are the professionals.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;I will not attempt to talk about people that neither care nor do the job. Meeting this type has been a rare occurrence in my 30 years of professional experience, which is a benefit of working in a field that attracts motivated people&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;To have an autonomous team with members who have agency requires the somebodies who care to relinquish a lot of the control aspects that they care about in the first place (things like how work is organized, how the team communicates, the creative and creation process etc.).&lt;/p&gt;
+
+&lt;h2 id=&quot;observation-4-success-depends-on-collective-effort&quot;&gt;Observation #4: Success depends on collective effort&lt;/h2&gt;
+
+&lt;p&gt;No individual contribution is enough to lead a team to success. Individual contributions can easily lead a team to failure, but success depends on collective effort.&lt;/p&gt;
+
+&lt;p&gt;There is too much complexity, too much creative work required and a lot of “magic” - as in &lt;a href=&quot;https://en.wikipedia.org/wiki/Clarke%27s_three_laws&quot;&gt;“Any sufficiently advanced technology is indistinguishable from magic”&lt;/a&gt; - in software development for one person. Ergo, you need several working together.&lt;/p&gt;
+
+&lt;p&gt;Combined with observation #3 this presents us with the driver for most modern management theories: how to motivate people so that they go along towards the goal.&lt;/p&gt;
+
+&lt;p&gt;It is also in my view the limiting factor for true diverse, autonomous teams.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion-2-teams-require-autonomy-for-individuals-it-depends&quot;&gt;Conclusion #2: Teams require autonomy, for individuals it depends&lt;/h2&gt;
+
+&lt;p&gt;Full autonomy for every team individual without goal alignment inadvertently leads to conflict. We can scale this up: in a complex project with multiple teams, full team autonomy within the project is not efficient.&lt;/p&gt;
+
+&lt;p&gt;Consensus building, which is essential for collective effort requires individuals to self-regulate and limit their autonomy within the context of a team. Learning how to do this without conflict is hard.&lt;/p&gt;
+
+&lt;p&gt;Hierarchical structures with clear leadership mandates simplify things immensely - at least at first glance.
+The “just follow orders” paradigm is not prevalent in our sector. See observation #4 for a possible reason but also because modern software systems require contribution in imprecisely understood areas that are not easily quantified or measured.&lt;/p&gt;
+
+&lt;p&gt;Which is ironic, because the whole sector sells quantifiable attributes and measurability as an inherent trait.&lt;/p&gt;
+
+&lt;p&gt;But for the time being, the level of complexity and expertise required safeguards the relative independence of the experts.&lt;/p&gt;
+
+&lt;p&gt;A.I.’s promise to partly to eliminate this by industrializing a large chunk of the software development aspects and platform engineering’s recent popularity are reactions to the inefficiencies of unchecked autonomy.&lt;/p&gt;
+
+&lt;p&gt;It remains to be seen if the swing will go past the equilibrium but given that we are once again discussing technical solutions to what is essentially a social problem I would bet that in 5 or so years I will be hearing people being overly critical of how bossy ChatGPT has become.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 10 Mar 2024 15:15:21 +0100</pubDate>
+        <link>http://www.ampelofilosofies.gr/software/2024/03/10/autonomy-in-practice</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2024/03/10/autonomy-in-practice</guid>
+      </item>
+    
+      <item>
         <title>A decade in eight months</title>
         <description>&lt;p&gt;It has been a decade in less than 8 months.&lt;/p&gt;
 
@@ -42,9 +120,10 @@
 
 &lt;p&gt;The usual reductive way I follow when deciding what to focus on when crafting an experience report is not going to work this time. There is not a single point, something easily punted into a single sentence aphorism (“Automate all the things!”, “People before technology!”, “Repository first!”) that can do justice to the past eight months.&lt;/p&gt;
 
-&lt;p&gt;I’ve read about big formative projects that gave birth to ground-breaking approaches on how teams create software. This feels like one of those projects, even though there is nothing ground-breaking in the tools and methods my team uses.&lt;/p&gt;
+&lt;p&gt;I’ve read about big formative projects that gave birth to ground-breaking approaches on how teams create software. This feels like one of those projects, even though there is nothing ground-breaking in the tools and methods my team uses.
+I catch myself going through all the material, presentations, notes and memories of conference encounters.&lt;/p&gt;
 
-&lt;p&gt;I catch myself going through all that material, presentations and notes and the memories of conference encounters. This time I look for the uncertainties, the references to compromise, the “it depends”, the hesitation before delivering a list of rules, the caveats.&lt;/p&gt;
+&lt;p&gt;This time I look for the uncertainties, the references to compromise, the “it depends”, the hesitation before delivering a list of rules, the caveats.&lt;/p&gt;
 
 &lt;p&gt;It would be a lie to say that people don’t talk about compromises and trade-offs. More like that the warnings and conditionals are discarded with the passage of time leaving a shiny, polished success recipe, a myth.&lt;/p&gt;
 
@@ -158,7 +237,7 @@ It also helps to read said reference.&lt;/p&gt;
 
 &lt;p&gt;This is rule of git acquisition number 23:&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;The repository comes first&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;The repository comes first&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;So, when we set up versioning we set the appropriate option:&lt;/p&gt;
 
@@ -314,19 +393,19 @@ It figures out what to use as a package name by using the &lt;em&gt;classname&lt
         <title>Adventures in Azure DevOps: I git too fast</title>
         <description>&lt;p&gt;I like keeping the number of commits in my pull requests in the low single digits, preferably 1. For context see the post on my &lt;a href=&quot;/software/2019/06/18/disaster-resistant-git&quot;&gt;disaster resistant git workflow&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;I used to do all the work, squashing the commits at the end of the work before merging my pull requests but recently I have switched to using &lt;code class=&quot;highlighter-rouge&quot;&gt;git commit --amend&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;I used to do all the work, squashing the commits at the end of the work before merging my pull requests but recently I have switched to using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;git commit --amend&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;The reason for this is that while I have noticed that I rarely need to re-arrange my commits in logical groups when squashing (call it a benefit of experience - it certainly was not like this years ago), I make a lot of typing and syntax errors.&lt;/p&gt;
 
 &lt;p&gt;As a result my typical change originally looks like&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;c31e548 Some informed and wise comment on the change
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;c31e548 Some informed and wise comment on the change
 dfdfd15 typo
 d19f4f1 typo
 7122e4a typo fix
 a62803a syntax fix
 53b99b8 dammit
-c657575 why didn't this work?
+c657575 why didn&apos;t this work?
 d8e72cf doh, PEBKAC
 5017515 what an idiot
 59c53d1 stupid semicolon
@@ -335,7 +414,7 @@ db6aa1c I hate ...
 4640d92 done
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Previously I would be kind and squash, but you could follow everything in the pull request notifications. &lt;code class=&quot;highlighter-rouge&quot;&gt;--amend&lt;/code&gt;allows me to appear infalible :D.&lt;/p&gt;
+&lt;p&gt;Previously I would be kind and squash, but you could follow everything in the pull request notifications. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--amend&lt;/code&gt;allows me to appear infalible :D.&lt;/p&gt;
 
 &lt;p&gt;As an added optimization (remember, I usually do builds and CI and stuff like that - my code does not need the CI, it IS the CI) I recently added an alias to my collection:&lt;/p&gt;
 
@@ -353,7 +432,7 @@ db6aa1c I hate ...
 
 &lt;p&gt;Looking closer it gets momentarily even wierder:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fatal: reference is not a tree
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fatal: reference is not a tree
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;what-happened&quot;&gt;What happened&lt;/h2&gt;
@@ -498,7 +577,7 @@ In my experience, teams fall prey to the Merge Beast because they lack ways to i
 
 &lt;p&gt;I have a rule when setting up projects for teams that aspire to the DevOps tag:&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Just the repository&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Just the repository&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;I should be able, with just the contents of the repository, to reconstruct the project, inclusive of development environment, production setup and released artifacts.&lt;/p&gt;
 
@@ -516,7 +595,7 @@ In my experience, teams fall prey to the Merge Beast because they lack ways to i
 
 &lt;h2 id=&quot;no-exceptions-to-the-rule&quot;&gt;No exceptions to the rule&lt;/h2&gt;
 
-&lt;p&gt;Back to &lt;code class=&quot;highlighter-rouge&quot;&gt;Just the repository&lt;/code&gt;, just because I do not really like exceptions, especially exceptions that have a tendency to run amok.&lt;/p&gt;
+&lt;p&gt;Back to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Just the repository&lt;/code&gt;, just because I do not really like exceptions, especially exceptions that have a tendency to run amok.&lt;/p&gt;
 
 &lt;p&gt;Secrets are such an exception. You can get a lot of them: SSL certificates, signing certificates, SSH keys, Apple provisioning profiles, Android Keystore etc. A modern development environment catering to the cloud is useless without them.&lt;/p&gt;
 
@@ -524,7 +603,7 @@ In my experience, teams fall prey to the Merge Beast because they lack ways to i
 
 &lt;p&gt;The concept goes like this:&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;All secrets are kept in a KeePass database file, which is commited in the repo.&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;All secrets are kept in a KeePass database file, which is commited in the repo.&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;Whether you script secret retrieval from the KeePass DB to add it to Azure Devops (or whichever secret management service/tool you use), or just document their existence and prefered management solution I leave to you, dear reader.&lt;/p&gt;
 
@@ -543,26 +622,6 @@ In my experience, teams fall prey to the Merge Beast because they lack ways to i
         <pubDate>Fri, 14 Jun 2019 14:15:21 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2019/06/14/azure-devops-ios-secrets</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2019/06/14/azure-devops-ios-secrets</guid>
-      </item>
-    
-      <item>
-        <title>Multiplatform build adventures: Xamarin</title>
-        <description>&lt;p&gt;Now that I can have everything &lt;a href=&quot;/software/2019/06/12/dotnet-core-clean-builds&quot;&gt;out-of-band&lt;/a&gt; I like the dotnet core tooling a bit more.&lt;/p&gt;
-
-&lt;p&gt;But it looks like we’re not there for everything yet - funny in a way, since now, even though in this project everything is Microsoft, I still have to integrate differrent toolchains.&lt;/p&gt;
-
-&lt;p&gt;So, the newest problem on the block: Xamarin Android projects cannot be restored with &lt;code class=&quot;highlighter-rouge&quot;&gt;dotnet restore&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;The &lt;a href=&quot;https://github.com/dotnet/project-system/issues/2498&quot;&gt;relevant bug entry&lt;/a&gt; is at the time of writing still open and &lt;em&gt;not&lt;/em&gt; adressed in VS2019.&lt;/p&gt;
-
-&lt;p&gt;So, we fall back to msbuild with&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-cmd&quot;&gt;msbuild /t:restore AndroidApp.csproj
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-        <pubDate>Thu, 13 Jun 2019 14:15:21 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2019/06/13/xamarin-dotnet</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2019/06/13/xamarin-dotnet</guid>
       </item>
     
   </channel>
