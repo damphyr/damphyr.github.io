@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="google-site-verification" content="WJoG1y4O1QfZDWU4OFY1tGfE75UXU6WmQc91gCSLY5g" />
+  <title>Adventures in the land of AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="alternate" type="application/rss+xml" title="Ampelofilosofies" href="http://www.ampelofilosofies.gr/feed.xml">
+
+  <!-- syntax highlighting CSS -->
+  <link rel="stylesheet" href="/css/syntax.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="site">
+      <div class="header">
+        <h1 class="title"><a href="/">Ampelofilosofies</a></h1>
+        <a class="extra" href="/">home</a><a class="extra" href="/about.html">about</a><a class="extra"
+          href="/feed.xml">rss</a>
+        <br />
+        <span class="extra">The mind is like a parachute. If it doesn't open, you're meat.</span>
+      </div>
+
+      <h1>Adventures in the land of AI</h1>
+<p class="meta">01 Nov 2024</p>
+
+<div class="post"><p>The advent of AI marks a fundamental change to the discipline of software engineering. It is one of those changes that rearranges the way people work and think about that work. So, in the interest of self-preservation I have been spending time with various AI models.</p>
+
+<p>There are two avenues that I am interested in pursuing this, how it affects my coding and how it affects a team.</p>
+
+<h2 id="delegating-coding-tasks">Delegating coding tasks</h2>
+
+<p>Everyone is enthusiastic about how much of a productivity boost tools like GitHub CoPilot bring and all the introductory articles and demos are wild about how easy it is to get to a running application in “seconds”.</p>
+
+<p>Yes…and definitely no. I’ve been conducting a couple of experiments with simple tasks that crop up daily.</p>
+
+<p>My goto question was “how do I ensure the an Azure Pipeline, when triggered, executes only if there is no run of the same pipeline currently active”.</p>
+
+<p>All systems will hallucinate Azure Pipelines YAML syntax that is very believable. Believing them will cost you a couple of hours and some frustration. None of the clarifying prompts used subsequently could convince the system to not hallucinate.</p>
+
+<p>As context: this is a trick question. There is no easy, out-of-the-box supported way to do this in Azure Pipelines.</p>
+
+<p>In one particularly egregious example, ChatGPT kept re-writing the same line of code using all the ways the language had to do string interpolation, without actually changing the answer.</p>
+
+<p>That question was on how to perform WebDAV deletes in Ruby. The code provided used Faraday, but was using custom HTTP requests, which the library does not support.</p>
+
+<p>ChatGPT responded with the same piece of code after every correction prompt, only rewriting one line:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># First answer</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">run_request</span><span class="p">(</span><span class="ss">:propfind</span><span class="p">,</span> <span class="n">server_url</span><span class="p">,</span> <span class="kp">nil</span><span class="p">,</span> <span class="p">{</span> <span class="s1">'Depth'</span> <span class="o">=&gt;</span> <span class="s1">'1'</span> <span class="p">})</span>
+<span class="c1">## Second answer</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">connection</span><span class="p">.</span><span class="nf">run_request</span><span class="p">(</span><span class="ss">:propfind</span><span class="p">,</span> <span class="n">server_url</span><span class="p">,</span> <span class="kp">nil</span><span class="p">,</span> <span class="p">{</span> <span class="s1">'Depth'</span> <span class="o">=&gt;</span> <span class="s1">'1'</span> <span class="p">})</span>
+<span class="c1">## Third answer</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="ss">:run_request</span><span class="p">,</span> <span class="ss">:propfind</span><span class="p">,</span> <span class="n">server_url</span><span class="p">,</span> <span class="kp">nil</span><span class="p">,</span> <span class="p">{</span> <span class="s1">'Depth'</span> <span class="o">=&gt;</span> <span class="s1">'1'</span> <span class="p">})</span>
+</code></pre></div></div>
+
+<p>I find the above example hilarious. Reminds me of when I catch my son lying, point it out and then watch how he digs himself deeper trying to deny it.</p>
+
+<p>The general observations are:</p>
+
+<ul>
+  <li>AIs are currently seemingly incapable of saying “I don’t know” or “that is not possible”. This is very important and it is a big flaw when used in a professional context, specifically while programming.</li>
+  <li>Prompting is an art and it is the art of properly identifying requirements and being able to phrase them clearly and unambiguously. We are going to have some hilarious misunderstandings.</li>
+  <li>Niche knowledge is far from the AIs reach at the moment. It is an easy way to get them to hallucinate.</li>
+</ul>
+
+<p>I find the first point very dangerous. It makes every answer a suspect that requires cross-examination and verification. Either that or gain a false sense of confidence about how easily some things are achievable.</p>
+</div>
+
+<div class="commentbox"></div>
+<script src="https://unpkg.com/commentbox.io/dist/commentBox.min.js"></script>
+<script>
+  commentBox("5724844746342400-proj");
+</script>
+
+<noscript>Please enable JavaScript to view comments </noscript>
+
+
+      <div class="footer">
+        <div class="contact">
+          <p>
+            Vassilis Rizopoulos<br />
+            Itinerant software engineer<br />
+          </p>
+        </div>
+        <div class="contact">
+          <p>
+            <a href="http://github.com/damphyr">github.com/damphyr</a><br />
+            <a href="http://twitter.com/arcandros">twitter.com/arcandros</a><br />
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script async data-id="101476321" src="//static.getclicky.com/js"></script>
+</body>
+
+</html>

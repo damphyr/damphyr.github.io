@@ -7,6 +7,72 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Adventures in the land of AI</title>
+        <description>&lt;p&gt;The advent of AI marks a fundamental change to the discipline of software engineering. It is one of those changes that rearranges the way people work and think about that work. So, in the interest of self-preservation I have been spending time with various AI models.&lt;/p&gt;
+
+&lt;p&gt;There are two avenues that I am interested in pursuing this, how it affects my coding and how it affects a team.&lt;/p&gt;
+
+&lt;h2 id=&quot;delegating-coding-tasks&quot;&gt;Delegating coding tasks&lt;/h2&gt;
+
+&lt;p&gt;Everyone is enthusiastic about how much of a productivity boost tools like GitHub CoPilot bring and all the introductory articles and demos are wild about how easy it is to get to a running application in “seconds”.&lt;/p&gt;
+
+&lt;p&gt;Yes…and definitely no. I’ve been conducting a couple of experiments with simple tasks that crop up daily.&lt;/p&gt;
+
+&lt;p&gt;My goto question was “how do I ensure the an Azure Pipeline, when triggered, executes only if there is no run of the same pipeline currently active”.&lt;/p&gt;
+
+&lt;p&gt;All systems will hallucinate Azure Pipelines YAML syntax that is very believable. Believing them will cost you a couple of hours and some frustration. None of the clarifying prompts used subsequently could convince the system to not hallucinate.&lt;/p&gt;
+
+&lt;p&gt;As context: this is a trick question. There is no easy, out-of-the-box supported way to do this in Azure Pipelines.&lt;/p&gt;
+
+&lt;p&gt;In one particularly egregious example, ChatGPT kept re-writing the same line of code using all the ways the language had to do string interpolation, without actually changing the answer.&lt;/p&gt;
+
+&lt;p&gt;That question was on how to perform WebDAV deletes in Ruby. The code provided used Faraday, but was using custom HTTP requests, which the library does not support.&lt;/p&gt;
+
+&lt;p&gt;ChatGPT responded with the same piece of code after every correction prompt, only rewriting one line:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# First answer&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;run_request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:propfind&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;server_url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;Depth&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;1&apos;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;## Second answer&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;run_request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:propfind&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;server_url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;Depth&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;1&apos;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;## Third answer&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:run_request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:propfind&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;server_url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;Depth&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;1&apos;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I find the above example hilarious. Reminds me of when I catch my son lying, point it out and then watch how he digs himself deeper trying to deny it.&lt;/p&gt;
+
+&lt;p&gt;The general observations are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;AIs are currently seemingly incapable of saying “I don’t know” or “that is not possible”. This is very important and it is a big flaw when used in a professional context, specifically while programming.&lt;/li&gt;
+  &lt;li&gt;Prompting is an art and it is the art of properly identifying requirements and being able to phrase them clearly and unambiguously. We are going to have some hilarious misunderstandings.&lt;/li&gt;
+  &lt;li&gt;Niche knowledge is far from the AIs reach at the moment. It is an easy way to get them to hallucinate.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I find the first point very dangerous. It makes every answer a suspect that requires cross-examination and verification. Either that or gain a false sense of confidence about how easily some things are achievable.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 01 Nov 2024 12:15:00 +0100</pubDate>
+        <link>http://www.ampelofilosofies.gr/work/2024/11/01/adventures-in-ai-land</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/work/2024/11/01/adventures-in-ai-land</guid>
+      </item>
+    
+      <item>
+        <title>Unpopular opinion: Happiness</title>
+        <description>&lt;p&gt;“Happiness” is a dumb metric within a work context.&lt;/p&gt;
+
+&lt;p&gt;Success is measured in outcome not output and blithely sailing past a deadline while deliriously happy is not my idea of a good thing.&lt;/p&gt;
+
+&lt;p&gt;Also, satisfaction at work, while important, is not measurable in the emotion scale I associate with happiness.&lt;/p&gt;
+
+&lt;p&gt;Confidence, the feeling of achievement, satisfaction in a job well done and appreciation of said work are all contributing factors to a stable emotional base.&lt;/p&gt;
+
+&lt;p&gt;Happiness though, is a different category and dependent on a different social context. It relies in part on the experiences within the work context but cannot not be quantified in isolation.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 14 Aug 2024 13:15:00 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/work/2024/08/14/unpopular-opinion-happiness</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/work/2024/08/14/unpopular-opinion-happiness</guid>
+      </item>
+    
+      <item>
         <title>Autonomy in software development teams</title>
         <description>&lt;p&gt;The subject is autonomy within a software development team, or rather the consequences of interpreting a very broad and vague term such as the single word “autonomy” in very different ways depending on where you come from, how experienced you are or what suits you.&lt;/p&gt;
 
@@ -450,178 +516,6 @@ db6aa1c I hate ...
         <pubDate>Tue, 18 Jun 2019 16:15:21 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2019/06/18/azure-devops-git-too-fast</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2019/06/18/azure-devops-git-too-fast</guid>
-      </item>
-    
-      <item>
-        <title>Disaster-resistant git</title>
-        <description>&lt;p&gt;Over the years I have developed a very disaster-resistant git workflow:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Change to open-ended branches (master, develop, releases etc.) is always via pull requests.&lt;/li&gt;
-  &lt;li&gt;Force push is blocked on all open branches.&lt;/li&gt;
-  &lt;li&gt;All changes happen in a branch, no matter how small.&lt;/li&gt;
-  &lt;li&gt;Branch is always rebased onto its PR target, never merged.&lt;/li&gt;
-  &lt;li&gt;Merge strategy is usually rebase and –no-ff.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;That last one is more a cosmetic preference: In projects with big teams and complex structures/systems it is easier to track the sequence of introduction of the changes via the merge nodes.
-For the rest of this post when you see ‘branch’ it means a branch that will eventually be merged into another as opposed to an “open-ended” branch like &lt;em&gt;master&lt;/em&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-problem-is-merging&quot;&gt;The problem is merging&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;There is a beast at the end of most branches and it is called Merge. It strikes fear in the hearts of all programmers and only a special few dare face it.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Its most powerful weapon, the razor sharp Merge Conflicts will shred your intellect to pieces in a single stroke, leaving you wandering aimlesssly in a sea of Code.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;The beast grows more powerful with Time. Enough Time passes and it will be invincible.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;It feeds on Code, give it enough and it will be invincible.&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;dealing-with-merge-conflicts&quot;&gt;Dealing with merge conflicts&lt;/h2&gt;
-
-&lt;p&gt;The fear of merges and merge conflicts usually develops when someone attempts to merge a branch that contains too many changes and has been growing over a long time (from days to weeks, it depends on your team’s velocity - I once had to merge one that was almost a year old, in svn no less - true story, not fun).&lt;/p&gt;
-
-&lt;p&gt;When encountering a merge conflict, the human algorithm is as follows:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Have I changed the file?
-    &lt;ul&gt;
-      &lt;li&gt;Yes: I know how to resolve the conflict because I know what I wanted to do.&lt;/li&gt;
-      &lt;li&gt;No: Take the other version.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;After finishing the merge, always check the resulting diff, since sometimes the automatic merge algorithm will produce changes that are logically faulty (i.e. you can get buggy code or non-sensical content that merges fine).&lt;/p&gt;
-
-&lt;p&gt;In a long-running branch with a lot of changes I simply do not know enough to resolve the conflict, either because multiple people are involved or because I have forgotten over time. Now I have to reconstruct the context while merging or quit.&lt;/p&gt;
-
-&lt;p&gt;Also, in a long chain of commits I really have no idea how to resolve a conflict in a commit in the middle of the chain - I have often had to resolve a conflict in a long commit chain that was reverted in a later commit.&lt;/p&gt;
-
-&lt;p&gt;Never mind checking the diff when it is 50 files and a couple of thousand LOCs.&lt;/p&gt;
-
-&lt;p&gt;This is reason number one against feature branches - too much, left for too long.&lt;/p&gt;
-
-&lt;p&gt;So there are guidelines:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Branches need to be short-lived&lt;/li&gt;
-  &lt;li&gt;Keep the diff small&lt;/li&gt;
-  &lt;li&gt;Keep the number of commits small to very small&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;As always, one-line guidelines require ellaboration.&lt;/p&gt;
-
-&lt;h2 id=&quot;branch-lifetime&quot;&gt;Branch lifetime&lt;/h2&gt;
-
-&lt;p&gt;Short-lived, when we define it in time, is unfortunately a very fuzzy term. You will find advice like “no more than a day” and other equally arbitrary terms.&lt;/p&gt;
-
-&lt;p&gt;This guideline is the one I see teams ignoring most often. And as long as the rest are followed, with little or no consequences if we want to be honest.&lt;/p&gt;
-
-&lt;p&gt;As long as you remember what the change is - the context and the goal as well - the branch is not old.&lt;/p&gt;
-
-&lt;p&gt;Time alone is not a good criterion. Measuring distance from your target branch in LOCs (the size of the diff) or number of commits is a better indicator of staleness and your chances of encountering the Merge Beast.&lt;/p&gt;
-
-&lt;h2 id=&quot;diff-size&quot;&gt;Diff size&lt;/h2&gt;
-
-&lt;p&gt;IM(NSH)O this is the really critical factor. In order to satisfy the conflict resolution algorithm I need to know about the change. The bigger it is, the more difficult the task.&lt;/p&gt;
-
-&lt;p&gt;Another factor is senseless diff bloat like whitespace changes or stylistic changes. Treat them like a self-contained change. Do not mix them with logic changes. If you need to change the style, the identation size, tabs to spaces etc. then &lt;strong&gt;do it in a separate branch&lt;/strong&gt; and PR.&lt;/p&gt;
-
-&lt;p&gt;Better yet, auto-format on commit (a man can have whishes!).&lt;/p&gt;
-
-&lt;p&gt;In practice, keep the list of changed files to a minimum and the LOC size per file small. In other words, keep your PR diff view clean.&lt;/p&gt;
-
-&lt;h2 id=&quot;number-of-commits&quot;&gt;Number of commits&lt;/h2&gt;
-
-&lt;p&gt;For a long time I was of the ‘small commits, discrete steps towards the solution’ school. Each commit should do one thing and my commits are structured and commented in such a way as to present the reviewer with my path towards the solution.&lt;/p&gt;
-
-&lt;p&gt;This is a brilliant approach if you are creating a workshop or you are teaching.&lt;/p&gt;
-
-&lt;p&gt;In the real world we are interested in the solution. We’re a team of software developers, we have trust in our abilities to grasp small to medium globs of code. And in practice we use the pull request forms to do the work. So at work the unit of change is the pull request, not the commit.&lt;/p&gt;
-
-&lt;p&gt;The unspoken assumption is that I have broken my user stories down to manageable pieces and do not improvise a redesign while writing the code.
-Keep the number of commits low (single digit number), ideally bring it down to 1.&lt;/p&gt;
-
-&lt;p&gt;How many commits away you are from master is a good indicator of how stale your branch is. This is easily solved with a routine of regular rebasing. Regular as in &lt;em&gt;at least once a day&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;How many commits you have in your branch is a good indicator of the amount of trouble you will be when merging. And since rebasing is the same as merging in this aspect, how difficult your daily routine will be.&lt;/p&gt;
-
-&lt;p&gt;Setting &lt;a href=&quot;https://git-scm.com/docs/git-rerere&quot;&gt;rerere&lt;/a&gt; in the git configuration simplifies repeated rebases but it is a setting that has to be used with caution.&lt;/p&gt;
-
-&lt;h2 id=&quot;side-notes&quot;&gt;Side notes&lt;/h2&gt;
-
-&lt;p&gt;There are some points that might be obvious to some:&lt;/p&gt;
-
-&lt;p&gt;Doing all changes in branches &lt;em&gt;localizes&lt;/em&gt; your conflict resolution algorithm to the branch. It provides a necessary restriction of context that removes &lt;strong&gt;a lot&lt;/strong&gt; of overhead. It is &lt;em&gt;your&lt;/em&gt; change you need to care about.&lt;/p&gt;
-
-&lt;p&gt;This means that branch constructs like the one used by git flow where &lt;em&gt;develop&lt;/em&gt; is merged into &lt;em&gt;master&lt;/em&gt; cannot be easily supported like this.&lt;/p&gt;
-
-&lt;p&gt;A PR workflow following the guidelines faithfully is like a discrete time simulation of trunk-based development with the steps being the merge nodes. The smaller the blocks (i.e. number of commits), the closer we are to trunk-based. Remove the –no-ff from the merge strategy and the distinction dissappears in the end result.&lt;/p&gt;
-
-&lt;p&gt;Larger changes (of which the most common type we call ‘features’) require conscious design.
-In my experience, teams fall prey to the Merge Beast because they lack ways to incrementally introduce changes or have been given user stories that are too vague or too big. This is not a git related subject, don’t blame the tool.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 18 Jun 2019 14:15:21 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2019/06/18/disaster-resistant-git</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2019/06/18/disaster-resistant-git</guid>
-      </item>
-    
-      <item>
-        <title>Adventures in Azure DevOps: iOS secrets</title>
-        <description>&lt;p&gt;This new-fangled (&lt;em&gt;sic&lt;/em&gt;) mobile app development thing, I tell you. I have been hearing stories, horror stories.&lt;/p&gt;
-
-&lt;p&gt;For example, the “certificates for iOS applications” story. Pure horror. Grey hair overnight, stuff of nightmares.&lt;/p&gt;
-
-&lt;p&gt;And then they tell you you have to build these things in the cloud, on disposable VMs.&lt;/p&gt;
-
-&lt;p&gt;I have a rule when setting up projects for teams that aspire to the DevOps tag:&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Just the repository&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;I should be able, with just the contents of the repository, to reconstruct the project, inclusive of development environment, production setup and released artifacts.&lt;/p&gt;
-
-&lt;p&gt;I will accept one exception to this rule and this is &lt;strong&gt;secrets&lt;/strong&gt;. Under no circumstances should any type of secret, be that password, private key or certificate, end up in the repository.&lt;/p&gt;
-
-&lt;p&gt;At least that is the theory. To swing back to the title subject, handling of certificates in iOS app compilation has broken this rule in &lt;em&gt;every single project&lt;/em&gt; I have seen to date. Admittedly, that number is in the low double digits.&lt;/p&gt;
-
-&lt;p&gt;Typically there will be a chosen deployment profile to be added to the repo for CI purposes and we will trust on the privacy of the repo, or the eventual expiration of the certificates.&lt;/p&gt;
-
-&lt;p&gt;So, finding out that Azure DevOps explicitly caters to exactly this case within the build pipelines is a very nice surprise.&lt;/p&gt;
-
-&lt;p&gt;Since the 2018 version there is a &lt;a href=&quot;https://docs.microsoft.com/en-gb/azure/devops/pipelines/tasks/utility/install-apple-provisioning-profile?view=azure-devops&quot;&gt;dedicated task (InstallAppleProvisioningProfile)&lt;/a&gt; for Apple provisioning profiles.&lt;/p&gt;
-
-&lt;p&gt;This is based on the &lt;a href=&quot;https://docs.microsoft.com/en-gb/azure/devops/pipelines/library/secure-files?view=azure-devops&quot;&gt;secure files&lt;/a&gt; facility, which allows us to store secrets separately from the repos and use them in pipelines.&lt;/p&gt;
-
-&lt;h2 id=&quot;no-exceptions-to-the-rule&quot;&gt;No exceptions to the rule&lt;/h2&gt;
-
-&lt;p&gt;Back to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Just the repository&lt;/code&gt;, just because I do not really like exceptions, especially exceptions that have a tendency to run amok.&lt;/p&gt;
-
-&lt;p&gt;Secrets are such an exception. You can get a lot of them: SSL certificates, signing certificates, SSH keys, Apple provisioning profiles, Android Keystore etc. A modern development environment catering to the cloud is useless without them.&lt;/p&gt;
-
-&lt;p&gt;A practical solution to this is something like &lt;a href=&quot;https://keepass.info/&quot;&gt;KeePass&lt;/a&gt;, which is a password manager with no internet service to back it, but with a useful scripting interface.&lt;/p&gt;
-
-&lt;p&gt;The concept goes like this:&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;All secrets are kept in a KeePass database file, which is commited in the repo.&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Whether you script secret retrieval from the KeePass DB to add it to Azure Devops (or whichever secret management service/tool you use), or just document their existence and prefered management solution I leave to you, dear reader.&lt;/p&gt;
-
-&lt;p&gt;That leaves us with one secret (the password/key to the KeePass database) to transmit over alternate channels.&lt;/p&gt;
-
-&lt;h2 id=&quot;staying-flexible&quot;&gt;Staying flexible&lt;/h2&gt;
-
-&lt;p&gt;The KeePass DB  approach also allows us to handle using the secrets locally with a bit of clever scripting.&lt;/p&gt;
-
-&lt;p&gt;If I want to follow &lt;a href=&quot;/software/2014/07/17/vars-build-rules&quot;&gt;my own rules&lt;/a&gt;, there needs to be a way to replicate the build locally, and just setting up XCode with my own key is not close enough a replica for my criteria (i.e. I still want to be able to produce a production build locally - just in case the cloud fails. Call me paranoid).&lt;/p&gt;
-
-&lt;p&gt;Using secure files introduces a deviation between local build and CI that cannot be replicated by the simple fact that secure files can only be downloaded with use of the Azure Devops pipeline task. There is no script alternative to allow you to get to the file outside a pipeline.&lt;/p&gt;
-
-&lt;p&gt;The bit of clever scripting would at least simulate the secure files function by retrieving the secret out of KeePass instead.&lt;/p&gt;
-</description>
-        <pubDate>Fri, 14 Jun 2019 14:15:21 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2019/06/14/azure-devops-ios-secrets</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2019/06/14/azure-devops-ios-secrets</guid>
       </item>
     
   </channel>
