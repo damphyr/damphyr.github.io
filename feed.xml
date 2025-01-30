@@ -7,6 +7,67 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Using chat as a software team</title>
+        <description>&lt;p&gt;My guidelines for using chat (Teams, Slack, whatever you fancy) as a collaboration tool in a software development team are as follows:&lt;/p&gt;
+
+&lt;h2 id=&quot;chat-is-asynchronous&quot;&gt;Chat is asynchronous&lt;/h2&gt;
+
+&lt;p&gt;Always provide context when addressing someone. Never go “Hi!”. Ask the question immediately and with as much information as you can provide.&lt;/p&gt;
+
+&lt;p&gt;If you don’t provide context you are demanding the immediate attention and response from your counterpart thus underutilizing the medium’s asynchronous nature.&lt;/p&gt;
+
+&lt;p&gt;If it is urgent, call. I reserve the right to not answer. If I don’t answer, message me the context.&lt;/p&gt;
+
+&lt;h2 id=&quot;knowledge-should-be-available-to-all&quot;&gt;Knowledge should be available to all&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Use a common channel&lt;/li&gt;
+  &lt;li&gt;Pose a question with context&lt;/li&gt;
+  &lt;li&gt;Post the answer afterwards if a solution occurs outside of the chat&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Avoid the use of direct messages or ad-hoc groups&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;They can be used to reduce the noise in the common channel but should not be the first approach. Initiate group work in the common channel which can then be spun off in a side channel.&lt;/p&gt;
+
+&lt;p&gt;A common channel has several advantages:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;It is a known central reference point.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There’s no need track of where and when a conversation happened.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;It exerts some control over the notification flood.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;DMs are interruptions. A common channel allows users to choose how their own interaction pattern whether that is an immediate response or a periodic check.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;It helps disseminate knowledge in an indirect way.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Perusing the channel inevitably presents an overview of the team’s activity to all.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;It widens the pool of potential responders to the whole team&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You never know who has the answer.&lt;/p&gt;
+
+&lt;h2 id=&quot;text-is-king&quot;&gt;Text is king&lt;/h2&gt;
+
+&lt;p&gt;Do not post screenshots of terminal screens, stacktraces or errors.&lt;/p&gt;
+
+&lt;p&gt;No, seriously, please don’t. There’s nothing more tedious than trying to zoom on text in a picture, nothing to copy and edit.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 28 Jan 2025 18:15:00 +0100</pubDate>
+        <link>http://www.ampelofilosofies.gr/work/2025/01/28/using-chat-in-development</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/work/2025/01/28/using-chat-in-development</guid>
+      </item>
+    
+      <item>
         <title>Adventures in the land of AI</title>
         <description>&lt;p&gt;The advent of AI marks a fundamental change to the discipline of software engineering. It is one of those changes that rearranges the way people work and think about that work. So, in the interest of self-preservation I have been spending time with various AI models.&lt;/p&gt;
 
@@ -453,69 +514,6 @@ It figures out what to use as a package name by using the &lt;em&gt;classname&lt
         <pubDate>Wed, 26 Jun 2019 14:15:21 +0200</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2019/06/26/published-author</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2019/06/26/published-author</guid>
-      </item>
-    
-      <item>
-        <title>Adventures in Azure DevOps: I git too fast</title>
-        <description>&lt;p&gt;I like keeping the number of commits in my pull requests in the low single digits, preferably 1. For context see the post on my &lt;a href=&quot;/software/2019/06/18/disaster-resistant-git&quot;&gt;disaster resistant git workflow&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;I used to do all the work, squashing the commits at the end of the work before merging my pull requests but recently I have switched to using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;git commit --amend&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;The reason for this is that while I have noticed that I rarely need to re-arrange my commits in logical groups when squashing (call it a benefit of experience - it certainly was not like this years ago), I make a lot of typing and syntax errors.&lt;/p&gt;
-
-&lt;p&gt;As a result my typical change originally looks like&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;c31e548 Some informed and wise comment on the change
-dfdfd15 typo
-d19f4f1 typo
-7122e4a typo fix
-a62803a syntax fix
-53b99b8 dammit
-c657575 why didn&apos;t this work?
-d8e72cf doh, PEBKAC
-5017515 what an idiot
-59c53d1 stupid semicolon
-db6aa1c I hate ...
-47d3dc7 AAAARGH
-4640d92 done
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Previously I would be kind and squash, but you could follow everything in the pull request notifications. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--amend&lt;/code&gt;allows me to appear infalible :D.&lt;/p&gt;
-
-&lt;p&gt;As an added optimization (remember, I usually do builds and CI and stuff like that - my code does not need the CI, it IS the CI) I recently added an alias to my collection:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git config alias.cowboy
-&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;git commit &lt;span class=&quot;nt&quot;&gt;--amend&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git push &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;As a measure of sparing me a few keystrokes it is great (remember, I typo &lt;strong&gt;a lot&lt;/strong&gt;). As a practice it is questionable, but see in which context it is used in the aforementioned git workflow post.&lt;/p&gt;
-
-&lt;p&gt;Funnily, in Azure Devops I get to trip myself up with this.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/git-too-fast.png&quot; alt=&quot;Checkout error&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Today I started with builds failing on checkout, which was wierd.&lt;/p&gt;
-
-&lt;p&gt;Looking closer it gets momentarily even wierder:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fatal: reference is not a tree
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;what-happened&quot;&gt;What happened&lt;/h2&gt;
-
-&lt;p&gt;Basically my cowboy ways pulled the rug from under git’s feet.&lt;/p&gt;
-
-&lt;p&gt;What you see is a live demostration of the dangers of rewriting history in git.&lt;/p&gt;
-
-&lt;p&gt;The build is setup with a stage of 5 jobs but for the moment we only have a pool of 2 agents. So if I catch my typo fast enough and play the cowboy card the running build will try to get a SHA that does not exist anymore.&lt;/p&gt;
-
-&lt;p&gt;No harm done other than a negative skew on my successfull build percentage.&lt;/p&gt;
-
-&lt;p&gt;Everything is fine, we’re all professionals here.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 18 Jun 2019 16:15:21 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2019/06/18/azure-devops-git-too-fast</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2019/06/18/azure-devops-git-too-fast</guid>
       </item>
     
   </channel>
