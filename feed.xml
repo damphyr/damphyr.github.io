@@ -7,6 +7,26 @@
     <atom:link href="http://www.ampelofilosofies.gr/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
+        <title>Experience conundrum</title>
+        <description>&lt;p&gt;I’ve got this friend, he has been working as a software engineer for nigh on 30 years now and has steadily accumulated an arguably impressive amount of knowledge about the workings of computers and programming languages and software design.
+He tends to be good at what he does and the amount of experience he carries is invaluable when setting up teams and systems. This is recognized and also monetized by his employer accordingly, i.e. he is compensated sufficiently but more importantly, his services are correspondingly expensive.&lt;/p&gt;
+
+&lt;p&gt;Which brings us to today’s conundrum: He is too expensive to be left to play at the ever-changing, deep detail, niggling problems of today’s computing. That shit takes time, a lot of frustrated hours cursing at the computer, up to the point of the a-ha moment that resolves the issue.&lt;/p&gt;
+
+&lt;p&gt;The expectation that is attached to “expert” or “experienced” is that due to the aforementioned expertise you should take almost no time at achieving anything within your area. You should &lt;em&gt;know already&lt;/em&gt;, as you are the expert. Which disregards a lot of facts about the pace of change in technology, the way we learn things, the way we age.&lt;/p&gt;
+
+&lt;p&gt;And in the capitalist system we move in, the expectations on expertise coupled with the directive for maximizing profit forms an inevitability of obsolescence: maximizing profits means that assignments will be limited to the core area of expertise which means you will not learn new things on the job. Even if you encounter new areas, the time allocated will be insufficient for deep study.&lt;/p&gt;
+
+&lt;p&gt;Or maybe that is just me and my impression that the world has become obsessed with speed. An ever increasing pace and no regard for direction, no plan beyond being the one to comment “first”. I see that everywhere nowadays, but then again my sample is vanishingly small and there is no denying my biases.&lt;/p&gt;
+
+&lt;p&gt;And to once again touch on the ever present subject of our time: AI promises speed above all. Not quality - quality is good enough for now and the thing is fast enough to let you think that it is simpler to replace everything broken in the future than to devote the time to ensure it is going to last. It is seductive, especially since against all indicators, the promise is that in the future, the thing itself will be better, even though it was built and trained on the same shoddy foundation.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 01 Sep 2025 19:15:00 +0200</pubDate>
+        <link>http://www.ampelofilosofies.gr/work/2025/09/01/experience-conundrum</link>
+        <guid isPermaLink="true">http://www.ampelofilosofies.gr/work/2025/09/01/experience-conundrum</guid>
+      </item>
+    
+      <item>
         <title>Using chat as a software team</title>
         <description>&lt;p&gt;My guidelines for using chat (Teams, Slack, whatever you fancy) as a collaboration tool in a software development team are as follows:&lt;/p&gt;
 
@@ -487,33 +507,6 @@ It figures out what to use as a package name by using the &lt;em&gt;classname&lt
         <pubDate>Mon, 27 Jan 2020 13:15:21 +0100</pubDate>
         <link>http://www.ampelofilosofies.gr/software/2020/01/27/forget-me-not-setvariable</link>
         <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2020/01/27/forget-me-not-setvariable</guid>
-      </item>
-    
-      <item>
-        <title>Published author...sort of</title>
-        <description>&lt;p&gt;In the past year a group of Zühlke coleagues led by &lt;a href=&quot;https://twitter.com/sypounentes&quot;&gt;Christian Abegg&lt;/a&gt;  and &lt;a href=&quot;https://twitter.com/peitor&quot;&gt;Peter Gfader&lt;/a&gt; put together a collection of articles about things we consider important with the aim of publishing them as a book.&lt;/p&gt;
-
-&lt;p&gt;That book is finally out!&lt;/p&gt;
-
-&lt;p&gt;The official blurb is&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;In «Machines – Code – People» readers learn about best practices, cultural philosophies, great ideas and practically proven concepts. In 50 short articles Zühlke engineers share what they are passionate about. You will find many useful tips from various areas of today’s tech industry. The range of topics covered includes the latest technical developments as well as collaboration topics and individual values and techniques.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;You can buy the dead tree version on &lt;a href=&quot;https://www.amazon.de/Machines-Code-People-engineers-passionate/dp/3748141181/ref=sr_1_1?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&amp;amp;keywords=machines+code+people&amp;amp;qid=1561359217&amp;amp;s=gateway&amp;amp;sr=8-1&quot;&gt;Amazon&lt;/a&gt;, you can browse it for free &lt;a href=&quot;https://zuehlke.github.io/machines-code-people/&quot;&gt;online&lt;/a&gt; or download one of the &lt;a href=&quot;https://zuehlke.github.io/machines-code-people/articles/preface.html&quot;&gt;e-book versions&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;I consider this a 70% step to crossing “be a published author” off the bucket list.&lt;/p&gt;
-
-&lt;p&gt;I am especially proud, not just because of my article in the book (it is an edited version of the &lt;a href=&quot;/software/2014/07/17/vars-build-rules&quot;&gt;build rules&lt;/a&gt; post in this blog) but because I came up with a title the rest of the company found cool.&lt;/p&gt;
-
-&lt;p&gt;Taken verbatim from our internal discussion when deciding on the title:&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;It alludes (admittedly over-simplified, but what do you expect from a title) to the course Zuehlke has taken over the 50 years of its history: From building machines and electronics, to adding software and processes (code), innovation and business consulting which is ultimately people.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;It also works as the three things we do best (if you put the people in the context of working with the machines and code ;) ).&lt;/em&gt;&lt;/p&gt;
-</description>
-        <pubDate>Wed, 26 Jun 2019 14:15:21 +0200</pubDate>
-        <link>http://www.ampelofilosofies.gr/software/2019/06/26/published-author</link>
-        <guid isPermaLink="true">http://www.ampelofilosofies.gr/software/2019/06/26/published-author</guid>
       </item>
     
   </channel>
